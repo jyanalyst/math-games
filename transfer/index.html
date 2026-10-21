@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Moving Between Groups – Bar Model Game</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">🧑‍🏫📊</div>
+    <h2>Moving Between Groups</h2>
+    <p>Your tutor will read each problem and help you, step by step.</p>
+    <button class="big" id="startTutor">Start with my tutor 🔊</button>
+    <button class="quiet" id="startQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Moving Between Groups</h1>
+    <button class="toggle" id="smallToggle" aria-pressed="false"><span class="sw"></span><span>Try with small numbers</span></button>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <button class="ctl" id="againBtn">🔁 Say it again</button>
+    <div class="stars" id="stars">★ 0</div>
+  </header>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="progress" id="progress"></div>
+        <p class="story" id="story"></p>
+        <p class="question" id="question"></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="caption" id="caption"></div>
+        <div class="bars" id="bars">
+          <div class="row A"><div class="rowname" id="nameA"></div><div class="track" id="trackA"></div></div>
+          <div class="row B"><div class="rowname" id="nameB"></div><div class="track" id="trackB"></div></div>
+          <div class="dotline" id="dotline"><div class="dotlab" id="dotlab">dotted line</div></div>
+        </div>
+        <div class="counter" id="counter"></div>
+        <div class="barbtns" id="barbtns"></div>
+      </div>
+    </div>
+    <div class="card panel" id="panel"></div>
+  </div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var KEY = "barModelTransferGame.v1";
+var ROUND_SIZE = 10;
+
+/* ---------- contexts ---------- */
+var CONTEXTS = [
+  {id:"hall", A:"Hall", B:"Canteen", a:"the hall", b:"the canteen", u:"student", us:"students",
+   story:function(D,M){return "There are "+D+" more students in the school hall than in the canteen. Then "+M+" students walk from the hall to the canteen.";},
+   smallStory:function(x,y,M){return "There are "+x+" students in the school hall and "+y+" students in the canteen. Then "+M+" "+pl(M,"student","students")+" walk from the hall to the canteen.";},
+   q:"Now, which place has more students, and how many more?"},
+  {id:"stickers", A:"Mei Ling", B:"Aisha", a:"Mei Ling", b:"Aisha", u:"sticker", us:"stickers",
+   story:function(D,M){return "Mei Ling has "+D+" more stickers than Aisha. Mei Ling gives "+M+" stickers to Aisha.";},
+   smallStory:function(x,y,M){return "Mei Ling has "+x+" stickers and Aisha has "+y+". Mei Ling gives "+M+" "+pl(M,"sticker","stickers")+" to Aisha.";},
+   q:"Now, who has more stickers, and how many more?"},
+  {id:"marbles", A:"Jar A", B:"Jar B", a:"Jar A", b:"Jar B", u:"marble", us:"marbles",
+   story:function(D,M){return "Jar A has "+D+" more marbles than Jar B. Wei Jie moves "+M+" marbles from Jar A to Jar B.";},
+   smallStory:function(x,y,M){return "Jar A has "+x+" marbles and Jar B has "+y+". Wei Jie moves "+M+" "+pl(M,"marble","marbles")+" from Jar A to Jar B.";},
+   q:"Now, which jar has more marbles, and how many more?"},
+  {id:"books", A:"Top shelf", B:"Bottom shelf", a:"the top shelf", b:"the bottom shelf", u:"book", us:"books",
+   story:function(D,M){return "In the school library, the top shelf has "+D+" more books than the bottom shelf. The librarian moves "+M+" books from the top shelf to the bottom shelf.";},
+   smallStory:function(x,y,M){return "In the school library, the top shelf has "+x+" books and the bottom shelf has "+y+". The librarian moves "+M+" "+pl(M,"book","books")+" from the top shelf to the bottom shelf.";},
+   q:"Now, which shelf has more books, and how many more?"},
+  {id:"bus", A:"Bus 1", B:"Bus 2", a:"Bus 1", b:"Bus 2", u:"passenger", us:"passengers",
+   story:function(D,M){return "At the bus interchange, Bus 1 has "+D+" more passengers than Bus 2. Then "+M+" passengers get off Bus 1 and board Bus 2.";},
+   smallStory:function(x,y,M){return "At the bus interchange, Bus 1 has "+x+" passengers and Bus 2 has "+y+". Then "+M+" "+pl(M,"passenger","passengers")+" get off Bus 1 and board Bus 2.";},
+   q:"Now, which bus has more passengers, and how many more?"},
+  {id:"fish", A:"Tank A", B:"Tank B", a:"Tank A", b:"Tank B", u:"fish", us:"fish",
+   story:function(D,M){return "At the aquarium shop, Tank A has "+D+" more fish than Tank B. The shopkeeper moves "+M+" fish from Tank A to Tank B.";},
+   smallStory:function(x,y,M){return "At the aquarium shop, Tank A has "+x+" fish and Tank B has "+y+". The shopkeeper moves "+M+" fish from Tank A to Tank B.";},
+   q:"Now, which tank has more fish, and how many more?"},
+  {id:"kueh", A:"Tray A", B:"Tray B", a:"Tray A", b:"Tray B", u:"ang ku kueh", us:"ang ku kueh",
+   story:function(D,M){return "For Chinese New Year, Tray A has "+D+" more ang ku kueh than Tray B. Grandma moves "+M+" ang ku kueh from Tray A to Tray B.";},
+   smallStory:function(x,y,M){return "For Chinese New Year, Tray A has "+x+" ang ku kueh and Tray B has "+y+". Grandma moves "+M+" ang ku kueh from Tray A to Tray B.";},
+   q:"Now, which tray has more ang ku kueh, and how many more?"}
+];
+function pl(n,s,p){return n===1?s:p;}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function ctxById(id){for(var i=0;i<CONTEXTS.length;i++){if(CONTEXTS[i].id===id)return CONTEXTS[i];}return CONTEXTS[0];}
+function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ---------- problem generation + verification ---------- */
+// kind: "more" (M > D), "stay" (D > 2M, A stays ahead), "equal" (D = 2M)
+function makeRaw(kind, small){
+  var D,M,bStart;
+  if(small){
+    if(kind==="more"){D=rnd(1,4);M=D+rnd(1,4);bStart=rnd(Math.max(2,M-D+1),9);}
+    else if(kind==="stay"){M=rnd(1,3);D=2*M+rnd(1,4);bStart=rnd(2,7);}
+    else {M=rnd(1,4);D=2*M;bStart=rnd(2,7);}
+  } else {
+    if(kind==="more"){D=rnd(25,300);M=D+rnd(40,320);bStart=(M-D)+rnd(60,400);}
+    else if(kind==="stay"){M=rnd(20,160);D=2*M+rnd(15,220);bStart=rnd(80,400);}
+    else {M=rnd(20,200);D=2*M;bStart=rnd(80,400);}
+  }
+  return {kind:kind,D:D,M:M,bStart:bStart,aStart:bStart+D};
+}
+function verify(p){
+  // independent, concrete arithmetic check
+  if(!(p.D>0 && p.M>0 && p.bStart>0)) return false;
+  if(p.aStart!==p.bStart+p.D) return false;
+  if(p.M>p.aStart) return false;
+  var aEnd=p.aStart-p.M, bEnd=p.bStart+p.M;
+  if(aEnd<0) return false;
+  var diff=aEnd-bEnd;
+  var who = diff>0?"A":(diff<0?"B":"same");
+  if(diff!==p.D-2*p.M) return false;              // must agree with bar-model reasoning
+  if(who!==p.answer.who || Math.abs(diff)!==p.answer.amount) return false;
+  if(p.aEnd!==aEnd||p.bEnd!==bEnd) return false;
+  if(p.kind==="more" && !(p.M>p.D)) return false;
+  if(p.kind==="stay" && !(p.D>2*p.M)) return false;
+  if(p.kind==="equal" && !(p.D===2*p.M)) return false;
+  if(p.small && Math.max(p.aStart,p.bStart,aEnd,bEnd,p.D,p.M)>=20) return false;
+  return true;
+}
+function finish(raw, small, ctxId){
+  var p=raw; p.small=!!small; p.ctx=ctxId;
+  p.aEnd=p.aStart-p.M; p.bEnd=p.bStart+p.M;
+  var diff=p.aEnd-p.bEnd;
+  p.answer={who: diff>0?"A":(diff<0?"B":"same"), amount: Math.abs(diff)};
+  return p;
+}
+function generate(kind, small, ctxId){
+  for(var tries=0;tries<500;tries++){
+    var p=finish(makeRaw(kind,small),small,ctxId);
+    if(verify(p)) return p;
+  }
+  throw new Error("could not generate problem");
+}
+function canonical(){
+  var p=finish({kind:"more",D:129,M:329,bStart:400,aStart:529},false,"hall");
+  if(!verify(p)) throw new Error("canonical failed");
+  return p;
+}
+function makeRound(small, includeCanonical, fromIndex, existing){
+  var kinds=["more","more","more","more","more","more","more","stay","stay","equal"];
+  // keep the first problem an easy-to-picture "more" case
+  var rest=shuffle(kinds.slice(1)); kinds=["more"].concat(rest);
+  var ctxs=shuffle(CONTEXTS.map(function(c){return c.id;}));
+  var list=[];
+  for(var i=0;i<ROUND_SIZE;i++){
+    if(existing && i<fromIndex){list.push(existing[i]);continue;}
+    if(i===0 && includeCanonical && !small){list.push(canonical());continue;}
+    var cid = (i===0 && !small)?"hall":ctxs[i%ctxs.length];
+    list.push(generate(kinds[i],small,cid));
+  }
+  return list;
+}
+
+/* ---------- voice tutor (Web Speech API, works offline with on-device voices) ---------- */
+var MUTE_KEY = "barModelTransferGame.muted";
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
+  var FEMALE = /female|woman|girl|samantha|victoria|karen|moira|tessa|fiona|serena|kate|martha|susan|zira|hazel|libby|sonia|aria|jenny|natasha|catherine|allison|ava|nicky/i;
+  function quality(v){ return /premium/i.test(v.name)?2:(/enhanced/i.test(v.name)?1:0); }
+  function pick(){
+    if(!supported) return null;
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    if(!vs.length) return null;
+    var en = vs.filter(function(v){ return /^en/i.test(v.lang||""); });
+    for(var i=0;i<PREFS.length;i++){
+      var m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0 && (v.lang||"").toLowerCase().replace("_","-").indexOf(PREFS[i][1])===0; });
+      if(!m.length) m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0; });
+      if(m.length){ m.sort(function(a,b){return quality(b)-quality(a);}); return m[0]; }
+    }
+    var f = en.filter(function(v){ return FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/ig,"")); });
+    if(f.length){ f.sort(function(a,b){return quality(b)-quality(a);}); return f[0]; }
+    var g = en.filter(function(v){ return /en[-_](gb|au)/i.test(v.lang||""); });
+    if(g.length) return g[0];
+    return null; // browser default
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(text);
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  function play(lines, immediate){
+    var my = ++token;
+    var parts = [];
+    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
+    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
+    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) go(); else setTimeout(go, 60);
+  }
+  // say(): cancels anything in progress, then speaks these lines (each split into short sentences).
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(!supported || muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    supported: supported,
+    say: say,
+    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true;
+      lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(supported && !muted && lines.length) play(lines, true);
+    },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; }
+  };
+})();
+
+/* ---------- "Where do we use this in real life?" cards ----------
+   Each card: group A gives m to group B. a0/b0 = start, so after: a0-m and b0+m.
+   Principle: one side loses m and the other gains m, so the gap changes by 2*m.
+   Reverse use: to make two groups equal, move HALF the gap. Text is built from the numbers so it stays correct. */
+function lifeNums(c){ var a1=c.a0-c.m, b1=c.b0+c.m; return {a1:a1, b1:b1, gap0:c.a0-c.b0, gap1:a1-b1, change:(c.a0-c.b0)-(a1-b1)}; }
+var LIFE = [
+  {id:"sweets", emoji:"🍬🍬🍬", title:"Sharing sweets", A:"You", B:"Your brother", a0:10, b0:10, m:3,
+   text:function(c,n){ return "You and your brother both have "+c.a0+" sweets, and you give him "+c.m+". Now you have "+n.a1+" and he has "+n.b1+", so he is "+(-n.gap1)+" ahead, not "+c.m+"!"; }},
+  {id:"football", emoji:"⚽🥅", title:"A football score", A:"Lions", B:"Tigers", a0:3, b0:2, m:1,
+   text:function(c,n){ return "The Lions lead the Tigers "+c.a0+" to "+c.b0+", but the referee says one Lions goal really belongs to the Tigers. Now it is "+n.a1+" to "+n.b1+": only "+c.m+" goal moved, but the gap changed by "+n.change+"."; }},
+  {id:"shelves", emoji:"📚📚", title:"Balancing two shelves", A:"Shelf A", B:"Shelf B", a0:20, b0:12, m:4, half:true,
+   text:function(c,n){ return "Shelf A has "+c.a0+" books and Shelf B has "+c.b0+", a gap of "+n.gap0+". Move just half the gap, "+c.m+" books, and both shelves have "+n.a1+"."; }},
+  {id:"piggy", emoji:"🐷🪙", title:"Two piggy banks", A:"Red", B:"Blue", a0:12, b0:12, m:5,
+   text:function(c,n){ return "The red and blue piggy banks both have "+c.a0+" coins. Move "+c.m+" coins from red to blue and it is "+n.a1+" and "+n.b1+", so blue has "+(-n.gap1)+" more: "+c.m+" lost plus "+c.m+" gained."; }},
+  {id:"mrt", emoji:"🚇🚃", title:"A crowded MRT carriage", A:"Carriage 1", B:"Carriage 2", a0:40, b0:30, m:5, half:true,
+   text:function(c,n){ return "On the MRT, Carriage 1 has "+c.a0+" passengers and Carriage 2 has "+c.b0+", a gap of "+n.gap0+". Only half the gap, "+c.m+" people, need to walk to the next carriage, and then both have "+n.a1+"."; }},
+  {id:"vote", emoji:"🗳️🍦🧋", title:"A class vote", A:"Ice cream", B:"Bubble tea", a0:16, b0:14, m:2,
+   text:function(c,n){ return "For the class party, ice cream has "+c.a0+" votes and bubble tea has "+c.b0+". When "+c.m+" children switch to bubble tea it is "+n.a1+" to "+n.b1+", because each switch changes the gap by 2."; }},
+  {id:"tug", emoji:"🪢💪", title:"Tug-of-war", A:"Red team", B:"Blue team", a0:6, b0:6, m:1,
+   text:function(c,n){ return "The red and blue tug-of-war teams both have "+c.a0+" players. If "+c.m+" player switches to blue, it is "+n.a1+" against "+n.b1+", so blue has "+(-n.gap1)+" more, not "+c.m+"!"; }},
+  {id:"party", emoji:"🎉🪑", title:"Chairs at a party", A:"Table A", B:"Table B", a0:9, b0:5, m:3,
+   text:function(c,n){ return "Table A has "+c.a0+" chairs and Table B has "+c.b0+". Move "+c.m+" chairs over and it is "+n.a1+" and "+n.b1+", so the gap changed by "+n.change+", twice the "+c.m+" you moved."; }}
+];
+function lifeCard(i){ var c=LIFE[((i%LIFE.length)+LIFE.length)%LIFE.length], n=lifeNums(c);
+  return {c:c, n:n, text:c.text(c,n), rule: c.half ? "To make two groups equal, move half the gap." : "Moving "+c.m+" changes the gap by "+n.change+": one side loses "+c.m+", the other gains "+c.m+"."}; }
+function lifeHTML(L){
+  return '<div class="life" id="lifeCard"><div class="lemoji">'+L.c.emoji+'</div><h3>Where do we use this in real life?</h3><p class="center" style="font-weight:700;margin:0">'+esc(L.c.title)+'</p><p>'+esc(L.text)+'</p>'+
+    '<div class="ba"><span>Before: '+esc(L.c.A)+' '+L.c.a0+', '+esc(L.c.B)+' '+L.c.b0+'</span><span>➡️ move '+L.c.m+'</span><span>After: '+esc(L.c.A)+' '+L.n.a1+', '+esc(L.c.B)+' '+L.n.b1+'</span></div>'+
+    '<p class="rule">'+esc(L.rule)+'</p></div>';
+}
+
+/* ---------- state ---------- */
+var S;
+function fresh(){
+  return {round:1, idx:0, small:false, totalStars:0, problems:makeRound(false,true), results:[], phase:"predict", everPlayed:false};
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function load(){
+  try{
+    var s=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(s && s.problems && s.problems.length===ROUND_SIZE && s.problems.every(verify)) return s;
+  }catch(e){}
+  return null;
+}
+S = load() || fresh();
+// always resume at the start of a problem
+var P, cur; // P = current problem, cur = transient per-problem UI state
+function startProblem(){
+  if(S.idx>=ROUND_SIZE){ renderSummary(); return; }
+  P=S.problems[S.idx];
+  cur={phase:"predict", prediction:null, moved:0, animating:false, who:null, typed:"", hints:0, tries:0, solved:false, revealLabels:false};
+  renderAll();
+  Voice.say(introLines());
+}
+function introLines(){
+  var c=ctxById(P.ctx);
+  var story = P.small ? c.smallStory(P.aStart,P.bStart,P.M) : c.story(P.D,P.M);
+  return [story, c.q, "Before anything moves, who do you think will have more?"].join(" ");
+}
+
+/* ---------- DOM ---------- */
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function C(){return ctxById(P.ctx);}
+function nameOf(w){return w==="A"?C().A:(w==="B"?C().B:"Same");}
+function unitN(n){return n===1?C().u:C().us;}
+
+function renderHeader(){
+  $("stars").textContent="★ "+S.totalStars;
+  $("smallToggle").setAttribute("aria-pressed", S.small?"true":"false");
+  var h="";
+  for(var i=0;i<ROUND_SIZE;i++){
+    var cls = i<S.idx?"done":(i===S.idx?"cur":"");
+    h+='<span class="'+cls+'">'+(i<S.idx?"★":(i+1))+'</span>';
+  }
+  $("progress").innerHTML=h;
+}
+function renderStory(){
+  var c=C();
+  $("story").textContent = P.small ? c.smallStory(P.aStart,P.bStart,P.M) : c.story(P.D,P.M);
+  $("question").textContent = c.q;
+  var names=[["predict","1 Guess"],["move","2 Move"],["answer","3 Answer"],["explain","4 Explain"]];
+  var order=["predict","move","answer","explain"]; var ci=order.indexOf((cur.phase==="draw"||cur.phase==="life")?"explain":cur.phase);
+  $("steps").innerHTML=names.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
+  $("nameA").textContent=c.A; $("nameB").textContent=c.B;
+}
+
+/* bars: drawn from concrete values; moved = how many have moved so far */
+function renderBars(){
+  var tA=$("trackA"), tB=$("trackB");
+  var W=tA.clientWidth||600;
+  var maxV=Math.max(P.aStart,P.bEnd);
+  var sc=(W-10)/maxV;
+  var L=P.bStart, D=P.D, m=cur.moved;
+  var aLen=P.aStart-m;
+  var x=function(v){return v*sc;};
+  var blk=P.small?' blocks':'';
+  var style=P.small?' style="--u:'+sc+'px;':' style="';
+  var showLabels = cur.phase!=="predict" || true;
+  var hA="", hB="";
+  // A: main part up to min(aLen, line)
+  var mainA=Math.min(aLen,L);
+  hA+='<div class="seg main'+blk+'"'+style+'left:0;width:'+x(mainA)+'px"></div>';
+  if(aLen>L){
+    var ex=aLen-L;
+    hA+='<div class="seg extra'+blk+'"'+style+'left:'+x(L)+'px;width:'+x(ex)+'px"></div>';
+    var labTxt = m===0 ? (ex+" more") : (ex+" above the line");
+    hA+='<div class="lab extra" id="labA" style="left:'+x(L+ex/2)+'px">'+labTxt+'</div>';
+  } else if(aLen<L){
+    var below=L-aLen;
+    hA+='<div class="seg hole" style="left:'+x(aLen)+'px;width:'+x(below)+'px"></div>';
+    hA+='<div class="lab hole" id="labA" style="left:'+x(aLen+below/2)+'px">'+below+' below the line</div>';
+  } else if(m>0){
+    hA+='<div class="lab extra" id="labA" style="left:'+x(L)+'px">on the line</div>';
+  }
+  // B: starting part (line) + gained part
+  var inB = (P.small || x(L)<170) ? "" : '<span class="inlab">'+esc(C().B)+' at start</span>';
+  hB+='<div class="seg main'+blk+'"'+style+'left:0;width:'+x(L)+'px">'+inB+'</div>';
+  if(m>0){
+    hB+='<div class="seg gain'+blk+'"'+style+'left:'+x(L)+'px;width:'+x(m)+'px"></div>';
+    hB+='<div class="lab gain" id="labB" style="left:'+x(L+m/2)+'px">'+m+' above the line</div>';
+  }
+  tA.innerHTML=hA; tB.innerHTML=hB;
+  var dl=$("dotline");
+  dl.style.left=(tA.offsetLeft+x(L))+"px";
+  $("dotlab").textContent="dotted line = "+C().B+" at the start";
+  if(cur.flashLabels){ ["labA","labB"].forEach(function(id){var e=$(id); if(e) e.classList.add("flash");}); }
+  $("counter").textContent = m>0 ? ("Moved so far: "+m+" of "+P.M+" "+unitN(P.M)) : "";
+}
+function setCaption(t){ $("caption").innerHTML=t; }
+function defaultCaption(){
+  var c=C();
+  if(cur.moved===0) return "The dotted line shows where "+esc(c.b)+" starts. "+esc(cap(c.a))+" is longer by the <b>"+P.D+" more</b> piece.";
+  return finalCaption();
+}
+function finalCaption(){
+  var c=C(), D=P.D, M=P.M;
+  if(M>D) return esc(cap(c.a))+" is <b>"+(M-D)+" below</b> the dotted line. "+esc(cap(c.b))+" is <b>"+M+" above</b> it.";
+  if(M===D) return esc(cap(c.a))+" is <b>on</b> the dotted line. "+esc(cap(c.b))+" is <b>"+M+" above</b> it.";
+  return esc(cap(c.a))+" is still <b>"+(D-M)+" above</b> the dotted line. "+esc(cap(c.b))+" is <b>"+M+" above</b> it.";
+}
+function renderBarBtns(){
+  var h="";
+  if(cur.phase==="move" && !cur.animating) h+='<button class="big orange" id="moveBtn">Move '+P.M+' '+esc(unitN(P.M))+' ▶</button>';
+  if(cur.phase!=="predict" && cur.phase!=="move" && !cur.animating) h+='<button class="ghost" id="replayBtn">↺ Replay the move</button>';
+  $("barbtns").innerHTML=h;
+  if($("moveBtn")) $("moveBtn").onclick=function(){runMove(false);};
+  if($("replayBtn")) $("replayBtn").onclick=function(){runMove(true);};
+}
+
+/* ---------- animation ---------- */
+var SPEED=1; // tests can raise this
+function tween(from,to,ms,done){
+  var t0=null; ms=ms/SPEED;
+  function step(ts){
+    if(t0===null)t0=ts;
+    var k=Math.min(1,(ts-t0)/ms);
+    var e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    var v=from+(to-from)*e;
+    cur.moved = P.small ? Math.round(v) : Math.round(v);
+    renderBars();
+    if(k<1) requestAnimationFrame(step); else { cur.moved=to; renderBars(); done&&done(); }
+  }
+  requestAnimationFrame(step);
+}
+function wait(ms,f){ setTimeout(f, ms/SPEED); }
+function runMove(isReplay){
+  if(cur.animating) return;
+  var c=C(), D=P.D, M=P.M;
+  cur.animating=true; cur.flashLabels=false; cur.moved=0; renderBars(); renderBarBtns();
+  var first=Math.min(D,M);
+  var durFor=function(n){ return P.small ? Math.max(600, n*450) : 2200; };
+  setCaption(M>=D
+    ? "First, <b>"+D+"</b> "+esc(unitN(D))+" leave "+esc(c.a)+"'s extra piece…"
+    : "All <b>"+M+"</b> "+esc(unitN(M))+" come out of "+esc(c.a)+"'s extra piece…");
+  Voice.say(M>=D ? "First, the extra piece walks over. That's "+D+" "+unitN(D)+"." : "Watch. All "+M+" "+unitN(M)+" come out of "+c.a+"'s extra piece.");
+  wait(400,function(){
+    tween(0,first,durFor(first),function(){
+      var msg;
+      if(M>D) msg="The extra piece is used up! "+esc(cap(c.a))+" is <b>back at the dotted line</b>. "+esc(cap(c.b))+" has grown <b>"+D+" above</b> the line.";
+      else if(M===D) msg="The extra piece is used up! "+esc(cap(c.a))+" is <b>on the dotted line</b>. "+esc(cap(c.b))+" has grown <b>"+M+" above</b> the line.";
+      else msg="Only part of the extra piece is used. "+esc(cap(c.a))+" is still <b>"+(D-M)+" above</b> the line. "+esc(cap(c.b))+" has grown <b>"+M+" above</b> the line.";
+      setCaption(msg);
+      Voice.say(M>D ? "Now "+c.a+" is back at the dotted line, and "+c.b+" is "+D+" above it."
+        : (M===D ? "Now "+c.a+" is right on the dotted line, and "+c.b+" is "+M+" above it."
+        : cap(c.a)+" is still "+(D-M)+" above the line, and "+c.b+" is "+M+" above it."));
+      if(M>D){
+        wait(2600,function(){
+          setCaption("The other <b>"+(M-D)+"</b> "+esc(unitN(M-D))+" still have to move. They take "+esc(c.a)+" <b>below</b> the dotted line, and "+esc(c.b)+" keeps growing…");
+          Voice.say("The rest, "+(M-D)+" more, come out from below the line. And "+c.b+" keeps growing.");
+          wait(900,function(){
+            tween(first,M,durFor(M-D),function(){ wait(500,function(){ endMove(isReplay); }); });
+          });
+        });
+      } else {
+        wait(1800,function(){ endMove(isReplay); });
+      }
+    });
+  });
+}
+function endMove(isReplay){
+  cur.animating=false; cur.moved=P.M;
+  setCaption(finalCaption()+" Look at both ends compared with the dotted line.");
+  var wasMove = (!isReplay && cur.phase==="move");
+  if(wasMove){ cur.phase="answer"; }
+  renderAll(true);
+  var c=C(), D=P.D, M=P.M, a=D-M;
+  var where = a<0 ? cap(c.a)+" is "+(-a)+" below the dotted line, and "+c.b+" is "+M+" above it."
+    : (a===0 ? cap(c.a)+" is on the dotted line, and "+c.b+" is "+M+" above it." : cap(c.a)+" is "+a+" above the line, and "+c.b+" is "+M+" above it.");
+  Voice.say(where, cur.phase==="answer" && !cur.solved ? "Who has more now? Tap a name, then type how many more." : "");
+}
+
+/* ---------- panels ---------- */
+function renderPanel(){
+  var c=C(), el=$("panel"), h="";
+  if(cur.phase==="predict"){
+    h+='<h2>1. Make a guess</h2><p>After the '+esc(c.us)+' move, who will have <b>more</b>? There is no wrong guess!</p>';
+    h+='<div class="choices">'+["A","B","same"].map(function(w){return '<button class="choice" data-pred="'+w+'">'+esc(nameOf(w))+'</button>';}).join("")+'</div>';
+  } else if(cur.phase==="move"){
+    h+='<h2>2. Watch the move</h2><p>You guessed <b>'+esc(nameOf(cur.prediction))+'</b>. Tap the orange <b>Move</b> button and watch the dotted line.</p>';
+  } else if(cur.phase==="answer"){
+    h+='<h2>3. Your answer</h2><p class="muted">Who has more now?</p>';
+    h+='<div class="choices">'+["A","B","same"].map(function(w){return '<button class="choice'+(cur.who===w?" sel":"")+'" data-who="'+w+'">'+esc(nameOf(w))+'</button>';}).join("")+'</div>';
+    if(cur.who!=="same"){
+      h+='<div class="ansline"><span>'+(cur.who?esc(nameOf(cur.who)):"…")+' has</span><span class="ansbox" id="ansbox">'+(cur.typed||"&nbsp;")+'</span><span>more.</span></div>';
+      h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(n){return '<button data-k="'+n+'">'+n+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    } else {
+      h+='<div class="ansline"><span>They have the <b>same</b> number.</span></div>';
+    }
+    h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?cur.fb.msg:'')+'</div>';
+    h+=hintHTML();
+    h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
+  } else if(cur.phase==="explain"){
+    var a=P.answer, txt = a.who==="same" ? "They have the same number of "+c.us+"!" : nameOf(a.who)+" has "+a.amount+" more "+unitN(a.amount)+".";
+    h+='<div class="bigstar">⭐</div><p class="center feedback good">Yes! '+esc(txt)+'</p>';
+    h+='<p class="center muted">'+esc(predictionNote())+'</p>';
+    h+='<p class="prompt">Tell Daddy why in your own words.</p><p class="center muted">Use the dotted line: how far below? how far above?</p>';
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="explainedBtn">I explained it 🗣️</button></div>';
+  } else if(cur.phase==="life"){
+    h+=lifeHTML(cur.life);
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
+  } else if(cur.phase==="draw"){
+    h+='<p class="prompt">Now draw the bars on paper ✏️</p><p class="center">Draw the two bars, the dotted line, and label how far <b>below</b> and <b>above</b> the line each one is.</p>';
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="drewBtn">I drew it</button></div>';
+  }
+  el.innerHTML=h;
+  bindPanel();
+}
+function predictionNote(){
+  var p=cur.prediction, a=P.answer.who;
+  if(p===a) return "Your guess was right: you thought "+nameOf(p)+" would have more"+(a==="same"?" (the same)":"")+".";
+  return "You guessed "+nameOf(p)+". The bars showed something different — that's the surprising part of these problems!";
+}
+function hintHTML(){
+  var h="", hs=hintList();
+  for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>';
+  return h;
+}
+function hintList(){
+  var c=C(), D=P.D, M=P.M;
+  var hs=[];
+  hs.push("Look at the dotted line. Where does each bar end now — above it, on it, or below it?");
+  if(M>D) hs.push(cap(c.a)+" used up its "+D+" extra, then "+(M-D)+" more left. So "+c.a+" is "+(M-D)+" below the line.");
+  else if(M===D) hs.push(cap(c.a)+" used up exactly its "+D+" extra, so it is right on the line.");
+  else hs.push(cap(c.a)+" had "+D+" extra and only "+M+" left, so it is still "+(D-M)+" above the line.");
+  if(M>D) hs.push(cap(c.b)+" got all "+M+", so it is "+M+" above the line. The gap between the two ends is the part below the line plus the part above it.");
+  else if(M===D) hs.push(cap(c.b)+" got all "+M+", so it is "+M+" above the line. How far apart are the two ends?");
+  else hs.push(cap(c.b)+" got all "+M+", so it is "+M+" above the line. Both are above the line now — which end sticks out further, and by how much?");
+  return hs;
+}
+function bindPanel(){
+  var el=$("panel");
+  el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="move"; renderAll();
+    Voice.say((cur.prediction==="same" ? "Okay, you think they will have the same." : "Okay, you think "+nameOf(cur.prediction)+" will have more.")+" Let's find out. Tap the orange Move button and watch the dotted line."); }; });
+  el.querySelectorAll("[data-who]").forEach(function(b){ b.onclick=function(){ cur.who=b.getAttribute("data-who"); cur.fb=null; renderPanel();
+    Voice.say(cur.who==="same" ? "Same. Tap Check when you are ready." : nameOf(cur.who)+". Now type how many more, then tap Check."); }; });
+  el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){
+    var k=b.getAttribute("data-k");
+    if(k==="del") cur.typed=cur.typed.slice(0,-1);
+    else if(k==="clr") cur.typed="";
+    else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    $("ansbox").innerHTML=cur.typed||"&nbsp;";
+  }; });
+  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); renderPanel(); Voice.say("Here's a hint. "+hintList()[cur.hints-1]); };
+  if($("checkBtn")) $("checkBtn").onclick=check;
+  if($("explainedBtn")) $("explainedBtn").onclick=afterExplain;
+  if($("drewBtn")) $("drewBtn").onclick=afterDraw;
+  if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
+}
+var LIFE_AFTER = [1,4,7]; // problems 2, 5 and 8
+function afterExplain(){
+  if((S.idx+1)%3===0){ cur.phase="draw"; renderAll();
+    Voice.say("Now let's draw the bars on paper. Draw the dotted line too, and write how far below and above the line each bar ends."); }
+  else afterDraw();
+}
+function afterDraw(){
+  if(LIFE_AFTER.indexOf(S.idx)>=0){
+    cur.life = lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+    cur.phase="life"; renderAll();
+    Voice.say("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule);
+  } else completeProblem();
+}
+function praiseLine(){
+  var c=C(), D=P.D, M=P.M, a=D-M, amt=P.answer.amount; // a = A's end relative to the dotted line; B's end is M above
+  var A=cap(c.a), B=cap(c.b);
+  if(a<0) return "Yes! "+(-a)+" below plus "+M+" above makes "+amt+", so "+c.b+" has "+amt+" more. Well done.";
+  if(a===0) return "Yes! "+A+" is right on the line and "+c.b+" is "+M+" above it, so "+c.b+" has "+amt+" more. Well done.";
+  if(a===M) return "Yes! Both are "+M+" above the line, so they have the same. Well done.";
+  if(a>M) return "Yes! "+A+" is "+a+" above the line and "+c.b+" is only "+M+" above. "+a+" take away "+M+" is "+amt+", so "+c.a+" has "+amt+" more. Well done.";
+  return "Yes! Both are above the line, and "+c.b+" sticks out further. "+M+" take away "+a+" is "+amt+". Well done.";
+}
+function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=msg; }
+function check(){
+  var c=C(), a=P.answer;
+  if(!cur.who){ feedback("try","First tap who has more (or Same)."); Voice.say("First, tap who has more, or tap Same."); return; }
+  if(cur.who!=="same" && cur.typed===""){ feedback("try","Now type how many more on the number pad."); Voice.say("Now type how many more on the number pad."); return; }
+  var n = cur.who==="same"?0:parseInt(cur.typed,10);
+  var ok = cur.who===a.who && (a.who==="same" || n===a.amount);
+  cur.lastCheck={who:cur.who,n:n,ok:ok};
+  if(ok){
+    cur.solved=true;
+    S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===a.who, tries:cur.tries+1, hints:cur.hints};
+    cur.phase="explain"; renderAll(true);
+    Voice.say(praiseLine(), "Can you tell Daddy why, in your own words?"); return;
+  }
+  cur.tries++;
+  // on a wrong answer: show/flash the bar labels, not the answer
+  cur.flashLabels=true; renderBars(); setCaption(finalCaption());
+  var msg;
+  if(cur.who!==a.who){
+    msg="Not quite — look at the bars again. Whose end sticks out further past the dotted line?";
+  } else if(n===P.M){
+    msg="Good thinking, but "+P.M+" is how many moved. The gap changed from <b>both</b> sides — check the two labels on the bars.";
+  } else if(n===P.D){
+    msg=P.D+" was the gap at the start. The move changed it — check the two labels on the bars.";
+  } else {
+    msg="Nearly! Look at the two labels on the bars: how far is each end from the dotted line?";
+  }
+  feedback("try",msg);
+  Voice.say("That's okay, let's look again.", msg);
+}
+function completeProblem(){
+  S.totalStars++; S.idx++; S.everPlayed=true; save();
+  startProblem();
+}
+function renderSummary(){
+  renderHeader();
+  var res=S.results.filter(Boolean);
+  var pr=res.filter(function(r){return r.predictionRight;}).length;
+  $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round.";
+  $("question").textContent="";
+  $("steps").innerHTML="";
+  setCaption("Your first guesses were right "+pr+" out of "+res.length+" times. These problems often surprise people — the dotted line is the trick!");
+  $("trackA").innerHTML=""; $("trackB").innerHTML=""; $("nameA").textContent=""; $("nameB").textContent="";
+  $("dotline").style.display="none"; $("counter").textContent=""; $("barbtns").innerHTML="";
+  var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center"><button class="big" id="newRound">Play another round</button></div>';
+  Voice.say("You finished the round and got all "+ROUND_SIZE+" stars! Your first guesses were right "+pr+" out of "+res.length+" times.", "Where do we use this in real life? "+L.text+" "+L.rule);
+  $("newRound").onclick=function(){
+    S.round++; S.idx=0; S.results=[]; S.problems=makeRound(S.small,false); save();
+    $("dotline").style.display=""; startProblem();
+  };
+}
+function renderAll(){
+  renderHeader(); renderStory();
+  if(!cur.animating) setCaption(cur.phase==="predict"||cur.phase==="move" ? defaultCaption() : finalCaption());
+  renderBars(); renderBarBtns(); renderPanel();
+}
+
+/* ---------- controls ---------- */
+$("smallToggle").onclick=function(){
+  if(cur && cur.animating) return;
+  S.small=!S.small;
+  if(S.idx>=ROUND_SIZE){ save(); renderHeader(); return; }
+  S.problems=makeRound(S.small,false,S.idx,S.problems); save();
+  $("dotline").style.display=""; startProblem();
+  Voice.say(S.small ? "Small numbers are on. Now you can count the blocks." : "Big numbers are back on.", introLines());
+};
+$("resetBtn").onclick=function(){
+  if(!confirm("Start again from the beginning? Stars will go back to 0.")) return;
+  S=fresh(); save(); $("dotline").style.display=""; startProblem();
+};
+function renderVoiceCtl(){
+  var mb=$("muteBtn"), ab=$("againBtn");
+  if(!Voice.supported){ mb.style.display="none"; ab.style.display="none"; return; }
+  mb.textContent = Voice.muted ? "🔇 Voice off" : "🔊 Voice on";
+  mb.setAttribute("aria-pressed", Voice.muted?"true":"false");
+  mb.classList.toggle("off", Voice.muted);
+  ab.disabled = Voice.muted;
+}
+$("muteBtn").onclick=function(){
+  Voice.setMuted(!Voice.muted); renderVoiceCtl();
+  if(!Voice.muted){ if(!Voice.started) Voice.unlock([]); Voice.again(); }
+};
+$("againBtn").onclick=function(){ Voice.again(); };
+function hideStart(){ $("startScreen").style.display="none"; }
+$("startTutor").onclick=function(){
+  if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
+  hideStart();
+  var first = (S.idx>=ROUND_SIZE) ? ["Hello! Welcome back."] : ["Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
+  Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+};
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); hideStart(); Voice.unlock([]); };
+if(!Voice.supported){ $("startTutor").textContent="Start ▶"; $("startQuiet").style.display="none"; }
+renderVoiceCtl();
+window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
+
+/* test hook (no personal data; used by automated checks) */
+window.__game={generate:generate, verify:verify, canonical:canonical, makeRound:makeRound,
+  get state(){return S;}, get problem(){return P;}, get ui(){return cur;},
+  setSpeed:function(s){SPEED=s;}, voice:Voice, LIFE:LIFE, lifeNums:lifeNums, lifeCard:lifeCard};
+
+save();
+startProblem();
+})();
+</script>
+</body>
+</html>
