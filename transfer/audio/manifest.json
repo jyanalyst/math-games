@@ -1,0 +1,2040 @@
+{
+ "voice": {
+  "name": "Maeve",
+  "voice_id": "64cf4f1a-61c8-5938-9aea-83d12b2e1d13",
+  "model": "elevenlabs_v4",
+  "stability": 0.4,
+  "similarity_boost": 0.75
+ },
+ "format": "mp3 mono 44.1kHz 48kbps",
+ "generated": "2026-10-21",
+ "count": 253,
+ "total_bytes": 15394702,
+ "total_seconds": 2556.4,
+ "clips": [
+  {
+   "id": "sh-welcome",
+   "file": "sh-welcome.mp3",
+   "text": "Hello! I'm so happy you're here. Let's work these out together, one step at a time.",
+   "duration": 5.67,
+   "bytes": 34237,
+   "job_id": "c917a77e-f32e-4065-b3c9-fdf8d3bbe34c"
+  },
+  {
+   "id": "sh-welcomeBack",
+   "file": "sh-welcomeBack.mp3",
+   "text": "Welcome back! Let's carry on.",
+   "duration": 2.22,
+   "bytes": 13548,
+   "job_id": "50aed23f-feb3-4215-97bd-b43de0cb71c3"
+  },
+  {
+   "id": "sh-guessAck1",
+   "file": "sh-guessAck1.mp3",
+   "text": "Ooh, good guess! Let's find out. Tap the orange Move button, and watch the dotted line.",
+   "duration": 6.45,
+   "bytes": 38939,
+   "job_id": "d737d8bd-96f4-4ce7-b2c0-15530b337bb8"
+  },
+  {
+   "id": "sh-guessAck2",
+   "file": "sh-guessAck2.mp3",
+   "text": "Okay! Let's see if you're right. Tap Move, and keep your eyes on the dotted line.",
+   "duration": 5.43,
+   "bytes": 32827,
+   "job_id": "5dd0d32a-7cd4-4c8b-9434-1fc958c74b94"
+  },
+  {
+   "id": "sh-guessAck3",
+   "file": "sh-guessAck3.mp3",
+   "text": "Interesting guess! Tap the orange Move button to find out.",
+   "duration": 4.08,
+   "bytes": 24676,
+   "job_id": "2b3ab454-804e-4021-9861-57d9df4000f7"
+  },
+  {
+   "id": "sh-moveA",
+   "file": "sh-moveA.mp3",
+   "text": "Watch closely. First, the extra piece walks over.",
+   "duration": 4.23,
+   "bytes": 25617,
+   "job_id": "d803ff63-5447-44f5-b542-3faf0d2e9ee2"
+  },
+  {
+   "id": "sh-moveAall",
+   "file": "sh-moveAall.mp3",
+   "text": "Watch closely. They all come out of the extra piece.",
+   "duration": 3.66,
+   "bytes": 22169,
+   "job_id": "a4a22453-ecc6-4eca-a1c0-746fcf487df0"
+  },
+  {
+   "id": "sh-moveB",
+   "file": "sh-moveB.mp3",
+   "text": "Now the rest come out from below the line... and the other side keeps on growing.",
+   "duration": 5.17,
+   "bytes": 31259,
+   "job_id": "62e2a608-30c3-4040-a02b-b8aff6a8f86f"
+  },
+  {
+   "id": "sh-answerNow",
+   "file": "sh-answerNow.mp3",
+   "text": "So... who has more now? Tap a name, then type how many more.",
+   "duration": 4.86,
+   "bytes": 29378,
+   "job_id": "35296bec-ccd4-433f-b538-8f3da35e0841"
+  },
+  {
+   "id": "sh-whoNumber",
+   "file": "sh-whoNumber.mp3",
+   "text": "Good. Now type how many more, then tap Check.",
+   "duration": 4,
+   "bytes": 24206,
+   "job_id": "325bcfbc-263a-403b-8127-a1a37bfb2e1c"
+  },
+  {
+   "id": "sh-whoSame",
+   "file": "sh-whoSame.mp3",
+   "text": "The same? Okay. Tap Check when you're ready.",
+   "duration": 3.58,
+   "bytes": 21698,
+   "job_id": "5be537b9-9292-4bbe-9a99-7238de1dc453"
+  },
+  {
+   "id": "sh-needWho",
+   "file": "sh-needWho.mp3",
+   "text": "First, tap who has more... or tap Same.",
+   "duration": 4.23,
+   "bytes": 25617,
+   "job_id": "c483221b-c5ef-4392-8d46-19c4f350d7d9"
+  },
+  {
+   "id": "sh-needNumber",
+   "file": "sh-needNumber.mp3",
+   "text": "Now type how many more on the number pad.",
+   "duration": 2.8,
+   "bytes": 16996,
+   "job_id": "578a7c2c-71dc-4a01-8b17-65f935b3e7b8"
+  },
+  {
+   "id": "sh-wrongWho",
+   "file": "sh-wrongWho.mp3",
+   "text": "Hmm, not quite. Look at the bars again. Whose end sticks out further past the dotted line?",
+   "duration": 6.79,
+   "bytes": 40977,
+   "job_id": "9fc30e6d-dd46-42ed-91c8-edd90a133969"
+  },
+  {
+   "id": "sh-hint1",
+   "file": "sh-hint1.mp3",
+   "text": "Here's a hint. Look at the dotted line. Where does each bar end now... above it, on it, or below it?",
+   "duration": 7.92,
+   "bytes": 47716,
+   "job_id": "2980423a-7ec6-44ef-b5eb-2d31d0f9e5d1"
+  },
+  {
+   "id": "sh-explain",
+   "file": "sh-explain.mp3",
+   "text": "Can you tell Daddy why, in your own words?",
+   "duration": 2.87,
+   "bytes": 17467,
+   "job_id": "88e9480c-ed4e-4f37-a636-df270eb583fb"
+  },
+  {
+   "id": "sh-draw",
+   "file": "sh-draw.mp3",
+   "text": "Now let's draw the bars on paper. Draw the dotted line too, and write how far below and above the line each bar ends.",
+   "duration": 8.23,
+   "bytes": 49597,
+   "job_id": "b2c082c7-aaef-4ca2-980c-0a061229ba39"
+  },
+  {
+   "id": "sh-roundDone",
+   "file": "sh-roundDone.mp3",
+   "text": "You finished the round, and you got all ten stars! I'm so proud of you.",
+   "duration": 5.28,
+   "bytes": 31886,
+   "job_id": "06bf1097-ff42-4b45-bb50-6306cf62e2dd"
+  },
+  {
+   "id": "sh-smallOn",
+   "file": "sh-smallOn.mp3",
+   "text": "Small numbers now. You can count the blocks!",
+   "duration": 3.27,
+   "bytes": 19818,
+   "job_id": "3263e6c4-6b35-4add-a060-98d41e9476ab"
+  },
+  {
+   "id": "sh-bigOn",
+   "file": "sh-bigOn.mp3",
+   "text": "Back to the big numbers. You can do it!",
+   "duration": 3.03,
+   "bytes": 18407,
+   "job_id": "9c9d2d90-f2d2-4263-b532-00da65b0593a"
+  },
+  {
+   "id": "sh-voiceOn",
+   "file": "sh-voiceOn.mp3",
+   "text": "I'm back!",
+   "duration": 1.02,
+   "bytes": 6338,
+   "job_id": "c7f44363-b88a-4cea-892f-d974e170195f"
+  },
+  {
+   "id": "life-sweets",
+   "file": "life-sweets.mp3",
+   "text": "Where do we use this in real life? You and your brother both have ten sweets, and you give him three. Now you have seven and he has thirteen, so he is six ahead, not three! Moving three changes the gap by six. One side loses three, and the other gains three.",
+   "duration": 17.89,
+   "bytes": 107589,
+   "job_id": "9fb9486c-3b4c-4738-93bb-5abb539346c4"
+  },
+  {
+   "id": "life-football",
+   "file": "life-football.mp3",
+   "text": "Where do we use this in real life? The Lions lead the Tigers three to two, but the referee says one Lions goal really belongs to the Tigers. Now it is two to three: only one goal moved, but the gap changed by two. Moving one changes the gap by two. One side loses one, and the other gains one.",
+   "duration": 20.53,
+   "bytes": 123419,
+   "job_id": "91a0b322-401d-40de-a91b-71c616bbc6d9"
+  },
+  {
+   "id": "life-shelves",
+   "file": "life-shelves.mp3",
+   "text": "Where do we use this in real life? Shelf A has twenty books and Shelf B has twelve, a gap of eight. Move just half the gap, four books, and both shelves have sixteen. To make two groups equal, move half the gap.",
+   "duration": 15.52,
+   "bytes": 93326,
+   "job_id": "35ac597f-dbcd-425c-8cc5-1d5cf2662689"
+  },
+  {
+   "id": "life-piggy",
+   "file": "life-piggy.mp3",
+   "text": "Where do we use this in real life? The red and blue piggy banks both have twelve coins. Move five coins from red to blue and it is seven and seventeen, so blue has ten more: five lost plus five gained. Moving five changes the gap by ten. One side loses five, and the other gains five.",
+   "duration": 20.79,
+   "bytes": 124987,
+   "job_id": "4470fddd-00d6-4507-87c9-3234c7fc96ee"
+  },
+  {
+   "id": "life-mrt",
+   "file": "life-mrt.mp3",
+   "text": "Where do we use this in real life? On the MRT, Carriage one has forty passengers and Carriage two has thirty, a gap of ten. Only half the gap, five people, need to walk to the next carriage, and then both have thirty-five. To make two groups equal, move half the gap.",
+   "duration": 19.02,
+   "bytes": 114329,
+   "job_id": "5b2be1fa-f41d-4257-bc6e-082f866974bd"
+  },
+  {
+   "id": "life-vote",
+   "file": "life-vote.mp3",
+   "text": "Where do we use this in real life? For the class party, ice cream has sixteen votes and bubble tea has fourteen. When two children switch to bubble tea it is fourteen to sixteen, because each switch changes the gap by two. Moving two changes the gap by four. One side loses two, and the other gains two.",
+   "duration": 20.95,
+   "bytes": 125927,
+   "job_id": "e3a1304e-df59-47f5-afe0-eded5a813577"
+  },
+  {
+   "id": "life-tug",
+   "file": "life-tug.mp3",
+   "text": "Where do we use this in real life? The red and blue tug-of-war teams both have six players. If one player switches to blue, it is five against seven, so blue has two more, not one! Moving one changes the gap by two. One side loses one, and the other gains one.",
+   "duration": 18.78,
+   "bytes": 112918,
+   "job_id": "2538b332-8235-49ed-a68f-0e5e43808731"
+  },
+  {
+   "id": "life-party",
+   "file": "life-party.mp3",
+   "text": "Where do we use this in real life? Table A has nine chairs and Table B has five. Move three chairs over and it is six and eight, so the gap changed by six, twice the three you moved. Moving three changes the gap by six. One side loses three, and the other gains three.",
+   "duration": 19.83,
+   "bytes": 119187,
+   "job_id": "5106b3e7-b540-49ae-93e5-dac1fbfd7659"
+  },
+  {
+   "id": "b01-intro",
+   "file": "b01-intro.mp3",
+   "text": "There are one hundred and twenty-nine more students in the school hall than in the canteen. Then three hundred and twenty-nine students walk from the hall to the canteen. So, which place has more students, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 18.7,
+   "bytes": 112448,
+   "job_id": "aac52e4b-4b14-4965-aeba-92afe3c06960"
+  },
+  {
+   "id": "b01-atLine",
+   "file": "b01-atLine.mp3",
+   "text": "Look! The hall is back at the dotted line now... and the canteen is already one hundred and twenty-nine above it.",
+   "duration": 6.71,
+   "bytes": 40507,
+   "job_id": "0453a8c5-03e6-4588-92ba-80e79cd5846d"
+  },
+  {
+   "id": "b01-final",
+   "file": "b01-final.mp3",
+   "text": "So now, the hall is two hundred below the dotted line... and the canteen is three hundred and twenty-nine above it.",
+   "duration": 7.5,
+   "bytes": 45209,
+   "job_id": "d9bafae0-effa-46ce-9d41-9815a4800bae"
+  },
+  {
+   "id": "b01-hint2",
+   "file": "b01-hint2.mp3",
+   "text": "Here's a hint. The hall used up its one hundred and twenty-nine extra, and then two hundred more left. So the hall is two hundred below the line.",
+   "duration": 9.35,
+   "bytes": 56337,
+   "job_id": "6c3b9866-9868-4a3d-a3db-db1d886e7940"
+  },
+  {
+   "id": "b01-hint3",
+   "file": "b01-hint3.mp3",
+   "text": "Here's another hint. The canteen got all three hundred and twenty-nine, so it is three hundred and twenty-nine above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.15,
+   "bytes": 73107,
+   "job_id": "ce01d392-a08d-4131-a8a9-8fdcbdcc68c6"
+  },
+  {
+   "id": "b01-praise",
+   "file": "b01-praise.mp3",
+   "text": "Yes! Two hundred below the line, plus three hundred and twenty-nine above it... that makes five hundred and twenty-nine. You worked that out beautifully.",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "6daf821b-8a6c-4c0d-a64b-df21dc074959"
+  },
+  {
+   "id": "b01-wrongMoved",
+   "file": "b01-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and twenty-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "5c7f8108-f0ae-45e6-b146-20169fefa909"
+  },
+  {
+   "id": "b01-wrongNearly",
+   "file": "b01-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 7.34,
+   "bytes": 44268,
+   "job_id": "884c2a9f-7319-4497-af29-3370305f113d"
+  },
+  {
+   "id": "b02-intro",
+   "file": "b02-intro.mp3",
+   "text": "Mei Ling has two hundred and forty-four more stickers than Aisha. Mei Ling gives five hundred and twenty-seven stickers to Aisha. So, who has more stickers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 16.61,
+   "bytes": 99909,
+   "job_id": "fba22cb6-bb29-4b38-9a3f-858904b5d018"
+  },
+  {
+   "id": "b02-atLine",
+   "file": "b02-atLine.mp3",
+   "text": "Look! Mei Ling is back at the dotted line now... and Aisha is already two hundred and forty-four above it.",
+   "duration": 6.87,
+   "bytes": 41447,
+   "job_id": "e65aba38-c1d7-4e1c-bd78-d29ff40e6683"
+  },
+  {
+   "id": "b02-final",
+   "file": "b02-final.mp3",
+   "text": "So now, Mei Ling is two hundred and eighty-three below the dotted line... and Aisha is five hundred and twenty-seven above it.",
+   "duration": 8.31,
+   "bytes": 50067,
+   "job_id": "5c9991ae-2bfe-40ff-b4fa-64af250ef6bf"
+  },
+  {
+   "id": "b02-hint2",
+   "file": "b02-hint2.mp3",
+   "text": "Here's a hint. Mei Ling used up her two hundred and forty-four extra, and then two hundred and eighty-three more left. So Mei Ling is two hundred and eighty-three below the line.",
+   "duration": 11.34,
+   "bytes": 68249,
+   "job_id": "c5cdaee7-bfbb-4b5a-9e96-1ab625229142"
+  },
+  {
+   "id": "b02-hint3",
+   "file": "b02-hint3.mp3",
+   "text": "Here's another hint. Aisha got all five hundred and twenty-seven, so she is five hundred and twenty-seven above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.38,
+   "bytes": 74518,
+   "job_id": "2f667c14-54f7-454c-af00-81596ecb7eea"
+  },
+  {
+   "id": "b02-praise",
+   "file": "b02-praise.mp3",
+   "text": "Yes! Two hundred and eighty-three below the line, plus five hundred and twenty-seven above it... that makes eight hundred and ten. Brilliant thinking!",
+   "duration": 9.59,
+   "bytes": 57747,
+   "job_id": "b66c77c7-63ff-4e5e-94a9-34912ce33529"
+  },
+  {
+   "id": "b02-wrongMoved",
+   "file": "b02-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five hundred and twenty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.14,
+   "bytes": 61039,
+   "job_id": "176e36ce-04a4-46b5-a5eb-2e5eda625591"
+  },
+  {
+   "id": "b02-wrongNearly",
+   "file": "b02-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 7.11,
+   "bytes": 42858,
+   "job_id": "d4aaa316-1a55-4006-b490-71888dab86dc"
+  },
+  {
+   "id": "b03-intro",
+   "file": "b03-intro.mp3",
+   "text": "Jar A has one hundred and fifty-six more marbles than Jar B. Wei Jie moves sixty-two marbles from Jar A to Jar B. So, which jar has more marbles, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.35,
+   "bytes": 104298,
+   "job_id": "eed11c11-dc77-437f-b6fe-aca4016473c6"
+  },
+  {
+   "id": "b03-final",
+   "file": "b03-final.mp3",
+   "text": "All sixty-two that moved came from the extra piece. So Jar A is still ninety-four above the dotted line... and Jar B is sixty-two above it.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "e4029fbc-941c-4969-9efc-7a9f6f83b7dd"
+  },
+  {
+   "id": "b03-hint2",
+   "file": "b03-hint2.mp3",
+   "text": "Here's a hint. Jar A had one hundred and fifty-six extra, and only sixty-two moved out. So it is still ninety-four above the line.",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "3c4bb4e7-abe6-4faa-9c23-929256c379b0"
+  },
+  {
+   "id": "b03-hint3",
+   "file": "b03-hint3.mp3",
+   "text": "Here's another hint. Jar B got all sixty-two, so it is sixty-two above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "140d791b-7476-4649-8efd-f4e939059544"
+  },
+  {
+   "id": "b03-praise",
+   "file": "b03-praise.mp3",
+   "text": "Yes! Ninety-four take away sixty-two is thirty-two... so Jar A has thirty-two more. That is exactly right. Well done!",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "08e98aab-9758-4db2-a23f-db7849defd01"
+  },
+  {
+   "id": "b03-wrongMoved",
+   "file": "b03-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Sixty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.74,
+   "bytes": 58688,
+   "job_id": "6efefb97-bfa6-4f0b-9d83-ee0463a2f776"
+  },
+  {
+   "id": "b03-wrongNearly",
+   "file": "b03-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.92,
+   "bytes": 47716,
+   "job_id": "2ed468ef-d1b2-44ec-8d0b-1873df5eecfa"
+  },
+  {
+   "id": "b04-intro",
+   "file": "b04-intro.mp3",
+   "text": "In the school library, the top shelf has one hundred and eighty-four more books than the bottom shelf. The librarian moves three hundred and nineteen books from the top shelf to the bottom shelf. So, which shelf has more books, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 20.06,
+   "bytes": 120598,
+   "job_id": "27597a28-cbb1-43ad-a8eb-ae2bacb156e4"
+  },
+  {
+   "id": "b04-atLine",
+   "file": "b04-atLine.mp3",
+   "text": "Look! The top shelf is back at the dotted line now... and the bottom shelf is already one hundred and eighty-four above it.",
+   "duration": 6.95,
+   "bytes": 41917,
+   "job_id": "8c07f04c-2cd5-4326-a488-c513db306f2b"
+  },
+  {
+   "id": "b04-final",
+   "file": "b04-final.mp3",
+   "text": "So now, the top shelf is one hundred and thirty-five below the dotted line... and the bottom shelf is three hundred and nineteen above it.",
+   "duration": 8.7,
+   "bytes": 52418,
+   "job_id": "7e17c597-66cb-4aa2-a605-6a065e0725ab"
+  },
+  {
+   "id": "b04-hint2",
+   "file": "b04-hint2.mp3",
+   "text": "Here's a hint. The top shelf used up its one hundred and eighty-four extra, and then one hundred and thirty-five more left. So the top shelf is one hundred and thirty-five below the line.",
+   "duration": 11.57,
+   "bytes": 69659,
+   "job_id": "359ad7d7-11a0-4a1b-af52-0cc646acbbd6"
+  },
+  {
+   "id": "b04-hint3",
+   "file": "b04-hint3.mp3",
+   "text": "Here's another hint. The bottom shelf got all three hundred and nineteen, so it is three hundred and nineteen above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 11.99,
+   "bytes": 72167,
+   "job_id": "5ad02e58-0236-4981-9da9-fee887c0c14e"
+  },
+  {
+   "id": "b04-praise",
+   "file": "b04-praise.mp3",
+   "text": "Yes! One hundred and thirty-five below the line, plus three hundred and nineteen above it... that makes four hundred and fifty-four. Lovely work!",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "8715d5e6-0a8d-429d-a51f-f62d8c67d3da"
+  },
+  {
+   "id": "b04-wrongMoved",
+   "file": "b04-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and nineteen is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.06,
+   "bytes": 60569,
+   "job_id": "d2076f52-88a9-4a7a-ac89-69a70e187860"
+  },
+  {
+   "id": "b04-wrongNearly",
+   "file": "b04-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.73,
+   "bytes": 46619,
+   "job_id": "39befff1-7ac0-4682-a47e-1902e99f9073"
+  },
+  {
+   "id": "b05-intro",
+   "file": "b05-intro.mp3",
+   "text": "At the bus interchange, Bus 1 has forty-five more passengers than Bus 2. Then two hundred and eighty-six passengers get off Bus 1 and board Bus 2. So, which bus has more passengers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.75,
+   "bytes": 118717,
+   "job_id": "9d57c5b3-cf2d-48e1-8783-2a1e843d0309"
+  },
+  {
+   "id": "b05-atLine",
+   "file": "b05-atLine.mp3",
+   "text": "Look! Bus 1 is back at the dotted line now... and Bus 2 is already forty-five above it.",
+   "duration": 6.06,
+   "bytes": 36588,
+   "job_id": "198809d2-326c-4a16-8afa-100803592441"
+  },
+  {
+   "id": "b05-final",
+   "file": "b05-final.mp3",
+   "text": "So now, Bus 1 is two hundred and forty-one below the dotted line... and Bus 2 is two hundred and eighty-six above it.",
+   "duration": 8.54,
+   "bytes": 51478,
+   "job_id": "09590311-973c-41ba-8d3c-d16c370d34d7"
+  },
+  {
+   "id": "b05-hint2",
+   "file": "b05-hint2.mp3",
+   "text": "Here's a hint. Bus 1 used up its forty-five extra, and then two hundred and forty-one more left. So Bus 1 is two hundred and forty-one below the line.",
+   "duration": 10.63,
+   "bytes": 64017,
+   "job_id": "ef2a8333-233b-46f2-8cbd-6312491f155c"
+  },
+  {
+   "id": "b05-hint3",
+   "file": "b05-hint3.mp3",
+   "text": "Here's another hint. Bus 2 got all two hundred and eighty-six, so it is two hundred and eighty-six above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "4b83457a-d706-4453-938c-0e41d240a20a"
+  },
+  {
+   "id": "b05-praise",
+   "file": "b05-praise.mp3",
+   "text": "Yes! Two hundred and forty-one below the line, plus two hundred and eighty-six above it... that makes five hundred and twenty-seven. Clever you!",
+   "duration": 9.51,
+   "bytes": 57277,
+   "job_id": "7c53be89-227d-40e4-8068-9219bd0a1e34"
+  },
+  {
+   "id": "b05-wrongMoved",
+   "file": "b05-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Two hundred and eighty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.29,
+   "bytes": 61979,
+   "job_id": "80f26b1d-3059-4789-a149-9dc55966e399"
+  },
+  {
+   "id": "b05-wrongNearly",
+   "file": "b05-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.73,
+   "bytes": 46619,
+   "job_id": "3e1819e1-c2b7-485e-9647-38704ff713f4"
+  },
+  {
+   "id": "b06-intro",
+   "file": "b06-intro.mp3",
+   "text": "At the aquarium shop, Tank A has two hundred and eighty-two more fish than Tank B. The shopkeeper moves one hundred and forty-one fish from Tank A to Tank B. So, which tank has more fish, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.98,
+   "bytes": 120128,
+   "job_id": "6fdc154a-585e-4130-95a8-1d3f6216271b"
+  },
+  {
+   "id": "b06-final",
+   "file": "b06-final.mp3",
+   "text": "All one hundred and forty-one that moved came from the extra piece. So Tank A is still one hundred and forty-one above the dotted line... and Tank B is one hundred and forty-one above it.",
+   "duration": 12.3,
+   "bytes": 74048,
+   "job_id": "3ac3e4d3-9ae8-4cb0-9226-784d0bf50181"
+  },
+  {
+   "id": "b06-hint2",
+   "file": "b06-hint2.mp3",
+   "text": "Here's a hint. Tank A had two hundred and eighty-two extra, and only one hundred and forty-one moved out. So it is still one hundred and forty-one above the line.",
+   "duration": 10.95,
+   "bytes": 65898,
+   "job_id": "176b808f-ea2b-4deb-b4da-5a39e45b1c49"
+  },
+  {
+   "id": "b06-hint3",
+   "file": "b06-hint3.mp3",
+   "text": "Here's another hint. Tank B got all one hundred and forty-one, so it is one hundred and forty-one above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 13.35,
+   "bytes": 80317,
+   "job_id": "534577b5-8164-48a8-adfa-67d6e061ee61"
+  },
+  {
+   "id": "b06-praise",
+   "file": "b06-praise.mp3",
+   "text": "Yes! They're both one hundred and forty-one above the line... so they have exactly the same. You worked that out beautifully.",
+   "duration": 8.15,
+   "bytes": 49127,
+   "job_id": "61b52a28-43ed-497a-8f7d-a5fc56ba98d1"
+  },
+  {
+   "id": "b07-intro",
+   "file": "b07-intro.mp3",
+   "text": "For Chinese New Year, Tray A has ninety-one more ang ku kueh than Tray B. Grandma moves one hundred and sixty-four ang ku kueh from Tray A to Tray B. So, which tray has more ang ku kueh, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 20.06,
+   "bytes": 120598,
+   "job_id": "952fc766-36ce-404a-8423-f9c4cf4921bb"
+  },
+  {
+   "id": "b07-atLine",
+   "file": "b07-atLine.mp3",
+   "text": "Look! Tray A is back at the dotted line now... and Tray B is already ninety-one above it.",
+   "duration": 6.3,
+   "bytes": 37999,
+   "job_id": "cac079fe-27d6-4fba-8ef1-fc9c51ff17c3"
+  },
+  {
+   "id": "b07-final",
+   "file": "b07-final.mp3",
+   "text": "So now, Tray A is seventy-three below the dotted line... and Tray B is one hundred and sixty-four above it.",
+   "duration": 8.07,
+   "bytes": 48657,
+   "job_id": "511d3182-c838-4584-82ac-b384ef9210b0"
+  },
+  {
+   "id": "b07-hint2",
+   "file": "b07-hint2.mp3",
+   "text": "Here's a hint. Tray A used up its ninety-one extra, and then seventy-three more left. So Tray A is seventy-three below the line.",
+   "duration": 9.51,
+   "bytes": 57277,
+   "job_id": "7ad87a3f-10b1-4292-a1c5-4039bd2eb68f"
+  },
+  {
+   "id": "b07-hint3",
+   "file": "b07-hint3.mp3",
+   "text": "Here's another hint. Tray B got all one hundred and sixty-four, so it is one hundred and sixty-four above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "1df92d66-3b47-4bc7-a99c-a9ac982914b0"
+  },
+  {
+   "id": "b07-praise",
+   "file": "b07-praise.mp3",
+   "text": "Yes! Seventy-three below the line, plus one hundred and sixty-four above it... that makes two hundred and thirty-seven. Brilliant thinking!",
+   "duration": 9.35,
+   "bytes": 56337,
+   "job_id": "f06467f5-fc52-483e-a942-a2349329728e"
+  },
+  {
+   "id": "b07-wrongMoved",
+   "file": "b07-wrongMoved.mp3",
+   "text": "That's okay, let's look again. One hundred and sixty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.29,
+   "bytes": 61979,
+   "job_id": "40dabeba-51d5-4af6-8e30-1f763d2fc131"
+  },
+  {
+   "id": "b07-wrongNearly",
+   "file": "b07-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "84a5e9eb-7dda-424e-a54d-f10f2be8ad9f"
+  },
+  {
+   "id": "b08-intro",
+   "file": "b08-intro.mp3",
+   "text": "There are two hundred and twenty-six more students in the school hall than in the canteen. Then forty-seven students walk from the hall to the canteen. So, which place has more students, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.82,
+   "bytes": 107119,
+   "job_id": "6bf3db9d-bc6f-4949-ac3d-b9b200dccf0a"
+  },
+  {
+   "id": "b08-final",
+   "file": "b08-final.mp3",
+   "text": "All forty-seven that moved came from the extra piece. So the hall is still one hundred and seventy-nine above the dotted line... and the canteen is forty-seven above it.",
+   "duration": 10.63,
+   "bytes": 64017,
+   "job_id": "9a44c2a0-d04b-4f44-8c2c-ae6075f51633"
+  },
+  {
+   "id": "b08-hint2",
+   "file": "b08-hint2.mp3",
+   "text": "Here's a hint. The hall had two hundred and twenty-six extra, and only forty-seven moved out. So it is still one hundred and seventy-nine above the line.",
+   "duration": 10.48,
+   "bytes": 63076,
+   "job_id": "9dcef240-84b6-409e-98da-09329132bafa"
+  },
+  {
+   "id": "b08-hint3",
+   "file": "b08-hint3.mp3",
+   "text": "Here's another hint. The canteen got all forty-seven, so it is forty-seven above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "51931089-9724-4fa0-9565-896b2acd8bb9"
+  },
+  {
+   "id": "b08-praise",
+   "file": "b08-praise.mp3",
+   "text": "Yes! One hundred and seventy-nine take away forty-seven is one hundred and thirty-two... so the hall has one hundred and thirty-two more. That is exactly right. Well done!",
+   "duration": 12.15,
+   "bytes": 73107,
+   "job_id": "82aeba51-7e85-47aa-b5c6-dcc127f6bfb5"
+  },
+  {
+   "id": "b08-wrongMoved",
+   "file": "b08-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Forty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.43,
+   "bytes": 56807,
+   "job_id": "b88b03a0-23c5-44fe-8496-7252779c4ebb"
+  },
+  {
+   "id": "b08-wrongNearly",
+   "file": "b08-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 7.58,
+   "bytes": 45679,
+   "job_id": "4293da08-156d-4fa2-96b4-13db9cfd4dbf"
+  },
+  {
+   "id": "b09-intro",
+   "file": "b09-intro.mp3",
+   "text": "Mei Ling has two hundred and thirty-seven more stickers than Aisha. Mei Ling gives three hundred and ninety-nine stickers to Aisha. So, who has more stickers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 16.46,
+   "bytes": 98969,
+   "job_id": "392744b4-9af8-46ee-b917-36ca7c10caf2"
+  },
+  {
+   "id": "b09-atLine",
+   "file": "b09-atLine.mp3",
+   "text": "Look! Mei Ling is back at the dotted line now... and Aisha is already two hundred and thirty-seven above it.",
+   "duration": 6.79,
+   "bytes": 40977,
+   "job_id": "0d38d530-e8e5-4683-b658-5bc865e428a4"
+  },
+  {
+   "id": "b09-final",
+   "file": "b09-final.mp3",
+   "text": "So now, Mei Ling is one hundred and sixty-two below the dotted line... and Aisha is three hundred and ninety-nine above it.",
+   "duration": 8.31,
+   "bytes": 50067,
+   "job_id": "7a95dbfb-cd85-468e-b5ea-e8f136a85d0e"
+  },
+  {
+   "id": "b09-hint2",
+   "file": "b09-hint2.mp3",
+   "text": "Here's a hint. Mei Ling used up her two hundred and thirty-seven extra, and then one hundred and sixty-two more left. So Mei Ling is one hundred and sixty-two below the line.",
+   "duration": 11.83,
+   "bytes": 71227,
+   "job_id": "7575882d-a6b4-4100-a1c4-c064ce015c93"
+  },
+  {
+   "id": "b09-hint3",
+   "file": "b09-hint3.mp3",
+   "text": "Here's another hint. Aisha got all three hundred and ninety-nine, so she is three hundred and ninety-nine above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "13895b1e-fceb-49f8-bd28-e9655cfafadb"
+  },
+  {
+   "id": "b09-praise",
+   "file": "b09-praise.mp3",
+   "text": "Yes! One hundred and sixty-two below the line, plus three hundred and ninety-nine above it... that makes five hundred and sixty-one. Lovely work!",
+   "duration": 9.67,
+   "bytes": 58218,
+   "job_id": "e507d9d9-2cfd-4449-8e7c-dfbe15a3d0ec"
+  },
+  {
+   "id": "b09-wrongMoved",
+   "file": "b09-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and ninety-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "b60bb662-74ce-4c99-8d20-2641944f6297"
+  },
+  {
+   "id": "b09-wrongNearly",
+   "file": "b09-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 7.11,
+   "bytes": 42858,
+   "job_id": "fd35aa6c-6e41-463f-abea-a39bc90416b8"
+  },
+  {
+   "id": "b10-intro",
+   "file": "b10-intro.mp3",
+   "text": "Jar A has one hundred and sixty-five more marbles than Jar B. Wei Jie moves three hundred marbles from Jar A to Jar B. So, which jar has more marbles, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.74,
+   "bytes": 106649,
+   "job_id": "17c45812-84e7-4410-9649-1389cbc1c416"
+  },
+  {
+   "id": "b10-atLine",
+   "file": "b10-atLine.mp3",
+   "text": "Look! Jar A is back at the dotted line now... and Jar B is already one hundred and sixty-five above it.",
+   "duration": 6.87,
+   "bytes": 41447,
+   "job_id": "a3e3fb6c-2cbb-4958-9cc6-8144a083dda8"
+  },
+  {
+   "id": "b10-final",
+   "file": "b10-final.mp3",
+   "text": "So now, Jar A is one hundred and thirty-five below the dotted line... and Jar B is three hundred above it.",
+   "duration": 8.31,
+   "bytes": 50067,
+   "job_id": "332ae873-2e62-4219-bd23-b99356ff0280"
+  },
+  {
+   "id": "b10-hint2",
+   "file": "b10-hint2.mp3",
+   "text": "Here's a hint. Jar A used up its one hundred and sixty-five extra, and then one hundred and thirty-five more left. So Jar A is one hundred and thirty-five below the line.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "cd379bcf-bf3d-42df-90d5-1ca79efa2953"
+  },
+  {
+   "id": "b10-hint3",
+   "file": "b10-hint3.mp3",
+   "text": "Here's another hint. Jar B got all three hundred, so it is three hundred above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 10.55,
+   "bytes": 63547,
+   "job_id": "b030cd55-6cf2-4274-9951-afd9d0479b84"
+  },
+  {
+   "id": "b10-praise",
+   "file": "b10-praise.mp3",
+   "text": "Yes! One hundred and thirty-five below the line, plus three hundred above it... that makes four hundred and thirty-five. Clever you!",
+   "duration": 8.93,
+   "bytes": 53829,
+   "job_id": "76f46ef1-c4af-47e6-a279-c222494445d4"
+  },
+  {
+   "id": "b10-wrongMoved",
+   "file": "b10-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.51,
+   "bytes": 57277,
+   "job_id": "6149cb21-c149-4a4f-80fc-94730b0e488e"
+  },
+  {
+   "id": "b10-wrongNearly",
+   "file": "b10-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "ca31be26-0950-4379-b1f9-38985a836b9f"
+  },
+  {
+   "id": "b11-intro",
+   "file": "b11-intro.mp3",
+   "text": "In the school library, the top shelf has seventy more books than the bottom shelf. The librarian moves three hundred and twenty-six books from the top shelf to the bottom shelf. So, which shelf has more books, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.02,
+   "bytes": 114329,
+   "job_id": "10337d6d-5bb7-4d4a-ab6e-ec3259ac8662"
+  },
+  {
+   "id": "b11-atLine",
+   "file": "b11-atLine.mp3",
+   "text": "Look! The top shelf is back at the dotted line now... and the bottom shelf is already seventy above it.",
+   "duration": 6.22,
+   "bytes": 37529,
+   "job_id": "bd906783-8d1b-4f95-a18c-620b67825f46"
+  },
+  {
+   "id": "b11-final",
+   "file": "b11-final.mp3",
+   "text": "So now, the top shelf is two hundred and fifty-six below the dotted line... and the bottom shelf is three hundred and twenty-six above it.",
+   "duration": 8.93,
+   "bytes": 53829,
+   "job_id": "050a4e04-5864-491c-a333-9c17666028b1"
+  },
+  {
+   "id": "b11-hint2",
+   "file": "b11-hint2.mp3",
+   "text": "Here's a hint. The top shelf used up its seventy extra, and then two hundred and fifty-six more left. So the top shelf is two hundred and fifty-six below the line.",
+   "duration": 10.63,
+   "bytes": 64017,
+   "job_id": "52916067-cac6-4264-9f33-e5511721b250"
+  },
+  {
+   "id": "b11-hint3",
+   "file": "b11-hint3.mp3",
+   "text": "Here's another hint. The bottom shelf got all three hundred and twenty-six, so it is three hundred and twenty-six above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.46,
+   "bytes": 74988,
+   "job_id": "808948c3-7ce3-4a2d-8430-a5cb00708de3"
+  },
+  {
+   "id": "b11-praise",
+   "file": "b11-praise.mp3",
+   "text": "Yes! Two hundred and fifty-six below the line, plus three hundred and twenty-six above it... that makes five hundred and eighty-two. You worked that out beautifully.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "5c75cd6d-7eff-4640-b5a3-e97ad2d55e7b"
+  },
+  {
+   "id": "b11-wrongMoved",
+   "file": "b11-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and twenty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.21,
+   "bytes": 61509,
+   "job_id": "36198699-1379-4c32-9c11-9d78b514da18"
+  },
+  {
+   "id": "b11-wrongNearly",
+   "file": "b11-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.99,
+   "bytes": 48187,
+   "job_id": "6448d706-1a2c-4fc2-9ca5-f6b35f925c76"
+  },
+  {
+   "id": "b12-intro",
+   "file": "b12-intro.mp3",
+   "text": "At the bus interchange, Bus 1 has one hundred and seventy-one more passengers than Bus 2. Then twenty-three passengers get off Bus 1 and board Bus 2. So, which bus has more passengers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.59,
+   "bytes": 117777,
+   "job_id": "6828c67c-c0ca-41d3-a957-ef03dd12a7d2"
+  },
+  {
+   "id": "b12-final",
+   "file": "b12-final.mp3",
+   "text": "All twenty-three that moved came from the extra piece. So Bus 1 is still one hundred and forty-eight above the dotted line... and Bus 2 is twenty-three above it.",
+   "duration": 10.95,
+   "bytes": 65898,
+   "job_id": "aba1b0be-382a-4737-ab0e-d4f77b211b99"
+  },
+  {
+   "id": "b12-hint2",
+   "file": "b12-hint2.mp3",
+   "text": "Here's a hint. Bus 1 had one hundred and seventy-one extra, and only twenty-three moved out. So it is still one hundred and forty-eight above the line.",
+   "duration": 10.63,
+   "bytes": 64017,
+   "job_id": "f0b6a605-2a3d-4ec1-9ac7-f98f65fa3970"
+  },
+  {
+   "id": "b12-hint3",
+   "file": "b12-hint3.mp3",
+   "text": "Here's another hint. Bus 2 got all twenty-three, so it is twenty-three above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "9d7afb8b-a8d8-4d23-ac17-f3beca3be583"
+  },
+  {
+   "id": "b12-praise",
+   "file": "b12-praise.mp3",
+   "text": "Yes! One hundred and forty-eight take away twenty-three is one hundred and twenty-five... so Bus 1 has one hundred and twenty-five more. Brilliant thinking!",
+   "duration": 11.49,
+   "bytes": 69189,
+   "job_id": "0197f796-f191-473d-bec6-0b1f8badf0e4"
+  },
+  {
+   "id": "b12-wrongMoved",
+   "file": "b12-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Twenty-three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.35,
+   "bytes": 56337,
+   "job_id": "d59e1fa9-743c-4187-9ed3-cde301367159"
+  },
+  {
+   "id": "b12-wrongNearly",
+   "file": "b12-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.73,
+   "bytes": 46619,
+   "job_id": "73ebcccc-e229-49e1-8737-ab22b1487872"
+  },
+  {
+   "id": "b13-intro",
+   "file": "b13-intro.mp3",
+   "text": "At the aquarium shop, Tank A has two hundred and thirty-nine more fish than Tank B. The shopkeeper moves three hundred and twenty-four fish from Tank A to Tank B. So, which tank has more fish, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 20.3,
+   "bytes": 122009,
+   "job_id": "9659ef14-8b27-45bd-a629-de8515a419a4"
+  },
+  {
+   "id": "b13-atLine",
+   "file": "b13-atLine.mp3",
+   "text": "Look! Tank A is back at the dotted line now... and Tank B is already two hundred and thirty-nine above it.",
+   "duration": 6.87,
+   "bytes": 41447,
+   "job_id": "f2076cd8-a448-403f-a6c8-c09be54d4d35"
+  },
+  {
+   "id": "b13-final",
+   "file": "b13-final.mp3",
+   "text": "So now, Tank A is eighty-five below the dotted line... and Tank B is three hundred and twenty-four above it.",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "c3ac09c7-2850-4589-8bc2-30fa4d2dbd52"
+  },
+  {
+   "id": "b13-hint2",
+   "file": "b13-hint2.mp3",
+   "text": "Here's a hint. Tank A used up its two hundred and thirty-nine extra, and then eighty-five more left. So Tank A is eighty-five below the line.",
+   "duration": 10.63,
+   "bytes": 64017,
+   "job_id": "f4427e2e-67a7-4d2b-8bec-1797f4064423"
+  },
+  {
+   "id": "b13-hint3",
+   "file": "b13-hint3.mp3",
+   "text": "Here's another hint. Tank B got all three hundred and twenty-four, so it is three hundred and twenty-four above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "41cd10ca-7404-4b8a-95b1-7d29d19c19c9"
+  },
+  {
+   "id": "b13-praise",
+   "file": "b13-praise.mp3",
+   "text": "Yes! Eighty-five below the line, plus three hundred and twenty-four above it... that makes four hundred and nine. That is exactly right. Well done!",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "51a2c081-c798-4073-9941-129b9dbfa590"
+  },
+  {
+   "id": "b13-wrongMoved",
+   "file": "b13-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and twenty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.98,
+   "bytes": 60098,
+   "job_id": "6610355a-9663-4a90-bea2-45d5403c859f"
+  },
+  {
+   "id": "b13-wrongNearly",
+   "file": "b13-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.92,
+   "bytes": 47716,
+   "job_id": "8304fd77-47c2-4626-b810-bb4d8b3a8c31"
+  },
+  {
+   "id": "b14-intro",
+   "file": "b14-intro.mp3",
+   "text": "For Chinese New Year, Tray A has two hundred and eight more ang ku kueh than Tray B. Grandma moves three hundred and eighty-two ang ku kueh from Tray A to Tray B. So, which tray has more ang ku kueh, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 20.3,
+   "bytes": 122009,
+   "job_id": "a4771921-ea91-4625-95ad-25cdf2c00f5b"
+  },
+  {
+   "id": "b14-atLine",
+   "file": "b14-atLine.mp3",
+   "text": "Look! Tray A is back at the dotted line now... and Tray B is already two hundred and eight above it.",
+   "duration": 6.64,
+   "bytes": 40036,
+   "job_id": "acd3ec3c-e62c-49ec-8000-3df6351a578d"
+  },
+  {
+   "id": "b14-final",
+   "file": "b14-final.mp3",
+   "text": "So now, Tray A is one hundred and seventy-four below the dotted line... and Tray B is three hundred and eighty-two above it.",
+   "duration": 8.86,
+   "bytes": 53359,
+   "job_id": "994b2573-cfeb-4bc6-8c12-631ad4bbcef5"
+  },
+  {
+   "id": "b14-hint2",
+   "file": "b14-hint2.mp3",
+   "text": "Here's a hint. Tray A used up its two hundred and eight extra, and then one hundred and seventy-four more left. So Tray A is one hundred and seventy-four below the line.",
+   "duration": 11.49,
+   "bytes": 69189,
+   "job_id": "819a79bc-9730-4fc4-be8a-0b543afdf7a2"
+  },
+  {
+   "id": "b14-hint3",
+   "file": "b14-hint3.mp3",
+   "text": "Here's another hint. Tray B got all three hundred and eighty-two, so it is three hundred and eighty-two above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.07,
+   "bytes": 72637,
+   "job_id": "d75ab52c-9c1a-49bf-93e5-be5ae44e08b6"
+  },
+  {
+   "id": "b14-praise",
+   "file": "b14-praise.mp3",
+   "text": "Yes! One hundred and seventy-four below the line, plus three hundred and eighty-two above it... that makes five hundred and fifty-six. Lovely work!",
+   "duration": 9.9,
+   "bytes": 59628,
+   "job_id": "43b2b9ae-0a2a-45f0-bfe3-240b7334cede"
+  },
+  {
+   "id": "b14-wrongMoved",
+   "file": "b14-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and eighty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.29,
+   "bytes": 61979,
+   "job_id": "1fc60103-230e-4a47-be1b-3f4d547d0e2e"
+  },
+  {
+   "id": "b14-wrongNearly",
+   "file": "b14-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "070fce12-8210-43f8-85fd-e25b723cadb4"
+  },
+  {
+   "id": "b15-intro",
+   "file": "b15-intro.mp3",
+   "text": "There are one hundred and thirty more students in the school hall than in the canteen. Then sixty-five students walk from the hall to the canteen. So, which place has more students, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.74,
+   "bytes": 106649,
+   "job_id": "a07e9c18-f5ca-469a-a795-787745e0d5d8"
+  },
+  {
+   "id": "b15-final",
+   "file": "b15-final.mp3",
+   "text": "All sixty-five that moved came from the extra piece. So the hall is still sixty-five above the dotted line... and the canteen is sixty-five above it.",
+   "duration": 9.74,
+   "bytes": 58688,
+   "job_id": "8a28889c-113a-4902-8960-3ef8f0a0df3c"
+  },
+  {
+   "id": "b15-hint2",
+   "file": "b15-hint2.mp3",
+   "text": "Here's a hint. The hall had one hundred and thirty extra, and only sixty-five moved out. So it is still sixty-five above the line.",
+   "duration": 9.51,
+   "bytes": 57277,
+   "job_id": "6be83626-d286-4e73-964a-d1802206bebc"
+  },
+  {
+   "id": "b15-hint3",
+   "file": "b15-hint3.mp3",
+   "text": "Here's another hint. The canteen got all sixty-five, so it is sixty-five above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 11.91,
+   "bytes": 71697,
+   "job_id": "35a91308-f46c-4225-bd88-d09ac643e11a"
+  },
+  {
+   "id": "b15-praise",
+   "file": "b15-praise.mp3",
+   "text": "Yes! They're both sixty-five above the line... so they have exactly the same. Clever you!",
+   "duration": 6.71,
+   "bytes": 40507,
+   "job_id": "b6ddc072-bf63-4173-aefc-2cc9d382aaa5"
+  },
+  {
+   "id": "b16-intro",
+   "file": "b16-intro.mp3",
+   "text": "Mei Ling has thirty-two more stickers than Aisha. Mei Ling gives two hundred and ninety-six stickers to Aisha. So, who has more stickers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 15.75,
+   "bytes": 94737,
+   "job_id": "81a4d52c-966a-46d1-b3eb-a3bc6c097744"
+  },
+  {
+   "id": "b16-atLine",
+   "file": "b16-atLine.mp3",
+   "text": "Look! Mei Ling is back at the dotted line now... and Aisha is already thirty-two above it.",
+   "duration": 6.06,
+   "bytes": 36588,
+   "job_id": "4b68b26d-94de-46d2-957f-2bba2de1f354"
+  },
+  {
+   "id": "b16-final",
+   "file": "b16-final.mp3",
+   "text": "So now, Mei Ling is two hundred and sixty-four below the dotted line... and Aisha is two hundred and ninety-six above it.",
+   "duration": 8.31,
+   "bytes": 50067,
+   "job_id": "f346f8fb-f07e-4f42-b989-982177238605"
+  },
+  {
+   "id": "b16-hint2",
+   "file": "b16-hint2.mp3",
+   "text": "Here's a hint. Mei Ling used up her thirty-two extra, and then two hundred and sixty-four more left. So Mei Ling is two hundred and sixty-four below the line.",
+   "duration": 11.1,
+   "bytes": 66838,
+   "job_id": "84492807-d43c-47b6-8546-91ff016d6c03"
+  },
+  {
+   "id": "b16-hint3",
+   "file": "b16-hint3.mp3",
+   "text": "Here's another hint. Aisha got all two hundred and ninety-six, so she is two hundred and ninety-six above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 11.99,
+   "bytes": 72167,
+   "job_id": "14ba288c-72f1-4e08-aad6-b468e5505f40"
+  },
+  {
+   "id": "b16-praise",
+   "file": "b16-praise.mp3",
+   "text": "Yes! Two hundred and sixty-four below the line, plus two hundred and ninety-six above it... that makes five hundred and sixty. You worked that out beautifully.",
+   "duration": 9.98,
+   "bytes": 60098,
+   "job_id": "93283302-5b63-4a20-9160-90d6774b53b5"
+  },
+  {
+   "id": "b16-wrongMoved",
+   "file": "b16-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Two hundred and ninety-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "e0c9e60e-edfa-40d3-a0e9-91015c754837"
+  },
+  {
+   "id": "b16-wrongNearly",
+   "file": "b16-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 7.11,
+   "bytes": 42858,
+   "job_id": "da9227df-fbf0-43dd-8fd8-570bdac9e7d3"
+  },
+  {
+   "id": "b17-intro",
+   "file": "b17-intro.mp3",
+   "text": "Jar A has ninety-six more marbles than Jar B. Wei Jie moves three hundred and seventy marbles from Jar A to Jar B. So, which jar has more marbles, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.66,
+   "bytes": 106178,
+   "job_id": "ed183c96-9e7c-4135-a23d-e68cbd422a4c"
+  },
+  {
+   "id": "b17-atLine",
+   "file": "b17-atLine.mp3",
+   "text": "Look! Jar A is back at the dotted line now... and Jar B is already ninety-six above it.",
+   "duration": 6.45,
+   "bytes": 38939,
+   "job_id": "e5e79025-ca6b-4b4b-aa39-c7f8363014b4"
+  },
+  {
+   "id": "b17-final",
+   "file": "b17-final.mp3",
+   "text": "So now, Jar A is two hundred and seventy-four below the dotted line... and Jar B is three hundred and seventy above it.",
+   "duration": 8.86,
+   "bytes": 53359,
+   "job_id": "8190ca56-5851-4638-acd8-22e904b998a0"
+  },
+  {
+   "id": "b17-hint2",
+   "file": "b17-hint2.mp3",
+   "text": "Here's a hint. Jar A used up its ninety-six extra, and then two hundred and seventy-four more left. So Jar A is two hundred and seventy-four below the line.",
+   "duration": 11.42,
+   "bytes": 68719,
+   "job_id": "fc481fa7-7038-4e93-8d4f-3666165cf2b1"
+  },
+  {
+   "id": "b17-hint3",
+   "file": "b17-hint3.mp3",
+   "text": "Here's another hint. Jar B got all three hundred and seventy, so it is three hundred and seventy above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 11.83,
+   "bytes": 71227,
+   "job_id": "525bfac6-ad25-42e1-a7b6-ad53f94538b5"
+  },
+  {
+   "id": "b17-praise",
+   "file": "b17-praise.mp3",
+   "text": "Yes! Two hundred and seventy-four below the line, plus three hundred and seventy above it... that makes six hundred and forty-four. Brilliant thinking!",
+   "duration": 9.67,
+   "bytes": 58218,
+   "job_id": "b81c4961-88a9-492e-b973-b02a94024021"
+  },
+  {
+   "id": "b17-wrongMoved",
+   "file": "b17-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three hundred and seventy is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.9,
+   "bytes": 59628,
+   "job_id": "b58e1910-2918-4301-949d-e58144233c9a"
+  },
+  {
+   "id": "b17-wrongNearly",
+   "file": "b17-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "62cc4854-20f2-40c1-bcaf-f70b9dd6e07c"
+  },
+  {
+   "id": "b18-intro",
+   "file": "b18-intro.mp3",
+   "text": "In the school library, the top shelf has two hundred and seventy-three more books than the bottom shelf. The librarian moves fifty-eight books from the top shelf to the bottom shelf. So, which shelf has more books, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.25,
+   "bytes": 115739,
+   "job_id": "0125181b-a509-41ad-82e7-eaa35a7fc4f4"
+  },
+  {
+   "id": "b18-final",
+   "file": "b18-final.mp3",
+   "text": "All fifty-eight that moved came from the extra piece. So the top shelf is still two hundred and fifteen above the dotted line... and the bottom shelf is fifty-eight above it.",
+   "duration": 11.02,
+   "bytes": 66368,
+   "job_id": "10c87dda-4e81-4a24-a2b3-fdc1ca78011b"
+  },
+  {
+   "id": "b18-hint2",
+   "file": "b18-hint2.mp3",
+   "text": "Here's a hint. The top shelf had two hundred and seventy-three extra, and only fifty-eight moved out. So it is still two hundred and fifteen above the line.",
+   "duration": 10.14,
+   "bytes": 61039,
+   "job_id": "517886d1-71e8-447f-ba91-28c8887e9918"
+  },
+  {
+   "id": "b18-hint3",
+   "file": "b18-hint3.mp3",
+   "text": "Here's another hint. The bottom shelf got all fifty-eight, so it is fifty-eight above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 11.99,
+   "bytes": 72167,
+   "job_id": "868c51d5-e925-4bb7-96ca-dedce7e067e8"
+  },
+  {
+   "id": "b18-praise",
+   "file": "b18-praise.mp3",
+   "text": "Yes! Two hundred and fifteen take away fifty-eight is one hundred and fifty-seven... so the top shelf has one hundred and fifty-seven more. That is exactly right. Well done!",
+   "duration": 12.62,
+   "bytes": 75929,
+   "job_id": "68dd009f-0bf4-41a7-a420-4650055d0549"
+  },
+  {
+   "id": "b18-wrongMoved",
+   "file": "b18-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Fifty-eight is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.35,
+   "bytes": 56337,
+   "job_id": "c1d5f983-0bf2-46b5-96d0-77edc4567bf5"
+  },
+  {
+   "id": "b18-wrongNearly",
+   "file": "b18-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "92bf4777-2a36-4e76-818b-5042c71c833d"
+  },
+  {
+   "id": "b19-intro",
+   "file": "b19-intro.mp3",
+   "text": "At the bus interchange, Bus 1 has thirty more passengers than Bus 2. Then two hundred and ninety passengers get off Bus 1 and board Bus 2. So, which bus has more passengers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.25,
+   "bytes": 115739,
+   "job_id": "cc752883-7682-4da0-9ce0-2fdb38c4be75"
+  },
+  {
+   "id": "b19-atLine",
+   "file": "b19-atLine.mp3",
+   "text": "Look! Bus 1 is back at the dotted line now... and Bus 2 is already thirty above it.",
+   "duration": 5.9,
+   "bytes": 35648,
+   "job_id": "d85f5dcf-33a2-4d2b-a44c-a6384348ec6d"
+  },
+  {
+   "id": "b19-final",
+   "file": "b19-final.mp3",
+   "text": "So now, Bus 1 is two hundred and sixty below the dotted line... and Bus 2 is two hundred and ninety above it.",
+   "duration": 8.07,
+   "bytes": 48657,
+   "job_id": "72efd525-8452-4616-bec5-8e3fcf23497c"
+  },
+  {
+   "id": "b19-hint2",
+   "file": "b19-hint2.mp3",
+   "text": "Here's a hint. Bus 1 used up its thirty extra, and then two hundred and sixty more left. So Bus 1 is two hundred and sixty below the line.",
+   "duration": 10.55,
+   "bytes": 63547,
+   "job_id": "17e00603-b5d3-4cd8-88c2-edb9213eb06e"
+  },
+  {
+   "id": "b19-hint3",
+   "file": "b19-hint3.mp3",
+   "text": "Here's another hint. Bus 2 got all two hundred and ninety, so it is two hundred and ninety above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 11.26,
+   "bytes": 67778,
+   "job_id": "c38f6350-c208-45dd-b4c0-300fcdd0687e"
+  },
+  {
+   "id": "b19-praise",
+   "file": "b19-praise.mp3",
+   "text": "Yes! Two hundred and sixty below the line, plus two hundred and ninety above it... that makes five hundred and fifty. Lovely work!",
+   "duration": 9.01,
+   "bytes": 54299,
+   "job_id": "55af8cfb-2e2e-4c8a-a734-f39657170b81"
+  },
+  {
+   "id": "b19-wrongMoved",
+   "file": "b19-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Two hundred and ninety is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "94e51c3e-53a4-4fff-9415-3278910252fb"
+  },
+  {
+   "id": "b19-wrongNearly",
+   "file": "b19-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.58,
+   "bytes": 45679,
+   "job_id": "d572695b-a49a-49d7-9d68-c03546d43fe3"
+  },
+  {
+   "id": "b20-intro",
+   "file": "b20-intro.mp3",
+   "text": "At the aquarium shop, Tank A has two hundred and thirty-four more fish than Tank B. The shopkeeper moves five hundred and thirty-two fish from Tank A to Tank B. So, which tank has more fish, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.83,
+   "bytes": 119187,
+   "job_id": "feee6727-8dc9-47ba-8f9a-4afc22c18d65"
+  },
+  {
+   "id": "b20-atLine",
+   "file": "b20-atLine.mp3",
+   "text": "Look! Tank A is back at the dotted line now... and Tank B is already two hundred and thirty-four above it.",
+   "duration": 7.03,
+   "bytes": 42387,
+   "job_id": "6b2e081c-75c5-49da-b14a-f8e187afea19"
+  },
+  {
+   "id": "b20-final",
+   "file": "b20-final.mp3",
+   "text": "So now, Tank A is two hundred and ninety-eight below the dotted line... and Tank B is five hundred and thirty-two above it.",
+   "duration": 8.54,
+   "bytes": 51478,
+   "job_id": "770034b0-e122-4871-8c71-643ac5edf1a6"
+  },
+  {
+   "id": "b20-hint2",
+   "file": "b20-hint2.mp3",
+   "text": "Here's a hint. Tank A used up its two hundred and thirty-four extra, and then two hundred and ninety-eight more left. So Tank A is two hundred and ninety-eight below the line.",
+   "duration": 11.68,
+   "bytes": 70286,
+   "job_id": "ecc6cc76-91c8-40e7-b418-e8e4f55a3e54"
+  },
+  {
+   "id": "b20-hint3",
+   "file": "b20-hint3.mp3",
+   "text": "Here's another hint. Tank B got all five hundred and thirty-two, so it is five hundred and thirty-two above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 12.15,
+   "bytes": 73107,
+   "job_id": "d4131ec0-10e7-4af1-8cf0-93e40af0b22e"
+  },
+  {
+   "id": "b20-praise",
+   "file": "b20-praise.mp3",
+   "text": "Yes! Two hundred and ninety-eight below the line, plus five hundred and thirty-two above it... that makes eight hundred and thirty. Clever you!",
+   "duration": 9.35,
+   "bytes": 56337,
+   "job_id": "ca764387-2ef3-48ba-a20c-03657c3ccbdb"
+  },
+  {
+   "id": "b20-wrongMoved",
+   "file": "b20-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five hundred and thirty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.06,
+   "bytes": 60569,
+   "job_id": "473a09c8-57f8-47e2-a4d0-346bd3f214e1"
+  },
+  {
+   "id": "b20-wrongNearly",
+   "file": "b20-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "9d7a77f4-6e1c-49e4-bda2-5a9f1f34e8b5"
+  },
+  {
+   "id": "s01-intro",
+   "file": "s01-intro.mp3",
+   "text": "Jar A has eleven marbles and Jar B has eight. Wei Jie moves five marbles from Jar A to Jar B. So, which jar has more marbles, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 16.95,
+   "bytes": 101947,
+   "job_id": "f7b8b632-4a2b-4050-8627-7e8c02f61fec"
+  },
+  {
+   "id": "s01-atLine",
+   "file": "s01-atLine.mp3",
+   "text": "Look! Jar A is back at the dotted line now... and Jar B is already three above it.",
+   "duration": 6.06,
+   "bytes": 36588,
+   "job_id": "eee986d3-097b-4f44-8f49-13f2fd9d2834"
+  },
+  {
+   "id": "s01-final",
+   "file": "s01-final.mp3",
+   "text": "So now, Jar A is two below the dotted line... and Jar B is five above it.",
+   "duration": 6.64,
+   "bytes": 40036,
+   "job_id": "a7e5c8dc-b199-4cd1-bd89-2de6b1cb3757"
+  },
+  {
+   "id": "s01-hint2",
+   "file": "s01-hint2.mp3",
+   "text": "Here's a hint. Jar A used up its three extra, and then two more left. So Jar A is two below the line.",
+   "duration": 8.46,
+   "bytes": 51008,
+   "job_id": "d37da5b5-5622-4823-bb50-f7fda56335aa"
+  },
+  {
+   "id": "s01-hint3",
+   "file": "s01-hint3.mp3",
+   "text": "Here's another hint. Jar B got all five, so it is five above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 10.14,
+   "bytes": 61039,
+   "job_id": "66886cd6-4673-43a3-b72c-f1f3ca349e15"
+  },
+  {
+   "id": "s01-praise",
+   "file": "s01-praise.mp3",
+   "text": "Yes! Two below the line, plus five above it... that makes seven. You worked that out beautifully.",
+   "duration": 7.03,
+   "bytes": 42387,
+   "job_id": "310ff859-92f8-4aba-a999-a57aed2b5c24"
+  },
+  {
+   "id": "s01-wrongMoved",
+   "file": "s01-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.01,
+   "bytes": 54299,
+   "job_id": "2a695124-f68f-4fe5-a740-eee960cd9f3c"
+  },
+  {
+   "id": "s01-wrongNearly",
+   "file": "s01-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "cb12bbd9-62a9-4b2d-b6e7-ed9ca788d371"
+  },
+  {
+   "id": "s02-intro",
+   "file": "s02-intro.mp3",
+   "text": "In the school library, the top shelf has twelve books and the bottom shelf has nine. The librarian moves seven books from the top shelf to the bottom shelf. So, which shelf has more books, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 18.55,
+   "bytes": 111507,
+   "job_id": "f6c109ee-e519-4115-bc8b-490e6d6db890"
+  },
+  {
+   "id": "s02-atLine",
+   "file": "s02-atLine.mp3",
+   "text": "Look! The top shelf is back at the dotted line now... and the bottom shelf is already three above it.",
+   "duration": 5.9,
+   "bytes": 35648,
+   "job_id": "5863ae16-f0e2-4ce2-818a-5377731aa1d2"
+  },
+  {
+   "id": "s02-final",
+   "file": "s02-final.mp3",
+   "text": "So now, the top shelf is four below the dotted line... and the bottom shelf is seven above it.",
+   "duration": 6.64,
+   "bytes": 40036,
+   "job_id": "efdddc3d-12d4-4389-b28a-24e38a37d175"
+  },
+  {
+   "id": "s02-hint2",
+   "file": "s02-hint2.mp3",
+   "text": "Here's a hint. The top shelf used up its three extra, and then four more left. So the top shelf is four below the line.",
+   "duration": 8.62,
+   "bytes": 51948,
+   "job_id": "c03765ef-b0d9-4a63-a4ee-f5a057253399"
+  },
+  {
+   "id": "s02-hint3",
+   "file": "s02-hint3.mp3",
+   "text": "Here's another hint. The bottom shelf got all seven, so it is seven above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 10.29,
+   "bytes": 61979,
+   "job_id": "6876779b-1b30-42ff-8eb7-0c670eaf23c1"
+  },
+  {
+   "id": "s02-praise",
+   "file": "s02-praise.mp3",
+   "text": "Yes! Four below the line, plus seven above it... that makes eleven. Brilliant thinking!",
+   "duration": 6.71,
+   "bytes": 40507,
+   "job_id": "370eadca-1be6-499e-9117-a8f7a12967d0"
+  },
+  {
+   "id": "s02-wrongMoved",
+   "file": "s02-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.12,
+   "bytes": 54926,
+   "job_id": "7c78dd37-a35c-4d4c-8770-89b4489b15c1"
+  },
+  {
+   "id": "s02-wrongNearly",
+   "file": "s02-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 8.07,
+   "bytes": 48657,
+   "job_id": "74a5c82e-8318-47ab-a597-fb7c77ae686b"
+  },
+  {
+   "id": "s03-intro",
+   "file": "s03-intro.mp3",
+   "text": "At the bus interchange, Bus 1 has eleven passengers and Bus 2 has four. Then three passengers get off Bus 1 and board Bus 2. So, which bus has more passengers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.25,
+   "bytes": 115739,
+   "job_id": "952a969a-1965-4e35-98b9-8e3efa33aaa4"
+  },
+  {
+   "id": "s03-final",
+   "file": "s03-final.mp3",
+   "text": "All three that moved came from the extra piece. So Bus 1 is still four above the dotted line... and Bus 2 is three above it.",
+   "duration": 9.01,
+   "bytes": 54299,
+   "job_id": "543f0c1e-861f-47fc-8f69-c23b837bd8db"
+  },
+  {
+   "id": "s03-hint2",
+   "file": "s03-hint2.mp3",
+   "text": "Here's a hint. Bus 1 had seven extra, and only three moved out. So it is still four above the line.",
+   "duration": 7.92,
+   "bytes": 47716,
+   "job_id": "52210f79-c3aa-4505-930e-991204bca64a"
+  },
+  {
+   "id": "s03-hint3",
+   "file": "s03-hint3.mp3",
+   "text": "Here's another hint. Bus 2 got all three, so it is three above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 11.02,
+   "bytes": 66368,
+   "job_id": "02db4ca8-74ab-44c3-a370-efea68fecece"
+  },
+  {
+   "id": "s03-praise",
+   "file": "s03-praise.mp3",
+   "text": "Yes! Four take away three is one... so Bus 1 has one more. That is exactly right. Well done!",
+   "duration": 8.54,
+   "bytes": 51478,
+   "job_id": "7ded3de6-d124-4664-af42-f94b8fd82f98"
+  },
+  {
+   "id": "s03-wrongMoved",
+   "file": "s03-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.2,
+   "bytes": 55396,
+   "job_id": "acbbd6ff-5fdc-4675-bd66-2802192180e0"
+  },
+  {
+   "id": "s03-wrongNearly",
+   "file": "s03-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.58,
+   "bytes": 45679,
+   "job_id": "bcd6e6f2-cc0f-4c8b-acff-af8e15c7384b"
+  },
+  {
+   "id": "s04-intro",
+   "file": "s04-intro.mp3",
+   "text": "At the aquarium shop, Tank A has eight fish and Tank B has four. The shopkeeper moves five fish from Tank A to Tank B. So, which tank has more fish, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 17.97,
+   "bytes": 108059,
+   "job_id": "d7bbea2b-0666-4d61-a93c-e65aeef2568c"
+  },
+  {
+   "id": "s04-atLine",
+   "file": "s04-atLine.mp3",
+   "text": "Look! Tank A is back at the dotted line now... and Tank B is already four above it.",
+   "duration": 6.22,
+   "bytes": 37529,
+   "job_id": "e908cd61-16b4-43fe-8037-c1c7ad0254a4"
+  },
+  {
+   "id": "s04-final",
+   "file": "s04-final.mp3",
+   "text": "So now, Tank A is one below the dotted line... and Tank B is five above it.",
+   "duration": 6.45,
+   "bytes": 38939,
+   "job_id": "983d1768-049e-466e-bc2c-a83dd74afb0b"
+  },
+  {
+   "id": "s04-hint2",
+   "file": "s04-hint2.mp3",
+   "text": "Here's a hint. Tank A used up its four extra, and then one more left. So Tank A is one below the line.",
+   "duration": 8.23,
+   "bytes": 49597,
+   "job_id": "435c288e-d128-4527-8f57-f6bd05bf9ace"
+  },
+  {
+   "id": "s04-hint3",
+   "file": "s04-hint3.mp3",
+   "text": "Here's another hint. Tank B got all five, so it is five above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "9307322e-d059-4748-a17f-09eff9cae827"
+  },
+  {
+   "id": "s04-praise",
+   "file": "s04-praise.mp3",
+   "text": "Yes! One below the line, plus five above it... that makes six. Lovely work!",
+   "duration": 6.22,
+   "bytes": 37529,
+   "job_id": "25b7b2d4-d806-4e21-a66c-9634346ff427"
+  },
+  {
+   "id": "s04-wrongMoved",
+   "file": "s04-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.12,
+   "bytes": 54926,
+   "job_id": "f2d32ff3-8f8d-460a-a2d9-54d03152f4e4"
+  },
+  {
+   "id": "s04-wrongNearly",
+   "file": "s04-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "04737e92-b37c-41ad-ad9f-3074cd64d87c"
+  },
+  {
+   "id": "s05-intro",
+   "file": "s05-intro.mp3",
+   "text": "For Chinese New Year, Tray A has six ang ku kueh and Tray B has four. Grandma moves one ang ku kueh from Tray A to Tray B. So, which tray has more ang ku kueh, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 18.78,
+   "bytes": 112918,
+   "job_id": "ce1158f3-319a-49dd-b142-fdbbb294d76c"
+  },
+  {
+   "id": "s05-final",
+   "file": "s05-final.mp3",
+   "text": "The one that moved came from the extra piece. So Tray A is still one above the dotted line... and Tray B is one above it.",
+   "duration": 8.54,
+   "bytes": 51478,
+   "job_id": "f7f2ddc5-692a-45a0-986c-e9ac574f5d5d"
+  },
+  {
+   "id": "s05-hint2",
+   "file": "s05-hint2.mp3",
+   "text": "Here's a hint. Tray A had two extra, and only one moved out. So it is still one above the line.",
+   "duration": 7.73,
+   "bytes": 46619,
+   "job_id": "7da36e08-e519-427c-8d96-f439f584983e"
+  },
+  {
+   "id": "s05-hint3",
+   "file": "s05-hint3.mp3",
+   "text": "Here's another hint. Tray B got that one, so it is one above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 10.71,
+   "bytes": 64487,
+   "job_id": "d73fe878-7815-473d-a457-dafcfb0ad376"
+  },
+  {
+   "id": "s05-praise",
+   "file": "s05-praise.mp3",
+   "text": "Yes! They're both one above the line... so they have exactly the same. Clever you!",
+   "duration": 6.14,
+   "bytes": 37058,
+   "job_id": "43e9f385-34a5-4f6c-be66-9b6273ed8cf0"
+  },
+  {
+   "id": "s06-intro",
+   "file": "s06-intro.mp3",
+   "text": "There are eight students in the school hall and seven students in the canteen. Then five students walk from the hall to the canteen. So, which place has more students, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 16.95,
+   "bytes": 101947,
+   "job_id": "c8277f20-eccf-4124-8f6e-d42b6f13109f"
+  },
+  {
+   "id": "s06-atLine",
+   "file": "s06-atLine.mp3",
+   "text": "Look! The hall is back at the dotted line now... and the canteen is already one above it.",
+   "duration": 5.43,
+   "bytes": 32827,
+   "job_id": "bf782420-b372-42cf-8c7a-fc2ddf13d244"
+  },
+  {
+   "id": "s06-final",
+   "file": "s06-final.mp3",
+   "text": "So now, the hall is four below the dotted line... and the canteen is five above it.",
+   "duration": 6.14,
+   "bytes": 37058,
+   "job_id": "7efecc67-5b51-404e-92a2-3b3ddcb4880c"
+  },
+  {
+   "id": "s06-hint2",
+   "file": "s06-hint2.mp3",
+   "text": "Here's a hint. The hall used up its one extra, and then four more left. So the hall is four below the line.",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "b969f10e-c219-4bd4-9e97-532baa9cf7b9"
+  },
+  {
+   "id": "s06-hint3",
+   "file": "s06-hint3.mp3",
+   "text": "Here's another hint. The canteen got all five, so it is five above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 9.82,
+   "bytes": 59158,
+   "job_id": "01d67f44-2b86-4c8d-a6ff-94a4f29d6d53"
+  },
+  {
+   "id": "s06-praise",
+   "file": "s06-praise.mp3",
+   "text": "Yes! Four below the line, plus five above it... that makes nine. You worked that out beautifully.",
+   "duration": 7.03,
+   "bytes": 42387,
+   "job_id": "e5c18e20-5427-4ac4-bcd7-d532d829f2cc"
+  },
+  {
+   "id": "s06-wrongMoved",
+   "file": "s06-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.01,
+   "bytes": 54299,
+   "job_id": "35000972-1f61-481b-9f6d-30d9ec5896a0"
+  },
+  {
+   "id": "s06-wrongNearly",
+   "file": "s06-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 7.26,
+   "bytes": 43798,
+   "job_id": "248a0f95-af13-415f-be6f-ee54f4fd01f3"
+  },
+  {
+   "id": "s07-intro",
+   "file": "s07-intro.mp3",
+   "text": "Mei Ling has fifteen stickers and Aisha has seven. Mei Ling gives two stickers to Aisha. So, who has more stickers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 15.02,
+   "bytes": 90348,
+   "job_id": "43715916-8817-4598-b3e4-541281794e99"
+  },
+  {
+   "id": "s07-final",
+   "file": "s07-final.mp3",
+   "text": "Both that moved came from the extra piece. So Mei Ling is still six above the dotted line... and Aisha is two above it.",
+   "duration": 8.23,
+   "bytes": 49597,
+   "job_id": "8ebbe27a-8a29-4afe-82f3-2cd409853a6c"
+  },
+  {
+   "id": "s07-hint2",
+   "file": "s07-hint2.mp3",
+   "text": "Here's a hint. Mei Ling had eight extra, and only two moved out. So she is still six above the line.",
+   "duration": 7.65,
+   "bytes": 46149,
+   "job_id": "81b83d42-0aa9-405e-822a-4b56905d1339"
+  },
+  {
+   "id": "s07-hint3",
+   "file": "s07-hint3.mp3",
+   "text": "Here's another hint. Aisha got both, so she is two above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 10.55,
+   "bytes": 63547,
+   "job_id": "ca62154c-9946-4898-b115-8d17dc27efe5"
+  },
+  {
+   "id": "s07-praise",
+   "file": "s07-praise.mp3",
+   "text": "Yes! Six take away two is four... so Mei Ling has four more. Brilliant thinking!",
+   "duration": 6.95,
+   "bytes": 41917,
+   "job_id": "d52563e7-56b0-4f2f-9a38-61ecd4b555fd"
+  },
+  {
+   "id": "s07-wrongMoved",
+   "file": "s07-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.12,
+   "bytes": 54926,
+   "job_id": "ad7581ed-e17b-495b-9123-7fc2fafe775a"
+  },
+  {
+   "id": "s07-wrongNearly",
+   "file": "s07-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 7.11,
+   "bytes": 42858,
+   "job_id": "30cc544f-82ed-41df-89a8-0c7390a05ca6"
+  },
+  {
+   "id": "s08-intro",
+   "file": "s08-intro.mp3",
+   "text": "Jar A has nine marbles and Jar B has five. Wei Jie moves seven marbles from Jar A to Jar B. So, which jar has more marbles, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 16.95,
+   "bytes": 101947,
+   "job_id": "3800c80b-4497-4a46-a063-135987ba9c05"
+  },
+  {
+   "id": "s08-atLine",
+   "file": "s08-atLine.mp3",
+   "text": "Look! Jar A is back at the dotted line now... and Jar B is already four above it.",
+   "duration": 5.98,
+   "bytes": 36118,
+   "job_id": "4ac22e4b-179f-4fb2-9205-04143b48439c"
+  },
+  {
+   "id": "s08-final",
+   "file": "s08-final.mp3",
+   "text": "So now, Jar A is three below the dotted line... and Jar B is seven above it.",
+   "duration": 6.64,
+   "bytes": 40036,
+   "job_id": "9ce5b460-e638-426e-8acf-30f19e606438"
+  },
+  {
+   "id": "s08-hint2",
+   "file": "s08-hint2.mp3",
+   "text": "Here's a hint. Jar A used up its four extra, and then three more left. So Jar A is three below the line.",
+   "duration": 8.78,
+   "bytes": 52889,
+   "job_id": "4391f693-8309-4267-95cb-cce59266cd24"
+  },
+  {
+   "id": "s08-hint3",
+   "file": "s08-hint3.mp3",
+   "text": "Here's another hint. Jar B got all seven, so it is seven above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 10.4,
+   "bytes": 62606,
+   "job_id": "2ef6fee8-3516-49a4-bc17-172111856190"
+  },
+  {
+   "id": "s08-praise",
+   "file": "s08-praise.mp3",
+   "text": "Yes! Three below the line, plus seven above it... that makes ten. That is exactly right. Well done!",
+   "duration": 7.73,
+   "bytes": 46619,
+   "job_id": "21fa4192-c03a-42f6-9c0a-b9bdaa9aa059"
+  },
+  {
+   "id": "s08-wrongMoved",
+   "file": "s08-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.27,
+   "bytes": 55867,
+   "job_id": "ac2afc14-f955-484a-a656-6a12c316d0a1"
+  },
+  {
+   "id": "s08-wrongNearly",
+   "file": "s08-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "f24715c4-8aff-4ee5-9b96-c16aa7d795e7"
+  },
+  {
+   "id": "s09-intro",
+   "file": "s09-intro.mp3",
+   "text": "In the school library, the top shelf has fourteen books and the bottom shelf has six. The librarian moves two books from the top shelf to the bottom shelf. So, which shelf has more books, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 18.55,
+   "bytes": 111507,
+   "job_id": "ad1541b8-1d15-46ca-9d56-2f8a6c522b13"
+  },
+  {
+   "id": "s09-final",
+   "file": "s09-final.mp3",
+   "text": "Both that moved came from the extra piece. So the top shelf is still six above the dotted line... and the bottom shelf is two above it.",
+   "duration": 8.78,
+   "bytes": 52889,
+   "job_id": "ee925199-d6c5-4f63-b71d-3f72442fadf7"
+  },
+  {
+   "id": "s09-hint2",
+   "file": "s09-hint2.mp3",
+   "text": "Here's a hint. The top shelf had eight extra, and only two moved out. So it is still six above the line.",
+   "duration": 7.84,
+   "bytes": 47246,
+   "job_id": "5e5774c0-15ec-4bdc-80f4-a1549e3bebde"
+  },
+  {
+   "id": "s09-hint3",
+   "file": "s09-hint3.mp3",
+   "text": "Here's another hint. The bottom shelf got both, so it is two above the line. Both are above the line now... which one sticks out further, and by how much?",
+   "duration": 10.87,
+   "bytes": 65427,
+   "job_id": "e342d9ce-12bc-4cc9-a847-da915c703ed6"
+  },
+  {
+   "id": "s09-praise",
+   "file": "s09-praise.mp3",
+   "text": "Yes! Six take away two is four... so the top shelf has four more. Lovely work!",
+   "duration": 6.95,
+   "bytes": 41917,
+   "job_id": "876666dc-0d04-4a47-bcf9-cac3b201ec1e"
+  },
+  {
+   "id": "s09-wrongMoved",
+   "file": "s09-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.12,
+   "bytes": 54926,
+   "job_id": "f21aa688-8b42-4bfd-8fc4-19363b5c0921"
+  },
+  {
+   "id": "s09-wrongNearly",
+   "file": "s09-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.99,
+   "bytes": 48187,
+   "job_id": "f41c3326-1f7c-4c06-8d68-36b05ebf5755"
+  },
+  {
+   "id": "s10-intro",
+   "file": "s10-intro.mp3",
+   "text": "At the bus interchange, Bus 1 has seven passengers and Bus 2 has three. Then five passengers get off Bus 1 and board Bus 2. So, which bus has more passengers, and how many more? Hmm... before anything moves, who do you think will have more?",
+   "duration": 19.02,
+   "bytes": 114329,
+   "job_id": "a96313da-7ad1-48ee-85ce-c41e13bfe451"
+  },
+  {
+   "id": "s10-atLine",
+   "file": "s10-atLine.mp3",
+   "text": "Look! Bus 1 is back at the dotted line now... and Bus 2 is already four above it.",
+   "duration": 5.75,
+   "bytes": 34707,
+   "job_id": "8cf1c1d9-4fca-4bfe-8d61-d26ffd516a0d"
+  },
+  {
+   "id": "s10-final",
+   "file": "s10-final.mp3",
+   "text": "So now, Bus 1 is one below the dotted line... and Bus 2 is five above it.",
+   "duration": 6.3,
+   "bytes": 37999,
+   "job_id": "8f02a47c-12bd-494e-9fe1-d4679d1f1fad"
+  },
+  {
+   "id": "s10-hint2",
+   "file": "s10-hint2.mp3",
+   "text": "Here's a hint. Bus 1 used up its four extra, and then one more left. So Bus 1 is one below the line.",
+   "duration": 8.39,
+   "bytes": 50538,
+   "job_id": "60e71a50-2544-4d7e-8a9b-bf115684be4a"
+  },
+  {
+   "id": "s10-hint3",
+   "file": "s10-hint3.mp3",
+   "text": "Here's another hint. Bus 2 got all five, so it is five above the line. The gap is the part below the line, plus the part above it.",
+   "duration": 10.06,
+   "bytes": 60569,
+   "job_id": "2e5ab82b-2e60-47eb-a745-144ea1e2d5d1"
+  },
+  {
+   "id": "s10-praise",
+   "file": "s10-praise.mp3",
+   "text": "Yes! One below the line, plus five above it... that makes six. Clever you!",
+   "duration": 6.3,
+   "bytes": 37999,
+   "job_id": "66df0d1d-2fff-4649-8179-8c17c9f8d042"
+  },
+  {
+   "id": "s10-wrongMoved",
+   "file": "s10-wrongMoved.mp3",
+   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.01,
+   "bytes": 54299,
+   "job_id": "ff1cdf30-9afb-488f-af2b-896455b8c21b"
+  },
+  {
+   "id": "s10-wrongNearly",
+   "file": "s10-wrongNearly.mp3",
+   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.58,
+   "bytes": 45679,
+   "job_id": "162733c3-3177-4bf5-8000-a6a3b4f52db0"
+  }
+ ]
+}
