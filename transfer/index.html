@@ -126,6 +126,8 @@
   .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
   .wst,.wans{font-size:18px;line-height:1.3}
   .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
   .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
   .wintro{margin:0 0 6px;font-size:17px}
   .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
@@ -192,7 +194,7 @@
     </div>
     <div class="card panel" id="panel"></div>
   </div>
-  <div class="foot"><button id="resetBtn">Start again from the beginning</button></div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-WNAS-IT-G01</div></div>
 </div>
 
 <script>
@@ -424,8 +426,8 @@ var WS = {
   intro:"Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.",
   introShort:"Now let's write the working, one line at a time.",
   offer:"Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.",
-  memory:"This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, and the answer sentence. Tap I've written it when you're done.",
-  fast:"Great! On your paper, write each number sentence with a short statement, then the answer sentence. Tap I've written it when you're done.",
+  memory:"This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  fast:"Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
   compare:"Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.",
   write:"Now write it on your paper. Copy each line, then tick each box when it is on your paper.",
   ticked:"All ticked. Well done!"
@@ -498,7 +500,8 @@ function workingPlan(p, c){
       ask:"Line 2. "+B+" had "+y+" "+un(y)+", and gets the "+M+" that moved. Which number sentence finds how many "+b+" has now?",
       wrong:[y>M?[wEq(y,"-",M),"Not quite. Look at "+poss(b)+" bar. It grows when the "+c.us+" arrive."]:null,
              [wEq(x,"+",M),"Not quite. That starts from "+poss(a)+" number. Look at "+poss(b)+" bar."],
-             [wEq(y,"+",x),"Not quite. Look at "+poss(b)+" bar. How many arrive?"]],
+             [wEq(y,"+",x),"Not quite. Look at "+poss(b)+" bar. How many arrive?"],
+             [wEq(x,"-",M),"Not quite. That finds "+poss(a)+" new number. Look at "+poss(b)+" bar."]],
       stmt:B+" has "+be+" "+un(be)+" now.",
       why:B+" gets the "+c.us+" that move, so it has more. More means add."});
     line({ok:wEq(hi,"-",lo), res:ans, hl:["Abar","Bbar","diff"], tag:"the difference between the two bar ends",
@@ -526,8 +529,27 @@ function workingPlan(p, c){
   AL.say="Yes! "+right+" Why this line? "+AL.why;
   AL.whySay="The answer sentence. "+right+" Why this line? "+AL.why;
   lines.push(AL);
+  // check line: put the answer back into the story and undo the move. Moving them back changes the gap twice
+  // (one side gets them back, the other loses them), so we should get the gap from the story again.
+  var g=(p.aStart-M)-(p.bStart+M), lead = who==="A" ? a : b;
+  var storyGap = p.small ? "Which number sentence should give "+D+"? That was the gap at the start: "+a+" had "+D+" more."
+    : "Which number sentence should give "+D+", the gap in the story?";
+  var ck = g>=0 ? {ok:ans+" + "+M+" + "+M, wrong:[[ans+" + "+M,"Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."],
+      who==="same" ? [M+" \u2212 "+ans,"Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."]
+        : [M+" + "+M+" \u2212 "+ans,"Not quite. Look at the bars. "+cap(lead)+" is ahead now. Moving them back makes that lead bigger, not smaller."]]}
+    : {ok:M+" + "+M+" \u2212 "+ans, wrong:[[ans-M===D ? ans+" + "+M : ans+" \u2212 "+M,"Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."],
+      [ans+" + "+M+" + "+M,"Not quite. Look at the bars. "+cap(lead)+" is ahead now. Moving them back takes away from that lead, so the gap gets smaller."]]};
+  var cch=[{t:ck.ok,ok:true}].concat(ck.wrong.map(function(w){ return {t:w[0],nudge:w[1]}; }));
+  var cr=(D+M+lines.length)%3; cch=cch.slice(cr).concat(cch.slice(0,cr));
+  var CL={key:"check", check:true, eq:ck.ok+" = "+D, choices:cch, hl:["Bgain"], tag:"the orange pieces that moved",
+    ask:"Check line. Put your answer back into the story and undo the move. Moving the "+M+" "+un(M)+" back changes the gap by "+M+" twice, once for each side. "+storyGap,
+    stmt:"Moving the "+M+" back gives a gap of "+D+", just like "+(p.small?"at the start":"in the story")+".",
+    why:"Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."};
+  CL.say="Yes! "+wSay(CL.eq)+". "+CL.stmt+" Why this line? "+CL.why;
+  CL.whySay="The check line. "+wSay(CL.eq)+". Why this line? "+CL.why;
+  lines.push(CL);
   return {method:method, lines:lines, unit:c.us,
-    checklist:["Short statements that say what each number is","Each number sentence, worked out","An answer sentence with the unit ("+c.us+")"]};
+    checklist:["Short statements that say what each number is","Each number sentence, worked out","An answer sentence with the unit ("+c.us+")","I checked my answer"]};
 }
 /*WORK-END*/
 
@@ -834,7 +856,7 @@ function isMemoryProblem(){ return (S.idx+1)%3===0; } // problems 3, 6, 9: write
 function startWorking(){
   cur.plan = workingPlan(P, C());
   var memory = isMemoryProblem(), offer = !memory && S.idx>=FAST_FROM;
-  cur.work = {mode: memory?"memory":(offer?null:"guided"), stage: memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:[false,false,false], open:-1, after:null};
+  cur.work = {mode: memory?"memory":(offer?null:"guided"), stage: memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
   cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
   cur.phase = "working";
 }
@@ -844,16 +866,17 @@ function workingEntryLines(){
   if(w.stage==="choose") return [WS.offer];
   return [S.idx<2 ? WS.intro : WS.introShort, cur.plan.lines[0].ask];
 }
+function wLabel(L,i){ return L.answer ? 'Ans' : (L.check ? 'Check' : String(i+1)); }
 function sheetHTML(upto, on, next, tap){
   var ls=cur.plan.lines, h='<div class="sheet" id="sheet">', tg=tap?'button':'div';
   for(var i=0;i<upto;i++){ var L=ls[i];
-    h+='<'+tg+' class="wline'+(on===i?' on':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+(L.answer?'Ans':(i+1))+'</span><span class="wbody">'+
-      (L.answer ? '<span class="wans">'+esc(L.stmt)+'</span>' : '<span class="weq">'+esc(L.eq)+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>';
+    h+='<'+tg+' class="wline'+(on===i?' on':'')+(L.check?' wcheck':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+wLabel(L,i)+'</span><span class="wbody">'+
+      (L.answer ? '<span class="wans">'+esc(L.stmt)+'</span>' : '<span class="weq">'+esc(L.eq)+(L.check?' ✓':'')+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>';
   }
-  if(next!=null){ var N=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+(N.answer?'Ans':(next+1))+'</span><span class="wbody">'+(N.answer?'Answer sentence?':'Number sentence?')+'</span></div>'; }
+  if(next!=null){ var N=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+wLabel(N,next)+'</span><span class="wbody">'+(N.answer?'Answer sentence?':(N.check?'Check?':'Number sentence?'))+'</span></div>'; }
   return h+'</div>';
 }
-function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the bars)</div></div>'; }
+function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+(L.check?'':'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the bars)</div>')+'</div>'; }
 function renderWorking(){
   var w=cur.work, ls=cur.plan.lines, h='<h2>4. Write the working ✏️</h2>';
   if(w.stage==="choose"){
@@ -862,7 +885,7 @@ function renderWorking(){
   } else if(w.stage==="paper"){
     h+='<p class="prompt">'+(w.mode==="memory"?'From memory ✏️':'Your turn ✏️')+'</p>';
     h+='<p>'+(w.mode==="memory"?'Draw the two bars with the dotted line. Then write:':'On your paper, write:')+'</p>';
-    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li></ul>';
+    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li><li>a check: undo the move</li></ul>';
     h+='<p class="muted">The model working stays hidden until you tap the button.</p>';
     h+='<div class="rowbtns"><button class="big green" id="wroteBtn">I\'ve written it ✓</button></div>';
   } else if(w.stage==="ask"||w.stage==="why"){
@@ -884,7 +907,7 @@ function renderWorking(){
     if(w.open>=0) h+=whyHTML(ls[w.open]);
     h+='<div class="checklist" id="checklist">'+cur.plan.checklist.map(function(t,i){ return '<button class="tick" data-tick="'+i+'" aria-pressed="'+(w.ticks[i]?'true':'false')+'"><span class="box">'+(w.ticks[i]?'✅':'⬜')+'</span><span>'+esc(t)+'</span></button>'; }).join('')+'</div>';
     var all=w.ticks.every(Boolean);
-    h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all 3 first')+'</button></div>';
+    h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all '+w.ticks.length+' first')+'</button></div>';
   }
   return h;
 }
@@ -893,7 +916,7 @@ function workCaption(){
   var i = (w.stage==="ask"||w.stage==="why") ? w.k : (w.stage==="check" ? w.open : -1);
   if(i<0) return finalCaption()+(w.stage==="paper"&&w.mode==="memory" ? " Draw these bars on your paper." : "");
   var L=cur.plan.lines[i];
-  return (L.answer ? "The answer sentence" : "Line "+(i+1))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
+  return (L.answer ? "The answer sentence" : (L.check ? "The check line" : "Line "+(i+1)))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
 }
 function workRefresh(){ setCaption(workCaption()); renderBars(); renderPanel(); }
 function bindWorking(el){

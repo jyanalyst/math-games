@@ -2040,10 +2040,10 @@
  "device_voice_working": {
   "note": "Write-the-working step: NOT recorded. Read by the device voice (Web Speech) in Lesson and Practice mode. Estimate assumes Eleven v4 at about 0.5 credits per 100 characters, numbers spelled out.",
   "generated": "2026-10-24",
-  "count": 508,
-  "chars": 78881,
-  "chars_numbers_in_words": 88966,
-  "est_credits_if_recorded": 444.8,
+  "count": 658,
+  "chars": 108792,
+  "chars_numbers_in_words": 124270,
+  "est_credits_if_recorded": 621.4,
   "lines": [
    {
     "id": "wk-intro",
@@ -2059,11 +2059,11 @@
    },
    {
     "id": "wk-memory",
-    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, and the answer sentence. Tap I've written it when you're done."
+    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done."
    },
    {
     "id": "wk-fast",
-    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence. Tap I've written it when you're done."
+    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done."
    },
    {
     "id": "wk-compare",
@@ -2138,6 +2138,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b01-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 329 students back changes the gap by 329 twice, once for each side. Which number sentence should give 129, the gap in the story?"
+   },
+   {
+    "id": "b01-w4-say",
+    "text": "Yes! 329 plus 329 take away 529 is 129. Moving the 329 back gives a gap of 129, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b01-w4-why",
+    "text": "The check line. 329 plus 329 take away 529 is 129. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b01-w4-nudge1",
+    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "b01-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "b02-w1-ask",
     "text": "Line 1. Mei Ling's extra 244 stickers walked over first. Which number sentence finds how many more stickers moved after that?"
    },
@@ -2196,6 +2216,26 @@
    {
     "id": "b02-wans-nudge2",
     "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b02-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 527 stickers back changes the gap by 527 twice, once for each side. Which number sentence should give 244, the gap in the story?"
+   },
+   {
+    "id": "b02-w4-say",
+    "text": "Yes! 527 plus 527 take away 810 is 244. Moving the 527 back gives a gap of 244, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b02-w4-why",
+    "text": "The check line. 527 plus 527 take away 810 is 244. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b02-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b02-w4-nudge2",
+    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b03-w1-ask",
@@ -2258,6 +2298,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b03-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 62 marbles back changes the gap by 62 twice, once for each side. Which number sentence should give 156, the gap in the story?"
+   },
+   {
+    "id": "b03-w4-say",
+    "text": "Yes! 32 plus 62 plus 62 is 156. Moving the 62 back gives a gap of 156, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b03-w4-why",
+    "text": "The check line. 32 plus 62 plus 62 is 156. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b03-w4-nudge1",
+    "text": "Not quite. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller."
+   },
+   {
+    "id": "b03-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "b04-w1-ask",
     "text": "Line 1. The top shelf's extra 184 books walked over first. Which number sentence finds how many more books moved after that?"
    },
@@ -2316,6 +2376,26 @@
    {
     "id": "b04-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b04-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 319 books back changes the gap by 319 twice, once for each side. Which number sentence should give 184, the gap in the story?"
+   },
+   {
+    "id": "b04-w4-say",
+    "text": "Yes! 319 plus 319 take away 454 is 184. Moving the 319 back gives a gap of 184, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b04-w4-why",
+    "text": "The check line. 319 plus 319 take away 454 is 184. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b04-w4-nudge1",
+    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "b04-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b05-w1-ask",
@@ -2378,6 +2458,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b05-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 286 passengers back changes the gap by 286 twice, once for each side. Which number sentence should give 45, the gap in the story?"
+   },
+   {
+    "id": "b05-w4-say",
+    "text": "Yes! 286 plus 286 take away 527 is 45. Moving the 286 back gives a gap of 45, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b05-w4-why",
+    "text": "The check line. 286 plus 286 take away 527 is 45. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b05-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b05-w4-nudge2",
+    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "b06-w1-ask",
     "text": "Line 1. All 141 fish come out of Tank A's extra piece. Which number sentence finds how big Tank A's extra piece is now?"
    },
@@ -2436,6 +2536,26 @@
    {
     "id": "b06-wans-nudge2",
     "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?"
+   },
+   {
+    "id": "b06-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 141 fish back changes the gap by 141 twice, once for each side. Which number sentence should give 282, the gap in the story?"
+   },
+   {
+    "id": "b06-w4-say",
+    "text": "Yes! 0 plus 141 plus 141 is 282. Moving the 141 back gives a gap of 282, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b06-w4-why",
+    "text": "The check line. 0 plus 141 plus 141 is 282. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b06-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b06-w4-nudge2",
+    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
    },
    {
     "id": "b07-w1-ask",
@@ -2498,6 +2618,26 @@
     "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
    },
    {
+    "id": "b07-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 164 ang ku kueh back changes the gap by 164 twice, once for each side. Which number sentence should give 91, the gap in the story?"
+   },
+   {
+    "id": "b07-w4-say",
+    "text": "Yes! 164 plus 164 take away 237 is 91. Moving the 164 back gives a gap of 91, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b07-w4-why",
+    "text": "The check line. 164 plus 164 take away 237 is 91. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b07-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b07-w4-nudge2",
+    "text": "Not quite. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "b08-w1-ask",
     "text": "Line 1. All 47 students come out of the hall's extra piece. Which number sentence finds how big the hall's extra piece is now?"
    },
@@ -2556,6 +2696,26 @@
    {
     "id": "b08-wans-nudge2",
     "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b08-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 47 students back changes the gap by 47 twice, once for each side. Which number sentence should give 226, the gap in the story?"
+   },
+   {
+    "id": "b08-w4-say",
+    "text": "Yes! 132 plus 47 plus 47 is 226. Moving the 47 back gives a gap of 226, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b08-w4-why",
+    "text": "The check line. 132 plus 47 plus 47 is 226. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b08-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b08-w4-nudge2",
+    "text": "Not quite. Look at the bars. The hall is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b09-w1-ask",
@@ -2618,6 +2778,26 @@
     "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
    },
    {
+    "id": "b09-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 399 stickers back changes the gap by 399 twice, once for each side. Which number sentence should give 237, the gap in the story?"
+   },
+   {
+    "id": "b09-w4-say",
+    "text": "Yes! 399 plus 399 take away 561 is 237. Moving the 399 back gives a gap of 237, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b09-w4-why",
+    "text": "The check line. 399 plus 399 take away 561 is 237. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b09-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b09-w4-nudge2",
+    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "b10-w1-ask",
     "text": "Line 1. Jar A's extra 165 marbles walked over first. Which number sentence finds how many more marbles moved after that?"
    },
@@ -2676,6 +2856,26 @@
    {
     "id": "b10-wans-nudge2",
     "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b10-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 300 marbles back changes the gap by 300 twice, once for each side. Which number sentence should give 165, the gap in the story?"
+   },
+   {
+    "id": "b10-w4-say",
+    "text": "Yes! 300 plus 300 take away 435 is 165. Moving the 300 back gives a gap of 165, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b10-w4-why",
+    "text": "The check line. 300 plus 300 take away 435 is 165. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b10-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b10-w4-nudge2",
+    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b11-w1-ask",
@@ -2738,6 +2938,26 @@
     "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
+    "id": "b11-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 326 books back changes the gap by 326 twice, once for each side. Which number sentence should give 70, the gap in the story?"
+   },
+   {
+    "id": "b11-w4-say",
+    "text": "Yes! 326 plus 326 take away 582 is 70. Moving the 326 back gives a gap of 70, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b11-w4-why",
+    "text": "The check line. 326 plus 326 take away 582 is 70. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b11-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b11-w4-nudge2",
+    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "b12-w1-ask",
     "text": "Line 1. All 23 passengers come out of Bus 1's extra piece. Which number sentence finds how big Bus 1's extra piece is now?"
    },
@@ -2796,6 +3016,26 @@
    {
     "id": "b12-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b12-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 23 passengers back changes the gap by 23 twice, once for each side. Which number sentence should give 171, the gap in the story?"
+   },
+   {
+    "id": "b12-w4-say",
+    "text": "Yes! 125 plus 23 plus 23 is 171. Moving the 23 back gives a gap of 171, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b12-w4-why",
+    "text": "The check line. 125 plus 23 plus 23 is 171. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b12-w4-nudge1",
+    "text": "Not quite. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
+   },
+   {
+    "id": "b12-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b13-w1-ask",
@@ -2858,6 +3098,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b13-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 324 fish back changes the gap by 324 twice, once for each side. Which number sentence should give 239, the gap in the story?"
+   },
+   {
+    "id": "b13-w4-say",
+    "text": "Yes! 324 plus 324 take away 409 is 239. Moving the 324 back gives a gap of 239, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b13-w4-why",
+    "text": "The check line. 324 plus 324 take away 409 is 239. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b13-w4-nudge1",
+    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "b13-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "b14-w1-ask",
     "text": "Line 1. Tray A's extra 208 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?"
    },
@@ -2916,6 +3176,26 @@
    {
     "id": "b14-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b14-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 382 ang ku kueh back changes the gap by 382 twice, once for each side. Which number sentence should give 208, the gap in the story?"
+   },
+   {
+    "id": "b14-w4-say",
+    "text": "Yes! 382 plus 382 take away 556 is 208. Moving the 382 back gives a gap of 208, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b14-w4-why",
+    "text": "The check line. 382 plus 382 take away 556 is 208. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b14-w4-nudge1",
+    "text": "Not quite. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "b14-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b15-w1-ask",
@@ -2978,6 +3258,26 @@
     "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which place has more. What do you say when nobody has more?"
    },
    {
+    "id": "b15-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 65 students back changes the gap by 65 twice, once for each side. Which number sentence should give 130, the gap in the story?"
+   },
+   {
+    "id": "b15-w4-say",
+    "text": "Yes! 0 plus 65 plus 65 is 130. Moving the 65 back gives a gap of 130, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b15-w4-why",
+    "text": "The check line. 0 plus 65 plus 65 is 130. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b15-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b15-w4-nudge2",
+    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
+   },
+   {
     "id": "b16-w1-ask",
     "text": "Line 1. Mei Ling's extra 32 stickers walked over first. Which number sentence finds how many more stickers moved after that?"
    },
@@ -3036,6 +3336,26 @@
    {
     "id": "b16-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b16-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 296 stickers back changes the gap by 296 twice, once for each side. Which number sentence should give 32, the gap in the story?"
+   },
+   {
+    "id": "b16-w4-say",
+    "text": "Yes! 296 plus 296 take away 560 is 32. Moving the 296 back gives a gap of 32, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b16-w4-why",
+    "text": "The check line. 296 plus 296 take away 560 is 32. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b16-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b16-w4-nudge2",
+    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b17-w1-ask",
@@ -3098,6 +3418,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b17-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 370 marbles back changes the gap by 370 twice, once for each side. Which number sentence should give 96, the gap in the story?"
+   },
+   {
+    "id": "b17-w4-say",
+    "text": "Yes! 370 plus 370 take away 644 is 96. Moving the 370 back gives a gap of 96, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b17-w4-why",
+    "text": "The check line. 370 plus 370 take away 644 is 96. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b17-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b17-w4-nudge2",
+    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "b18-w1-ask",
     "text": "Line 1. All 58 books come out of the top shelf's extra piece. Which number sentence finds how big the top shelf's extra piece is now?"
    },
@@ -3156,6 +3496,26 @@
    {
     "id": "b18-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b18-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 58 books back changes the gap by 58 twice, once for each side. Which number sentence should give 273, the gap in the story?"
+   },
+   {
+    "id": "b18-w4-say",
+    "text": "Yes! 157 plus 58 plus 58 is 273. Moving the 58 back gives a gap of 273, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b18-w4-why",
+    "text": "The check line. 157 plus 58 plus 58 is 273. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b18-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b18-w4-nudge2",
+    "text": "Not quite. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b19-w1-ask",
@@ -3218,6 +3578,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "b19-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 290 passengers back changes the gap by 290 twice, once for each side. Which number sentence should give 30, the gap in the story?"
+   },
+   {
+    "id": "b19-w4-say",
+    "text": "Yes! 290 plus 290 take away 550 is 30. Moving the 290 back gives a gap of 30, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b19-w4-why",
+    "text": "The check line. 290 plus 290 take away 550 is 30. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b19-w4-nudge1",
+    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "b19-w4-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "b20-w1-ask",
     "text": "Line 1. Tank A's extra 234 fish walked over first. Which number sentence finds how many more fish moved after that?"
    },
@@ -3276,6 +3656,26 @@
    {
     "id": "b20-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b20-w4-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 532 fish back changes the gap by 532 twice, once for each side. Which number sentence should give 234, the gap in the story?"
+   },
+   {
+    "id": "b20-w4-say",
+    "text": "Yes! 532 plus 532 take away 830 is 234. Moving the 532 back gives a gap of 234, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b20-w4-why",
+    "text": "The check line. 532 plus 532 take away 830 is 234. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "b20-w4-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "b20-w4-nudge2",
+    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s01-w1-ask",
@@ -3358,6 +3758,26 @@
     "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
+    "id": "s01-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 marbles back changes the gap by 5 twice, once for each side. Which number sentence should give 3? That was the gap at the start: Jar A had 3 more."
+   },
+   {
+    "id": "s01-w5-say",
+    "text": "Yes! 5 plus 5 take away 7 is 3. Moving the 5 back gives a gap of 3, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s01-w5-why",
+    "text": "The check line. 5 plus 5 take away 7 is 3. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s01-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s01-w5-nudge2",
+    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
     "id": "s02-w1-ask",
     "text": "Line 1. The top shelf had 12 books, and 7 moved out. Which number sentence finds how many the top shelf has now?"
    },
@@ -3436,6 +3856,26 @@
    {
     "id": "s02-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s02-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 7 books back changes the gap by 7 twice, once for each side. Which number sentence should give 3? That was the gap at the start: the top shelf had 3 more."
+   },
+   {
+    "id": "s02-w5-say",
+    "text": "Yes! 7 plus 7 take away 11 is 3. Moving the 7 back gives a gap of 3, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s02-w5-why",
+    "text": "The check line. 7 plus 7 take away 11 is 3. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s02-w5-nudge1",
+    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "s02-w5-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s03-w1-ask",
@@ -3518,6 +3958,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "s03-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 3 passengers back changes the gap by 3 twice, once for each side. Which number sentence should give 7? That was the gap at the start: Bus 1 had 7 more."
+   },
+   {
+    "id": "s03-w5-say",
+    "text": "Yes! 1 plus 3 plus 3 is 7. Moving the 3 back gives a gap of 7, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s03-w5-why",
+    "text": "The check line. 1 plus 3 plus 3 is 7. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s03-w5-nudge1",
+    "text": "Not quite. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
+   },
+   {
+    "id": "s03-w5-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "s04-w1-ask",
     "text": "Line 1. Tank A had 8 fish, and 5 moved out. Which number sentence finds how many Tank A has now?"
    },
@@ -3596,6 +4056,26 @@
    {
     "id": "s04-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s04-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 fish back changes the gap by 5 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Tank A had 4 more."
+   },
+   {
+    "id": "s04-w5-say",
+    "text": "Yes! 5 plus 5 take away 6 is 4. Moving the 5 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s04-w5-why",
+    "text": "The check line. 5 plus 5 take away 6 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s04-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s04-w5-nudge2",
+    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s05-w1-ask",
@@ -3678,6 +4158,26 @@
     "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
    },
    {
+    "id": "s05-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 1 ang ku kueh back changes the gap by 1 twice, once for each side. Which number sentence should give 2? That was the gap at the start: Tray A had 2 more."
+   },
+   {
+    "id": "s05-w5-say",
+    "text": "Yes! 0 plus 1 plus 1 is 2. Moving the 1 back gives a gap of 2, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s05-w5-why",
+    "text": "The check line. 0 plus 1 plus 1 is 2. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s05-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s05-w5-nudge2",
+    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
+   },
+   {
     "id": "s06-w1-ask",
     "text": "Line 1. The hall had 8 students, and 5 moved out. Which number sentence finds how many the hall has now?"
    },
@@ -3756,6 +4256,26 @@
    {
     "id": "s06-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s06-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 students back changes the gap by 5 twice, once for each side. Which number sentence should give 1? That was the gap at the start: the hall had 1 more."
+   },
+   {
+    "id": "s06-w5-say",
+    "text": "Yes! 5 plus 5 take away 9 is 1. Moving the 5 back gives a gap of 1, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s06-w5-why",
+    "text": "The check line. 5 plus 5 take away 9 is 1. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s06-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s06-w5-nudge2",
+    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s07-w1-ask",
@@ -3838,6 +4358,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "s07-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 2 stickers back changes the gap by 2 twice, once for each side. Which number sentence should give 8? That was the gap at the start: Mei Ling had 8 more."
+   },
+   {
+    "id": "s07-w5-say",
+    "text": "Yes! 4 plus 2 plus 2 is 8. Moving the 2 back gives a gap of 8, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s07-w5-why",
+    "text": "The check line. 4 plus 2 plus 2 is 8. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s07-w5-nudge1",
+    "text": "Not quite. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller."
+   },
+   {
+    "id": "s07-w5-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "s08-w1-ask",
     "text": "Line 1. Jar A had 9 marbles, and 7 moved out. Which number sentence finds how many Jar A has now?"
    },
@@ -3916,6 +4456,26 @@
    {
     "id": "s08-wans-nudge2",
     "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s08-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 7 marbles back changes the gap by 7 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Jar A had 4 more."
+   },
+   {
+    "id": "s08-w5-say",
+    "text": "Yes! 7 plus 7 take away 10 is 4. Moving the 7 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s08-w5-why",
+    "text": "The check line. 7 plus 7 take away 10 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s08-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s08-w5-nudge2",
+    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s09-w1-ask",
@@ -3998,6 +4558,26 @@
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
    },
    {
+    "id": "s09-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 2 books back changes the gap by 2 twice, once for each side. Which number sentence should give 8? That was the gap at the start: the top shelf had 8 more."
+   },
+   {
+    "id": "s09-w5-say",
+    "text": "Yes! 4 plus 2 plus 2 is 8. Moving the 2 back gives a gap of 8, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s09-w5-why",
+    "text": "The check line. 4 plus 2 plus 2 is 8. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s09-w5-nudge1",
+    "text": "Not quite. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
+   },
+   {
+    "id": "s09-w5-nudge2",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
     "id": "s10-w1-ask",
     "text": "Line 1. Bus 1 had 7 passengers, and 5 moved out. Which number sentence finds how many Bus 1 has now?"
    },
@@ -4076,6 +4656,26 @@
    {
     "id": "s10-wans-nudge2",
     "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s10-w5-ask",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 passengers back changes the gap by 5 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Bus 1 had 4 more."
+   },
+   {
+    "id": "s10-w5-say",
+    "text": "Yes! 5 plus 5 take away 6 is 4. Moving the 5 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s10-w5-why",
+    "text": "The check line. 5 plus 5 take away 6 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense."
+   },
+   {
+    "id": "s10-w5-nudge1",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+   },
+   {
+    "id": "s10-w5-nudge2",
+    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    }
   ]
  }
