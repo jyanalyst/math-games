@@ -217,6 +217,7 @@
   .ap-lab.hl,.ap-in.hl,.ap-ar.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
   .ap-in{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;color:#4b3fc4;background:rgba(255,255,255,.85);padding:1px 8px;border-radius:10px;white-space:nowrap}
   .ap-ar{position:absolute;transform:translateX(-50%);font-weight:800;font-size:16px;color:#7a2d5a;background:#fde8f3;padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .pad .padwide{grid-column:1 / -1}
 </style>
 </head>
 <body>
@@ -273,11 +274,11 @@ var MI="\u2212", TI="\u00d7", DI="\u00f7";
 function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
 var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
 function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
-// tiny evaluator for "a op b op c" with + - x / (x and / first)
+// tiny evaluator for "a op b op c" with + - x / (x and / first); "$4.35" tokens count in cents (435)
 function evalExpr(x){
   var t=String(x).split(" "); if(t.length%2!==1) return null;
   var nums=[], ops=[];
-  for(var i=0;i<t.length;i++){ if(i%2===0){ if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  for(var i=0;i<t.length;i++){ if(i%2===0){ var mm=/^\$(\d+)(?:\.(\d\d))?$/.exec(t[i]); if(mm){ nums.push(+mm[1]*100+(mm[2]?+mm[2]:0)); continue; } if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
   var n2=[nums[0]], o2=[];
   for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
     if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
@@ -286,65 +287,101 @@ function evalExpr(x){
 }
 function numsIn(s){ return (String(s).match(/\d+/g)||[]).map(Number); }
 var GX={pl:pl,cap:cap,rnd:rnd,pick:pick,shuffle:shuffle,isWhole:isWhole,MI:MI,TI:TI,DI:DI,ex:ex,NAMES:NAMES,pickNames:pickNames,evalExpr:evalExpr};
-/* ===== Game 10: Money Steps (money word problems in several steps), P3-MONY-MO-G10 =====
-   kind "change": n items at $a each (+ one more item at $b), paid with a $X note: change = X - (n*a + b).
-   kind "left":   had $X, spent $a on one thing and $d more/less (p.dir) on another: left = X - a - (a ± d).
-   kind "save":   price $C, has $H, saves $w a week: weeks = (C - H) / w.   Whole dollars only (the number pad has no decimal point). */
+/* ===== Game 10: Money Steps (money word problems in several steps, dollars and cents), P3-MONY-MO-G10 =====
+   ALL MONEY IS IN WHOLE CENTS (integers): $4.35 is 435. Never floating point.
+   kind "change": n items at a each (n > 1 only for whole-dollar prices: P3 does not multiply cents) + optional extra b; paid with a note X: change = X - (n*a + b).
+   kind "left":   had X, spent a on one thing and d more/less (p.dir) on another: left = X - a - (a ± d).
+   kind "save":   price C, has H, saves w a week (whole dollars): weeks = (C - H) / w.
+   p.c = true when any amount has cents: then money is written with 2 decimal places ($10.00) in the working and the answer. */
 var G=(function(){
-var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole, pl=GX.pl;
+var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole, pl=GX.pl, EV=GX.evalExpr;
 var ITEMS={pens:["pen","pens"], books:["book","books"], shirts:["T-shirt","T-shirts"], toys:["toy car","toy cars"], files:["file","files"], plates:["plate","plates"], mugs:["mug","mugs"], balls:["ball","balls"]};
-var EXTRA=["a bag","a cap","a ruler","a lunch box","a water bottle","an umbrella"];
-var PAIRS=[["a book","a game"],["a shirt","a pair of shoes"],["a toy","a puzzle"],["a watch","a bag"],["a bicycle","a helmet"],["a lamp","a chair"]];
+var EXTRA=["a bag","a cap","a ruler","a lunch box","a water bottle","an umbrella","a pencil case","a storybook"];
+var PAIRS=[["a book","a game"],["a shirt","a pair of shoes"],["a toy","a puzzle"],["a watch","a bag"],["a bicycle","a helmet"],["a lamp","a chair"],["a kite","a ball"]];
 var GOALS=["a scooter","a toy robot","a pair of skates","a guitar","a board game","a telescope"];
+var NOTES=[1000,2000,5000,10000];
+function pad2(n){ return (n<10?"0":"")+n; }
+// money text: whole dollars as "$4" unless two=true; cents always as "$4.35"
+function M(c,two){ var d=Math.floor(c/100), r=c%100; return (r===0 && !two) ? "$"+d : "$"+d+"."+pad2(r); }
+function m(p,c){ return M(c,p.c); }                       // the problem's style: 2 dp when the problem has cents
+function hasC(x){ return x%100!==0; }
 function finish(p){
-  if(p.kind==="change"){ p.c=p.n*p.a; p.t=p.c+p.b; p.answer=p.X-p.t; }
-  else if(p.kind==="left"){ p.bb=p.dir==="more"?p.a+p.d:p.a-p.d; p.t=p.a+p.bb; p.answer=p.X-p.t; }
-  else { p.need=p.C-p.H; p.answer=p.need/p.w; }
+  if(p.kind==="change"){ p.cc=p.n*p.a; p.t=p.cc+p.b; p.answer=p.X-p.t; p.c=hasC(p.a)||hasC(p.b); }
+  else if(p.kind==="left"){ p.bb=p.dir==="more"?p.a+p.d:p.a-p.d; p.t=p.a+p.bb; p.answer=p.X-p.t; p.c=hasC(p.X)||hasC(p.a)||hasC(p.d); }
+  else { p.need=p.C-p.H; p.answer=p.need/p.w; p.c=false; }
   p.names=[p.who]; return p;
 }
-function nm(p){ return p.who; }
 function the(x){ return x.replace(/^an? /,"the "); }
 function it(p,n){ var x=ITEMS[p.item]; return n===1?x[0]:x[1]; }
+function one(p){ var s=it(p,1); return (/^[aeiou]/i.test(s)?"an ":"a ")+s; }
 function story(p){ var W=p.who;
-  if(p.kind==="change") return W+" bought "+p.n+" "+it(p,p.n)+" at $"+p.a+" each"+(p.b?" and "+p.extra+" for $"+p.b:"")+". "+W+" paid with a $"+p.X+" note.";
-  if(p.kind==="left") return W+" had $"+p.X+". "+W+" spent $"+p.a+" on "+p.pair[0]+". "+W+" spent $"+p.d+" "+(p.dir==="more"?"more":"less")+" on "+p.pair[1]+" than on "+the(p.pair[0])+".";
-  return W+" wants to buy "+p.goal+" that costs $"+p.C+". "+W+" has $"+p.H+". "+W+" saves $"+p.w+" each week."; }
+  if(p.kind==="change") return W+" bought "+(p.n>1?p.n+" "+it(p,p.n)+" at "+M(p.a)+" each":one(p)+" for "+M(p.a))+(p.b?" and "+p.extra+" for "+M(p.b):"")+". "+W+" paid with a "+M(p.X)+" note.";
+  if(p.kind==="left") return W+" had "+M(p.X)+". "+W+" spent "+M(p.a)+" on "+p.pair[0]+". "+W+" spent "+M(p.d)+" "+(p.dir==="more"?"more":"less")+" on "+p.pair[1]+" than on "+the(p.pair[0])+".";
+  return W+" wants to buy "+p.goal+" that costs "+M(p.C)+". "+W+" has "+M(p.H)+". "+W+" saves "+M(p.w)+" each week."; }
 function question(p){
   if(p.kind==="change") return "How much change did "+p.who+" get?";
   if(p.kind==="left") return "How much money did "+p.who+" have left?";
   return "How many weeks will "+p.who+" take to save enough money?"; }
 function answerSentence(p){ var W=p.who;
-  if(p.kind==="change") return W+" got $"+p.answer+" change.";
-  if(p.kind==="left") return W+" had $"+p.answer+" left.";
+  if(p.kind==="change") return W+" got "+m(p,p.answer)+" change.";
+  if(p.kind==="left") return W+" had "+m(p,p.answer)+" left.";
   return W+" will take "+p.answer+" weeks."; }
 function answerLine(p){ var W=p.who;
   if(p.kind==="change") return [W+" got $", "change."];
   if(p.kind==="left") return [W+" had $", "left."];
   return [W+" will take", "weeks."]; }
 function unitOf(p){ return p.kind==="save"?"weeks":"$"; }
-var NOTES=[10,20,50,100];
+// number-pad entry: money as dollars, point, 2 digits of cents ("2.85"); whole dollars may be typed as "4" or "4.00"
+function decimalPad(p){ return p.kind!=="save"; }
+function parseTyped(t,p){ t=String(t);
+  if(p.kind==="save") return /^\d+$/.test(t) ? parseInt(t,10) : null;
+  var a=/^(\d+)$/.exec(t); if(a) return parseInt(a[1],10)*100;
+  var b=/^(\d+)\.(\d\d)$/.exec(t); if(b) return parseInt(b[1],10)*100+parseInt(b[2],10);
+  return null; }
+function formatMsg(p,t){
+  if(p.kind==="save") return "Weeks are a whole number. Type it without a point.";
+  if(/\.\d$/.test(t)) return "Money has 2 digits after the point, for the cents. Type the cents with 2 digits.";
+  if(/\.$/.test(t)) return "Type the cents after the point, with 2 digits.";
+  return "Type the dollars, then the point, then 2 digits for the cents.";
+}
+function typeFor(p,v){ if(p.kind==="save") return String(v); var d=Math.floor(v/100), r=v%100; return (r===0 && !p.c) ? String(d) : d+"."+pad2(r); }
+// numbers the child sees: money amounts in cents ("$2.85" -> 285, "$10" -> 1000); plain numbers for weeks
+function numsIn(t,p){ if(p && p.kind==="save") return (String(t).match(/\d+/g)||[]).map(Number);
+  var out=[], re=/\$(\d+)(?:\.(\d\d))?/g, x; while((x=re.exec(String(t)))) out.push(+x[1]*100+(x[2]?+x[2]:0)); return out; }
 function verify(p){
   if(!p.who) return false;
+  var amts=[];
   if(p.kind==="change"){ if(!ITEMS[p.item] || NOTES.indexOf(p.X)<0 || (p.b && !p.extra)) return false;
-    if(![p.n,p.a,p.b,p.X].every(isWhole) || p.n<2 || p.n>6 || p.a<2 || p.b<0 || p.answer<1) return false;
-    if(p.b && p.b===p.a) return false;
+    if(![p.n,p.a,p.b,p.X].every(isWhole) || p.n<1 || p.n>6 || p.a<100 || p.b<0 || p.answer<5) return false;
+    if(p.n>1 && hasC(p.a)) return false;              // P3: no multiplying cents
+    if(p.n===1 && !p.b) return false;                 // always at least 2 steps
+    if(p.b && p.b===p.a) return false; amts=[p.a,p.b,p.X,p.answer];
   } else if(p.kind==="left"){ if(!p.pair || (p.dir!=="more"&&p.dir!=="less")) return false;
-    if(![p.X,p.a,p.d,p.bb].every(isWhole) || p.a<2 || p.d<2 || p.bb<2 || p.answer<1) return false;
+    if(![p.X,p.a,p.d,p.bb].every(isWhole) || p.a<200 || p.d<100 || p.bb<200 || p.answer<5) return false; amts=[p.X,p.a,p.d,p.bb,p.answer];
   } else if(p.kind==="save"){ if(!p.goal) return false;
-    if(![p.C,p.H,p.w,p.need,p.answer].every(isWhole) || p.w<2 || p.w>9 || p.H<2 || p.answer<3 || p.answer>20 || p.answer===p.w) return false;
+    if(![p.C,p.H,p.w,p.need,p.answer].every(isWhole) || [p.C,p.H,p.w].some(hasC) || p.w<200 || p.w>900 || p.H<200 || p.answer<3 || p.answer>20 || p.answer*100===p.w) return false;
   } else return false;
-  if(p.small && Math.max(p.X||0,p.C||0)>60) return false; if(Math.max(p.X||0,p.C||0)>999) return false;
+  if(amts.some(function(x){ return x%5!==0; })) return false;       // coins go down to 5 cents
+  if(p.small && (p.c || Math.max(p.X||0,p.C||0)>6000)) return false; if(Math.max(p.X||0,p.C||0)>99900) return false;
   return true;
 }
+function c5(lo,hi){ return 5*rnd(Math.ceil(lo/5),Math.floor(hi/5)); }
 function make(i, small, names){
-  var kind=["change","left","save","change",pick(["left","change","save"])][i], p={who:names[0], kind:kind};
-  for(var t=0;t<300;t++){
-    if(kind==="change"){ p.item=pick(Object.keys(ITEMS)); p.n=rnd(2,small?4:6); p.a=small?rnd(2,9):rnd(4,40); p.b=Math.random()<.75?(small?rnd(2,9):rnd(3,60)):0; p.extra=p.b?pick(EXTRA):null;
-      var tot=p.n*p.a+p.b, ok=NOTES.filter(function(x){ return x>tot && x<=(small?50:100) && x-tot<=(small?40:90); }); if(!ok.length) continue; p.X=ok[0]; }
+  var kind=["change",Math.random()<.4?"save":"left","change","change",pick(["left","change","left","save"])][i], p={who:names[0], kind:kind};
+  var cents=!small && (i>=2 ? Math.random()<.85 : Math.random()<.4);
+  for(var t=0;t<400;t++){
+    if(kind==="change"){ p.item=pick(Object.keys(ITEMS));
+      if(cents && Math.random()<.5){ p.n=1; p.a=c5(105,2495); }
+      else { p.n=rnd(2,small?4:6); p.a=100*(small?rnd(2,9):rnd(2,25)); }
+      p.b=cents ? c5(105,1995) : (Math.random()<.75?100*(small?rnd(2,9):rnd(3,40)):0); if(p.n===1 && !p.b) p.b=c5(105,995);
+      if(cents && !hasC(p.a) && !hasC(p.b)) p.b+=c5(5,95);
+      p.extra=p.b?pick(EXTRA):null;
+      var tot=p.n*p.a+p.b, ok=NOTES.filter(function(x){ return x>tot && x<=(small?5000:10000) && x-tot<=(small?4000:9000); }); if(!ok.length) continue; p.X=ok[0]; }
     else if(kind==="left"){ p.pair=pick(PAIRS); p.dir=Math.random()<.5?"more":"less";
-      if(small){ p.a=rnd(4,15); p.d=rnd(2,p.dir==="more"?10:p.a-2); p.X=5*rnd(Math.ceil((2*p.a+(p.dir==="more"?p.d:-p.d)+3)/5),12); }
-      else { p.a=rnd(60,300); p.d=rnd(15,p.dir==="more"?150:p.a-20); p.X=50*rnd(Math.ceil((2*p.a+(p.dir==="more"?p.d:-p.d)+10)/50),19); } }
-    else { p.goal=pick(GOALS); p.w=rnd(2,9); var wk=small?rnd(3,8):rnd(6,20); p.H=small?rnd(3,20):rnd(20,300); p.C=p.H+wk*p.w; }
+      if(small){ p.a=100*rnd(4,15); p.d=100*rnd(2,p.dir==="more"?10:p.a/100-2); p.X=500*rnd(Math.ceil((2*p.a+(p.dir==="more"?p.d:-p.d)+300)/500),12); }
+      else if(cents){ p.a=c5(300,3000); p.d=c5(105,p.dir==="more"?1500:p.a-205); p.X=1000*rnd(Math.ceil((2*p.a+(p.dir==="more"?p.d:-p.d)+100)/1000),10); if(!hasC(p.a)&&!hasC(p.d)) continue; }
+      else { p.a=100*rnd(60,300); p.d=100*rnd(15,p.dir==="more"?150:p.a/100-20); p.X=5000*rnd(Math.ceil((2*p.a+(p.dir==="more"?p.d:-p.d)+1000)/5000),19); } }
+    else { p.goal=pick(GOALS); p.w=100*rnd(2,9); var wk=small?rnd(3,8):rnd(6,20); p.H=100*(small?rnd(3,20):rnd(20,300)); p.C=p.H+wk*p.w; }
     finish(p); if(verify(p)) return p;
   }
   return p;
@@ -354,14 +391,14 @@ function fromSpec(s){
   if(s[0]==="left") return {kind:"left", X:s[1], a:s[2], d:s[3], dir:s[4], pair:s[5], who:s[6], small:!!s[7]};
   return {kind:"save", goal:s[1], C:s[2], H:s[3], w:s[4], who:s[5], small:!!s[6]};
 }
-var BANK=[
-  ["change",2,"pens",3,null,0,10,"Hui Min",true],                    // 2 x $3 = $6, change from $10: $4
-  ["left",30,8,5,"more",["a book","a game"],"Irfan",true],           // game $13, spent $21, left $9
-  ["save","a toy robot",45,13,4,"Zara",true],                        // needs $32, $4 a week: 8 weeks
-  ["change",4,"shirts",12,"a cap",9,100,"Ethan",false],              // $48 + $9 = $57, change $43
-  ["left",500,238,165,"less",["a bicycle","a helmet"],"Divya",false] // helmet $73, spent $311, left $189 (exam level)
+var BANK=[  // amounts in cents
+  ["change",2,"pens",300,null,0,1000,"Hui Min",true],                    // 2 x $3 = $6; $10 - $6 = $4
+  ["left",3000,800,500,"more",["a book","a game"],"Irfan",true],         // game $13; spent $21; left $9
+  ["change",1,"books",435,"a pen",280,1000,"Zara",false],                // $4.35 + $2.80 = $7.15; $10.00 - $7.15 = $2.85
+  ["change",3,"shirts",1200,"a cap",865,5000,"Ethan",false],             // 3 x $12 = $36; $36.00 + $8.65 = $44.65; $50.00 - $44.65 = $5.35
+  ["left",4000,1285,340,"more",["a book","a game"],"Divya",false]        // $12.85 + $3.40 = $16.25; $12.85 + $16.25 = $29.10; $40.00 - $29.10 = $10.90
 ];
-function answerAsk(p){ return "Now find the answer. Type it, then tap Check."; }
+function answerAsk(p){ return p.kind==="save" ? "Now find the answer. Type it, then tap Check." : "Now find the answer. Type the dollars"+(p.c?", then the point, then the cents":"")+". Then tap Check."; }
 function guess(p,i){
   if(i%2===0){
     if(p.kind==="save") return {q:"What do we find first?", choices:[["need","How much more money is needed"],["div","Divide the price by the money saved each week"],["add","Add the price and the money saved"]], right:"need",
@@ -371,159 +408,176 @@ function guess(p,i){
   }
   if(p.kind==="save") return {q:"Is the answer an amount of money, or a number of weeks?", choices:[["w","Weeks"],["m","Money"],["both","Both"]], right:"w",
     note:function(k,ok){ return ok ? "Yes! Always check what the question asks for." : "Read the question again. It asks how many weeks."; }};
-  return {q:"Will the answer be more or less than $"+p.X+"?", choices:[["less","Less"],["more","More"],["same","The same"]], right:"less",
-    note:function(k,ok){ return ok ? "Yes! Spending makes the money smaller." : "Let's draw it. Some of the $"+p.X+" is spent."; }};
+  if(p.c) return {q:"How many cents make 1 dollar?", choices:[["100","100 cents"],["10","10 cents"],["60","60 cents"]], right:"100",
+    note:function(k,ok){ return ok ? "Yes! 100 cents make $1. That's why money has 2 digits after the point." : "100 cents make $1. That's why money has 2 digits after the point."; }};
+  return {q:"Will the answer be more or less than "+M(p.X)+"?", choices:[["less","Less"],["more","More"],["same","The same"]], right:"less",
+    note:function(k,ok){ return ok ? "Yes! Spending makes the money smaller." : "Let's draw it. Some of the "+M(p.X)+" is spent."; }};
 }
 function build(p){
   var W=p.who;
   if(p.kind==="save") return [
-    {type:"choice", ask:"What is the whole bar?", right:"C", choices:[["C","$"+p.C+", the price",null],["H","$"+p.H+", what "+W+" has","Not quite. That is only a part. The whole bar is what "+W+" must reach."],["w","$"+p.w+" a week","Not quite. That is one small piece."]],
-     done:"The whole bar is the price, $"+p.C+"."},
-    {type:"choice", ask:"Which part do we already have?", right:"H", choices:[["H","$"+p.H+": the money "+W+" has",null],["w","$"+p.w,"Not quite. That's saved each week, later."],["none","None of it","Not quite. Read the story: "+W+" already has some money."]],
-     done:W+" already has $"+p.H+". The rest is still needed."},
-    {type:"choice", ask:"What are the equal pieces in the rest of the bar?", right:"w", choices:[["w","$"+p.w+" saved each week",null],["H","$"+p.H+" each","Not quite. Each week, "+W+" saves the same small amount."],["C","The price","Not quite. Each piece is one week's saving."]],
-     done:"Each piece is $"+p.w+", one week of saving."}];
+    {type:"choice", ask:"What is the whole bar?", right:"C", choices:[["C",M(p.C)+", the price",null],["H",M(p.H)+", what "+W+" has","Not quite. That is only a part. The whole bar is what "+W+" must reach."],["w",M(p.w)+" a week","Not quite. That is one small piece."]],
+     done:"The whole bar is the price, "+M(p.C)+"."},
+    {type:"choice", ask:"Which part do we already have?", right:"H", choices:[["H",M(p.H)+": the money "+W+" has",null],["w",M(p.w),"Not quite. That's saved each week, later."],["none","None of it","Not quite. Read the story: "+W+" already has some money."]],
+     done:W+" already has "+M(p.H)+". The rest is still needed."},
+    {type:"choice", ask:"What are the equal pieces in the rest of the bar?", right:"w", choices:[["w",M(p.w)+" saved each week",null],["H",M(p.H)+" each","Not quite. Each week, "+W+" saves the same small amount."],["C","The price","Not quite. Each piece is one week's saving."]],
+     done:"Each piece is "+M(p.w)+", one week of saving."}];
   var whole={type:"choice", ask:"What is the whole bar?", right:"X",
-     choices:[["X","$"+p.X+(p.kind==="change"?", the note":", the money at first"),null],["a","$"+p.a,"Not quite. That is only one thing that was bought."],["sp","The money spent","Not quite. The money spent is only a part. The whole is "+(p.kind==="change"?"the note.":"what "+W+" had at first.")]],
-     done:"The whole bar is $"+p.X+"."};
+     choices:[["X",M(p.X)+(p.kind==="change"?", the note":", the money at first"),null],["a",M(p.a),"Not quite. That is only one thing that was bought."],["sp","The money spent","Not quite. The money spent is only a part. The whole is "+(p.kind==="change"?"the note.":"what "+W+" had at first.")]],
+     done:"The whole bar is "+M(p.X)+"."};
   var rest={type:"choice", ask:"Where does the question mark go?", right:"rest",
      choices:[["rest","On the part that is not spent",null],["all","Over the whole bar","Not quite. The whole bar is the "+(p.kind==="change"?"note":"money at first")+". We know that."],["sp","On the money spent","Not quite. The question asks what is "+(p.kind==="change"?"given back":"left")+"."]],
      done:"The question mark is the part that is not spent: "+(p.kind==="change"?"the change.":"the money left.")};
-  if(p.kind==="change") return [whole,
-    {type:"count", ask:"Draw the "+it(p,2)+" as equal pieces of $"+p.a+". Tap + for each "+it(p,1)+".", target:p.n, unitName:it(p,1),
-     low:"Not yet. Read the story again: how many "+it(p,2)+"?", high:"Too many. Read the story again: how many "+it(p,2)+"?", done:p.n+" equal pieces of $"+p.a+"."}, rest];
+  if(p.kind==="change"){
+    var mid = p.n>1 ? {type:"count", ask:"Draw the "+it(p,2)+" as equal pieces of "+M(p.a)+". Tap + for each "+it(p,1)+".", target:p.n, unitName:it(p,1),
+        low:"Not yet. Read the story again: how many "+it(p,2)+"?", high:"Too many. Read the story again: how many "+it(p,2)+"?", done:p.n+" equal pieces of "+M(p.a)+"."}
+      : {type:"choice", ask:"Which pieces of money were spent?", right:"both", choices:[["both",cap(one(p))+" and "+p.extra,null],["one","Only "+one(p),"Not quite. Read the story again: two things were bought."],["note","The note","Not quite. The note is the whole bar. The pieces are the things bought."]],
+        done:"Two pieces were spent: "+M(p.a)+" and "+M(p.b)+"."};
+    return [whole, mid, rest];
+  }
   return [whole,
     {type:"choice", ask:"Which cost more: "+p.pair[0]+" or "+p.pair[1]+"?", right:p.dir==="more"?"B":"A",
-     choices:[["A",cap(p.pair[0]),p.dir==="more"?"Not quite. Read the story: $"+p.d+" more was spent on "+p.pair[1]+".":null],["B",cap(p.pair[1]),p.dir==="less"?"Not quite. Read the story: $"+p.d+" less was spent on "+p.pair[1]+".":null],["same","They cost the same","Not quite. One cost $"+p.d+" "+(p.dir==="more"?"more":"less")+"."]],
-     done:cap(p.pair[1])+" cost $"+p.d+" "+(p.dir==="more"?"more":"less")+", so its piece is "+(p.dir==="more"?"longer":"shorter")+"."}, rest];
+     choices:[["A",cap(p.pair[0]),p.dir==="more"?"Not quite. Read the story: more was spent on "+p.pair[1]+".":null],["B",cap(p.pair[1]),p.dir==="less"?"Not quite. Read the story: less was spent on "+p.pair[1]+".":null],["same","They cost the same","Not quite. Read the story: one cost more than the other."]],
+     done:cap(p.pair[1])+" cost "+M(p.d)+" "+(p.dir==="more"?"more":"less")+", so its piece is "+(p.dir==="more"?"longer":"shorter")+"."}, rest];
 }
 function model(p,v){
-  var b=v.b, solved=v.solved, segs=[], unders=[], braces=[], tail=null, name;
+  var b=v.b, solved=v.solved, segs=[], unders=[], braces=[], name;
   if(v.phase==="predict") return {maxV:20, rows:[{name:"Money", cls:"A", segs:[], empty:"Make a guess first."}], braces:[]};
   if(p.kind==="save"){ name="Price"; var Hw=Math.max(8,Math.min(20,Math.round(40*p.H/p.C))), U=5, k=p.answer, few=k<=5, restW=few?k*U:4*U+6, maxV=Hw+restW;
     if(b===0||b===1) segs.push({v:maxV, cls:b===1?"main":"ghostu", label:"", hl:"whole"});
-    if(b>=2){ segs=[{v:Hw, cls:"main", label:"$"+p.H, hl:"has", fresh:v.fresh===1}]; if(b===2) segs.push({v:restW, cls:"ghostu", label:"", hl:"need"}); }
-    if(b>=3){ if(few){ for(var i=0;i<k;i++) segs.push({v:U, cls:"unit", label:"$"+p.w, hl:"weeks", fresh:v.fresh===2}); }
-      else { for(var j=0;j<3;j++) segs.push({v:U, cls:"unit", label:"$"+p.w, hl:"weeks", fresh:v.fresh===2}); segs.push({v:6, cls:"dots", label:"…", hl:"weeks"}); segs.push({v:U, cls:"unit", label:"$"+p.w, hl:"weeks"}); }
+    if(b>=2){ segs=[{v:Hw, cls:"main", label:M(p.H), hl:"has", fresh:v.fresh===1}]; if(b===2) segs.push({v:restW, cls:"ghostu", label:"", hl:"need"}); }
+    if(b>=3){ if(few){ for(var i=0;i<k;i++) segs.push({v:U, cls:"unit", label:M(p.w), hl:"weeks", fresh:v.fresh===2}); }
+      else { for(var j=0;j<3;j++) segs.push({v:U, cls:"unit", label:M(p.w), hl:"weeks", fresh:v.fresh===2}); segs.push({v:6, cls:"dots", label:"…", hl:"weeks"}); segs.push({v:U, cls:"unit", label:M(p.w), hl:"weeks"}); }
       unders.push({from:Hw,to:maxV,label:(solved?p.answer:"?")+" weeks", hl:"need"}); }
-    if(b>=1) braces.push({from:0,to:0,label:"Price<br>$"+p.C, hl:"whole"});
+    if(b>=1) braces.push({from:0,to:0,label:"Price<br>"+M(p.C), hl:"whole"});
     return {maxV:maxV, rows:[{name:name, cls:"A", segs:segs, unders:unders}], braces:braces};
   }
   name = p.kind==="change"?"The note":"Money";
-  var parts=[];
-  if(p.kind==="change"){ var Uw=Math.max(4,Math.min(9,Math.round(36*p.a/p.X))); for(var q=0;q<p.n;q++) parts.push({v:Uw, label:"$"+p.a, hl:"items"}); if(p.b) parts.push({v:Math.max(4,Math.min(12,Math.round(36*p.b/p.X))), label:"$"+p.b, hl:"extra"}); }
-  else { var Aw=Math.max(6,Math.min(16,Math.round(36*p.a/p.X))), Bw=Math.max(5,Math.min(18,Math.round(36*p.bb/p.X))); parts.push({v:Aw,label:"$"+p.a,hl:"A"}); parts.push({v:Math.max(8,Bw),label:solved?"$"+p.bb:"?",hl:"B"}); }
-  var spent=parts.reduce(function(s,x){return s+x.v;},0), restV=Math.max(8,Math.round(spent*0.5)), maxV2=spent+restV;
+  var parts=[], W=function(c,lo,hi){ return Math.max(lo,Math.min(hi,Math.round(36*c/p.X))); };
+  // pieces with cents ("$8.65") need room for 5 characters
+  var lo=function(c,d){ return hasC(c)?Math.max(d,15):d; };
+  if(p.kind==="change"){ var Uw=W(p.a,p.n>1?4:lo(p.a,9),p.n>1?9:16); for(var q=0;q<p.n;q++) parts.push({v:Uw, label:M(p.a), hl:"items"}); if(p.b) parts.push({v:W(p.b,lo(p.b,8),14), label:M(p.b), hl:"extra"}); }
+  else { parts.push({v:W(p.a,lo(p.a,9),16),label:M(p.a),hl:"A"}); parts.push({v:W(p.bb,lo(p.bb,8),18),label:solved?M(p.bb):"?",hl:"B"}); }
+  var spent=parts.reduce(function(s,x){return s+x.v;},0), restV=Math.max(9,Math.round(spent*0.5)), maxV2=spent+restV;
   if(b===0) segs.push({v:maxV2, cls:"ghostu", label:"", hl:"whole"});
-  else if(p.kind==="change" && b===1){ for(var r=0;r<v.count;r++) segs.push({v:parts[0].v, cls:"unit", label:"$"+p.a, hl:"items", fresh:r===v.count-1}); var used=v.count*parts[0].v; if(maxV2-used>0) segs.push({v:maxV2-used, cls:"ghostu", label:"", hl:"whole"}); }
-  else if(p.kind==="left" && b===1){ segs.push({v:maxV2, cls:"main", label:"", hl:"whole"}); }
-  else { parts.forEach(function(x,ix){ segs.push({v:x.v, cls:x.hl==="extra"||x.hl==="B"?"main":"unit", label:x.label, hl:x.hl}); });
-    if(b>=(p.kind==="change"?2:2)) segs.push({v:restV, cls:b>=3?"cut":"ghostu", label:b>=3?(solved?"$"+p.answer:"?"):"", hl:"rest", fresh:v.fresh===2});
-    if(b>=2) unders.push({from:0,to:spent,label:"spent", hl:"spent"}); }
-  if(b>=1) braces.push({from:0,to:0,label:(p.kind==="change"?"Note":"At first")+"<br>$"+p.X, hl:"whole"});
+  else if(p.kind==="change" && p.n>1 && b===1){ for(var r=0;r<v.count;r++) segs.push({v:parts[0].v, cls:"unit", label:M(p.a), hl:"items", fresh:r===v.count-1}); var used=v.count*parts[0].v; if(maxV2-used>0) segs.push({v:maxV2-used, cls:"ghostu", label:"", hl:"whole"}); }
+  else if(b===1){ segs.push({v:maxV2, cls:"main", label:"", hl:"whole"}); }
+  else { parts.forEach(function(x){ segs.push({v:x.v, cls:x.hl==="extra"||x.hl==="B"?"main":"unit", label:x.label, hl:x.hl}); });
+    segs.push({v:restV, cls:b>=3?"cut":"ghostu", label:b>=3?(solved?m(p,p.answer):"?"):"", hl:"rest", fresh:v.fresh===2});
+    unders.push({from:0,to:spent,label:"spent", hl:"spent"}); }
+  if(b>=1) braces.push({from:0,to:0,label:(p.kind==="change"?"Note":"At first")+"<br>"+M(p.X), hl:"whole"});
   return {maxV:maxV2, rows:[{name:name, cls:"A", segs:segs, unders:unders}], braces:braces};
 }
 function caption(p,v){
   if(v.phase==="predict") return "First a guess. Then you draw the money as one long bar.";
   if(v.phase==="build") return "Draw the model, one step at a time.";
-  if(p.kind==="save") return "The price is <b>$"+p.C+"</b>. "+p.who+" has <b>$"+p.H+"</b>. The rest is made of equal pieces of <b>$"+p.w+"</b>, one for each week.";
-  return "The whole bar is <b>$"+p.X+"</b>. Find the money <b>spent</b> first. What is not spent is the "+(p.kind==="change"?"<b>change</b>.":"money <b>left</b>.");
+  if(p.kind==="save") return "The price is <b>"+M(p.C)+"</b>. "+p.who+" has <b>"+M(p.H)+"</b>. The rest is made of equal pieces of <b>"+M(p.w)+"</b>, one for each week.";
+  return "The whole bar is <b>"+M(p.X)+"</b>. Find the money <b>spent</b> first. What is not spent is the "+(p.kind==="change"?"<b>change</b>.":"money <b>left</b>.")+(p.c?" Line up the dots: dollars under dollars, cents under cents.":"");
 }
-function hints(p){
-  if(p.kind==="change") return ["Find how much "+p.who+" spent first. How much do the "+it(p,2)+" cost?",
-    p.n+" "+it(p,2)+" at $"+p.a+" each: equal groups means multiply."+(p.b?" Then add "+p.extra+".":"")+" The change is what is left of the $"+p.X+".",
-    p.n+" × "+p.a+" = ___ ."+(p.b?" ___ + "+p.b+" = ___ .":"")+" Then "+p.X+" − ___ = ___ ."];
-  if(p.kind==="left") return ["Find how much "+p.pair[1]+" cost first. Is it more or less than $"+p.a+"?",
-    "Find "+p.pair[1]+", then add both things to find the money spent. Then take it away from $"+p.X+".",
-    p.a+" "+(p.dir==="more"?"+":"−")+" "+p.d+" = ___ . "+p.a+" + ___ = ___ . Then "+p.X+" − ___ = ___ ."];
+function hints(p){ var B="___";
+  if(p.kind==="change") return ["Find how much "+p.who+" spent first. What did "+p.who+" buy?",
+    (p.n>1?p.n+" "+it(p,2)+" at "+M(p.a)+" each: equal groups means multiply. ":"")+(p.b?"Add up everything that was bought. ":"")+"The change is what is left of the "+M(p.X)+" note."+(p.c?" Write "+M(p.X)+" as "+M(p.X,true)+" to line up the cents.":""),
+    (p.n>1?p.n+" × "+M(p.a)+" = $"+B+" . ":"")+(p.b?(p.n>1?"$"+B+" + "+m(p,p.b):m(p,p.a)+" + "+m(p,p.b))+" = $"+B+" . ":"")+"Then "+m(p,p.X)+" − $"+B+" = $"+B+" ."];
+  if(p.kind==="left") return ["Find how much "+p.pair[1]+" cost first. Is it more or less than "+M(p.a)+"?",
+    "Find "+p.pair[1]+", then add both things to find the money spent. Then take it away from "+M(p.X)+".",
+    m(p,p.a)+" "+(p.dir==="more"?"+":"−")+" "+m(p,p.d)+" = $"+B+" . "+m(p,p.a)+" + $"+B+" = $"+B+" . Then "+m(p,p.X)+" − $"+B+" = $"+B+" ."];
   return ["How much more money does "+p.who+" need? Start from the price.",
-    "Take away the money "+p.who+" has. Then see how many weeks of $"+p.w+" make the rest.",
-    p.C+" − "+p.H+" = ___ . Then ___ ÷ "+p.w+" = ___ ."];
+    "Take away the money "+p.who+" has. Then see how many weeks of "+M(p.w)+" make the rest.",
+    M(p.C)+" − "+M(p.H)+" = $"+B+" . Then $"+B+" ÷ "+M(p.w)+" = "+B+" weeks."];
 }
 function hintHL(p){ return p.kind==="save" ? ["has","need"] : ["spent","rest"]; }
 function wrongCandidates(p){
-  if(p.kind==="change") return [p.t, p.X-p.c, p.X-p.a-p.b, p.answer+1, p.answer+10].filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; });
-  if(p.kind==="left") return [p.t, p.X-p.a, p.bb, p.X-p.a-(p.dir==="more"?p.a-p.d:p.a+p.d), p.answer+1].filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; });
-  return [p.need, p.C, Math.floor(p.C/p.w), p.answer+1].filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; });
+  var c;
+  if(p.kind==="change") c=[p.t, p.X-p.cc, p.X-p.a-p.b, p.answer+100, p.answer-100, p.answer+10, p.answer-10];
+  else if(p.kind==="left") c=[p.t, p.X-p.a, p.bb, p.X-p.a-(p.dir==="more"?p.a-p.d:p.a+p.d), p.answer+100, p.answer-100, p.answer+10];
+  else return [p.need/100, p.C/p.w, p.answer+1].filter(function(x,i,a){ return isWhole(x) && x>0 && a.indexOf(x)===i; });
+  return c.filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; });
 }
-function testWrong(p){ return p.kind==="change" ? p.t : (p.kind==="left" ? p.X-p.a : p.need); }
+function testWrong(p){ return p.kind==="change" ? p.t : (p.kind==="left" ? p.X-p.a : p.need/100); }
 function wrongMsg(p,v){
   if(p.kind==="change"){
     if(v===p.t) return "That's how much "+p.who+" spent. The change is what is left of the note.";
-    if(p.b && v===p.X-p.c) return "Don't forget "+p.extra+". It was bought too.";
-    if(v===p.X-p.a-p.b) return "There is more than one "+it(p,1)+". Multiply first.";
+    if(p.b && v===p.X-p.cc) return "Don't forget "+p.extra+". It was bought too.";
+    if(p.n>1 && v===p.X-p.a-p.b) return "There is more than one "+it(p,1)+". Multiply first.";
+    if(Math.abs(v-p.answer)===100 || Math.abs(v-p.answer)===10) return "Very close! Check your regrouping. Line up the dots, and take away the cents first, then the dollars.";
     return "Nearly! Find all the money spent first, then take it away from the note.";
   }
   if(p.kind==="left"){
     if(v===p.t) return "That's the money spent. The question asks what was left.";
     if(v===p.X-p.a) return "Don't forget "+p.pair[1]+". It was bought too.";
     if(v===p.bb) return "That's the cost of "+p.pair[1]+". Now find what was left.";
+    if(Math.abs(v-p.answer)===100 || Math.abs(v-p.answer)===10) return "Very close! Check your regrouping. Line up the dots, and take away the cents first, then the dollars.";
     return "Read the story again: more or less? Find both costs, then take them away.";
   }
-  if(v===p.need) return "That's the money still needed. Now how many weeks of $"+p.w+" make it?";
-  if(v===Math.floor(p.C/p.w)) return "Don't forget the money "+p.who+" already has. Take it away first.";
+  if(v===p.need/100) return "That's the dollars still needed. Now how many weeks of saving make it?";
+  if(v===p.C/p.w) return "Don't forget the money "+p.who+" already has. Take it away first.";
   return "Nearly! Take away the money "+p.who+" has, then divide by what is saved each week.";
 }
 function praise(p){
-  if(p.kind==="change") return "Yes! "+p.who+" spent $"+p.t+", and $"+p.X+" take away $"+p.t+" is $"+p.answer+". Well done.";
-  if(p.kind==="left") return "Yes! "+p.who+" spent $"+p.t+" altogether, so $"+p.answer+" was left. Well done.";
-  return "Yes! "+p.who+" needs $"+p.need+" more, and "+p.need+" divided by "+p.w+" is "+p.answer+" weeks. Well done.";
+  if(p.kind==="change") return "Yes! "+p.who+" spent "+m(p,p.t)+", and "+m(p,p.X)+" take away "+m(p,p.t)+" is "+m(p,p.answer)+". Well done.";
+  if(p.kind==="left") return "Yes! "+p.who+" spent "+m(p,p.t)+" altogether, so "+m(p,p.answer)+" was left. Well done.";
+  return "Yes! "+p.who+" needs "+M(p.need)+" more, and that is "+p.answer+" weeks of "+M(p.w)+". Well done.";
 }
-function explain(p){ return p.kind==="save" ? "Why did you take away the money "+p.who+" has before dividing?" : "Why did you find the money spent before taking it away?"; }
+function explain(p){ return p.kind==="save" ? "Why did you take away the money "+p.who+" has before dividing?" : "Why did you find the money spent before taking it away?"+(p.c?" And why do we line up the dots?":""); }
+var DOTS=" Line up the dots: dollars under dollars, cents under cents.";
 function plan(p,api){
-  var W=p.who;
+  var W=p.who, two=p.c, L=function(o){ o.res=(o.plain?String(EV(o.ok)):M(EV(o.ok),o.two!=null?o.two:two)); api.line(o); };
   if(p.kind==="change"){
-    api.line({ok:ex(p.n,TI,p.a), hl:["items"], tag:"the "+p.n+" equal pieces", ask:"Line 1. How much do the "+it(p,2)+" cost? Which number sentence?",
-      wrong:[[ex(p.n,"+",p.a),"Not quite. Each "+it(p,1)+" costs the same. Equal groups means multiply."],[ex(p.X,MI,p.a),"Not quite. First find the cost of all the "+it(p,2)+"."],[ex(p.a,MI,p.n),"Not quite. Equal groups means multiply."]],
-      stmt:"The "+p.n+" "+it(p,2)+" cost $"+p.c+".", why:"Each "+it(p,1)+" costs the same, so the "+it(p,2)+" are equal groups. Equal groups means multiply."});
-    if(p.b) api.line({ok:ex(p.c,"+",p.b), hl:["items","extra","spent"], tag:"all the money spent", ask:"Line 2. Add "+p.extra+". Which number sentence finds all the money spent?",
-      wrong:[[ex(p.c,MI,p.b),"Not quite. Buying more means spending more. Add."],[ex(p.a,"+",p.b),"Not quite. Use the cost of all the "+it(p,2)+", not one."],[ex(p.X,MI,p.b),"Not quite. First add up everything that was bought."]],
-      stmt:W+" spent $"+p.t+" altogether.", why:"The money spent is all the pieces of the bar that were bought. Putting them together means add."});
-    api.line({ok:ex(p.X,MI,p.t), hl:["whole","spent","rest"], tag:"the part not spent", ask:"Line "+(p.b?3:2)+". Which number sentence finds the change?",
-      wrong:[[ex(p.X,"+",p.t),"Not quite. Change is what is left after paying. Take away."],[ex(p.t,MI,p.n),"Not quite. Start from the note, the whole bar."],[ex(p.X,MI,p.a),"Not quite. Take away all the money spent."]],
-      stmt:W+" got $"+p.answer+" change.", why:"The whole bar is the note. Take away the money spent, and the part left is the change."});
+    var n=1;
+    if(p.n>1){ L({ok:ex(p.n,TI,M(p.a)), two:false, hl:["items"], tag:"the "+p.n+" equal pieces", ask:"Line "+(n++)+". How much do the "+it(p,2)+" cost? Which number sentence?",
+      wrong:[[ex(p.n,"+",M(p.a)),"Not quite. Each "+it(p,1)+" costs the same. Equal groups means multiply."],[ex(M(p.X),MI,M(p.a)),"Not quite. First find the cost of all the "+it(p,2)+"."],[ex(M(p.a),DI,p.n),"Not quite. Equal groups means multiply."]],
+      stmt:"The "+p.n+" "+it(p,2)+" cost "+M(p.cc)+".", why:"Each "+it(p,1)+" costs the same, so the "+it(p,2)+" are equal groups. Equal groups means multiply."}); }
+    if(p.b){ var first=p.n>1?p.cc:p.a;
+      L({ok:ex(m(p,first),"+",m(p,p.b)), hl:p.n>1?["items","extra","spent"]:["items","extra","spent"], tag:"all the money spent", ask:"Line "+(n++)+". Add up the things bought. Which number sentence finds all the money spent?",
+        wrong:[[ex(m(p,first),MI,m(p,p.b)),"Not quite. Buying more means spending more. Add."],[ex(m(p,p.X),MI,m(p,p.b)),"Not quite. First add up everything that was bought."],[p.n>1?ex(m(p,p.a),"+",m(p,p.b)):ex(m(p,p.a),"+",m(p,p.a)),p.n>1?"Not quite. Use the cost of all the "+it(p,2)+", not one.":"Not quite. Add the two different things."]],
+        stmt:W+" spent "+m(p,p.t)+" altogether.", why:"The money spent is all the pieces of the bar that were bought. Putting them together means add."+(two?DOTS+" Add the cents first: if they make 100 or more, that is 1 more dollar.":"")}); }
+    L({ok:ex(m(p,p.X),MI,m(p,p.t)), hl:["whole","spent","rest"], tag:"the part not spent", ask:"Line "+n+". Which number sentence finds the change?",
+      wrong:[[ex(m(p,p.X),"+",m(p,p.t)),"Not quite. Change is what is left after paying. Take away."],[ex(m(p,p.t),MI,m(p,p.a)),"Not quite. Start from the note, the whole bar."],[ex(m(p,p.X),MI,m(p,p.a)),"Not quite. Take away all the money spent."]],
+      stmt:W+" got "+m(p,p.answer)+" change.", why:"The whole bar is the note. Take away the money spent, and the part left is the change."+(two?" A "+M(p.X)+" note is the same as "+M(p.X,true)+", so we can line up the cents."+DOTS:"")});
   } else if(p.kind==="left"){
     var op=p.dir==="more"?"+":MI, un=p.dir==="more"?MI:"+";
-    api.line({ok:ex(p.a,op,p.d), hl:["A","B"], tag:"the cost of "+p.pair[1], ask:"Line 1. How much did "+p.pair[1]+" cost? Which number sentence?",
-      wrong:[[ex(p.a,un,p.d),"Not quite. Read the story again: "+(p.dir==="more"?"more means add.":"less means take away.")],[ex(p.X,MI,p.d),"Not quite. Start from the cost of "+p.pair[0]+"."],[ex(p.d,TI,2),"Not quite. Start from the cost of "+p.pair[0]+" and use the difference."]],
-      stmt:cap(p.pair[1])+" cost $"+p.bb+".", why:cap(p.pair[1])+" cost $"+p.d+" "+(p.dir==="more"?"more":"less")+" than "+p.pair[0]+". "+(p.dir==="more"?"More means add.":"Less means take away.")});
-    api.line({ok:ex(p.a,"+",p.bb), hl:["A","B","spent"], tag:"all the money spent", ask:"Line 2. Which number sentence finds all the money spent?",
-      wrong:[[ex(p.bb,MI,p.a),"Not quite. The money spent is both things together. Add."],[ex(p.a,"+",p.d),"Not quite. Add the cost of both things."],[ex(p.X,MI,p.bb),"Not quite. First find all the money spent."]],
-      stmt:W+" spent $"+p.t+" altogether.", why:"Both things were bought, so the money spent is both costs together. That means add."});
-    api.line({ok:ex(p.X,MI,p.t), hl:["whole","spent","rest"], tag:"the part not spent", ask:"Line 3. Which number sentence finds the money left?",
-      wrong:[[ex(p.X,"+",p.t),"Not quite. Spending makes the money smaller. Take away."],[ex(p.X,MI,p.a),"Not quite. Take away all the money spent."],[ex(p.t,MI,p.a),"Not quite. Start from the money at first, the whole bar."]],
-      stmt:W+" had $"+p.answer+" left.", why:"The whole bar is the money at first. Take away the money spent, and the part left over is the answer."});
+    L({ok:ex(m(p,p.a),op,m(p,p.d)), hl:["A","B"], tag:"the cost of "+p.pair[1], ask:"Line 1. How much did "+p.pair[1]+" cost? Which number sentence?",
+      wrong:[[ex(m(p,p.a),un,m(p,p.d)),"Not quite. Read the story again: "+(p.dir==="more"?"more means add.":"less means take away.")],[ex(m(p,p.X),MI,m(p,p.d)),"Not quite. Start from the cost of "+p.pair[0]+"."],[ex(m(p,p.d),"+",m(p,p.d)),"Not quite. Start from the cost of "+p.pair[0]+" and use the difference."]],
+      stmt:cap(p.pair[1])+" cost "+m(p,p.bb)+".", why:cap(p.pair[1])+" cost "+(p.dir==="more"?"more":"less")+" than "+p.pair[0]+". "+(p.dir==="more"?"More means add.":"Less means take away.")+(two?DOTS:"")});
+    L({ok:ex(m(p,p.a),"+",m(p,p.bb)), hl:["A","B","spent"], tag:"all the money spent", ask:"Line 2. Which number sentence finds all the money spent?",
+      wrong:[[ex(m(p,p.bb),MI,m(p,p.a)),"Not quite. The money spent is both things together. Add."],[ex(m(p,p.a),"+",m(p,p.d)),"Not quite. Add the cost of both things."],[ex(m(p,p.X),MI,m(p,p.bb)),"Not quite. First find all the money spent."]],
+      stmt:W+" spent "+m(p,p.t)+" altogether.", why:"Both things were bought, so the money spent is both costs together. That means add."+(two?" Add the cents first: 100 cents make 1 more dollar.":"")});
+    L({ok:ex(m(p,p.X),MI,m(p,p.t)), hl:["whole","spent","rest"], tag:"the part not spent", ask:"Line 3. Which number sentence finds the money left?",
+      wrong:[[ex(m(p,p.X),"+",m(p,p.t)),"Not quite. Spending makes the money smaller. Take away."],[ex(m(p,p.X),MI,m(p,p.a)),"Not quite. Take away all the money spent."],[ex(m(p,p.t),MI,m(p,p.a)),"Not quite. Start from the money at first, the whole bar."]],
+      stmt:W+" had "+m(p,p.answer)+" left.", why:"The whole bar is the money at first. Take away the money spent, and the part left over is the answer."+(two?" "+M(p.X)+" is the same as "+M(p.X,true)+"."+DOTS:"")});
   } else {
-    api.line({ok:ex(p.C,MI,p.H), hl:["whole","has","need"], tag:"the part still needed", ask:"Line 1. How much more money does "+W+" need? Which number sentence?",
-      wrong:[[ex(p.C,"+",p.H),"Not quite. The money "+W+" has is part of the price already. Take it away."],[ex(p.C,DI,p.w),"Not quite. First take away the money "+W+" already has."],[ex(p.H,MI,p.w),"Not quite. Start from the price, the whole bar."]],
-      stmt:W+" needs $"+p.need+" more.", why:"The whole bar is the price. "+W+" already has one part. Take it away to find the part still needed."});
-    api.line({ok:ex(p.need,DI,p.w), hl:["weeks","need"], tag:"the equal pieces of $"+p.w, ask:"Line 2. Each week adds $"+p.w+". Which number sentence finds how many weeks?",
-      wrong:[[ex(p.need,MI,p.w),"Not quite. How many groups of $"+p.w+" fit? That means divide."],[ex(p.need,TI,p.w),"Not quite. The number of weeks is smaller than this. Making equal groups means divide."],[ex(p.C,DI,p.w),"Not quite. Use the money still needed, not the whole price."]],
-      stmt:W+" needs "+p.answer+" weeks of saving.", why:"The part still needed is made of equal pieces of $"+p.w+", one for each week. How many pieces? That means divide."});
+    L({ok:ex(M(p.C),MI,M(p.H)), hl:["whole","has","need"], tag:"the part still needed", ask:"Line 1. How much more money does "+W+" need? Which number sentence?",
+      wrong:[[ex(M(p.C),"+",M(p.H)),"Not quite. The money "+W+" has is part of the price already. Take it away."],[ex(M(p.H),MI,M(p.w)),"Not quite. Start from the price, the whole bar."],[ex(M(p.C),MI,M(p.w)),"Not quite. Take away the money "+W+" already has."]],
+      stmt:W+" needs "+M(p.need)+" more.", why:"The whole bar is the price. "+W+" already has one part. Take it away to find the part still needed."});
+    L({plain:true, ok:ex(M(p.need),DI,M(p.w)), hl:["weeks","need"], tag:"the equal pieces of "+M(p.w), ask:"Line 2. Each week adds "+M(p.w)+". Which number sentence finds how many weeks?",
+      wrong:[[ex(M(p.need),MI,M(p.w)),"Not quite. How many groups fit? That means divide."],[ex(M(p.C),DI,M(p.w)),"Not quite. Use the money still needed, not the whole price."],[ex(M(p.need),DI,M(p.H)),"Not quite. Divide by the money saved each week."]],
+      stmt:W+" needs "+p.answer+" weeks of saving.", why:"The part still needed is made of equal pieces, one for each week. How many pieces? That means divide."});
   }
-  var other = p.kind==="save" ? [W+" will take $"+p.answer+".","Not quite. The question asks how many weeks, not how much money."] : (p.kind==="change" ? [W+" spent $"+p.answer+".","Not quite. The question asks for the change."] : [W+" spent $"+p.answer+".","Not quite. The question asks how much was left."]);
-  api.answer({right:answerSentence(p), wrong:[[String(p.answer),"Not quite. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence."+(p.kind==="save"?"":" Money needs the $ sign.")], other],
-    why:p.kind==="save"?"The question asks how many weeks. The answer sentence has the unit, weeks.":"The question asks how much money. The answer sentence has the $ sign, so everyone knows it is money."});
-  if(p.kind==="save") api.line({check:true, ok:ex(p.answer,TI,p.w), hl:["weeks","has","whole"], tag:"the weeks and what "+W+" has",
+  var other = p.kind==="save" ? [W+" will take "+M(p.answer*100)+".","Not quite. The question asks how many weeks, not how much money."] : (p.kind==="change" ? [W+" spent "+m(p,p.answer)+".","Not quite. The question asks for the change."] : [W+" spent "+m(p,p.answer)+".","Not quite. The question asks how much was left."]);
+  var bare = p.kind==="save" ? String(p.answer) : typeFor(p,p.answer);
+  api.answer({right:answerSentence(p), wrong:[[bare,"Not quite. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence."+(p.kind==="save"?"":" Money needs the $ sign.")], other],
+    why:p.kind==="save"?"The question asks how many weeks. The answer sentence has the unit, weeks.":"The question asks how much money. The answer sentence has the $ sign"+(p.c?" and 2 digits for the cents":"")+", so everyone knows it is money."});
+  if(p.kind==="save") L({check:true, ok:ex(p.answer,TI,M(p.w)), hl:["weeks","has","whole"], tag:"the weeks and what "+W+" has",
     ask:"Check line. How much does "+W+" save in "+p.answer+" weeks? Which number sentence?",
-    wrong:[[ex(p.answer,"+",p.w),"Not quite. Each week adds the same amount. Equal groups means multiply."],[ex(p.answer,TI,p.H),"Not quite. Multiply by the money saved each week."]],
-    stmt:"That is $"+p.need+". With the $"+p.H+" "+W+" has, it makes $"+p.C+", the price.", why:"Checking catches mistakes. The savings and the money "+W+" has should make exactly the price."});
-  else api.line({check:true, ok:ex(p.answer,"+",p.t), hl:["rest","spent","whole"], tag:"the whole bar",
-    ask:"Check line. Put your answer back with the money spent. Which number sentence should give $"+p.X+"?",
-    wrong:[[ex(p.t,MI,p.answer),"Not quite. Put the parts together: add."],[ex(p.answer,"+",p.a),"Not quite. Add all the money spent, not one thing."]],
-    stmt:"That is $"+p.X+", "+(p.kind==="change"?"the note "+W+" paid with.":"the money "+W+" had at first."), why:"Checking catches mistakes. The money spent and your answer should make the whole bar."});
+    wrong:[[ex(p.answer,"+",M(p.w)),"Not quite. Each week adds the same amount. Equal groups means multiply."],[ex(p.answer,TI,M(p.H)),"Not quite. Multiply by the money saved each week."]],
+    stmt:"That is "+M(p.need)+". With the "+M(p.H)+" "+W+" has, it makes "+M(p.C)+", the price.", why:"Checking catches mistakes. The savings and the money "+W+" has should make exactly the price."});
+  else L({check:true, ok:ex(m(p,p.answer),"+",m(p,p.t)), hl:["rest","spent","whole"], tag:"the whole bar",
+    ask:"Check line. Put your answer back with the money spent. Which number sentence should give "+M(p.X)+"?",
+    wrong:[[ex(m(p,p.t),MI,m(p,p.answer)),"Not quite. Put the parts together: add."],[ex(m(p,p.answer),"+",m(p,p.a)),"Not quite. Add all the money spent, not one thing."]],
+    stmt:"That is "+m(p,p.X)+", "+(p.kind==="change"?"the note "+W+" paid with.":"the money "+W+" had at first."), why:"Checking catches mistakes. The money spent and your answer should make the whole bar."});
   return {unit:unitOf(p)};
 }
 var LIFE=[
-  {emoji:"🛒💵", title:"At the shop", text:"You buy 3 drinks at $2 each and a sandwich for $4. You spend $6 and $4, which is $10. From a $20 note you get $10 change.", rule:"Find the money spent first. Then take it away."},
-  {emoji:"🐷💰", title:"Saving up", text:"A toy costs $30 and you have $12. You need $18 more. If you save $3 a week, 18 divided by 3 is 6 weeks.", rule:"Take away what you have. Then divide by what you save each week."}
+  {emoji:"🛒💵", title:"At the shop", text:"You buy a drink for $1.40 and a sandwich for $3.85. Cents first: 40 and 85 cents make $1.25, so it is $5.25 altogether. From a $10 note you get $4.75 change.", rule:"Find the money spent first, then take it away. Line up the dots."},
+  {emoji:"🐷💰", title:"Saving up", text:"A toy costs $30 and you have $12. You need $18 more. If you save $3 a week, that is 6 weeks.", rule:"Take away what you have. Then divide by what you save each week."}
 ];
 return {key:"barModelMoneyStepsGame", tag:"P3-MONY-MO-G10", kinds:["change","left","save"],
   drawWhat:"one long bar for all the money, the parts spent, and the part left",
   checkDraw:"The bar model: the whole amount, the parts spent, and the part left",
-  summaryRule:"Remember: find the money spent first, then what is left!",
+  summaryRule:"Remember: find the money spent first, then what is left. Line up the dots!",
   BANK:BANK, fromSpec:fromSpec, finish:finish, verify:verify, make:make, story:story, question:question,
   answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
+  decimalPad:decimalPad, parseTyped:parseTyped, formatMsg:formatMsg, typeFor:typeFor, numsIn:numsIn,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
 /* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
@@ -597,16 +651,17 @@ function tell(){ Voice.say.apply(null, arguments); }
 var ROUND_SIZE=5;
 var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
 function finish(p){ G.finish(p); return p; }
+function NUMS(t,p){ return G.numsIn ? G.numsIn(t,p) : numsIn(t); }
 function ansText(p){ return G.answerText ? G.answerText(p) : String(p.answer); }
 // every line the child sees before the answer must not give the answer away
 function revealOK(p){
-  var a=p.answer, story=numsIn(G.story(p)+" "+G.question(p));
+  var a=p.answer, story=NUMS(G.story(p)+" "+G.question(p),p);
   if(!G.answerText && story.indexOf(a)>=0) return true;
   var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
   G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
   var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
   var at=G.answerText?ansText(p):null; if(at && /^\d+$/.test(at)) at=null; // numbers are checked above; only times etc. by text
-  return texts.every(function(t){ return numsIn(t).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
+  return texts.every(function(t){ return NUMS(t,p).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
 }
 function verify(p){
   try{
@@ -685,11 +740,11 @@ function planOK(p){
   return plan.lines.every(function(L){
     if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
     var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
-    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : numsIn(L.stmt).indexOf(p.answer)>=0;
+    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : NUMS(L.stmt,p).indexOf(p.answer)>=0;
     if(L.rem){ var m=/^(\d+) \u00f7 (\d+) = (\d+) R (\d+)$/.exec(L.eq); if(!m) return false; var A=+m[1], B=+m[2], Q=+m[3], Rr=+m[4];
       if(Q*B+Rr!==A || Rr<=0 || Rr>=B || Q<=0 || numsIn(L.stmt).indexOf(Q)<0) return false;
       return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==A/B; }); }
-    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==+parts[1] || !isWhole(v) || v<=0) return false;
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==evalExpr(parts[1]) || !isWhole(v) || v<=0) return false;
     if(L.stmt.indexOf(parts[1])<0) return false;
     return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
   });
@@ -794,7 +849,7 @@ function renderPanel(){
     var al=G.answerLine(P);
     h+='<h2>3. Your answer</h2>';
     h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(esc(typedShow())||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
-    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+(dotPad()?'<button data-k="." aria-label="point">.</button><button data-k="0">0</button><button data-k="del" aria-label="delete">⌫</button><button data-k="clr" class="padwide">C</button>':'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button>')+'</div>';
     h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
     h+=hintHTML();
     h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
@@ -809,13 +864,15 @@ function renderPanel(){
   }
   el.innerHTML=h; bindPanel();
 }
+function dotPad(){ return !!(G.decimalPad && G.decimalPad(P)); }
 function typedShow(){ return G.fmtTyped ? G.fmtTyped(cur.typed, P) : cur.typed; }
 function hintList(p){ return G.hints(p||P); }
 function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
 function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
 function check(){
   if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
-  var v=parseInt(cur.typed,10);
+  var v=G.parseTyped ? G.parseTyped(cur.typed,P) : parseInt(cur.typed,10);
+  if(v===null){ var fm=G.formatMsg(P,cur.typed); feedback("try",fm); tell(fm); return; }
   if(v===P.answer){
     cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
     startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
@@ -912,7 +969,10 @@ function bindPanel(){
   if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
     if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
   el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
-    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed=""; else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    var lim=dotPad()?7:5;
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed="";
+    else if(k==="."){ if(cur.typed.indexOf(".")<0 && cur.typed.length<lim) cur.typed=(cur.typed===""?"0":cur.typed)+"."; }
+    else if(cur.typed.length<lim) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
     $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
   if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
   if($("checkBtn")) $("checkBtn").onclick=check;
@@ -1004,7 +1064,7 @@ function lessonScript(){
   return Object.keys(out);
 }
 /* test hook (no personal data; used by automated checks) */
-window.__game={answerText:ansText, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+window.__game={answerText:ansText, typeFor:function(p,v){ v=(v==null?p.answer:v); return G.typeFor ? G.typeFor(p,v) : String(v); }, numsOf:function(t,p){ return NUMS(t,p); }, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
   wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
   storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
   get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};

@@ -217,6 +217,7 @@
   .ap-lab.hl,.ap-in.hl,.ap-ar.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
   .ap-in{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;color:#4b3fc4;background:rgba(255,255,255,.85);padding:1px 8px;border-radius:10px;white-space:nowrap}
   .ap-ar{position:absolute;transform:translateX(-50%);font-weight:800;font-size:16px;color:#7a2d5a;background:#fde8f3;padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .pad .padwide{grid-column:1 / -1}
 </style>
 </head>
 <body>
@@ -273,11 +274,11 @@ var MI="\u2212", TI="\u00d7", DI="\u00f7";
 function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
 var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
 function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
-// tiny evaluator for "a op b op c" with + - x / (x and / first)
+// tiny evaluator for "a op b op c" with + - x / (x and / first); "$4.35" tokens count in cents (435)
 function evalExpr(x){
   var t=String(x).split(" "); if(t.length%2!==1) return null;
   var nums=[], ops=[];
-  for(var i=0;i<t.length;i++){ if(i%2===0){ if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  for(var i=0;i<t.length;i++){ if(i%2===0){ var mm=/^\$(\d+)(?:\.(\d\d))?$/.exec(t[i]); if(mm){ nums.push(+mm[1]*100+(mm[2]?+mm[2]:0)); continue; } if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
   var n2=[nums[0]], o2=[];
   for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
     if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
@@ -553,16 +554,17 @@ function tell(){ Voice.say.apply(null, arguments); }
 var ROUND_SIZE=5;
 var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
 function finish(p){ G.finish(p); return p; }
+function NUMS(t,p){ return G.numsIn ? G.numsIn(t,p) : numsIn(t); }
 function ansText(p){ return G.answerText ? G.answerText(p) : String(p.answer); }
 // every line the child sees before the answer must not give the answer away
 function revealOK(p){
-  var a=p.answer, story=numsIn(G.story(p)+" "+G.question(p));
+  var a=p.answer, story=NUMS(G.story(p)+" "+G.question(p),p);
   if(!G.answerText && story.indexOf(a)>=0) return true;
   var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
   G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
   var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
   var at=G.answerText?ansText(p):null; if(at && /^\d+$/.test(at)) at=null; // numbers are checked above; only times etc. by text
-  return texts.every(function(t){ return numsIn(t).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
+  return texts.every(function(t){ return NUMS(t,p).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
 }
 function verify(p){
   try{
@@ -641,11 +643,11 @@ function planOK(p){
   return plan.lines.every(function(L){
     if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
     var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
-    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : numsIn(L.stmt).indexOf(p.answer)>=0;
+    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : NUMS(L.stmt,p).indexOf(p.answer)>=0;
     if(L.rem){ var m=/^(\d+) \u00f7 (\d+) = (\d+) R (\d+)$/.exec(L.eq); if(!m) return false; var A=+m[1], B=+m[2], Q=+m[3], Rr=+m[4];
       if(Q*B+Rr!==A || Rr<=0 || Rr>=B || Q<=0 || numsIn(L.stmt).indexOf(Q)<0) return false;
       return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==A/B; }); }
-    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==+parts[1] || !isWhole(v) || v<=0) return false;
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==evalExpr(parts[1]) || !isWhole(v) || v<=0) return false;
     if(L.stmt.indexOf(parts[1])<0) return false;
     return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
   });
@@ -750,7 +752,7 @@ function renderPanel(){
     var al=G.answerLine(P);
     h+='<h2>3. Your answer</h2>';
     h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(esc(typedShow())||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
-    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+(dotPad()?'<button data-k="." aria-label="point">.</button><button data-k="0">0</button><button data-k="del" aria-label="delete">⌫</button><button data-k="clr" class="padwide">C</button>':'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button>')+'</div>';
     h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
     h+=hintHTML();
     h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
@@ -765,13 +767,15 @@ function renderPanel(){
   }
   el.innerHTML=h; bindPanel();
 }
+function dotPad(){ return !!(G.decimalPad && G.decimalPad(P)); }
 function typedShow(){ return G.fmtTyped ? G.fmtTyped(cur.typed, P) : cur.typed; }
 function hintList(p){ return G.hints(p||P); }
 function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
 function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
 function check(){
   if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
-  var v=parseInt(cur.typed,10);
+  var v=G.parseTyped ? G.parseTyped(cur.typed,P) : parseInt(cur.typed,10);
+  if(v===null){ var fm=G.formatMsg(P,cur.typed); feedback("try",fm); tell(fm); return; }
   if(v===P.answer){
     cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
     startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
@@ -868,7 +872,10 @@ function bindPanel(){
   if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
     if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
   el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
-    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed=""; else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    var lim=dotPad()?7:5;
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed="";
+    else if(k==="."){ if(cur.typed.indexOf(".")<0 && cur.typed.length<lim) cur.typed=(cur.typed===""?"0":cur.typed)+"."; }
+    else if(cur.typed.length<lim) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
     $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
   if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
   if($("checkBtn")) $("checkBtn").onclick=check;
@@ -960,7 +967,7 @@ function lessonScript(){
   return Object.keys(out);
 }
 /* test hook (no personal data; used by automated checks) */
-window.__game={answerText:ansText, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+window.__game={answerText:ansText, typeFor:function(p,v){ v=(v==null?p.answer:v); return G.typeFor ? G.typeFor(p,v) : String(v); }, numsOf:function(t,p){ return NUMS(t,p); }, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
   wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
   storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
   get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};
