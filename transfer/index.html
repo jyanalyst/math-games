@@ -309,11 +309,15 @@ function makeRound(small, includeCanonical, fromIndex, existing){
 
 /* ---------- voice tutor (Web Speech API, works offline with on-device voices) ---------- */
 var MUTE_KEY = "barModelTransferGame.muted";
+/*CLIPS-START*/
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.":"audio/4c730990233a.mp3","This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/c9e1dd2cb8cc.mp3","Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.":"audio/8d0bfb4dc503.mp3","You finished the round and got all 5 stars!":"audio/fa2602ca7096.mp3","Not quite. Look at the bars again. Whose end sticks out further?":"audio/4b3cd9329343.mp3","Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.":"audio/9f5fc22bda3f.mp3","Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?":"audio/000b38be15d4.mp3","Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.":"audio/2e8748ffdbe9.mp3","Not quite. Look at the bars again. Does one end stick out further than the other?":"audio/70380d9f7cb9.mp3","Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller.":"audio/d4122ee12350.mp3","Not quite. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.":"audio/ff29f46343c3.mp3","Not quite. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.":"audio/a77be17c9663.mp3","Not quite. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?":"audio/4280945ecb33.mp3","Not quite. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.":"audio/e0c86a8a7777.mp3","Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.":"audio/cf8bb2fcc940.mp3","Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/b8c7ee7c466f.mp3","Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars.":"audio/01fabf731c09.mp3","Not quite. That takes away the number that moved. Compare the two bars as they are now.":"audio/4e5c811b716f.mp3","Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.":"audio/85bd46521df1.mp3","Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.":"audio/0204037bbfe7.mp3"};
+// Game 1 keeps its rule: Practice uses the device voice; recorded working-step clips play in Lesson mode only
+var CLIPS_WHEN = function(){ return isLesson(); };
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false, primed = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -333,7 +337,7 @@ var Voice = (function(){
     if(f.length){ f.sort(function(a,b){return quality(b)-quality(a);}); return f[0]; }
     var g = en.filter(function(v){ return /en[-_](gb|au)/i.test(v.lang||""); });
     if(g.length) return g[0];
-    return null; // browser default
+    return null;
   }
   function refresh(){ voice = pick(); }
   if(supported){
@@ -349,42 +353,82 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
-  function play(lines, immediate){
-    var my = ++token;
-    var parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
   }
-  // say(): cancels anything in progress, then speaks these lines (each split into short sentences).
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
+  function play(lines, immediate){
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
+  }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported,
-    say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
     unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
-      started = true;
-      lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
-      if(supported && !muted && lines.length) play(lines, true);
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
     },
-    // prime(): a silent utterance inside a tap, so later lines (after a recorded clip ends) may speak on iPad
-    prime: function(){ if(!supported) return; started = true; if(primed || muted) return; primed = true;
-      try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
     get lastLine(){ return last.join(" "); },
-    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; }
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
+/*CLIPS-END*/
 
 /* ---------- "Where do we use this in real life?" cards ----------
    Each card: group A gives m to group B. a0/b0 = start, so after: a0-m and b0+m.

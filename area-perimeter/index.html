@@ -352,7 +352,7 @@ var BANK=[
 function answerAsk(p){ return "Now find the answer. Type it, then tap Check."; }
 var MEANS={area:["inside","The space inside: how many squares cover it"], perim:["around","The distance all the way around the edge"], side:["side","The length of one side"]};
 function meansStep(p,which){ var right=which==="area"?"inside":"around";
-  return {type:"choice", ask:"The question asks for the "+which+". What does "+which+" mean?", right:right,
+  return {type:"choice", ask:"The question asks for the "+(which==="area"?"area":"perimeter")+". What does "+(which==="area"?"area":"perimeter")+" mean?", right:right,
     choices:[MEANS.area.concat(which==="area"?[null]:["Not quite. That is the area. The perimeter is the distance around the edge."]), MEANS.perim.concat(which==="perim"?[null]:["Not quite. That is the perimeter. The area is the space inside."]), MEANS.side.concat(["Not quite. One side is only part of it. Look at the whole shape."])],
     done:which==="area"?"Area is the space inside. We shade it.":"Perimeter is the distance around. We trace the edge."}; }
 function guess(p,i){
@@ -525,13 +525,14 @@ return {key:"areaPerimeterGame", tag:"P3-MEAS-AP-G11", kinds:["area","perim","sq
   answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, render:render, caption:caption,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","Check line. Take three sides away from your answer. Which number sentence should leave the last side?":"audio/1821a28c6aff.mp3","Check line. Share your answer into rows of one side. Which number sentence should give one side again?":"audio/26568c70639b.mp3","Nearly! Area is length times breadth. Find any missing side first.":"audio/ca6d635a94d5.mp3","That adds the sides. Area is the squares inside: rows times squares in each row.":"audio/98a22485b1ec.mp3","That is the distance around, the perimeter. The question asks for the area.":"audio/b08abbe8f6c6.mp3","That is the area, the space inside. Perimeter is around the edge.":"audio/3a8df12d2c4f.mp3","That is one side. The question asks for the area.":"audio/526331eafe1f.mp3","That is the perimeter again. Area is side times side.":"audio/3a56648ad1d8.mp3","That is the breadth. Now go all the way around for the perimeter.":"audio/2479c11c822e.mp3","Nearly! There are two breadths, not one.":"audio/097d72537244.mp3","The question asks for the area. What does area mean?":"audio/a71ade7acfe2.mp3","Area is the space inside. We shade it.":"audio/db7e481989ac.mp3","And the left and right sides?":"audio/39abd7725afb.mp3","The question asks for the perimeter. What does perimeter mean?":"audio/f6dc5db48d04.mp3","Perimeter is the distance around. We trace the edge.":"audio/09eb04f92c23.mp3","What is special about a square?":"audio/a25499a2d7a5.mp3","Which side do we know?":"audio/6c8dd60ecee6.mp3","A rectangular card is drawn on a grid of 1-cm squares. It is 4 cm long and 3 cm wide. What is the area of the rectangular card? Before we draw, make a guess. Is the question about the space inside, or the distance around?":"audio/5a745ba06d8a.mp3","A rectangular photo is 7 cm long and 4 cm wide. What is the perimeter of the rectangular photo? Before we draw, make a guess. How many sides does a rectangle have?":"audio/459fbe651eb5.mp3","A square tile has a perimeter of 36 cm. What is the area of the square tile? Before we draw, make a guess. Is the question about the space inside, or the distance around?":"audio/cbb3cbd748b5.mp3","A rectangular notice board has an area of 48 cm². Its length is 8 cm. What is the perimeter of the rectangular notice board? Before we draw, make a guess. Do we know every side yet?":"audio/b86a5b0a95e6.mp3","A rectangular garden has a perimeter of 66 m. Its length is 24 m. What is the area of the rectangular garden? Before we draw, make a guess. Is the question about the space inside, or the distance around?":"audio/55fd4dc26869.mp3","Yes! Area is inside, in square units.":"audio/8454df639757.mp3","Yes! Two lengths and two breadths.":"audio/61c4da7f9689.mp3","Great! On your paper, draw the shape with every side labelled, and what is inside or around, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/eb35c7fc59e5.mp3","Read the question again: does it say area or perimeter?":"audio/ed6ce7d6dc34.mp3","Good thinking! We find the missing side first.":"audio/c69e4f70801b.mp3","Let's draw it and label the sides we know.":"audio/334aa67c7e81.mp3","This time, write it all from memory. On your paper, draw the shape with every side labelled, and what is inside or around. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/d3d9ea7f8db9.mp3","Not quite. Adding gives part of the edge. Area counts the squares inside: equal rows means multiply.":"audio/cd6cf3c8fbbf.mp3","Not quite. That goes around the edge, the perimeter.":"audio/d583c6e1f22c.mp3","Not quite. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit.":"audio/4d365d5cedb5.mp3","Not quite. Each row has the length in squares.":"audio/93203c95249f.mp3","Not quite. Undo the times: divide.":"audio/b0ce64b0368b.mp3","Not quite. Multiplying gives the area, the space inside.":"audio/5c5c402aa169.mp3","Not quite. Take away three sides: two lengths and one breadth.":"audio/164688175545.mp3","Not quite. Adding gives part of the edge. Area is length times breadth.":"audio/d6e44fdd007f.mp3","Not quite. That goes around again. Area is length times breadth.":"audio/781c131c3549.mp3","Not quite. Share into rows of one side.":"audio/05f5fe3b9f6d.mp3","Not quite. Area is length times breadth, so undo it: divide.":"audio/c6ca34209111.mp3","Not quite. The breadth is smaller than the area. Divide.":"audio/fb9b3709365b.mp3","Here's a hint. Area is the number of squares inside. How many rows, and how many squares in each row?":"audio/c20aa780789f.mp3","Here's a hint. Perimeter is the distance all the way around. How many sides does a rectangle have?":"audio/d87c3bf9459b.mp3","Here's a hint. Area is length × breadth. We know the area and the length. What is the breadth?":"audio/4c42d4245908.mp3","Not yet. Read the story: how long is it?":"audio/6f66efea0f59.mp3","Too many. Read the story: how long is it?":"audio/590d35010a01.mp3","Not yet. Read the story: how wide is it?":"audio/316b9cc4c550.mp3","Too many. Read the story: how wide is it?":"audio/1b7fa269d2b6.mp3","Not quite. That is the perimeter. The area is the space inside.":"audio/25aed745871d.mp3","Not quite. One side is only part of it. Look at the whole shape.":"audio/4f410340b825.mp3","Not quite. Opposite sides of a rectangle are the same length.":"audio/4b0a31e7c0d2.mp3","Not quite. Those are the lengths. The other two sides are the breadth.":"audio/d6ea57cd261e.mp3","Not quite. Read the story: how wide is it?":"audio/01e2d9633310.mp3","Not quite. That is the area. The perimeter is the distance around the edge.":"audio/da316cb0f9b0.mp3","Not quite. That's a rectangle. A square has all sides equal.":"audio/b4d333f83073.mp3","Not quite. Square units are for area, the space inside.":"audio/029c5deb90c8.mp3","Not quite. Read the story again: it gives the length.":"audio/c53358bfee89.mp3","Not quite. One side is missing. We find it first.":"audio/4724eeeb5524.mp3","Yes! 3 rows of 4 squares is 12 square centimetres. Well done.":"audio/c64222a69e2e.mp3","Yes! Two lengths and two breadths make 22 centimetres. Well done.":"audio/5823bc1f75ad.mp3","Yes! Each side is 9, and 9 times 9 is 81. Well done.":"audio/68242c9b67c9.mp3","Yes! The breadth is 6, and all 4 sides make 28. Well done.":"audio/dede4e7c5077.mp3","Yes! Each breadth is 9, and 24 times 9 is 216. Well done.":"audio/f3d83ea6f7c2.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -567,28 +568,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }

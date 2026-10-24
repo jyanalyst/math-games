@@ -483,13 +483,14 @@ return {key:"barModelBoxesNeededGame", tag:"P3-WNMD-RD-G07", kinds:["up","down",
   answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","What does each box on the model show?":"audio/d399fab5d6b2.mp3","What do we draw for the left-over eggs?":"audio/19b6eb0f0f94.mp3","What do we draw for the left-over marbles?":"audio/1b8278427371.mp3","Mei has 14 eggs. Each box can hold 4 eggs. How many boxes does Mei need to pack all the eggs? Before we draw, make a guess. After the full boxes, some eggs are left over. What happens to them?":"audio/db6b47287878.mp3","Arjun has 23 cupcakes. Arjun packs 5 cupcakes into each box. How many boxes can Arjun fill completely? Before we draw, make a guess. Is the answer a number of cupcakes, or a number of boxes?":"audio/1cf0265b5cc5.mp3","Siti has 50 marbles. Siti packs 6 marbles into each bag. How many more marbles does Siti need to fill one more bag? Before we draw, make a guess. After the full bags, some marbles are left over. What happens to them?":"audio/5dedce1c9d14.mp3","Kai has 125 eggs. Each cake needs 4 eggs. What is the greatest number of cakes Kai can bake? Before we draw, make a guess. Is the answer a number of eggs, or a number of cakes?":"audio/f88085cbc81a.mp3","245 pupils are going on a school trip. Each minibus can take 9 pupils. What is the smallest number of minibuses needed to take all the pupils? Before we draw, make a guess. After the full minibuses, some pupils are left over. What happens to them?":"audio/4844e55cb628.mp3","Great! On your paper, draw the bar with the full groups, the left-over piece, and the bracket for the whole, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/9ae11fe84874.mp3","Good thinking! That is the key to this question.":"audio/44c6565bf50d.mp3","Let's draw it, then read the question again. It tells us what to do with the left-over ones.":"audio/3cba1da4e182.mp3","This time, write it all from memory. On your paper, draw the bar with the full groups, the left-over piece, and the bracket for the whole. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/d00fb1d569b0.mp3","Not quite. The answer is smaller than the whole bar. Making equal groups means divide.":"audio/70b6ee4757b8.mp3","Not quite. That's how many go in one box.":"audio/13c9542d47e1.mp3","Not quite. We don't know that yet. The whole bar is all the eggs.":"audio/9f761e6c6c9d.mp3","Not quite. That's the whole bar.":"audio/b183b5eeec42.mp3","Not quite. That's what we count, not what is inside one.":"audio/6d69f6503077.mp3","Not quite. That's how many go in one bag.":"audio/3753c1474bd8.mp3","Not quite. We don't know that yet. The whole bar is all the marbles.":"audio/38f68b3b2d2f.mp3","Yes! 14 divided by 4 is 3 remainder 2. The 2 left over need one more box, so 4. Well done.":"audio/539464cf0f06.mp3","Yes! 23 divided by 5 is 4 remainder 3. Only the 4 full boxes count. Well done.":"audio/c7417a312b07.mp3","Yes! 50 divided by 6 is 8 remainder 2. The last bag has 2, so 4 more fill it up to 6. Well done.":"audio/2d864f9d104a.mp3","Yes! 125 divided by 4 is 31 remainder 1. Only the 31 full cakes count. Well done.":"audio/9e5f62842de5.mp3","Yes! 245 divided by 9 is 27 remainder 2. The 2 left over need one more minibus, so 28. Well done.":"audio/e2f5e3a9c3cc.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -525,28 +526,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }

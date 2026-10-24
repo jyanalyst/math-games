@@ -4674,5 +4674,112 @@
     "text": "You finished the round and got all 5 stars! Well done!"
    }
   ]
+ },
+ "working_clips": {
+  "note": "Voice option B (24 Oct 2026): Maeve clips for the Lesson working-step lines, looked up by exact text in the page (CLIPS); a line with no clip uses the device voice. Shared clips live in /audio-shared/.",
+  "generated": "2026-10-24",
+  "count": 20,
+  "clips": [
+   {
+    "file": "4c730990233a.mp3",
+    "text": "Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.",
+    "bytes": 91289
+   },
+   {
+    "file": "c9e1dd2cb8cc.mp3",
+    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+    "bytes": 87057
+   },
+   {
+    "file": "8d0bfb4dc503.mp3",
+    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
+    "bytes": 62606
+   },
+   {
+    "file": "fa2602ca7096.mp3",
+    "text": "You finished the round and got all 5 stars!",
+    "bytes": 19818
+   },
+   {
+    "file": "4b3cd9329343.mp3",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?",
+    "bytes": 29849
+   },
+   {
+    "file": "9f5fc22bda3f.mp3",
+    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.",
+    "bytes": 61509
+   },
+   {
+    "file": "000b38be15d4.mp3",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?",
+    "bytes": 63076
+   },
+   {
+    "file": "2e8748ffdbe9.mp3",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 64017
+   },
+   {
+    "file": "70380d9f7cb9.mp3",
+    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?",
+    "bytes": 34707
+   },
+   {
+    "file": "d4122ee12350.mp3",
+    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller.",
+    "bytes": 37529
+   },
+   {
+    "file": "ff29f46343c3.mp3",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.",
+    "bytes": 50538
+   },
+   {
+    "file": "a77be17c9663.mp3",
+    "text": "Not quite. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.",
+    "bytes": 42387
+   },
+   {
+    "file": "4280945ecb33.mp3",
+    "text": "Not quite. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 79847
+   },
+   {
+    "file": "e0c86a8a7777.mp3",
+    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 54926
+   },
+   {
+    "file": "cf8bb2fcc940.mp3",
+    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 67308
+   },
+   {
+    "file": "b8c7ee7c466f.mp3",
+    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 52889
+   },
+   {
+    "file": "01fabf731c09.mp3",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars.",
+    "bytes": 51478
+   },
+   {
+    "file": "4e5c811b716f.mp3",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now.",
+    "bytes": 35648
+   },
+   {
+    "file": "85bd46521df1.mp3",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 65898
+   },
+   {
+    "file": "0204037bbfe7.mp3",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 64957
+   }
+  ]
  }
 }

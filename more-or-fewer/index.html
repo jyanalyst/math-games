@@ -462,7 +462,7 @@ function wrongMsg(p,v){
   return "Nearly! Find the "+c.Y+" first. Then take the smaller bar from the bigger one.";
 }
 function praise(p){
-  if(p.kind==="sum") return "Yes! "+cap(nmB(p))+" has "+p.b+", and "+p.a+" and "+p.b+" make "+p.answer+" altogether. Well done.";
+  if(p.kind==="sum"){ var cs=S(p), bp=cs.people ? cap(nmB(p))+" has "+p.b : (p.ctx==="concert"?"There were "+p.b+" children":(p.ctx==="cans"?"Class 3B collected "+p.b+" cans":"It sold "+p.b+" buns on Tuesday")); return "Yes! "+bp+", and "+p.a+" and "+p.b+" make "+p.answer+" altogether. Well done."; }
   var c=D(p); return "Yes! There are "+p.b+" "+c.Y+", and "+Math.max(p.a,p.b)+" take away "+Math.min(p.a,p.b)+" is "+p.answer+". Well done.";
 }
 function explain(p){ return p.kind==="sum" ? "Why did you find "+nmB(p)+"'s number before adding?" : "Why did you find the "+D(p).Y+" before comparing?"; }
@@ -514,13 +514,14 @@ return {key:"barModelMoreFewerGame", tag:"P3-WNAS-PW-G08", kinds:["sum","diff"],
   answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","Read the story again: is it more or fewer? Then add both bars.":"audio/01ca6387a02a.mp3","That's all the children. Find the girls first, then compare.":"audio/ed692c08d92c.mp3","Nearly! Find the girls first. Then take the smaller bar from the bigger one.":"audio/950981bf09a7.mp3","Fewer means take away, not add. Then add both bars.":"audio/60c5ab2fc567.mp3","That's all the fruits. Find the pears first, then compare.":"audio/eb0a14fe04b7.mp3","Nearly! Find the pears first. Then take the smaller bar from the bigger one.":"audio/77e933498e02.mp3","What is the difference between the two bars?":"audio/9e760e489cc1.mp3","The bracket covers both bars. That's what we want to find.":"audio/496e5c1fd829.mp3","Which number is both bars together?":"audio/a2718c225514.mp3","Which bar do we know?":"audio/d78b2a252e4e.mp3","Ravi has 12 marbles. Mei has 5 more marbles than Ravi. How many marbles do they have altogether? Before we draw, make a guess. What do we find first?":"audio/066984499fe9.mp3","There are 30 children in a hall. 13 of them are boys. The rest are girls. How many more girls than boys are there? Before we draw, make a guess. The total is 30. Do we add or take away to find the girls?":"audio/897c8a98d985.mp3","Aisha has 45 stickers. Ben has 18 fewer stickers than Aisha. How many stickers do they have altogether? Before we draw, make a guess. What do we find first?":"audio/150a5fe73a25.mp3","There are 256 fruits at a stall. 139 of them are apples. The rest are pears. How many more apples than pears are there? Before we draw, make a guess. The total is 256. Do we add or take away to find the pears?":"audio/9df35d0fb88f.mp3","There were 245 adults at a concert. There were 68 fewer children than adults. How many people were at the concert altogether? Before we draw, make a guess. What do we find first?":"audio/f91960d5db55.mp3","Yes! Whole take away one part gives the other part.":"audio/04fe00acb936.mp3","Great! On your paper, draw two bars to compare, the difference, and the bracket for the whole, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/e4e9cb5230f5.mp3","Good thinking! We need both numbers before we can add them.":"audio/46760890e666.mp3","Let's draw it. We only know one of the two numbers so far.":"audio/ff61a5534327.mp3","Let's draw it: the whole is both parts together.":"audio/42bbf317e452.mp3","This time, write it all from memory. On your paper, draw two bars to compare, the difference, and the bracket for the whole. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/0a708a49581c.mp3","Not quite. Read the story again: more means add.":"audio/2544e3df4a66.mp3","Not quite. Altogether means put the bars together. That means add.":"audio/72e190247945.mp3","Not quite. Add the two bars, not the difference.":"audio/f101ebe12bdb.mp3","Not quite. Read the question again. It asks for both together.":"audio/a0658ff06305.mp3","Not quite. The boys are already inside the total. Take them away.":"audio/222f077226f5.mp3","Not quite. The two groups are not the same size.":"audio/3ace2250e218.mp3","Not quite. Compare the two groups, not the whole.":"audio/d17cd0e115cf.mp3","Not quite. How many more means the difference. Take the smaller from the bigger.":"audio/25f5e8c90f93.mp3","Not quite. Look at the model: which bar is longer?":"audio/6a00ac74af16.mp3","Not quite. That is only the girls. Add the boys too.":"audio/72969b07a85a.mp3","Not quite. Read the story again: fewer means take away.":"audio/cf1a2037066e.mp3","Not quite. The apples are already inside the total. Take them away.":"audio/025caaa76eb2.mp3","Not quite. That is only the pears. Add the apples too.":"audio/f3e27cf17f29.mp3","Not quite. The story tells us exactly how many more.":"audio/51bd05ba58c7.mp3","Not quite. Read the question: it asks about both together.":"audio/013ba31e9ee5.mp3","Not quite. The question asks altogether.":"audio/5b23ff82bf32.mp3","Not quite. That's only the boys.":"audio/1d8ad30b4d1d.mp3","Not quite. Read the story: how many children in all?":"audio/4ef7c75c1919.mp3","Not quite. The story says how many boys. The girls are the rest.":"audio/edf340c6d82a.mp3","Not quite. One of them is the rest, so we must find it.":"audio/31a6f3121e04.mp3","Not quite. The question asks how many more, not how many in all.":"audio/c050ab45518b.mp3","Not quite. How many more is only the piece that sticks out.":"audio/a92af7bd2117.mp3","Not quite. The story tells us exactly how many fewer.":"audio/29c24e7913de.mp3","Not quite. That's only the apples.":"audio/c1aa3bb85130.mp3","Not quite. Read the story: how many fruits in all?":"audio/8608287b8f3e.mp3","Not quite. The story says how many apples. The pears are the rest.":"audio/f2d8564662ed.mp3","Yes! Mei has 17, and 12 and 17 make 29 altogether. Well done.":"audio/c826eb29cf60.mp3","Yes! There are 17 girls, and 17 take away 13 is 4. Well done.":"audio/128ced253293.mp3","Yes! Ben has 27, and 45 and 27 make 72 altogether. Well done.":"audio/c0e08a4bb4dd.mp3","Yes! There are 117 pears, and 139 take away 117 is 22. Well done.":"audio/1e9b4322c1cc.mp3","Yes! There were 177 children, and 245 and 177 make 422 altogether. Well done.":"audio/523149636280.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -556,28 +557,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }

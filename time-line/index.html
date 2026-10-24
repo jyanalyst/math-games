@@ -522,13 +522,14 @@ var G0={key:"timelineJumpsGame", tag:"P3-MEAS-TM-G09", kinds:["end","start","dur
 G0.plan=function(p,api){ var n0=0, wrap={line:function(o){ n0++; if(o.ask) o.ask=o.ask.replace("Line #. ","Line "+n0+". "); api.line(o); }, answer:function(o){ api.answer(o); }}; return plan(p,wrap); };
 return G0;
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","The minutes are right! Check the hours: count the hour jumps on the timeline again.":"audio/aee7f3ddc28f.mp3","The hour is right. Check the minutes: look at the jumps on the timeline again.":"audio/119d63a1c972.mp3","Nearly! Add up every jump on the timeline: the minutes to the o'clock time, the hours, and the minutes after.":"audio/a96a1f52112f.mp3","Draw the timeline. Which time do we mark first, at the start?":"audio/1b38685f6c6e.mp3","Which o'clock time do we jump to first?":"audio/d8f909347394.mp3","Draw the timeline. Which time do we mark first? We count back from it.":"audio/75bdbc5ae71a.mp3","Which o'clock time do we jump back to first?":"audio/7505b4fef26a.mp3","The movie started at 3:50 pm. It lasted 25 minutes. What time did the movie end? Before we draw, make a guess. We start at 3:50 pm. Which o'clock time do we jump to first?":"audio/be3be52552ae.mp3","The swimming lesson started at 9:45 am and ended at 10:20 am. How long did the swimming lesson last? Give your answer in minutes. Before we draw, make a guess. How many minutes are there in 1 hour?":"audio/0200deb31bf5.mp3","The piano practice ended at 11:10 am. It lasted 40 minutes. What time did the piano practice start? Before we draw, make a guess. We count back from 11:10 am. Which o'clock time do we jump back to first?":"audio/42923503214b.mp3","The football match started at 2:35 pm. It lasted 1 h 40 min. What time did the football match end? Before we draw, make a guess. How many minutes are there in 1 hour?":"audio/1133383e3405.mp3","The school concert started at 1:50 pm and ended at 4:05 pm. How long did the school concert last? Give your answer in minutes. Before we draw, make a guess. We start at 1:50 pm. Which o'clock time do we jump to first?":"audio/59119f9f03fa.mp3","Yes! The nearest o'clock time is the easiest first jump.":"audio/2268cb0f178c.mp3","Great! On your paper, draw a timeline with the start time, the o'clock times and the end time, and the jumps between them, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/3d8622c12aad.mp3","Let's draw the timeline. The first jump goes to the nearest o'clock time.":"audio/b96c1c3b7dae.mp3","This time, write it all from memory. On your paper, draw a timeline with the start time, the o'clock times and the end time, and the jumps between them. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/acdfc55720d5.mp3","Not quite. An hour has sixty minutes, not a hundred.":"audio/c7490611cc07.mp3","Not quite. Start from the whole time it lasted, in minutes.":"audio/197547446dee.mp3","Not quite. The first jump is part of the time it lasted. Take it away.":"audio/c7a0fdf71d74.mp3","Not quite. That is right, but on its own it doesn't say what it means. Answer the question in a full sentence with am or pm.":"audio/d96f14816689.mp3","Not quite. The question asks when it ended.":"audio/cde00103910e.mp3","Not quite. Put the jumps together: add.":"audio/92a196cde273.mp3","Not quite. There is no whole-hour jump here. Add only the jumps on the timeline.":"audio/7ee187eddfa4.mp3","Not quite. Put all the jumps together: add.":"audio/cece7efc7694.mp3","Not quite. That is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, minutes.":"audio/7a72e6f7e6ff.mp3","Not quite. The question asks how long it lasted, not when it ended.":"audio/0570dee3abb1.mp3","Not quite. Take away the first jump too.":"audio/5500a9c868cb.mp3","Not quite. To undo the jumps, take them away.":"audio/f79e88e8f961.mp3","Not quite. The first jump back uses up some minutes. Take it away.":"audio/4c2f2fdbab69.mp3","Not quite. The question asks when it started.":"audio/f16c510ec170.mp3","Not quite. That's an o'clock time we jump to. Start with a time from the story.":"audio/dcbea2fa958c.mp3","Not quite. Use a time from the story.":"audio/db5c6a647936.mp3","Not quite. That jump is too big. Use the nearest o'clock time.":"audio/3adad53573ac.mp3","Not quite. Count the minutes between the two times on the timeline.":"audio/bf836ef0e993.mp3","Yes! 10 minutes takes us to 4:00 pm, then the rest takes us to 4:15 pm. Well done.":"audio/a16558748fb2.mp3","Yes! 60 minutes make 1 hour. That's why we jump to the o'clock time.":"audio/957be77d89dc.mp3","Yes! 15 and 20 minutes make 35 minutes. Well done.":"audio/fc3e47aae214.mp3","Yes! Count back 10 minutes to 11:00 am, then the rest takes us back to 10:30 am. Well done.":"audio/ea6fac5d6c74.mp3","Yes! 25 minutes takes us to 3:00 pm, then the rest takes us to 4:15 pm. Well done.":"audio/a02a1c9f0a01.mp3","Yes! 10, 120 and 5 minutes make 135 minutes. Well done.":"audio/4bce4ec96a39.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -564,28 +565,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }

@@ -436,7 +436,7 @@ function wrongMsg(p,v){
 }
 function praise(p){
   var n=nm(p), s = p.kind==="total" ? "Yes! "+p.T+" shared into "+(p.m+1)+" units is "+p.u+" each." : "Yes! "+p.D+" shared into "+(p.m-1)+" units is "+p.u+" each.";
-  return s+(p.ask==="A" ? " "+cap(n.A)+" is "+p.m+" units, so "+p.A+". Well done." : " "+cap(n.B)+" is 1 unit, so "+p.u+". Well done.");
+  return s+(p.ask==="A" ? " "+cap(n.A)+(C(p).people?" is ":" are ")+p.m+" units, so "+p.A+". Well done." : " "+cap(n.B)+(C(p).people?" is ":" are ")+"1 unit, so "+p.u+". Well done.");
 }
 function explain(p){ return p.kind==="total" ? "Why did you divide by "+(p.m+1)+", and not by "+p.m+"?" : "Why did you divide by "+(p.m-1)+"?"; }
 function plan(p,api){
@@ -466,7 +466,7 @@ function plan(p,api){
   }
   if(p.ask==="A") api.line({ok:ex(u,TI,m), hl:["unitsA","question"], tag:n.A+"'s "+m+" units",
       ask:"Line 3. "+A+" is "+m+" units. Which number sentence finds "+n.A+"'s number?",
-      wrong:[[ex(u,"+",m),"Not quite. Each unit is the same size. Equal groups means multiply."],[ex(u,TI,m+1),"Not quite. That is all the units. Count only "+n.A+"'s units."],[ex(u,DI,m),"Not quite. "+A+" has more than 1 unit, so the answer is bigger. Equal groups means multiply."]],
+      wrong:[[ex(u,"+",m),"Not quite. Each unit is the same size. Equal groups means multiply."],[ex(u,TI,m+1),"Not quite. That is all the units. Count only "+n.A+(C(p).people?"'s":"'")+" units."],[ex(u,DI,m),"Not quite. "+A+" has more than 1 unit, so the answer is bigger. Equal groups means multiply."]],
       stmt:A+" "+(C(p).people?"has":"is")+" "+p.A+" "+wA+".",
       why:A+" is "+m+" units and each unit is "+u+". "+m+" equal groups means multiply."});
   var other=p.ask==="A"?"B":"A";
@@ -507,13 +507,14 @@ return {key:"barModelTimesAsManyGame", tag:"P3-WNMD-MC-G04", kinds:["total","dif
   answerSentence:function(p){return answerSentence(p,p.ask);}, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","That's the total. Share it into equal units first.":"audio/727000cb78c6.mp3","Mei has twice as many stickers as Kai. They have 18 stickers altogether. How many stickers does Kai have? Before we draw, make a guess. How many equal units will the whole model have?":"audio/d04f0fa1d6c4.mp3","A farm has 3 times as many chickens as ducks. There are 24 chickens and ducks altogether. How many chickens are there? Before we draw, make a guess. Will the answer be more or less than half of 24?":"audio/f5f59c521e68.mp3","Arjun has 4 times as many marbles as Siti. They have 45 marbles altogether. How many marbles does Arjun have? Before we draw, make a guess. How many equal units will the whole model have?":"audio/ff79ec147bd4.mp3","The class library has 3 times as many storybooks as comics. It has 28 more storybooks than comics. How many storybooks does it have? Before we draw, make a guess. Will the answer be more or less than 28?":"audio/a24c54249cd7.mp3","A stall sold 4 times as many curry puffs as egg tarts. It sold 365 curry puffs and egg tarts altogether. How many curry puffs did it sell? Before we draw, make a guess. How many equal units will the whole model have?":"audio/643f3506c8e0.mp3","Good thinking! You'll see why on the model.":"audio/cceb06493df6.mp3","Interesting guess. Let's draw the model and see.":"audio/d8727e341b9f.mp3","Not quite. The bracket covers both bars, so put all the units together.":"audio/4931a5c9f057.mp3","Not quite. The units are equal parts of the total. Sharing equally means divide.":"audio/5e3e1487f706.mp3","Not quite. Read the question again. Who or what does it ask about?":"audio/29fb5ad3ae1d.mp3","Not quite. Each unit is the same size. Equal groups means multiply.":"audio/d78986319a1c.mp3","Not quite. Put both bars back together. Together means add.":"audio/6c41669a7ff3.mp3","Not quite. That counts all the units on both bars. The extra is only the part that sticks out.":"audio/6e2bef22fe81.mp3","Not quite. Only the extra units make the difference. Count just those.":"audio/74c137aaec85.mp3","Not quite. The units are equal parts. Sharing equally means divide.":"audio/9b5606b708eb.mp3","Not quite. That is all the units. Count only the storybooks' units.":"audio/3f8baa985b98.mp3","Not quite. 'More' is a difference. Difference means take away.":"audio/ee58f3ffaeff.mp3","Not quite. One has more than the other, so the bars are not the same.":"audio/0427124952d7.mp3","Too many. Read the story again: how many times as many? Take some away.":"audio/fce84c8061da.mp3","Not quite. 'More' is a difference, not a total. Compare the two bars.":"audio/7338f3a3b61f.mp3","Yes! 18 shared into 3 units is 6 each. Kai is 1 unit, so 6. Well done.":"audio/6e78b170ae9c.mp3","Yes! 24 shared into 4 units is 6 each. The chickens are 3 units, so 18. Well done.":"audio/2761b80bf8a0.mp3","Yes! 45 shared into 5 units is 9 each. Arjun is 4 units, so 36. Well done.":"audio/3a05365bae6c.mp3","Yes! 28 shared into 2 units is 14 each. The storybooks are 3 units, so 42. Well done.":"audio/ffdb9280bfe5.mp3","Yes! 365 shared into 5 units is 73 each. The curry puffs are 4 units, so 292. Well done.":"audio/e3be6b01a038.mp3","Great! On your paper, draw the bar model with 1 unit for the smaller one, the units for the other, and the number from the story, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/de3e5c147623.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -549,28 +550,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }

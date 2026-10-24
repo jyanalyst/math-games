@@ -580,13 +580,14 @@ return {key:"barModelMoneyStepsGame", tag:"P3-MONY-MO-G10", kinds:["change","lef
   decimalPad:decimalPad, parseTyped:parseTyped, formatMsg:formatMsg, typeFor:typeFor, numsIn:numsIn,
   hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
 })();
-/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+/* ---------- voice tutor: recorded clips (Maeve) where we have them, device voice for every other line ---------- */
 var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Well done!":"../audio-shared/43298c0d438c.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","That's okay, let's look again.":"../audio-shared/b995d1da232e.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/01fdbdd18d99.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not quite. To undo adding, take away.":"../audio-shared/ef7febb75fdd.mp3","Very close! Check your regrouping. Line up the dots, and take away the cents first, then the dollars.":"audio/6c44997d8c21.mp3","That's the money spent. The question asks what was left.":"audio/7ad4be6d91bd.mp3","Read the story again: more or less? Find both costs, then take them away.":"audio/b0652077e250.mp3","What is the whole bar?":"audio/aec230a25157.mp3","The question mark is the part that is not spent: the change.":"audio/89f53821b98a.mp3","The question mark is the part that is not spent: the money left.":"audio/ab46b226edfd.mp3","Hui Min bought 2 pens at $3 each. Hui Min paid with a $10 note. How much change did Hui Min get? Before we draw, make a guess. What do we find first?":"audio/63ab29cfc2ed.mp3","Irfan had $30. Irfan spent $8 on a book. Irfan spent $5 more on a game than on the book. How much money did Irfan have left? Before we draw, make a guess. Will the answer be more or less than $30?":"audio/d18de26c6f7a.mp3","Zara bought a book for $4.35 and a pen for $2.80. Zara paid with a $10 note. How much change did Zara get? Before we draw, make a guess. What do we find first?":"audio/3c0d5727d33f.mp3","Ethan bought 3 T-shirts at $12 each and a cap for $8.65. Ethan paid with a $50 note. How much change did Ethan get? Before we draw, make a guess. How many cents make 1 dollar?":"audio/c4f2f131df7b.mp3","Divya had $40. Divya spent $12.85 on a book. Divya spent $3.40 more on a game than on the book. How much money did Divya have left? Before we draw, make a guess. What do we find first?":"audio/fa78b60dbd4d.mp3","Yes! Spending makes the money smaller.":"audio/57527cdc206e.mp3","Great! On your paper, draw one long bar for all the money, the parts spent, and the part left, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/0c137992231f.mp3","Good thinking! First the money spent, then what is left.":"audio/1e2a4a82b848.mp3","Let's draw it. We need the money spent first.":"audio/5caa1f3c0ad7.mp3","Now find the answer. Type the dollars. Then tap Check.":"audio/848a0554f19b.mp3","Now find the answer. Type the dollars, then the point, then the cents. Then tap Check.":"audio/fc683b8c825d.mp3","This time, write it all from memory. On your paper, draw one long bar for all the money, the parts spent, and the part left. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/4a68ff15fac6.mp3","Not quite. Start from the note, the whole bar.":"audio/d264eb795d6e.mp3","Not quite. Change is what is left after paying. Take away.":"audio/e374f223891b.mp3","Not quite. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence. Money needs the $ sign.":"audio/f4f003fd7e2f.mp3","Not quite. The question asks for the change.":"audio/6367f145e39e.mp3","Not quite. Put the parts together: add.":"audio/3307d1072a0b.mp3","Not quite. Add all the money spent, not one thing.":"audio/4849c3326603.mp3","Not quite. The money spent is both things together. Add.":"audio/ef71244a6934.mp3","Not quite. Add the cost of both things.":"audio/840940d6f6e4.mp3","Not quite. Take away all the money spent.":"audio/1f231ced24e1.mp3","Not quite. Spending makes the money smaller. Take away.":"audio/54b605888b44.mp3","Not quite. The question asks how much was left.":"audio/1d088a689810.mp3","Not quite. Buying more means spending more. Add.":"audio/466d549f2664.mp3","Not quite. First add up everything that was bought.":"audio/f2164aaa979c.mp3","Not quite. That is only one thing that was bought.":"audio/5927d1e9e0ba.mp3","Not quite. The money spent is only a part. The whole is the note.":"audio/4140389816e9.mp3","Not quite. The whole bar is the note. We know that.":"audio/058376b4406d.mp3","Not quite. The question asks what is given back.":"audio/87abf0881752.mp3","Not quite. Read the story: one cost more than the other.":"audio/0156cc4dcbca.mp3","Not quite. The whole bar is the money at first. We know that.":"audio/5f69938d0b8b.mp3","Not quite. The question asks what is left.":"audio/438e5da5e10f.mp3","Yes! Hui Min spent $6, and $10 take away $6 is $4. Well done.":"audio/2c7233a00f4d.mp3","Yes! Irfan spent $21 altogether, so $9 was left. Well done.":"audio/50a33e26f76a.mp3","Yes! Zara spent $7.15, and $10.00 take away $7.15 is $2.85. Well done.":"audio/1ed5844f7c9a.mp3","Yes! 100 cents make $1. That's why money has 2 digits after the point.":"audio/91df7f1b2f8f.mp3","Yes! Ethan spent $44.65, and $50.00 take away $44.65 is $5.35. Well done.":"audio/e1040a2ab41d.mp3","Yes! Divya spent $29.10 altogether, so $10.90 was left. Well done.":"audio/a185df902140.mp3"};
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
   var supported = !!(ss && hasUtt);
-  var voice = null, last = [], token = 0, started = false;
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
   var muted = false;
   try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
   var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
@@ -622,28 +623,79 @@ var Voice = (function(){
     u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
     return u;
   }
+  // Recorded tutor clips (Maeve), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
   function play(lines, immediate){
-    var my = ++token, parts = [];
-    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
-    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
-    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
-    if(immediate || !busy) go(); else setTimeout(go, 60);
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
   }
   function say(){
     var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
     if(!lines.length) return;
     last = lines;
-    if(!supported || muted || !started) return;
+    if(muted || !started) return;
     play(lines, false);
   }
   return {
-    supported: supported, say: say,
-    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
-    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
-    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
     setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
     get muted(){ return muted; }, get started(){ return started; },
-    get lastLine(){ return last.join(" "); }
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
   };
 })();
 function tell(){ Voice.say.apply(null, arguments); }
