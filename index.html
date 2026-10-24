@@ -8,4 +8,47 @@
 <a class="card" href="time-line/"><span class="lvl" aria-label="Level P3">P3</span>⏰ Time Jumps<span>Timelines: end time, start time, or how long</span><span class="tag">P3-MEAS-TM-G09</span></a>
 <a class="card" href="money-steps/"><span class="lvl" aria-label="Level P3">P3</span>💵 Money Steps<span>Bar models: money spent, change, money left, saving up</span><span class="tag">P3-MONY-MO-G10</span></a>
 <a class="card" href="area-perimeter/"><span class="lvl" aria-label="Level P3">P3</span>🟦 Inside and Around<span>Area and perimeter of rectangles and squares</span><span class="tag">P3-MEAS-AP-G11</span></a>
+<details id="voicePanel" style="max-width:480px;margin:28px auto;text-align:left;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 3px 10px #0001;font-size:16px"><summary style="cursor:pointer;font-weight:700">🔊 Tutor voice (for grown-ups)</summary>
+<p style="color:#555">Lines without a recorded clip are read by this device's voice. The best one is chosen automatically; tap ▶ to hear one and ✓ to use it in every game on this device.</p>
+<p>Now using: <b id="vNow">…</b> <button id="vAuto" type="button">Automatic</button></p><ol id="vList" style="padding-left:20px"></ol></details>
+<script>
+(function(){
+  var ss = window.speechSynthesis; if(!ss || typeof SpeechSynthesisUtterance!=="function"){ document.getElementById("voicePanel").style.display="none"; return; }
+  var VKEY = "barmodel.voice";
+  var NOVELTY = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|deranged|hysterical|princess|vicki|victoria|bruce|agnes)\b/i;
+  var GOOD = /^(serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|daniel|arthur|oliver|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma)\b|google uk english female|google us english/i;
+  var FEMALE = /female|woman|girl|serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma|hazel|zira/i;
+  function vlang(v){ return String(v.lang||"").toLowerCase().replace("_","-"); }
+  function score(v){
+    var n = String(v.name||""), l = vlang(v), s = 0;
+    if(!/^en(-|$)/.test(l) || NOVELTY.test(n)) return -1;
+    if(/premium/i.test(n)) s += 40; else if(/enhanced/i.test(n)) s += 30;
+    if(/natural|neural/i.test(n)) s += 35; else if(/^google/i.test(n)) s += 25;
+    if(/compact|espeak|festival|pico/i.test(n)) s -= 20;
+    if(l.indexOf("en-sg")===0) s += 10; else if(l.indexOf("en-gb")===0) s += 9; else if(/^en-(au|ie|nz)/.test(l)) s += 6; else if(l.indexOf("en-us")===0) s += 5; else if(/^en-(in|za)/.test(l)) s += 3;
+    if(GOOD.test(n)) s += 6;
+    if(FEMALE.test(n) && !/\bmale\b/i.test(n.replace(/female/ig,""))) s += 4; // match Maeve's recorded voice
+    if(v.localService) s += 1; // works offline; ties only
+    return s;
+  }
+  function englishVoices(){
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    return vs.filter(function(v){ return score(v) >= 0; }).sort(function(a,b){ return score(b)-score(a); });
+  }
+  function saved(){ try{ return localStorage.getItem(VKEY); }catch(e){ return null; } }
+  function current(en){ var w = saved(); for(var i=0;i<en.length;i++){ if(en[i].voiceURI===w || en[i].name===w) return en[i]; } return en[0]||null; }
+  function sample(v){ ss.cancel(); var u = new SpeechSynthesisUtterance("Mei has 36 stickers. She gives 9 to Ravi. How many does she have left?"); u.voice = v; u.lang = v.lang; u.rate = 0.9; u.pitch = 1.05; ss.speak(u); }
+  function draw(){
+    var en = englishVoices(), cur = current(en), ol = document.getElementById("vList"); ol.innerHTML = "";
+    document.getElementById("vNow").textContent = cur ? cur.name + " (" + cur.lang + ")" + (saved() ? "" : " – automatic") : "no English voice found";
+    en.forEach(function(v){ var li = document.createElement("li"); li.style.margin = "6px 0";
+      var t = document.createElement("span"); t.textContent = v.name + " (" + v.lang + ") "; if(v===cur) t.style.fontWeight = "800";
+      var a = document.createElement("button"); a.type = "button"; a.textContent = "▶"; a.setAttribute("aria-label","Hear "+v.name); a.onclick = function(){ sample(v); };
+      var b = document.createElement("button"); b.type = "button"; b.textContent = "✓"; b.setAttribute("aria-label","Use "+v.name); b.onclick = function(){ try{ localStorage.setItem(VKEY, v.voiceURI||v.name); }catch(e){} draw(); sample(v); };
+      li.appendChild(t); li.appendChild(a); li.appendChild(document.createTextNode(" ")); li.appendChild(b); ol.appendChild(li); });
+  }
+  document.getElementById("vAuto").onclick = function(){ try{ localStorage.removeItem(VKEY); }catch(e){} draw(); };
+  draw(); if(ss.addEventListener) ss.addEventListener("voiceschanged", draw); else ss.onvoiceschanged = draw;
+})();
+</script>
 </body></html>
