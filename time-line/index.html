@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; media-src 'self'">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Time Jumps – Bar Model Game</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .modesw{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:4px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06);font-size:17px;font-weight:700}
+  .modesw span{padding:8px 12px;border-radius:999px;color:var(--soft)}
+  .modesw span.on{background:var(--a);color:#fff}
+  .startcard .note{font-size:17px;color:var(--soft);margin:10px 0 0}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  /* working step */
+  .seg.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75);z-index:2;animation:glow 1.6s ease-in-out infinite}
+  .lab.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .seg.diffbox{top:2px;height:68px;background:rgba(255,216,77,.30);border:3px dashed #d99a00;border-radius:10px;z-index:3;pointer-events:none}
+  .question.hl{background:#fff3c4;border-radius:10px;box-shadow:0 0 0 4px #ffd84d;padding:0 6px}
+  @keyframes glow{50%{box-shadow:0 0 0 6px #ffd84d,0 0 22px 8px rgba(255,190,0,.9)}}
+  .sheet{background:#fffdf5;border:2px solid #efe6c8;border-left:6px solid #f2a7a7;border-radius:12px;padding:4px 10px;margin:4px 0 8px}
+  .wline{display:flex;align-items:flex-start;gap:10px;padding:5px 4px;border-bottom:1px dashed #e8dfc4;width:100%;text-align:left;background:none;border-radius:8px}
+  .wline:last-child{border-bottom:none}
+  .wline.on{background:#fff3c4}
+  .wline.next{color:var(--soft)}
+  .wnum{flex:0 0 auto;min-width:30px;height:28px;border-radius:999px;background:#ece7f8;color:#4b3fc4;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;margin-top:2px}
+  .wbody{display:flex;flex-direction:column}
+  .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .wst,.wans{font-size:18px;line-height:1.3}
+  .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
+  .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
+  .wintro{margin:0 0 6px;font-size:17px}
+  .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
+  .wchoices.sent .choice{flex:1 1 100%;min-height:50px;font-size:18px;text-align:left;padding:6px 12px}
+  .choice.no{border-color:#e9a28f;background:#fdeee9}
+  .why{background:#eef6ff;border:2px solid #cfe3fb;border-radius:14px;padding:8px 12px;font-size:18px;margin:6px 0}
+  .whyh{font-weight:800;color:#2b5aa8;margin-bottom:2px}
+  .why .from{margin-top:4px;font-size:16px;color:var(--soft)}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+  .tick{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:#f1f0f7;border-radius:14px;text-align:left;padding:6px 12px;font-size:17px;font-weight:600}
+  .tick[aria-pressed="true"]{background:#d9f2e3}
+  .tick .box{font-size:22px}
+  .big[disabled]{opacity:.45}
+  .wlist{margin:4px 0 8px;padding-left:22px;font-size:18px}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash,.seg.hl{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+  /* iPad landscape (1024px): keep the header on one row */
+  @media (min-width:900px) and (max-width:1180px){
+    header{gap:8px} header h1{font-size:19px}
+    .ctl{padding:6px 10px;font-size:16px} .modesw{font-size:16px} .modesw span{padding:8px 10px}
+    .toggle{padding:4px 12px 4px 4px;gap:8px;font-size:17px} .toggle .sw{width:48px;height:32px} .toggle .sw::after{width:24px;height:24px} .toggle[aria-pressed="true"] .sw::after{left:20px}
+    .stars{font-size:20px;padding:6px 12px}
+  }
+  /* shared engine: generic bar model */
+  .bars{padding:4px 0}
+  #model{position:relative}
+  .track{height:64px}
+  .track.withunder{height:104px}
+  .rowname{padding-top:12px}
+  .seg{top:6px;height:46px;transition:width .35s ease,left .35s ease}
+  .seg .inlab{font-size:17px}
+  .row.B .seg.unit,.row.B .seg.main{background-color:var(--b)}
+  .row.C .seg.main,.row.C .seg.unit{background-color:#e07bb3}
+  .seg.unit{background-color:var(--a)}
+  .seg.ghostu{background:transparent;border:3px dashed var(--a2)}
+  .seg.left{background:repeating-linear-gradient(135deg,#f2a541 0 8px,#f7c98a 8px 16px)}
+  .seg.left .inlab{color:#3a2600;text-shadow:none}
+  .seg.dots{background:transparent;border-top:4px dotted var(--a);border-bottom:4px dotted var(--a);border-radius:0}
+  .seg.dots .inlab{color:var(--a);text-shadow:none;font-size:22px}
+  .seg.cut{background:repeating-linear-gradient(135deg,rgba(239,111,108,.35) 0 8px,rgba(239,111,108,.12) 8px 16px);border:3px dashed var(--gap)}
+  .seg.cut .inlab{color:#9c2f2c;text-shadow:none}
+  .seg.fresh{animation:grow .45s ease}
+  @keyframes grow{0%{transform:scaleX(.2);transform-origin:left;opacity:.3}100%{transform:scaleX(1);opacity:1}}
+  .tail{position:absolute;top:14px;font-size:20px;font-weight:800;color:#4b3fc4;white-space:nowrap;background:#fff;border-radius:8px;padding:0 6px}
+  .tail.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ubrace{position:absolute;top:58px;height:14px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;pointer-events:none;z-index:3}
+  .ubrace.hl{box-shadow:0 0 0 4px #ffd84d}
+  .ublab{position:absolute;top:74px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap;z-index:4}
+  .ublab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .brace{position:absolute;pointer-events:none;z-index:3;border:4px solid #d99a00;border-left:none;border-radius:0 16px 16px 0;width:18px}
+  .brace.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75)}
+  .bracelab{position:absolute;font-size:17px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:2px 8px;white-space:nowrap;z-index:4;line-height:1.2;text-align:center}
+  .bracelab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .cntrow{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+  .cntrow .ansbox{min-width:90px}
+  .emptyrow{color:var(--soft);font-size:16px;padding-top:18px}
+  .counter{margin-top:4px}
+  .seg.ghostu .inlab{color:#5a4fc0;text-shadow:none}
+  /* timeline (time game) */
+  .tl{position:relative;height:210px;margin:4px 14px 0}
+  .tl-line{position:absolute;left:0;right:0;top:112px;height:5px;background:#4b3fc4;border-radius:3px}
+  .tl-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .tl-tick{position:absolute;top:100px;width:5px;height:30px;margin-left:-2px;background:#4b3fc4;border-radius:2px}
+  .tl-tick span{position:absolute;top:34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#2b2b3a;background:#fff;padding:1px 5px;border-radius:8px}
+  .tl-tick.ask span{color:#4b3fc4;background:#efeaff}
+  .tl-tick.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-jump{position:absolute;top:58px;height:52px;border:4px solid #e07bb3;border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;box-sizing:border-box}
+  .tl-jump.hr{border-color:#7c6cf0}
+  .tl-jump span{position:absolute;top:-28px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#7a2d5a;background:#fff;padding:0 5px;border-radius:8px}
+  .tl-jump.hr span{color:#4b3fc4}
+  .tl-jump.hl{box-shadow:0 -6px 14px 2px rgba(255,190,0,.75);border-color:#e0a800}
+  .tl-jump.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-total{position:absolute;top:162px;height:12px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;box-sizing:border-box}
+  .tl-totlab{position:absolute;top:178px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap}
+  .tl-total.hl,.tl-totlab.hl{box-shadow:0 0 0 4px #ffd84d}
+  /* area and perimeter diagram */
+  .ap{position:relative;height:260px}
+  .ap-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .ap-rect{position:absolute;border:4px solid #4b3fc4;border-radius:4px;box-sizing:border-box;background:#fff}
+  .ap-rect.grid{background-image:linear-gradient(to right,rgba(75,63,196,.35) 1px,transparent 1px),linear-gradient(to bottom,rgba(75,63,196,.35) 1px,transparent 1px)}
+  .ap-rect.shade{background-color:#dcd6ff}
+  .ap-rect.around{border-color:#e07bb3;border-style:dashed}
+  .ap-rect.hl{box-shadow:0 0 0 5px #ffd84d,0 0 18px 6px rgba(255,190,0,.7)}
+  .ap-cnt{position:absolute;background:rgba(255,216,77,.55);border:3px solid #d99a00;box-sizing:border-box;pointer-events:none}
+  .ap-lab{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;background:#fff;padding:1px 6px;border-radius:8px;white-space:nowrap;color:#2b2b3a}
+  .ap-lab.side{transform:translateX(-100%)} .ap-lab.side.r{transform:none}
+  .ap-lab.hl,.ap-in.hl,.ap-ar.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ap-in{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;color:#4b3fc4;background:rgba(255,255,255,.85);padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .ap-ar{position:absolute;transform:translateX(-50%);font-weight:800;font-size:16px;color:#7a2d5a;background:#fde8f3;padding:1px 8px;border-radius:10px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">⏰➡️</div>
+    <h2>Time Jumps</h2>
+    <p>Draw a <b>timeline</b>. Jump to the <b>o'clock time</b> first, then the hours, then the minutes. Find the end time, the start time, or how long. Your tutor will help, step by step.</p>
+    <p class="note" id="startNote"></p>
+    <button class="big" id="startTutor">Start with my tutor 🔊</button>
+    <button class="quiet" id="startQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Time Jumps</h1>
+    <button class="modesw" id="modeBtn" aria-label="Switch between Lesson mode and Practice mode"><span data-m="lesson">📘 Lesson</span><span data-m="practice">🎲 Practice</span></button>
+    <button class="toggle" id="smallToggle" aria-pressed="false"><span class="sw"></span><span>Small numbers</span></button>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <button class="ctl" id="againBtn">🔁 Say it again</button>
+    <div class="stars" id="stars">★ 0</div>
+  </header>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="progress" id="progress"></div>
+        <p class="story" id="story"></p>
+        <p class="question" id="question"></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="caption" id="caption"></div>
+        <div class="bars" id="bars"><div id="model"></div></div>
+        <div class="counter" id="counter"></div>
+        <div class="barbtns" id="barbtns"></div>
+      </div>
+    </div>
+    <div class="card panel" id="panel"></div>
+  </div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-MEAS-TM-G09</div></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ===== shared engine (Games 4+): utilities ===== */
+function pl(n,s,p){return n===1?s:p;}
+function cap(s){s=String(s);return s.charAt(0).toUpperCase()+s.slice(1);}
+function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function isWhole(x){ return typeof x==="number" && isFinite(x) && Math.floor(x)===x; }
+var MI="\u2212", TI="\u00d7", DI="\u00f7";
+function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
+var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
+// tiny evaluator for "a op b op c" with + - x / (x and / first)
+function evalExpr(x){
+  var t=String(x).split(" "); if(t.length%2!==1) return null;
+  var nums=[], ops=[];
+  for(var i=0;i<t.length;i++){ if(i%2===0){ if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  var n2=[nums[0]], o2=[];
+  for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
+    if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
+  var v=n2[0]; for(var k=0;k<o2.length;k++) v = o2[k]==="+" ? v+n2[k+1] : v-n2[k+1];
+  return v;
+}
+function numsIn(s){ return (String(s).match(/\d+/g)||[]).map(Number); }
+var GX={pl:pl,cap:cap,rnd:rnd,pick:pick,shuffle:shuffle,isWhole:isWhole,MI:MI,TI:TI,DI:DI,ex:ex,NAMES:NAMES,pickNames:pickNames,evalExpr:evalExpr};
+/* ===== Game 9: Time Jumps (time word problems on a timeline), P3-MEAS-TM-G09 =====
+   Times in minutes after midnight: s (start), e (end), D = e - s. 12-hour clock with am/pm (P3), 5-minute times.
+   Jumps on the timeline: j1 = s to the next o'clock, H full hours, j3 = last o'clock to e.
+   kind "end": find e.  "start": find s.  "dur": find D in minutes.  Time answers are typed as digits: 4:15 -> 415. */
+var G=(function(){
+var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole, pl=GX.pl;
+var ACTS={
+  movie:{n:"the movie"}, swim:{n:"the swimming lesson"}, piano:{n:"the piano practice"}, match:{n:"the football match"},
+  bus:{n:"the bus ride"}, concert:{n:"the school concert"}, art:{n:"the art class"}, baking:{n:"the baking class"}
+};
+function A(p){ return ACTS[p.ctx].n; }
+function h12(t){ var h=Math.floor(t/60); return ((h+11)%12)+1; }
+function ap(t){ return Math.floor(t/60)<12?"am":"pm"; }
+function pad(m){ return (m<10?"0":"")+m; }
+function fmt(t){ return h12(t)+":"+pad(t%60)+" "+ap(t); }
+function tnum(t){ return h12(t)*100+t%60; }
+function durText(D){ var h=Math.floor(D/60), m=D%60; return h ? h+" h "+m+" min" : m+" minutes"; }
+function hrs(H){ return H+" "+pl(H,"hour","hours"); }
+function finish(p){
+  p.e=p.s+p.D; p.sm=p.s%60; p.em=p.e%60; p.j1=60-p.sm; p.j3=p.em; p.H=(p.D-p.j1-p.j3)/60;
+  p.O1=p.s+p.j1; p.O2=p.e-p.em; p.Dh=Math.floor(p.D/60); p.Dm=p.D%60;
+  p.timeAns=p.kind!=="dur"; p.answer={end:tnum(p.e), start:tnum(p.s), dur:p.D}[p.kind]; p.names=[]; return p;
+}
+function story(p){ var a=cap(A(p));
+  if(p.kind==="end") return a+" started at "+fmt(p.s)+". It lasted "+durText(p.D)+".";
+  if(p.kind==="start") return a+" ended at "+fmt(p.e)+". It lasted "+durText(p.D)+".";
+  return a+" started at "+fmt(p.s)+" and ended at "+fmt(p.e)+"."; }
+function question(p){
+  if(p.kind==="end") return "What time did "+A(p)+" end?";
+  if(p.kind==="start") return "What time did "+A(p)+" start?";
+  return "How long did "+A(p)+" last? Give your answer in minutes."; }
+function answerText(p){ return p.kind==="end" ? fmt(p.e) : (p.kind==="start" ? fmt(p.s) : String(p.D)); }
+function answerSentence(p){ var a=cap(A(p));
+  if(p.kind==="end") return a+" ended at "+fmt(p.e)+".";
+  if(p.kind==="start") return a+" started at "+fmt(p.s)+".";
+  return a+" lasted "+p.D+" minutes."; }
+function answerLine(p){ var a=cap(A(p));
+  if(p.kind==="end") return [a+" ended at", ap(p.e)+"."];
+  if(p.kind==="start") return [a+" started at", ap(p.s)+"."];
+  return [a+" lasted", "minutes."]; }
+function fmtTyped(t,p){ t=String(t||""); if(p && p.timeAns && t.length>=3) return t.slice(0,-2)+":"+t.slice(-2); return t; }
+function verify(p){
+  if(!ACTS[p.ctx] || ["end","start","dur"].indexOf(p.kind)<0) return false;
+  if(![p.s,p.D,p.e,p.H].every(isWhole) || p.s%5 || p.D%5) return false;
+  if(p.sm===0 || p.em===0 || p.H<0 || p.D<15) return false;              // a jump to the o'clock and a jump after it
+  if(p.Dh>=1 && p.Dm===0) return false;
+  var morning=p.s<12*60; if(morning ? (p.e>=12*60 || p.s<7*60) : (p.s<13*60 || p.e>21*60)) return false;  // no noon crossing
+  if(p.small && (p.D>=60)) return false; if(p.D>180) return false;
+  return true;
+}
+function make(i, small, names){
+  var kind=["end","dur","start","end",pick(["start","dur","end"])][i];
+  for(var t=0;t<200;t++){
+    var morning=Math.random()<.45, h=morning?rnd(7,10):rnd(13,19), sm=5*rnd(1,11), s=h*60+sm, j1=60-sm, D;
+    if(small){ if(j1>40) continue; var j3=5*rnd(1,Math.floor((55-j1)/5)); if(j3<5) continue; D=j1+j3; }
+    else { var H=rnd(0,2), j3b=5*rnd(1,11); D=j1+60*H+j3b; if(D<65||D>175) continue; }
+    var p={kind:kind, ctx:pick(Object.keys(ACTS)), s:s, D:D}; finish(p); if(verify(p)) return p;
+  }
+  return {kind:kind, ctx:"movie", s:15*60+50, D:25};
+}
+function fromSpec(x){ return {kind:x[0], s:x[1]*60+x[2], D:x[3], ctx:x[4], small:!!x[5]}; }
+var BANK=[
+  ["end",15,50,25,"movie",true],       // 3:50 pm + 25 min = 4:15 pm
+  ["dur",9,45,35,"swim",true],         // 9:45 am to 10:20 am = 35 minutes
+  ["start",10,30,40,"piano",true],     // ended 11:10 am, lasted 40 min: started 10:30 am
+  ["end",14,35,100,"match",false],     // 2:35 pm + 1 h 40 min = 4:15 pm
+  ["dur",13,50,135,"concert",false]    // 1:50 pm to 4:05 pm = 135 minutes (exam level)
+];
+function answerAsk(p){ return p.timeAns ? "Now find the answer. Type the time with the number pad: for example, 4 1 5 for 4:15. Then tap Check." : "Now find the answer. Type it, then tap Check."; }
+function guess(p,i){
+  if(i%2===0){ var first=p.kind==="start"?p.O2:p.O1, alt1=first+60, alt2=first-60;
+    return {q:p.kind==="start" ? "We count back from "+fmt(p.e)+". Which o'clock time do we jump back to first?" : "We start at "+fmt(p.s)+". Which o'clock time do we jump to first?",
+      choices:[["o",fmt(first)],["a1",fmt(alt1)],["a2",fmt(alt2)]], right:"o",
+      note:function(k,ok){ return ok ? "Yes! The nearest o'clock time is the easiest first jump." : "Let's draw the timeline. The first jump goes to the nearest o'clock time."; }};
+  }
+  return {q:"How many minutes are there in 1 hour?", choices:[["60","60 minutes"],["100","100 minutes"],["30","30 minutes"]], right:"60",
+    note:function(k,ok){ return ok ? "Yes! 60 minutes make 1 hour. That's why we jump to the o'clock time." : "1 hour is 60 minutes, not 100. That's why time is tricky!"; }};
+}
+function build(p){
+  var known = p.kind==="start" ? p.e : p.s, ock = p.kind==="start" ? p.O2 : p.O1, firstJ = p.kind==="start" ? p.em : p.j1;
+  var steps=[
+    {type:"choice", ask:p.kind==="start"?"Draw the timeline. Which time do we mark first? We count back from it.":"Draw the timeline. Which time do we mark first, at the start?", right:"k",
+     choices:[["k",fmt(known),null],["o",fmt(ock),"Not quite. That's an o'clock time we jump to. Start with a time from the story."],["x","12:00 noon","Not quite. Use a time from the story."]],
+     done:"We mark "+fmt(known)+" on the timeline."},
+    {type:"choice", ask:p.kind==="start"?"Which o'clock time do we jump back to first?":"Which o'clock time do we jump to first?", right:"o",
+     choices:[["o",fmt(ock),null],["n",fmt(p.kind==="start"?ock-60:ock+60),"Not quite. That jump is too big. Use the nearest o'clock time."],["k2",fmt(known+(p.kind==="start"?-5:5)),"Not quite. That is not an o'clock time. An o'clock time ends in :00."]],
+     done:"The first jump goes to "+fmt(ock)+"."},
+    {type:"choice", ask:"How long is that first jump, from "+(p.kind==="start"?fmt(ock)+" to "+fmt(p.e):fmt(p.s)+" to "+fmt(ock))+"?", right:"j",
+     choices:[["j",firstJ+" minutes",null],["w",(p.kind==="start"?100-p.em:100-p.sm)+" minutes","Not quite. An hour has 60 minutes, not 100. Count on to 60."],["m",(p.kind==="start"?60-p.em:p.sm)+" minutes","Not quite. Count the minutes between the two times on the timeline."]],
+     done:"The first jump is "+firstJ+" minutes."}];
+  if(p.H>=1) steps.push({type:"count", ask:"Now the whole-hour jumps. Tap + for each 1-hour jump between "+fmt(p.O1)+" and "+fmt(p.O2)+".", target:p.H, unitName:"hour",
+     low:"Not yet. Count the o'clock times from "+fmt(p.O1)+" to "+fmt(p.O2)+".", high:"Too many. Count the o'clock times from "+fmt(p.O1)+" to "+fmt(p.O2)+".", done:hrs(p.H)+" of whole-hour jumps."});
+  return steps;
+}
+function render(p,v,ctx){
+  var hl=function(k){ return ctx.hlOn(k)?" hl":""; }, esc=ctx.esc, b=v.b, all=v.phase!=="predict" && v.phase!=="build", solved=v.solved;
+  var nsteps=p.H>=1?4:3, H=p.H, cnt=(v.phase==="build"&&b===3)?v.count:H;
+  var xs, xO1, xO2, xe; if(H===0){ xs=10; xO1=xO2=52; xe=92; } else { xs=7; xO1=27; xO2=73; xe=93; }
+  var h='<div class="tl" id="timeline"><div class="tl-line"></div>';
+  if(v.phase==="predict") return h+'<div class="emptyrow tl-empty">Make a guess first. Then you draw the timeline.</div></div>';
+  var showK=b>=1||all, showO=b>=2||all, showJ=b>=3||all, showRest=all;
+  var tick=function(x,lab,key,cls){ return '<div class="tl-tick'+(cls||"")+hl(key)+'" style="left:'+x+'%"><span>'+esc(lab)+'</span></div>'; };
+  var jump=function(x0,x1,lab,key,cls){ return '<div class="tl-jump'+(cls||"")+hl(key)+'" style="left:'+x0+'%;width:'+(x1-x0)+'%"><span>'+esc(lab)+'</span></div>'; };
+  var sLab = p.kind==="start" ? (solved?fmt(p.s):"?") : fmt(p.s), eLab = p.kind==="end" ? (solved?fmt(p.e):"?") : fmt(p.e);
+  if(p.kind==="start"){
+    if(showK) h+=tick(xe,eLab,"e"); if(showO) h+=tick(xO2,fmt(p.O2),"o2"); if(showJ) h+=jump(xO2,xe,p.em+" min","j3");
+    if(showRest || cnt>0){ for(var i=0;i<cnt;i++){ var a=xO2-(xO2-xO1)*(i+1)/Math.max(1,H), c=xO2-(xO2-xO1)*i/Math.max(1,H); h+=jump(a,c,"1 h","hrs"," hr"); } if(H) h+=tick(xO1,fmt(p.O1),"o1"); }
+    if(showRest){ h+=jump(xs,xO1,(solved?p.j1:"?")+" min","j1"); h+=tick(xs,sLab,"s"," ask"); }
+  } else {
+    if(showK) h+=tick(xs,sLab,"s"); if(showO) h+=tick(xO1,fmt(p.O1),"o1"); if(showJ) h+=jump(xs,xO1,p.j1+" min","j1");
+    if(showRest || cnt>0){ for(var k=0;k<cnt;k++){ var a2=xO1+(xO2-xO1)*k/Math.max(1,H), c2=xO1+(xO2-xO1)*(k+1)/Math.max(1,H); h+=jump(a2,c2,"1 h","hrs"," hr"); } if(H) h+=tick(xO2,fmt(p.O2),"o2"); }
+    if(showRest){ h+=jump(xO2,xe,(p.kind==="end"&&!solved?"?":p.em)+" min","j3"); h+=tick(xe,eLab,"e",p.kind==="end"?" ask":""); }
+  }
+  if(showRest && H>1){ for(var q=1;q<H;q++) h+=tick(xO1+(xO2-xO1)*q/H, fmt(p.O1+60*q), "hrs"); }
+  if(showRest) h+='<div class="tl-total'+hl("total")+'" style="left:'+xs+'%;width:'+(xe-xs)+'%"></div><div class="tl-totlab'+hl("total")+'" style="left:'+((xs+xe)/2)+'%">'+esc(p.kind==="dur"?(solved?p.D+" minutes":"? minutes"):durText(p.D))+'</div>';
+  return h+'</div>';
+}
+function model(p,v){ return {maxV:1, rows:[], braces:[]}; }
+function caption(p,v){
+  if(v.phase==="predict") return "First a guess. Then you draw a <b>timeline</b> and jump to the o'clock times.";
+  if(v.phase==="build") return "Draw the timeline, one jump at a time.";
+  if(p.kind==="dur") return "Jump from <b>"+fmt(p.s)+"</b> to the o'clock times, then to <b>"+fmt(p.e)+"</b>. Add up all the jumps.";
+  return (p.Dh?"<b>"+durText(p.D)+"</b> is "+p.D+" minutes. ":"")+(p.kind==="end"?"Jump on from <b>"+fmt(p.s)+"</b>: first to "+fmt(p.O1)+", then the rest.":"Count back from <b>"+fmt(p.e)+"</b>: first to "+fmt(p.O2)+", then the rest.");
+}
+function hints(p){
+  var conv=p.Dh?"Change "+durText(p.D)+" into minutes first. ":"";
+  if(p.kind==="end") return ["Jump from "+fmt(p.s)+" to the next o'clock time first. How many minutes is that jump?",
+    conv+"After the first jump to "+fmt(p.O1)+", count on the minutes that are left.",
+    (p.Dh?durText(p.D)+" = ___ minutes. ":"")+"60 "+MI+" "+p.sm+" = ___ . Then ___ "+MI+" ___ = ___ minutes after "+fmt(p.O1)+"."+(p.H?" Take away the whole hours: ___ "+MI+" "+(60*p.H)+" = ___ .":"")];
+  if(p.kind==="start") return ["Count back from "+fmt(p.e)+" to "+fmt(p.O2)+" first. How many minutes is that jump?",
+    conv+"After jumping back to "+fmt(p.O2)+", count back the minutes that are left.",
+    (p.Dh?durText(p.D)+" = ___ minutes. ":"")+p.D+" "+MI+" "+p.em+" = ___ ."+(p.H?" Take away the whole hours: ___ "+MI+" "+(60*p.H)+" = ___ .":"")+" Then 60 "+MI+" ___ = ___ minutes after the hour."];
+  return ["Jump from "+fmt(p.s)+" to "+fmt(p.O1)+" first. How many minutes is that?",
+    "Then jump "+(p.H?"the whole hours to "+fmt(p.O2)+", then ":"")+"on to "+fmt(p.e)+". 1 hour is 60 minutes. Add up all the jumps.",
+    "60 "+MI+" "+p.sm+" = ___ . Then ___ + "+(p.H?(60*p.H)+" + ":"")+p.em+" = ___ minutes."];
+}
+function hintHL(p){ return ["j1","j3"]; }
+function wrongCandidates(p){
+  if(p.kind==="dur"){ var naive=tnum(p.e)-tnum(p.s); return [naive, p.j1+p.j3, p.D+60, p.D-60, p.D+10, p.D-10].filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; }); }
+  var ans=p.answer, h=Math.floor(ans/100), naiveE=tnum(p.s)+p.Dh*100+p.Dm, naiveS=tnum(p.e)-p.Dh*100-p.Dm;
+  var c=[ans+100, ans-100, ans+10, ans-10, p.kind==="end"?naiveE:naiveS];
+  return c.filter(function(x,i,a){ return x>100 && a.indexOf(x)===i && Math.floor(x/100)<=12; });
+}
+function testWrong(p){ if(p.kind==="dur") return p.D+10; var h=Math.floor(p.answer/100); return h<12 ? p.answer+100 : p.answer-100; }
+function wrongMsg(p,v){
+  if(p.kind==="dur"){
+    if(v===tnum(p.e)-tnum(p.s)) return "Time is not like ordinary numbers: 1 hour is 60 minutes, not 100. Use the jumps on the timeline.";
+    if(p.H && v===p.j1+p.j3) return "Don't forget the whole-hour jumps in the middle. Each one is 60 minutes.";
+    return "Nearly! Add up every jump on the timeline: the minutes to the o'clock time, the hours, and the minutes after.";
+  }
+  var m=v%100, h=Math.floor(v/100), ah=Math.floor(p.answer/100);
+  if(m>=60) return "A time can only go up to 59 minutes after the hour. 1 hour is 60 minutes, not 100. Use the timeline jumps.";
+  if(m===p.answer%100 && h!==ah) return "The minutes are right! Check the hours: count the hour jumps on the timeline again.";
+  if(h===ah) return "The hour is right. Check the minutes: look at the jumps on the timeline again.";
+  return "Nearly! "+(p.kind==="end"?"Jump on":"Count back")+" to the o'clock time first, then the hours, then the minutes.";
+}
+function praise(p){
+  if(p.kind==="end") return "Yes! "+p.j1+" minutes takes us to "+fmt(p.O1)+", then the rest takes us to "+fmt(p.e)+". Well done.";
+  if(p.kind==="start") return "Yes! Count back "+p.em+" minutes to "+fmt(p.O2)+", then the rest takes us back to "+fmt(p.s)+". Well done.";
+  return "Yes! "+p.j1+(p.H?", "+(60*p.H):"")+" and "+p.em+" minutes make "+p.D+" minutes. Well done."; }
+function explain(p){ return "Why did you jump to the o'clock time first?"; }
+function plan(p,api){
+  var Dmin=p.D, unit=p.kind==="dur"?"minutes":ap(p.kind==="end"?p.e:p.s);
+  if(p.Dh && p.kind!=="dur") api.line({ok:ex(60*p.Dh,"+",p.Dm), hl:["total"], tag:"the time it lasted",
+    ask:"Line #. First change "+durText(p.D)+" into minutes. Which number sentence?",
+    wrong:[[ex(100*p.Dh,"+",p.Dm),"Not quite. An hour has sixty minutes, not a hundred."],[ex(p.Dh,"+",p.Dm),"Not quite. Change the hours into minutes first: 1 hour is 60 minutes."],[ex(60*p.Dh,MI,p.Dm),"Not quite. Hours and minutes together means add."]],
+    stmt:durText(p.D)+" is "+Dmin+" minutes.", why:"1 hour is 60 minutes"+(p.Dh>1?", so "+p.Dh+" hours is "+(60*p.Dh)+" minutes":"")+". Changing it into minutes lets us take away the jumps one by one."});
+  if(p.kind==="end"){
+    api.line({ok:ex(60,MI,p.sm), hl:["j1","s","o1"], tag:"the first jump", ask:"Line #. "+"How many minutes from "+fmt(p.s)+" to "+fmt(p.O1)+"? Which number sentence?",
+      wrong:[[ex(100,MI,p.sm),"Not quite. An hour has sixty minutes, not a hundred."],[ex(60,"+",p.sm),"Not quite. Count on up to the o'clock time: 60 take away the minutes gone."],[ex(p.sm,MI,5),"Not quite. Count the minutes up to the o'clock time, the full 60."]],
+      stmt:"From "+fmt(p.s)+" to "+fmt(p.O1)+" is "+p.j1+" minutes.", why:"An hour has 60 minutes. At "+fmt(p.s)+", "+p.sm+" minutes of the hour are gone, so "+p.j1+" minutes are left until "+fmt(p.O1)+"."});
+    var rest=p.D-p.j1;
+    api.line({ok:ex(Dmin,MI,p.j1), hl:["total","j1"], tag:"what is left after the first jump", ask:"Line #. "+"How many minutes are left after "+fmt(p.O1)+"? Which number sentence?",
+      wrong:[[ex(Dmin,"+",p.j1),"Not quite. The first jump is part of the time it lasted. Take it away."],[ex(60,MI,p.j1),"Not quite. Start from the whole time it lasted, in minutes."],[ex(Dmin,MI,p.sm),"Not quite. Take away the first jump on the timeline."]],
+      stmt:"After "+fmt(p.O1)+", there are "+rest+" minutes left.", why:"The whole time it lasted is "+Dmin+" minutes. The first jump used some of it. Take it away to see what is left."});
+    if(p.H) api.line({ok:ex(rest,MI,60*p.H), hl:["hrs","j3"], tag:"the whole-hour jumps", ask:"Line #. "+"Jump the whole hours to "+fmt(p.O2)+". How many minutes are left after that?",
+      wrong:[[ex(rest,MI,100*p.H),"Not quite. An hour has sixty minutes, not a hundred."],[ex(rest,"+",60*p.H),"Not quite. The hour jumps use up minutes. Take them away."],[ex(rest,MI,p.H),"Not quite. Each hour jump is 60 minutes."]],
+      stmt:hrs(p.H)+" after "+fmt(p.O1)+" is "+fmt(p.O2)+", with "+p.j3+" minutes left.", why:"Each whole-hour jump is 60 minutes. After the hour jumps, only the last few minutes are left."});
+  } else if(p.kind==="start"){
+    var x=p.D-p.em;
+    api.line({ok:ex(Dmin,MI,p.em), hl:["j3","e","o2"], tag:"the first jump back", ask:"Line #. "+"Count back "+p.em+" minutes from "+fmt(p.e)+" to "+fmt(p.O2)+". How many minutes are left to count back?",
+      wrong:[[ex(Dmin,"+",p.em),"Not quite. The first jump back uses up some minutes. Take it away."],[ex(60,MI,p.em),"Not quite. Start from the whole time it lasted, in minutes."],[ex(Dmin,MI,60),"Not quite. The first jump back is only to the o'clock time."]],
+      stmt:"After going back to "+fmt(p.O2)+", there are "+x+" minutes left to count back.", why:"From "+fmt(p.O2)+" to "+fmt(p.e)+" is "+p.em+" minutes. That is the first jump back, so take it away from the time it lasted."});
+    if(p.H) api.line({ok:ex(x,MI,60*p.H), hl:["hrs","j1"], tag:"the whole-hour jumps back", ask:"Line #. "+"Jump back the whole hours to "+fmt(p.O1)+". How many minutes are left?",
+      wrong:[[ex(x,MI,100*p.H),"Not quite. An hour has sixty minutes, not a hundred."],[ex(x,"+",60*p.H),"Not quite. The hour jumps use up minutes. Take them away."],[ex(x,MI,p.H),"Not quite. Each hour jump is 60 minutes."]],
+      stmt:hrs(p.H)+" before "+fmt(p.O2)+" is "+fmt(p.O1)+", with "+p.j1+" minutes left.", why:"Each whole-hour jump back is 60 minutes. After them, only the last few minutes are left."});
+    api.line({ok:ex(60,MI,p.j1), hl:["j1","s"], tag:"the last jump back", ask:"Line #. "+p.j1+" minutes before "+fmt(p.O1)+": how many minutes after the hour is that? Which number sentence?",
+      wrong:[[ex(100,MI,p.j1),"Not quite. An hour has sixty minutes, not a hundred."],[ex(60,"+",p.j1),"Not quite. Going back means take away from 60."],[ex(p.j1,MI,5),"Not quite. Count back from the full hour, 60 minutes."]],
+      stmt:p.j1+" minutes before "+fmt(p.O1)+" is "+fmt(p.s)+".", why:"Counting back "+p.j1+" minutes from an o'clock time lands at 60 take away "+p.j1+" minutes after the hour before."});
+  } else {
+    api.line({ok:ex(60,MI,p.sm), hl:["j1","s","o1"], tag:"the first jump", ask:"Line #. How many minutes from "+fmt(p.s)+" to "+fmt(p.O1)+"? Which number sentence?",
+      wrong:[[ex(100,MI,p.sm),"Not quite. An hour has sixty minutes, not a hundred."],[ex(60,"+",p.sm),"Not quite. Count on up to the o'clock time: 60 take away the minutes gone."],[ex(p.sm,MI,5),"Not quite. Count up to the o'clock time, the full 60."]],
+      stmt:"From "+fmt(p.s)+" to "+fmt(p.O1)+" is "+p.j1+" minutes.", why:"An hour has 60 minutes. At "+fmt(p.s)+", "+p.sm+" minutes of the hour are gone, so "+p.j1+" minutes are left until "+fmt(p.O1)+"."});
+    if(p.H) api.line({ok:ex(h12(p.O2),MI,h12(p.O1)), hl:["hrs","o1","o2"], tag:"the whole-hour jumps", ask:"Line #. How many whole hours from "+fmt(p.O1)+" to "+fmt(p.O2)+"? Which number sentence?",
+      wrong:[[ex(h12(p.O2),"+",h12(p.O1)),"Not quite. How many hours between means take away."],[ex(h12(p.O2)+1,MI,h12(p.O1)),"Not quite. Count the hours on the timeline between the two o'clock times."],[ex(h12(p.O1),TI,2),"Not quite. Take the first o'clock time away from the last one."]],
+      stmt:"From "+fmt(p.O1)+" to "+fmt(p.O2)+" is "+hrs(p.H)+", which is "+(60*p.H)+" minutes.", why:"Each whole-hour jump is 1 hour, and 1 hour is 60 minutes."});
+    var parts=p.H?[p.j1,"+",60*p.H,"+",p.em]:[p.j1,"+",p.em];
+    api.line({ok:ex.apply(null,parts), hl:["j1","hrs","j3","total"], tag:"all the jumps together", ask:"Line #. The last jump is "+p.em+" minutes, to "+fmt(p.e)+". Which number sentence adds all the jumps?",
+      wrong:[[ex(p.j1,"+",p.em),p.H?"Not quite. Don't forget the whole-hour jumps in the middle.":"Not quite. Add every jump on the timeline."],[ex(p.j1,MI,p.em),"Not quite. Put all the jumps together: add."],(p.H?[ex(p.j1,"+",100*p.H,"+",p.em),"Not quite. An hour has sixty minutes, not a hundred."]:[ex(p.j1,"+",p.em,"+",60),"Not quite. There is no whole-hour jump here. Add only the jumps on the timeline."])],
+      stmt:cap(A(p))+" lasted "+p.D+" minutes altogether.", why:"The time it lasted is all the jumps put together: the minutes to the o'clock time, the whole hours, and the minutes after."});
+  }
+  var other = p.kind==="dur" ? [cap(A(p))+" ended at "+fmt(p.e)+".","Not quite. The question asks how long it lasted, not when it ended."]
+    : (p.kind==="end" ? [cap(A(p))+" started at "+fmt(p.s)+".","Not quite. The question asks when it ended."] : [cap(A(p))+" ended at "+fmt(p.e)+".","Not quite. The question asks when it started."]);
+  api.answer({right:answerSentence(p), wrong:[[p.kind==="dur"?String(p.D):fmt(p.kind==="end"?p.e:p.s).split(" ")[0],"Not quite. That is right, but on its own it doesn't say what it means. Answer the question in a full sentence"+(p.kind==="dur"?" with the unit, minutes.":" with am or pm.")], other],
+    why:p.kind==="dur"?"The question asks how long, in minutes. The answer sentence says what lasted, and has the unit, minutes.":"The question asks what time. The answer sentence gives the time with am or pm, so everyone knows if it is morning or afternoon."});
+  if(p.kind==="end") api.line({check:true, ok:ex.apply(null,p.H?[p.j1,"+",60*p.H,"+",p.em]:[p.j1,"+",p.em]), hl:["j1","hrs","j3","total"], tag:"all the jumps from start to end",
+    ask:"Check line. Add up the jumps from "+fmt(p.s)+" to your answer. Which number sentence should give "+Dmin+" minutes?",
+    wrong:[[ex(p.j1,MI,p.em),"Not quite. Put the jumps together: add."],(p.H?[ex(p.j1,"+",100*p.H,"+",p.em),"Not quite. An hour has sixty minutes, not a hundred."]:[ex(p.j1,"+",p.em,"+",60),"Not quite. There is no whole-hour jump here. Add only the jumps on the timeline."])],
+    stmt:"From "+fmt(p.s)+" to "+fmt(p.e)+" is "+Dmin+" minutes"+(p.Dh?", which is "+durText(p.D)+", as in the story.":", as in the story."), why:"Checking catches mistakes. If the jumps from the start to your answer add up to the time in the story, the answer makes sense."});
+  else if(p.kind==="start") api.line({check:true, ok:ex.apply(null,p.H?[60,MI,p.sm,"+",60*p.H,"+",p.em]:[60,MI,p.sm,"+",p.em]), hl:["j1","hrs","j3","total"], tag:"all the jumps from start to end",
+    ask:"Check line. Start at your answer and jump on to "+fmt(p.e)+". Which number sentence should give "+Dmin+" minutes?",
+    wrong:[[ex.apply(null,p.H?[60,MI,p.sm,"+",100*p.H,"+",p.em]:[100,MI,p.sm,"+",p.em]),"Not quite. An hour has sixty minutes, not a hundred."],[ex(60,"+",p.sm,"+",p.em),"Not quite. The first jump is 60 take away the minutes of your answer."]],
+    stmt:"From "+fmt(p.s)+" to "+fmt(p.e)+" is "+Dmin+" minutes"+(p.Dh?", which is "+durText(p.D)+", as in the story.":", as in the story."), why:"Checking catches mistakes. Jump forward from your answer: you should land on the end time, after the time in the story."});
+  else api.line({check:true, ok:ex.apply(null,p.H?[p.D,MI,p.j1,MI,60*p.H]:[p.D,MI,p.j1]), hl:["j3","e"], tag:"undo the jumps",
+    ask:"Check line. Take the first jump"+(p.H?" and the hours":"")+" away from your answer. Which number sentence should give the minutes after "+fmt(p.O2)+"?",
+    wrong:[[ex.apply(null,p.H?[p.D,"+",p.j1,MI,60*p.H]:[p.D,"+",p.j1]),"Not quite. To undo the jumps, take them away."],[ex(p.D,MI,60),"Not quite. Take away the first jump too."]],
+    stmt:p.em+" minutes after "+fmt(p.O2)+" is "+fmt(p.e)+", the end time in the story.", why:"Checking catches mistakes. Undo the jumps: you should land exactly on the end time."});
+  return {unit:unit};
+}
+var LIFE=[
+  {emoji:"🎬🍿", title:"Movie time", text:"A movie starts at 6:40 pm and lasts 1 h 35 min. Jump 20 minutes to 7:00 pm, 1 hour to 8:00 pm, and 15 more minutes: it ends at 8:15 pm.", rule:"Jump to the o'clock time first. 1 hour is 60 minutes."},
+  {emoji:"🚌⏰", title:"Catching the bus", text:"The bus leaves at 8:10 am and the walk takes 25 minutes. Count back 10 minutes to 8:00 am and 15 more: leave home at 7:45 am.", rule:"Counting back works the same way: jump to the o'clock time first."}
+];
+var G0={key:"timelineJumpsGame", tag:"P3-MEAS-TM-G09", kinds:["end","start","dur"],
+  drawWhat:"a timeline with the start time, the o'clock times and the end time, and the jumps between them",
+  checkDraw:"The timeline: the times, the o'clock times, and every jump labelled",
+  summaryRule:"Remember: jump to the o'clock time first. 1 hour is 60 minutes, not 100!",
+  BANK:BANK, fromSpec:fromSpec, finish:finish, verify:verify, make:make, story:story, question:question,
+  answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, render:render, caption:caption,
+  answerText:answerText, fmtTyped:fmtTyped,
+  hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, LIFE:LIFE};
+// line numbers in the questions follow the lines already written
+G0.plan=function(p,api){ var n0=0, wrap={line:function(o){ n0++; if(o.ask) o.ask=o.ask.replace("Line #. ","Line "+n0+". "); api.line(o); }, answer:function(o){ api.answer(o); }}; return plan(p,wrap); };
+return G0;
+})();
+/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+var MUTE_KEY = G.key+".muted";
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
+  var FEMALE = /female|woman|girl|samantha|victoria|karen|moira|tessa|fiona|serena|kate|martha|susan|zira|hazel|libby|sonia|aria|jenny|natasha|catherine|allison|ava|nicky/i;
+  function quality(v){ return /premium/i.test(v.name)?2:(/enhanced/i.test(v.name)?1:0); }
+  function pick(){
+    if(!supported) return null;
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    if(!vs.length) return null;
+    var en = vs.filter(function(v){ return /^en/i.test(v.lang||""); });
+    for(var i=0;i<PREFS.length;i++){
+      var m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0 && (v.lang||"").toLowerCase().replace("_","-").indexOf(PREFS[i][1])===0; });
+      if(!m.length) m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0; });
+      if(m.length){ m.sort(function(a,b){return quality(b)-quality(a);}); return m[0]; }
+    }
+    var f = en.filter(function(v){ return FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/ig,"")); });
+    if(f.length){ f.sort(function(a,b){return quality(b)-quality(a);}); return f[0]; }
+    var g = en.filter(function(v){ return /en[-_](gb|au)/i.test(v.lang||""); });
+    if(g.length) return g[0];
+    return null;
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(text);
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  function play(lines, immediate){
+    var my = ++token, parts = [];
+    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
+    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
+    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
+    if(immediate || !busy) go(); else setTimeout(go, 60);
+  }
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(!supported || muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    supported: supported, say: say,
+    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
+    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); }
+  };
+})();
+function tell(){ Voice.say.apply(null, arguments); }
+/* ===== shared engine: problems, checks, state ===== */
+var ROUND_SIZE=5;
+var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
+function finish(p){ G.finish(p); return p; }
+function ansText(p){ return G.answerText ? G.answerText(p) : String(p.answer); }
+// every line the child sees before the answer must not give the answer away
+function revealOK(p){
+  var a=p.answer, story=numsIn(G.story(p)+" "+G.question(p));
+  if(!G.answerText && story.indexOf(a)>=0) return true;
+  var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
+  G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
+  var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
+  var at=G.answerText?ansText(p):null; if(at && /^\d+$/.test(at)) at=null; // numbers are checked above; only times etc. by text
+  return texts.every(function(t){ return numsIn(t).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
+}
+function verify(p){
+  try{
+    if(!p || !G.verify(p)) return false;
+    if(!isWhole(p.answer) || p.answer<=0) return false;
+    if(!planOK(p)) return false;
+    if(!revealOK(p)) return false;
+    var hs=G.hints(p); if(hs.length!==3 || hs[2].indexOf("___")<0) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function generate(i, small, used){
+  for(var t=0;t<800;t++){
+    var p=G.make(i%ROUND_SIZE, !!small, pickNames(used||[],3)); p.small=!!small; finish(p);
+    if(verify(p)) return p;
+  }
+  throw new Error("could not generate problem");
+}
+function namesOf(p){ return (p.names||[]).slice(); }
+function makeRound(small, fromIndex, existing){
+  var list=[], used=[];
+  for(var i=0;i<ROUND_SIZE;i++){
+    if(existing && i<fromIndex){ list.push(existing[i]); used=used.concat(namesOf(existing[i])); continue; }
+    var p=generate(i,small,used); used=used.concat(namesOf(p)); list.push(p);
+  }
+  return list;
+}
+var BANK=G.BANK.map(function(s,i){ var p=G.fromSpec(s); p.id="L0"+(i+1); p.lesson=true; return finish(p); });
+
+/*WORK-START*/
+/* ---------- "Write the working": exam-style working, one line at a time ---------- */
+var WS = {
+  intro:"Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.",
+  introShort:"Now let's write the working, one line at a time.",
+  offer:"Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.",
+  memory:"This time, write it all from memory. On your paper, draw "+G.drawWhat+". Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  fast:"Great! On your paper, draw "+G.drawWhat+", then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  compare:"Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.",
+  write:"Now write it on your paper. Copy each line, then tick each box when it is on your paper.",
+  ticked:"All ticked. Well done!"
+};
+function wSay(t){ return String(t).replace(/ R /g," remainder ").replace(/ \u2212 /g," take away ").replace(/ \+ /g," plus ").replace(/ \u00d7 /g," times ").replace(/ \u00f7 /g," divided by ").replace(/ = /g," is "); }
+function workingPlan(p){
+  var lines=[], salt=(p.answer||0)+(p.salt||0);
+  var api={
+    line:function(o){
+      var okv=evalExpr(o.ok), ch=[{t:o.ok,ok:true}], seen={}; seen[o.ok]=1;
+      o.wrong.forEach(function(w){ if(!w || ch.length>=3 || seen[w[0]]) return; var v=evalExpr(w[0]); if(v===okv || v===null) return; seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); });
+      var rr=(salt+lines.length)%ch.length; ch=ch.slice(rr).concat(ch.slice(0,rr));
+      var res = o.res!=null ? o.res : okv, rem=null;
+      if(o.rem){ var pr=o.ok.split(" "); rem={a:+pr[0], b:+pr[2], q:Math.floor(+pr[0]/+pr[2]), r:(+pr[0])%(+pr[2])}; res=rem.q+" R "+rem.r; }
+      var L={key:"l"+(lines.length+1), eq:o.ok+" = "+res, stmt:o.stmt, ask:o.ask, why:o.why, choices:ch, hl:o.hl, tag:o.tag};
+      if(o.check){ L.key="check"; L.check=true; }
+      if(rem) L.rem=rem;
+      L.say = "Yes! "+wSay(L.eq)+". "+L.stmt+" Why this line? "+L.why;
+      L.whySay = (o.check?"The check line. ":"Line "+(lines.length+1)+". ")+wSay(L.eq)+". Why this line? "+L.why;
+      lines.push(L);
+    },
+    answer:function(o){
+      var ach=[{t:o.right,ok:true}].concat(o.wrong.map(function(w){ return {t:w[0],nudge:w[1]}; }));
+      var ar=(salt+lines.length)%ach.length; ach=ach.slice(ar).concat(ach.slice(0,ar));
+      var AL={key:"ans", answer:true, stmt:o.right, choices:ach, hl:o.hl||["question"], tag:o.tag||"the question",
+        ask:o.ask||"The answer sentence. Read the question again. Which sentence answers it?", why:o.why};
+      AL.say="Yes! "+o.right+" Why this line? "+AL.why; AL.whySay="The answer sentence. "+o.right+" Why this line? "+AL.why;
+      lines.push(AL);
+    }
+  };
+  var meta=G.plan(p, api) || {};
+  return {lines:lines, unit:meta.unit,
+    checklist:[G.checkDraw,"Each number sentence, worked out, with a short statement","An answer sentence with the unit ("+meta.unit+")","I checked my answer"]};
+}
+// every calculation line is right, every line has 3 different choices, and no wrong choice gives the same number
+function planOK(p){
+  var plan=workingPlan(p);
+  if(!plan.lines.length || !plan.lines[plan.lines.length-1].check) return false;
+  return plan.lines.every(function(L){
+    if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
+    var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
+    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : numsIn(L.stmt).indexOf(p.answer)>=0;
+    if(L.rem){ var m=/^(\d+) \u00f7 (\d+) = (\d+) R (\d+)$/.exec(L.eq); if(!m) return false; var A=+m[1], B=+m[2], Q=+m[3], Rr=+m[4];
+      if(Q*B+Rr!==A || Rr<=0 || Rr>=B || Q<=0 || numsIn(L.stmt).indexOf(Q)<0) return false;
+      return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==A/B; }); }
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==+parts[1] || !isWhole(v) || v<=0) return false;
+    if(L.stmt.indexOf(parts[1])<0) return false;
+    return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
+  });
+}
+/*WORK-END*/
+
+/* ---------- state ---------- */
+var MODE="lesson"; try{ if(localStorage.getItem(MODE_KEY)==="practice") MODE="practice"; }catch(e){}
+function isLesson(){ return MODE==="lesson"; }
+var S;
+function lessonProblems(){ return JSON.parse(JSON.stringify(BANK)); }
+function freshLesson(){ return {lesson:true, round:1, idx:0, small:true, totalStars:0, problems:lessonProblems(), results:[], everPlayed:false, lifeCount:0}; }
+function fresh(){ return {lesson:false, round:1, idx:0, small:false, totalStars:0, problems:makeRound(false), results:[], everPlayed:false, lifeCount:0}; }
+function keyFor(s){ return s.lesson ? LKEY : KEY; }
+function save(){ try{ localStorage.setItem(keyFor(S), JSON.stringify(S)); }catch(e){} }
+function loadLesson(){ try{ var s=JSON.parse(localStorage.getItem(LKEY)||"null"); if(s && s.lesson && s.round>=1 && s.idx>=0 && s.idx<=ROUND_SIZE){ s.problems=lessonProblems(); s.results=s.results||[]; return s; } }catch(e){} return freshLesson(); }
+function loadPractice(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s && !s.lesson && s.problems && s.problems.length===ROUND_SIZE && s.problems.every(verify)) return s; }catch(e){} return fresh(); }
+S = isLesson() ? loadLesson() : loadPractice();
+var P, cur;
+function startProblem(quiet){
+  if(S.idx>=ROUND_SIZE){ renderSummary(); return; }
+  P=S.problems[S.idx];
+  cur={phase:"predict", guess:G.guess(P,S.idx), prediction:null, b:0, count:0, bfb:null, typed:"", hints:0, tries:0, solved:false, hl:[], work:null, plan:null, fb:null, fresh:-1};
+  renderAll();
+  if(!quiet) tell(introLines());
+}
+function introLines(){ return [G.story(P), G.question(P), "Before we draw, make a guess. "+cur.guess.q].join(" "); }
+function guessNote(){
+  if(!cur.prediction) return "";
+  return cur.guess.note(cur.prediction, cur.prediction===cur.guess.right);
+}
+
+/* ---------- DOM ---------- */
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function renderHeader(){
+  $("stars").textContent="★ "+S.totalStars;
+  $("smallToggle").setAttribute("aria-pressed", S.small?"true":"false");
+  $("smallToggle").style.display = isLesson() ? "none" : "";
+  var h=""; for(var i=0;i<ROUND_SIZE;i++){ var cls=i<S.idx?"done":(i===S.idx?"cur":""); h+='<span class="'+cls+'">'+(i<S.idx?"★":(i+1))+'</span>'; }
+  $("progress").innerHTML=h;
+}
+var PHASES=[["predict","1 Guess"],["build","2 Draw"],["answer","3 Answer"],["working","4 Working"],["explain","5 Explain"]];
+function renderStory(){
+  $("story").textContent=G.story(P); $("question").textContent=G.question(P);
+  var order=PHASES.map(function(x){return x[0];}), ci=order.indexOf(cur.phase==="life"?"explain":cur.phase);
+  $("steps").innerHTML=PHASES.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
+}
+function hlOn(k){ return !!(cur && cur.hl && cur.hl.indexOf(k)>=0); }
+/* generic bar model: G.model(P, view) -> {maxV, rows:[{name, cls, segs:[{v, at?, cls, label, hl, fresh}], unders:[{from,to,label,hl}], tail:{label,hl}}], braces:[{from,to,label,hl}]} */
+function view(){ return {b:cur.b, count:cur.count, solved:cur.solved, phase:cur.phase, building:cur.phase==="build", step:cur.b, fresh:cur.fresh}; }
+function renderBars(){
+  if(G.render){ var bx=$("model"); bx.innerHTML=G.render(P, view(), {hlOn:hlOn, esc:esc, W:bx.clientWidth||560}); $("question").classList.toggle("hl", hlOn("question")); return; }
+  var M=G.model(P, view()), box=$("model"), W=box.clientWidth||560, nameW=120;
+  var hasBrace=(M.braces||[]).length>0, tailRoom=M.rows.some(function(r){return r.tail;})?62:0;
+  var trackW=W-nameW-10, sc=(trackW-(hasBrace?100:12)-tailRoom)/M.maxV, x=function(v){return Math.round(v*sc);};
+  var h="";
+  M.rows.forEach(function(r,ri){
+    var t="", pos=0, under=(r.unders||[]).length>0;
+    (r.segs||[]).forEach(function(s){
+      var l=(s.at!=null?s.at:pos), w=s.v; pos=l+w;
+      t+='<div class="seg '+(s.cls||"main")+(s.hl&&hlOn(s.hl)?' hl':'')+(s.fresh?' fresh':'')+'"'+(s.id?' id="'+s.id+'"':'')+' style="left:'+x(l)+'px;width:'+Math.max(4,x(w)-3)+'px"><span class="inlab">'+(s.label!=null?esc(s.label):"")+'</span></div>';
+    });
+    if(!(r.segs||[]).length && r.empty) t+='<div class="emptyrow">'+esc(r.empty)+'</div>';
+    (r.unders||[]).forEach(function(u){ var on=u.hl&&hlOn(u.hl);
+      t+='<div class="ubrace'+(on?' hl':'')+'" style="left:'+x(u.from)+'px;width:'+Math.max(8,x(u.to-u.from)-3)+'px"></div><div class="ublab'+(on?' hl':'')+'" style="left:'+(x(u.from)+x(u.to-u.from)/2)+'px">'+esc(u.label)+'</div>'; });
+    if(r.tail) t+='<div class="tail'+(r.tail.hl&&hlOn(r.tail.hl)?' hl':'')+'" style="left:'+(x(pos)+6)+'px">'+esc(r.tail.label)+'</div>';
+    h+='<div class="row '+(r.cls||"A")+'" id="mrow'+ri+'"><div class="rowname">'+esc(r.name)+'</div><div class="track'+(under?' withunder':'')+'" id="mtrack'+ri+'">'+t+'</div></div>';
+  });
+  (M.braces||[]).forEach(function(b,bi){ h+='<div class="brace'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="brace'+bi+'"></div><div class="bracelab'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="bracelab'+bi+'">'+b.label+'</div>'; });
+  box.innerHTML=h;
+  (M.braces||[]).forEach(function(b,bi){
+    var r0=$("mrow"+b.from), r1=$("mrow"+b.to), t0=$("mtrack"+b.from), br=$("brace"+bi), lab=$("bracelab"+bi);
+    var left=t0.offsetLeft+x(M.maxV)+tailRoom+8, top=r0.offsetTop+4, bot=r1.offsetTop+56;
+    br.style.left=left+"px"; br.style.top=top+"px"; br.style.height=(bot-top)+"px";
+    lab.style.left=(left+24)+"px"; lab.style.top=((top+bot)/2-22)+"px";
+  });
+  $("question").classList.toggle("hl", hlOn("question"));
+}
+function setCaption(t){ $("caption").innerHTML=t; }
+function renderBarBtns(){ $("barbtns").innerHTML=""; }
+
+/* ---------- panels ---------- */
+function renderPanel(){
+  var el=$("panel"), h="";
+  if(cur.phase==="predict"){
+    h+='<h2>1. Make a guess</h2><p>'+esc(cur.guess.q)+' There is no wrong guess!</p>';
+    h+='<div class="choices">'+cur.guess.choices.map(function(c){return '<button class="choice" data-pred="'+esc(c[0])+'">'+esc(c[1])+'</button>';}).join("")+'</div>';
+  } else if(cur.phase==="build"){
+    var steps=G.build(P), s=steps[cur.b];
+    h+='<h2>2. Draw the model ✏️</h2>'+(cur.b===0&&cur.prediction?'<p class="muted">'+esc(guessNote())+'</p>':'');
+    h+='<p class="wask" id="bask">'+esc(s.ask)+'</p>';
+    if(s.type==="count"){
+      h+='<div class="cntrow"><button class="ghost" id="cMinus" aria-label="take one away">− 1</button><span class="ansbox" id="cnt">'+cur.count+'</span><button class="ghost" id="cPlus" aria-label="add one">+ 1 '+esc(s.unitName||"unit")+'</button></div>';
+      h+='<div class="rowbtns"><button class="big green" id="cDone">That\'s right ✓</button></div>';
+    } else {
+      h+='<div class="choices wchoices sent">'+s.choices.map(function(c,i){ return '<button class="choice'+(cur.bfb&&cur.bfb.i===i?' no':'')+'" data-bc="'+i+'">'+esc(c[1])+'</button>'; }).join('')+'</div>';
+    }
+    h+='<div class="feedback'+(cur.bfb?' try':'')+'" id="bfb">'+(cur.bfb?esc(cur.bfb.msg):'')+'</div>';
+    h+='<p class="muted">Step '+(cur.b+1)+' of '+steps.length+'</p>';
+  } else if(cur.phase==="answer"){
+    var al=G.answerLine(P);
+    h+='<h2>3. Your answer</h2>';
+    h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(esc(typedShow())||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
+    h+=hintHTML();
+    h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
+  } else if(cur.phase==="working"){
+    h+=renderWorking();
+  } else if(cur.phase==="explain"){
+    h+='<div class="bigstar">⭐</div><p class="center feedback good">Yes! '+esc(G.answerSentence(P))+'</p>';
+    h+='<p class="prompt">Tell Daddy why in your own words.</p><p class="center muted">'+esc(G.explain(P))+'</p>';
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="explainedBtn">I explained it 🗣️</button></div>';
+  } else if(cur.phase==="life"){
+    h+=lifeHTML(cur.life)+'<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
+  }
+  el.innerHTML=h; bindPanel();
+}
+function typedShow(){ return G.fmtTyped ? G.fmtTyped(cur.typed, P) : cur.typed; }
+function hintList(p){ return G.hints(p||P); }
+function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
+function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
+function check(){
+  if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
+  var v=parseInt(cur.typed,10);
+  if(v===P.answer){
+    cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
+    startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
+  }
+  cur.tries++; var msg=G.wrongMsg(P,v); feedback("try",msg); tell("That's okay, let's look again.", msg);
+}
+/* ---------- life cards ---------- */
+function lifeCard(i){ return G.LIFE[((i%G.LIFE.length)+G.LIFE.length)%G.LIFE.length]; }
+function lifeHTML(L){ return '<div class="life" id="lifeCard"><div class="lemoji">'+L.emoji+'</div><h3>Where do we use this in real life?</h3><p class="center" style="font-weight:700;margin:0">'+esc(L.title)+'</p><p>'+esc(L.text)+'</p><p class="rule">'+esc(L.rule)+'</p></div>'; }
+
+/* ---------- working step UI (same pattern as Games 1 and 3) ---------- */
+var FAST_FROM=3;
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all from memory first
+function startWorking(){
+  cur.plan=workingPlan(P);
+  var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
+  cur.work={mode:memory?"memory":(offer?null:"guided"), stage:memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
+  cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
+  cur.phase="working";
+}
+function workingEntryLines(){ var w=cur.work; if(w.stage==="paper") return [WS.memory]; if(w.stage==="choose") return [WS.offer]; return [S.idx<2?WS.intro:WS.introShort, cur.plan.lines[0].ask]; }
+function wLabel(L,i){ return L.answer?'Ans':(L.check?'Check':String(i+1)); }
+function sheetHTML(upto,on,next,tap){
+  var ls=cur.plan.lines, h='<div class="sheet" id="sheet">', tg=tap?'button':'div';
+  for(var i=0;i<upto;i++){ var L=ls[i];
+    h+='<'+tg+' class="wline'+(on===i?' on':'')+(L.check?' wcheck':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+wLabel(L,i)+'</span><span class="wbody">'+
+      (L.answer?'<span class="wans">'+esc(L.stmt)+'</span>':'<span class="weq">'+esc(L.eq)+(L.check?' ✓':'')+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>'; }
+  if(next!=null){ var X=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+wLabel(X,next)+'</span><span class="wbody">'+(X.answer?'Answer sentence?':(X.check?'Check?':'Number sentence?'))+'</span></div>'; }
+  return h+'</div>';
+}
+function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+(L.check?'':'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the model)</div>')+'</div>'; }
+function renderWorking(){
+  var w=cur.work, ls=cur.plan.lines, h='<h2>4. Write the working ✏️</h2>';
+  if(w.stage==="choose"){
+    h+='<p>Write the working on your own first, or build it with me line by line?</p><div class="rowbtns"><button class="big green" id="fastBtn">I can do it ✏️</button><button class="ghost" id="teachBtn">Teach me line by line</button></div>';
+  } else if(w.stage==="paper"){
+    h+='<p class="prompt">'+(w.mode==="memory"?'From memory ✏️':'Your turn ✏️')+'</p><p>'+(w.mode==="memory"?'Draw '+esc(G.drawWhat)+'. Then write:':'On your paper, write:')+'</p>';
+    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li><li>a check: put the answer back and see if it works</li></ul><p class="muted">The model working stays hidden until you tap the button.</p><div class="rowbtns"><button class="big green" id="wroteBtn">I\'ve written it ✓</button></div>';
+  } else if(w.stage==="ask"||w.stage==="why"){
+    var shown=w.stage==="why"?w.k+1:w.k;
+    if(w.stage==="ask" && w.k===0 && S.idx<2) h+='<p class="muted wintro">Each line: a number sentence, then a short statement. The last lines are the answer sentence and the check.</p>';
+    h+=sheetHTML(shown, w.stage==="why"?w.k:null, w.stage==="ask"?w.k:null, false);
+    if(w.stage==="ask"){ var L=ls[w.k];
+      h+='<p class="wask" id="wask">'+esc(L.ask)+'</p><div class="choices wchoices'+(L.answer?' sent':'')+'">'+L.choices.map(function(c,i){ return '<button class="choice'+(w.fb&&w.fb.i===i?' no':'')+'" data-wc="'+i+'">'+esc(c.t)+'</button>'; }).join('')+'</div>';
+      h+='<div class="feedback'+(w.fb?' try':'')+'" id="wfb">'+(w.fb?esc(w.fb.msg):'')+'</div>';
+    } else { h+=whyHTML(ls[w.k]); h+='<div class="rowbtns">'+(w.k<ls.length-1?'<button class="big" id="nextLineBtn">Next line ➡️</button>':'<button class="big green" id="toPaperBtn">Now write it on paper ✏️</button>')+'</div>'; }
+  } else if(w.stage==="check"){
+    h+='<p class="wintro">'+(w.after==="compare"?'<b>Compare</b> with your paper.':'<b>Now write it on your paper.</b>')+' Tap a line to see why.</p>'+sheetHTML(ls.length,w.open,null,true);
+    if(w.open>=0) h+=whyHTML(ls[w.open]);
+    h+='<div class="checklist" id="checklist">'+cur.plan.checklist.map(function(t,i){ return '<button class="tick" data-tick="'+i+'" aria-pressed="'+(w.ticks[i]?'true':'false')+'"><span class="box">'+(w.ticks[i]?'✅':'⬜')+'</span><span>'+esc(t)+'</span></button>'; }).join('')+'</div>';
+    var all=w.ticks.every(Boolean); h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all '+w.ticks.length+' first')+'</button></div>';
+  }
+  return h;
+}
+function finalCaption(){ return G.caption(P, view()); }
+function workCaption(){
+  var w=cur.work; if(!w) return finalCaption();
+  var i=(w.stage==="ask"||w.stage==="why")?w.k:(w.stage==="check"?w.open:-1);
+  if(i<0) return finalCaption()+(w.stage==="paper"&&w.mode==="memory"?" Draw it on your paper.":"");
+  var L=cur.plan.lines[i];
+  return (L.answer?"The answer sentence":(L.check?"The check line":"Line "+(i+1)))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
+}
+function workRefresh(){ setCaption(workCaption()); renderBars(); renderPanel(); }
+function bindWorking(el){
+  var w=cur.work; if(!w) return; var ls=cur.plan.lines;
+  el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){ var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
+    if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); tell(L.say); }
+    else { w.wrong++; w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
+  if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); tell(ls[w.k].ask); };
+  if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.write); };
+  if($("teachBtn")) $("teachBtn").onclick=function(){ w.mode="guided"; w.stage="ask"; w.k=0; cur.hl=ls[0].hl; workRefresh(); tell(WS.introShort, ls[0].ask); };
+  if($("fastBtn")) $("fastBtn").onclick=function(){ w.mode="fast"; w.stage="paper"; cur.hl=[]; workRefresh(); tell(WS.fast); };
+  if($("wroteBtn")) $("wroteBtn").onclick=function(){ w.stage="check"; w.after="compare"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.compare); };
+  el.querySelectorAll("button[data-wl]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-wl"); w.open=i; cur.hl=ls[i].hl; workRefresh(); tell(ls[i].whySay); }; });
+  el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
+  if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
+    if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    cur.phase="explain"; cur.hl=[]; renderAll(); tell("Can you tell Daddy why, in your own words? "+G.explain(P)); };
+}
+/* ---------- build step: she draws the model ---------- */
+function buildDone(s){
+  cur.bfb=null; cur.fresh=cur.b; cur.b++; cur.count=0; var steps=G.build(P);
+  if(cur.b>=steps.length){ cur.phase="answer"; cur.hl=[]; renderAll(); tell(s.done, G.answerAsk(P)); }
+  else { renderAll(); tell(s.done, steps[cur.b].ask); }
+}
+function bindPanel(){
+  var el=$("panel");
+  el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="build"; cur.b=0; cur.count=0; renderAll();
+    tell(guessNote(), "Now let's draw the model.", G.build(P)[0].ask); }; });
+  el.querySelectorAll("[data-bc]").forEach(function(b){ b.onclick=function(){ var s=G.build(P)[cur.b], c=s.choices[+b.getAttribute("data-bc")];
+    if(c[0]===s.right) buildDone(s); else { cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
+  if($("cPlus")) $("cPlus").onclick=function(){ if(cur.count<12){ cur.count++; cur.fresh=-2; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cMinus")) $("cMinus").onclick=function(){ if(cur.count>0){ cur.count--; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
+    if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
+  el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed=""; else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
+  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
+  if($("checkBtn")) $("checkBtn").onclick=check;
+  if($("explainedBtn")) $("explainedBtn").onclick=afterExplain;
+  bindWorking(el);
+  if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
+}
+var LIFE_AFTER=[1,3]; // after problems 2 and 4
+function afterExplain(){
+  if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
+  else completeProblem();
+}
+function completeProblem(){ S.totalStars++; S.idx++; S.everPlayed=true; save(); startProblem(); }
+function renderSummary(){
+  renderHeader(); var res=S.results.filter(Boolean), pr=res.filter(function(r){return r.predictionRight;}).length;
+  $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round."; $("question").textContent=""; $("steps").innerHTML="";
+  setCaption("Your guesses were right "+pr+" out of "+res.length+" times. "+G.summaryRule);
+  $("model").innerHTML=""; $("barbtns").innerHTML="";
+  var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+  var btn = S.lesson ? '<button class="big" id="newRound">Play these 5 again</button><button class="ghost" id="toPractice">Try 5 new ones in Practice 🎲</button>'
+                     : '<button class="big" id="moreBtn">5 more ➡️</button>';
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
+  tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); };
+  if($("newRound")) $("newRound").onclick=again;
+  if($("moreBtn")) $("moreBtn").onclick=again;
+  if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
+}
+function renderAll(){
+  renderHeader(); renderStory();
+  setCaption(cur.phase==="working"?workCaption():finalCaption());
+  renderBars(); renderBarBtns(); renderPanel();
+}
+/* ---------- controls ---------- */
+$("smallToggle").onclick=function(){
+  if(isLesson()) return;
+  S.small=!S.small; if(S.idx>=ROUND_SIZE){ save(); renderHeader(); return; }
+  S.problems=makeRound(S.small,S.idx,S.problems); save(); startProblem(true);
+  tell(S.small?"Small numbers are on.":"Big numbers are back on.", introLines());
+};
+$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); };
+function renderVoiceCtl(){
+  var mb=$("muteBtn"), ab=$("againBtn"); mb.style.display=ab.style.display=Voice.supported?"":"none"; if(!Voice.supported) return;
+  mb.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; mb.setAttribute("aria-pressed",Voice.muted?"true":"false"); mb.classList.toggle("off",Voice.muted); ab.disabled=Voice.muted;
+}
+$("muteBtn").onclick=function(){ Voice.setMuted(!Voice.muted); renderVoiceCtl(); if(!Voice.muted){ if(!Voice.started) Voice.unlock([]); Voice.again(); } };
+$("againBtn").onclick=function(){ Voice.again(); };
+function renderModeCtl(){
+  var b=$("modeBtn"); b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
+  b.setAttribute("aria-pressed", isLesson()?"false":"true");
+  $("startNote").textContent = isLesson() ? "Lesson mode: 5 problems, from easy to exam level, read by this device's voice. Your progress is saved." : "Practice mode: 5 new random problems at a time, read by this device's voice.";
+  $("startTutor").textContent = Voice.supported ? "Start with my tutor 🔊" : "Start ▶";
+  $("startQuiet").style.display = Voice.supported ? "" : "none";
+}
+$("modeBtn").onclick=function(){
+  Voice.stop(); save();
+  MODE=isLesson()?"practice":"lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){}
+  S=isLesson()?loadLesson():loadPractice(); save(); renderModeCtl(); startProblem(true);
+  if(S.idx<ROUND_SIZE){ if(!Voice.started) Voice.unlock([introLines()]); else tell(introLines()); }
+};
+$("startTutor").onclick=function(){
+  if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
+  $("startScreen").style.display="none";
+  var first=(S.idx>=ROUND_SIZE)?["Hello! Welcome back."]:[(S.everPlayed||S.idx>0||S.round>1)?"Hello! Welcome back.":"Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
+  Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+};
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); };
+renderModeCtl(); renderVoiceCtl();
+window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
+
+/* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
+function lessonScript(){
+  var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
+  var keepP=P, keepCur=cur;
+  BANK.forEach(function(p,i){
+    P=p; var g=G.guess(p,i); cur={guess:g, prediction:null};
+    add(introLines()); g.choices.forEach(function(c){ add(g.note(c[0], c[0]===g.right)); });
+    add("Now let's draw the model."); G.build(p).forEach(function(s){ add(s.ask); add(s.done); (s.choices||[]).forEach(function(c){ add(c[2]); }); add(s.low); add(s.high); });
+    add(G.answerAsk(p));
+    G.hints(p).forEach(function(h){ add("Here's a hint. "+h.replace(/___/g,"blank")); });
+    G.wrongCandidates(p).forEach(function(v){ if(v!==p.answer) add(G.wrongMsg(p,v)); });
+    add(G.praise(p)); add("Can you tell Daddy why, in your own words? "+G.explain(p));
+    workingPlan(p).lines.forEach(function(L){ add(L.ask); add(L.say); add(L.whySay); L.choices.forEach(function(c){ add(c.nudge); }); });
+  });
+  for(var k in WS) add(WS[k]);
+  G.LIFE.forEach(function(L){ add("Where do we use this in real life? "+L.text+" "+L.rule); });
+  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","That's okay, let's look again.","Type your answer on the number pad.","You finished the round and got all 5 stars!"].forEach(add);
+  P=keepP; cur=keepCur;
+  return Object.keys(out);
+}
+/* test hook (no personal data; used by automated checks) */
+window.__game={answerText:ansText, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+  wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
+  storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
+  get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};
+save();
+startProblem();
+})();
+</script>
+</body>
+</html>

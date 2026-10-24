@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; media-src 'self'">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Inside and Around – Bar Model Game</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .modesw{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:4px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06);font-size:17px;font-weight:700}
+  .modesw span{padding:8px 12px;border-radius:999px;color:var(--soft)}
+  .modesw span.on{background:var(--a);color:#fff}
+  .startcard .note{font-size:17px;color:var(--soft);margin:10px 0 0}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  /* working step */
+  .seg.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75);z-index:2;animation:glow 1.6s ease-in-out infinite}
+  .lab.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .seg.diffbox{top:2px;height:68px;background:rgba(255,216,77,.30);border:3px dashed #d99a00;border-radius:10px;z-index:3;pointer-events:none}
+  .question.hl{background:#fff3c4;border-radius:10px;box-shadow:0 0 0 4px #ffd84d;padding:0 6px}
+  @keyframes glow{50%{box-shadow:0 0 0 6px #ffd84d,0 0 22px 8px rgba(255,190,0,.9)}}
+  .sheet{background:#fffdf5;border:2px solid #efe6c8;border-left:6px solid #f2a7a7;border-radius:12px;padding:4px 10px;margin:4px 0 8px}
+  .wline{display:flex;align-items:flex-start;gap:10px;padding:5px 4px;border-bottom:1px dashed #e8dfc4;width:100%;text-align:left;background:none;border-radius:8px}
+  .wline:last-child{border-bottom:none}
+  .wline.on{background:#fff3c4}
+  .wline.next{color:var(--soft)}
+  .wnum{flex:0 0 auto;min-width:30px;height:28px;border-radius:999px;background:#ece7f8;color:#4b3fc4;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;margin-top:2px}
+  .wbody{display:flex;flex-direction:column}
+  .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .wst,.wans{font-size:18px;line-height:1.3}
+  .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
+  .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
+  .wintro{margin:0 0 6px;font-size:17px}
+  .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
+  .wchoices.sent .choice{flex:1 1 100%;min-height:50px;font-size:18px;text-align:left;padding:6px 12px}
+  .choice.no{border-color:#e9a28f;background:#fdeee9}
+  .why{background:#eef6ff;border:2px solid #cfe3fb;border-radius:14px;padding:8px 12px;font-size:18px;margin:6px 0}
+  .whyh{font-weight:800;color:#2b5aa8;margin-bottom:2px}
+  .why .from{margin-top:4px;font-size:16px;color:var(--soft)}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+  .tick{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:#f1f0f7;border-radius:14px;text-align:left;padding:6px 12px;font-size:17px;font-weight:600}
+  .tick[aria-pressed="true"]{background:#d9f2e3}
+  .tick .box{font-size:22px}
+  .big[disabled]{opacity:.45}
+  .wlist{margin:4px 0 8px;padding-left:22px;font-size:18px}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash,.seg.hl{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+  /* iPad landscape (1024px): keep the header on one row */
+  @media (min-width:900px) and (max-width:1180px){
+    header{gap:8px} header h1{font-size:19px}
+    .ctl{padding:6px 10px;font-size:16px} .modesw{font-size:16px} .modesw span{padding:8px 10px}
+    .toggle{padding:4px 12px 4px 4px;gap:8px;font-size:17px} .toggle .sw{width:48px;height:32px} .toggle .sw::after{width:24px;height:24px} .toggle[aria-pressed="true"] .sw::after{left:20px}
+    .stars{font-size:20px;padding:6px 12px}
+  }
+  /* shared engine: generic bar model */
+  .bars{padding:4px 0}
+  #model{position:relative}
+  .track{height:64px}
+  .track.withunder{height:104px}
+  .rowname{padding-top:12px}
+  .seg{top:6px;height:46px;transition:width .35s ease,left .35s ease}
+  .seg .inlab{font-size:17px}
+  .row.B .seg.unit,.row.B .seg.main{background-color:var(--b)}
+  .row.C .seg.main,.row.C .seg.unit{background-color:#e07bb3}
+  .seg.unit{background-color:var(--a)}
+  .seg.ghostu{background:transparent;border:3px dashed var(--a2)}
+  .seg.left{background:repeating-linear-gradient(135deg,#f2a541 0 8px,#f7c98a 8px 16px)}
+  .seg.left .inlab{color:#3a2600;text-shadow:none}
+  .seg.dots{background:transparent;border-top:4px dotted var(--a);border-bottom:4px dotted var(--a);border-radius:0}
+  .seg.dots .inlab{color:var(--a);text-shadow:none;font-size:22px}
+  .seg.cut{background:repeating-linear-gradient(135deg,rgba(239,111,108,.35) 0 8px,rgba(239,111,108,.12) 8px 16px);border:3px dashed var(--gap)}
+  .seg.cut .inlab{color:#9c2f2c;text-shadow:none}
+  .seg.fresh{animation:grow .45s ease}
+  @keyframes grow{0%{transform:scaleX(.2);transform-origin:left;opacity:.3}100%{transform:scaleX(1);opacity:1}}
+  .tail{position:absolute;top:14px;font-size:20px;font-weight:800;color:#4b3fc4;white-space:nowrap;background:#fff;border-radius:8px;padding:0 6px}
+  .tail.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ubrace{position:absolute;top:58px;height:14px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;pointer-events:none;z-index:3}
+  .ubrace.hl{box-shadow:0 0 0 4px #ffd84d}
+  .ublab{position:absolute;top:74px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap;z-index:4}
+  .ublab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .brace{position:absolute;pointer-events:none;z-index:3;border:4px solid #d99a00;border-left:none;border-radius:0 16px 16px 0;width:18px}
+  .brace.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75)}
+  .bracelab{position:absolute;font-size:17px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:2px 8px;white-space:nowrap;z-index:4;line-height:1.2;text-align:center}
+  .bracelab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .cntrow{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+  .cntrow .ansbox{min-width:90px}
+  .emptyrow{color:var(--soft);font-size:16px;padding-top:18px}
+  .counter{margin-top:4px}
+  .seg.ghostu .inlab{color:#5a4fc0;text-shadow:none}
+  /* timeline (time game) */
+  .tl{position:relative;height:210px;margin:4px 14px 0}
+  .tl-line{position:absolute;left:0;right:0;top:112px;height:5px;background:#4b3fc4;border-radius:3px}
+  .tl-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .tl-tick{position:absolute;top:100px;width:5px;height:30px;margin-left:-2px;background:#4b3fc4;border-radius:2px}
+  .tl-tick span{position:absolute;top:34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#2b2b3a;background:#fff;padding:1px 5px;border-radius:8px}
+  .tl-tick.ask span{color:#4b3fc4;background:#efeaff}
+  .tl-tick.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-jump{position:absolute;top:58px;height:52px;border:4px solid #e07bb3;border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;box-sizing:border-box}
+  .tl-jump.hr{border-color:#7c6cf0}
+  .tl-jump span{position:absolute;top:-28px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#7a2d5a;background:#fff;padding:0 5px;border-radius:8px}
+  .tl-jump.hr span{color:#4b3fc4}
+  .tl-jump.hl{box-shadow:0 -6px 14px 2px rgba(255,190,0,.75);border-color:#e0a800}
+  .tl-jump.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-total{position:absolute;top:162px;height:12px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;box-sizing:border-box}
+  .tl-totlab{position:absolute;top:178px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap}
+  .tl-total.hl,.tl-totlab.hl{box-shadow:0 0 0 4px #ffd84d}
+  /* area and perimeter diagram */
+  .ap{position:relative;height:260px}
+  .ap-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .ap-rect{position:absolute;border:4px solid #4b3fc4;border-radius:4px;box-sizing:border-box;background:#fff}
+  .ap-rect.grid{background-image:linear-gradient(to right,rgba(75,63,196,.35) 1px,transparent 1px),linear-gradient(to bottom,rgba(75,63,196,.35) 1px,transparent 1px)}
+  .ap-rect.shade{background-color:#dcd6ff}
+  .ap-rect.around{border-color:#e07bb3;border-style:dashed}
+  .ap-rect.hl{box-shadow:0 0 0 5px #ffd84d,0 0 18px 6px rgba(255,190,0,.7)}
+  .ap-cnt{position:absolute;background:rgba(255,216,77,.55);border:3px solid #d99a00;box-sizing:border-box;pointer-events:none}
+  .ap-lab{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;background:#fff;padding:1px 6px;border-radius:8px;white-space:nowrap;color:#2b2b3a}
+  .ap-lab.side{transform:translateX(-100%)} .ap-lab.side.r{transform:none}
+  .ap-lab.hl,.ap-in.hl,.ap-ar.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ap-in{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;color:#4b3fc4;background:rgba(255,255,255,.85);padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .ap-ar{position:absolute;transform:translateX(-50%);font-weight:800;font-size:16px;color:#7a2d5a;background:#fde8f3;padding:1px 8px;border-radius:10px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">🟦📏</div>
+    <h2>Inside and Around</h2>
+    <p><b>Area</b> is the space inside. <b>Perimeter</b> is the distance around. Draw the shape, label every side, find any missing side, then work it out. Your tutor will help, step by step.</p>
+    <p class="note" id="startNote"></p>
+    <button class="big" id="startTutor">Start with my tutor 🔊</button>
+    <button class="quiet" id="startQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Inside and Around</h1>
+    <button class="modesw" id="modeBtn" aria-label="Switch between Lesson mode and Practice mode"><span data-m="lesson">📘 Lesson</span><span data-m="practice">🎲 Practice</span></button>
+    <button class="toggle" id="smallToggle" aria-pressed="false"><span class="sw"></span><span>Small numbers</span></button>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <button class="ctl" id="againBtn">🔁 Say it again</button>
+    <div class="stars" id="stars">★ 0</div>
+  </header>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="progress" id="progress"></div>
+        <p class="story" id="story"></p>
+        <p class="question" id="question"></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="caption" id="caption"></div>
+        <div class="bars" id="bars"><div id="model"></div></div>
+        <div class="counter" id="counter"></div>
+        <div class="barbtns" id="barbtns"></div>
+      </div>
+    </div>
+    <div class="card panel" id="panel"></div>
+  </div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-MEAS-AP-G11</div></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ===== shared engine (Games 4+): utilities ===== */
+function pl(n,s,p){return n===1?s:p;}
+function cap(s){s=String(s);return s.charAt(0).toUpperCase()+s.slice(1);}
+function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function isWhole(x){ return typeof x==="number" && isFinite(x) && Math.floor(x)===x; }
+var MI="\u2212", TI="\u00d7", DI="\u00f7";
+function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
+var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
+// tiny evaluator for "a op b op c" with + - x / (x and / first)
+function evalExpr(x){
+  var t=String(x).split(" "); if(t.length%2!==1) return null;
+  var nums=[], ops=[];
+  for(var i=0;i<t.length;i++){ if(i%2===0){ if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  var n2=[nums[0]], o2=[];
+  for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
+    if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
+  var v=n2[0]; for(var k=0;k<o2.length;k++) v = o2[k]==="+" ? v+n2[k+1] : v-n2[k+1];
+  return v;
+}
+function numsIn(s){ return (String(s).match(/\d+/g)||[]).map(Number); }
+var GX={pl:pl,cap:cap,rnd:rnd,pick:pick,shuffle:shuffle,isWhole:isWhole,MI:MI,TI:TI,DI:DI,ex:ex,NAMES:NAMES,pickNames:pickNames,evalExpr:evalExpr};
+/* ===== Game 11: Inside and Around (area and perimeter of rectangles and squares), P3-MEAS-AP-G11 =====
+   kind "area": L x B on a grid of 1-cm squares.  "perim": L + B + L + B.  "sq": square, perimeter P -> side P/4 -> area.
+   "ab": area A and length L -> breadth A/L -> perimeter.  "pa": perimeter P and length L -> breadth (P - L - L)/2 -> area.
+   P3 sizes: every multiplication has a 1-digit factor; every division is by a 1-digit number (or 2 / 4). */
+var G=(function(){
+var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole;
+var SHAPES={card:"a rectangular card", mat:"a rectangular mat", tile:"a square tile", garden:"a rectangular garden", field:"a rectangular field", board:"a rectangular notice board", photo:"a rectangular photo", sqmat:"a square mat", pool:"a rectangular pool"};
+function finish(p){
+  if(p.kind==="area"){ p.answer=p.L*p.B; }
+  else if(p.kind==="perim"){ p.answer=2*(p.L+p.B); }
+  else if(p.kind==="sq"){ p.s=p.P/4; p.answer=p.s*p.s; }
+  else if(p.kind==="ab"){ p.B=p.A/p.L; p.answer=2*(p.L+p.B); }
+  else { p.B2=p.P-2*p.L; p.B=p.B2/2; p.answer=p.L*p.B; }
+  p.names=[]; return p;
+}
+function u(p){ return p.u; } function u2(p){ return p.u+"²"; }
+function shape(p){ return SHAPES[p.ctx]; } function the(p){ return shape(p).replace(/^an? /,"the "); }
+function story(p){ var S=cap(shape(p));
+  if(p.kind==="area") return S+" is drawn on a grid of 1-cm squares. It is "+p.L+" cm long and "+p.B+" cm wide.";
+  if(p.kind==="perim") return S+" is "+p.L+" "+u(p)+" long and "+p.B+" "+u(p)+" wide.";
+  if(p.kind==="sq") return S+" has a perimeter of "+p.P+" "+u(p)+".";
+  if(p.kind==="ab") return S+" has an area of "+p.A+" "+u2(p)+". Its length is "+p.L+" "+u(p)+".";
+  return S+" has a perimeter of "+p.P+" "+u(p)+". Its length is "+p.L+" "+u(p)+"."; }
+function question(p){ var A=["area","sq","pa"].indexOf(p.kind)>=0; return "What is the "+(A?"area":"perimeter")+" of "+the(p)+"?"; }
+function isArea(p){ return ["area","sq","pa"].indexOf(p.kind)>=0; }
+function unitOf(p){ return isArea(p)?u2(p):u(p); }
+function answerSentence(p){ return "The "+(isArea(p)?"area":"perimeter")+" of "+the(p)+" is "+p.answer+" "+unitOf(p)+"."; }
+function answerLine(p){ return ["The "+(isArea(p)?"area":"perimeter")+" is", unitOf(p)+"."]; }
+function verify(p){
+  if(!SHAPES[p.ctx] || ["area","perim","sq","ab","pa"].indexOf(p.kind)<0 || (p.u!=="cm"&&p.u!=="m")) return false;
+  var sq=p.kind==="sq"; if(sq !== (p.ctx==="tile"||p.ctx==="sqmat")) return false;
+  if(p.kind==="area"){ if(p.u!=="cm" || !(p.L>=3&&p.L<=9&&p.B>=2&&p.B<p.L)) return false; }
+  else if(p.kind==="perim"){ if(!(p.B>=2 && p.B<p.L)) return false; }
+  else if(p.kind==="sq"){ if(!isWhole(p.s) || p.s<3 || p.s>10) return false; }
+  else if(p.kind==="ab"){ if(!isWhole(p.B) || p.L<3 || p.L>9 || p.B<2 || p.B===p.L) return false; }
+  else { if(!isWhole(p.B) || p.B<2 || p.B>9 || p.B>=p.L) return false; }
+  if(![p.L||1,p.B||1,p.answer].every(isWhole) || p.answer<4) return false;
+  if(p.small && p.answer>60) return false; if(p.answer>999) return false;
+  return true;
+}
+function make(i, small, names){
+  var kind=["area","perim","sq","ab",pick(["pa","ab","sq","perim"])][i], p={kind:kind};
+  for(var t=0;t<300;t++){
+    if(kind==="area"){ p.ctx=pick(["card","photo","mat"]); p.u="cm"; p.L=rnd(3,9); p.B=rnd(2,p.L-1); }
+    else if(kind==="perim"){ p.ctx=pick(["card","garden","board","photo","field"]); p.u=(p.ctx==="garden"||p.ctx==="field")?"m":"cm"; p.L=small?rnd(4,15):rnd(12,99); p.B=small?rnd(2,p.L-1):rnd(5,p.L-1); }
+    else if(kind==="sq"){ p.ctx=pick(["tile","sqmat"]); p.u=p.ctx==="tile"?"cm":"m"; p.P=4*(small?rnd(3,7):rnd(6,10)); }
+    else if(kind==="ab"){ p.ctx=pick(["card","board","mat","pool"]); p.u=p.ctx==="pool"?"m":"cm"; p.L=rnd(3,9); var B=small?rnd(2,6):rnd(10,60); p.A=p.L*B; }
+    else { p.ctx=pick(["garden","field","pool"]); p.u="m"; var Bp=rnd(3,9); p.L=small?rnd(Bp+1,12):rnd(12,90); p.P=2*(p.L+Bp); }
+    finish(p); if(verify(p)) return p;
+  }
+  return p;
+}
+function fromSpec(s){ var p={kind:s[0], ctx:s[1], u:s[2], small:!!s[s.length-1]};
+  if(p.kind==="area"||p.kind==="perim"){ p.L=s[3]; p.B=s[4]; } else if(p.kind==="sq") p.P=s[3]; else if(p.kind==="ab"){ p.A=s[3]; p.L=s[4]; } else { p.P=s[3]; p.L=s[4]; }
+  return p; }
+var BANK=[
+  ["area","card","cm",4,3,true],      // 4 x 3 = 12 cm2 (count the squares)
+  ["perim","photo","cm",7,4,true],    // 7 + 4 + 7 + 4 = 22 cm
+  ["sq","tile","cm",36,false],        // side 9 cm, area 81 cm2
+  ["ab","board","cm",48,8,false],     // breadth 6 cm, perimeter 28 cm
+  ["pa","garden","m",66,24,false]     // breadths 18 m, breadth 9 m, area 216 m2 (exam level)
+];
+function answerAsk(p){ return "Now find the answer. Type it, then tap Check."; }
+var MEANS={area:["inside","The space inside: how many squares cover it"], perim:["around","The distance all the way around the edge"], side:["side","The length of one side"]};
+function meansStep(p,which){ var right=which==="area"?"inside":"around";
+  return {type:"choice", ask:"The question asks for the "+which+". What does "+which+" mean?", right:right,
+    choices:[MEANS.area.concat(which==="area"?[null]:["Not quite. That is the area. The perimeter is the distance around the edge."]), MEANS.perim.concat(which==="perim"?[null]:["Not quite. That is the perimeter. The area is the space inside."]), MEANS.side.concat(["Not quite. One side is only part of it. Look at the whole shape."])],
+    done:which==="area"?"Area is the space inside. We shade it.":"Perimeter is the distance around. We trace the edge."}; }
+function guess(p,i){
+  if(i%2===0) return {q:"Is the question about the space inside, or the distance around?", choices:[["in","The space inside"],["ar","The distance around"],["both","Both"]], right:isArea(p)?"in":"ar",
+    note:function(k,ok){ return ok ? "Yes! "+(isArea(p)?"Area is inside, in square units.":"Perimeter is around, in units of length.") : "Read the question again: does it say area or perimeter?"; }};
+  if(p.kind==="area"||p.kind==="perim") return {q:"How many sides does a rectangle have?", choices:[["4","4 sides"],["2","2 sides"],["3","3 sides"]], right:"4",
+    note:function(k,ok){ return ok ? "Yes! Two lengths and two breadths." : "A rectangle has 4 sides: two lengths and two breadths."; }};
+  return {q:"Do we know every side yet?", choices:[["no","No, we must find one first"],["yes","Yes, they are all in the story"],["none","We don't need the sides"]], right:"no",
+    note:function(k,ok){ return ok ? "Good thinking! We find the missing side first." : "Let's draw it and label the sides we know."; }};
+}
+function build(p){
+  if(p.kind==="area") return [
+    {type:"count", ask:"Draw the rectangle on the grid. Tap + for each 1-cm square along the length.", target:p.L, unitName:"square", low:"Not yet. Read the story: how long is it?", high:"Too many. Read the story: how long is it?", done:p.L+" squares along the length."},
+    {type:"count", ask:"Now the breadth. Tap + for each 1-cm square going down.", target:p.B, unitName:"square", low:"Not yet. Read the story: how wide is it?", high:"Too many. Read the story: how wide is it?", done:p.B+" rows of squares."},
+    meansStep(p,"area")];
+  if(p.kind==="perim") return [
+    {type:"choice", ask:"Label the sides. Which sides are "+p.L+" "+u(p)+" long?", right:"tb", choices:[["tb","The top and the bottom",null],["t","Only the top","Not quite. Opposite sides of a rectangle are the same length."],["all","All four sides","Not quite. Only a square has 4 equal sides."]], done:"The top and the bottom are both "+p.L+" "+u(p)+"."},
+    {type:"choice", ask:"And the left and right sides?", right:"B", choices:[["B",p.B+" "+u(p)+" each",null],["L",p.L+" "+u(p)+" each","Not quite. Those are the lengths. The other two sides are the breadth."],["none","We don't know","Not quite. Read the story: how wide is it?"]], done:"The left and right sides are both "+p.B+" "+u(p)+"."},
+    meansStep(p,"perim")];
+  if(p.kind==="sq") return [
+    {type:"choice", ask:"What is special about a square?", right:"eq", choices:[["eq","All 4 sides are the same length",null],["two","Only 2 sides are the same","Not quite. That's a rectangle. A square has all sides equal."],["round","It has no corners","Not quite. A square has 4 corners and 4 equal sides."]], done:"All 4 sides are equal."},
+    {type:"choice", ask:"Where does the "+p.P+" "+u(p)+" go?", right:"around", choices:[["around","All the way around the edge",null],["side","On one side","Not quite. "+p.P+" "+u(p)+" is the perimeter, all 4 sides together."],["inside","Inside the square","Not quite. Inside is the area. "+p.P+" "+u(p)+" is a length around the edge."]], done:"The "+p.P+" "+u(p)+" goes all the way around."},
+    meansStep(p,"area")];
+  var known={type:"choice", ask:"Which side do we know?", right:"L", choices:[["L","The length: "+p.L+" "+u(p),null],["B","The breadth","Not quite. Read the story again: it gives the length."],["all","All the sides","Not quite. One side is missing. We find it first."]], done:"The length is "+p.L+" "+u(p)+". The breadth is still a question mark."};
+  if(p.kind==="ab") return [
+    {type:"choice", ask:"Where does the "+p.A+" "+u2(p)+" go?", right:"inside", choices:[["inside","Inside the rectangle: it is the area",null],["around","Around the edge","Not quite. Square units are for area, the space inside."],["side","On one side","Not quite. Square units are for area, the space inside."]], done:"The "+p.A+" "+u2(p)+" is the space inside."},
+    known, meansStep(p,"perim")];
+  return [
+    {type:"choice", ask:"Where does the "+p.P+" "+u(p)+" go?", right:"around", choices:[["around","All the way around the edge",null],["inside","Inside the rectangle","Not quite. Perimeter is a length around the edge, not the space inside."],["side","On one side","Not quite. It is the perimeter: all 4 sides together."]], done:"The "+p.P+" "+u(p)+" goes all the way around."},
+    known, meansStep(p,"area")];
+}
+function render(p,v,ctx){
+  var hl=function(k){ return ctx.hlOn(k)?" hl":""; }, esc=ctx.esc, b=v.b, all=v.phase!=="predict" && v.phase!=="build", solved=v.solved;
+  var h='<div class="ap" id="shape">';
+  if(v.phase==="predict") return h+'<div class="emptyrow ap-empty">Make a guess first. Then you draw the shape.</div></div>';
+  var Lr, Br, grid=p.kind==="area";
+  if(p.kind==="sq"){ Lr=Br=1; } else { var L=p.L, B=p.B; Lr=1; Br=Math.max(0.35,Math.min(0.8,B/L)); }
+  var Wmax=Math.min(330,(ctx.W||560)-170), Hmax=160, w, hgt;
+  if(grid){ var cell=Math.floor(Math.min(Wmax/p.L, Hmax/p.B)); w=cell*p.L; hgt=cell*p.B; }
+  else { var sc=Math.min(Wmax/Lr, Hmax/Br); w=Math.round(sc*Lr); hgt=Math.round(sc*Br); if(p.kind==="sq"){ w=hgt=Math.min(Hmax,Wmax); } }
+  var left=Math.round(((ctx.W||560)-w)/2), top=34;
+  var cnt=(v.phase==="build" && p.kind==="area" && b<=1) ? v.count : null;
+  var showL = grid ? (b>=1||all||b===0) : (b>=1||all), showB = grid ? (b>=2||all||b===1) : (b>=2||all);
+  var Ltxt, Btxt, inTxt="", arTxt="";
+  if(p.kind==="area"){ Ltxt=(b===0&&!all?cnt:p.L)+" cm"; Btxt=(b===1&&!all?cnt:p.B)+" cm"; if(b===0&&!all&&cnt===0) Ltxt="? cm"; if(b===1&&!all&&cnt===0) Btxt="? cm"; }
+  else if(p.kind==="sq"){ Ltxt=Btxt=(solved?p.s:"?")+" "+u(p); }
+  else if(p.kind==="perim"){ Ltxt=p.L+" "+u(p); Btxt=p.B+" "+u(p); }
+  else { Ltxt=p.L+" "+u(p); Btxt=(solved?p.B:"?")+" "+u(p); }
+  if(isArea(p) && (b>=3||all)) inTxt="Area "+(solved?p.answer:"?")+" "+u2(p);
+  if(p.kind==="ab" && (b>=1||all)) inTxt="Area "+p.A+" "+u2(p);
+  if(!isArea(p) && (b>=3||all)) arTxt="Perimeter "+(solved?p.answer:"?")+" "+u(p);
+  if((p.kind==="sq"||p.kind==="pa") && (b>=2||all||(p.kind==="pa"&&b>=1))) arTxt="Perimeter "+p.P+" "+u(p);
+  var gstyle = grid ? 'background-size:'+cell+'px '+cell+'px;' : '';
+  var areaShade = isArea(p) && (b>=3||all), around = !isArea(p) && (b>=3||all) || ((p.kind==="sq"||p.kind==="pa") && (b>=2||all));
+  h+='<div class="ap-rect'+(grid?' grid':'')+(areaShade?' shade':'')+(around?' around':'')+hl("inside")+hl("around")+'" style="left:'+left+'px;top:'+top+'px;width:'+w+'px;height:'+hgt+'px;'+gstyle+'"></div>';
+  if(grid && cnt!=null && cnt>0){ if(b===0) h+='<div class="ap-cnt" style="left:'+left+'px;top:'+top+'px;width:'+Math.min(w,cnt*cell)+'px;height:'+cell+'px"></div>'; else h+='<div class="ap-cnt" style="left:'+left+'px;top:'+top+'px;width:'+cell+'px;height:'+Math.min(hgt,cnt*cell)+'px"></div>'; }
+  if(showL){ h+='<div class="ap-lab'+hl("len")+'" style="left:'+(left+w/2)+'px;top:'+(top-30)+'px">'+esc(Ltxt)+'</div>'; if(!grid) h+='<div class="ap-lab'+hl("len")+'" style="left:'+(left+w/2)+'px;top:'+(top+hgt+6)+'px">'+esc(Ltxt)+'</div>'; }
+  if(showB){ h+='<div class="ap-lab side'+hl("bre")+'" style="left:'+(left-8)+'px;top:'+(top+hgt/2-14)+'px">'+esc(Btxt)+'</div>'; if(!grid) h+='<div class="ap-lab side r'+hl("bre")+'" style="left:'+(left+w+8)+'px;top:'+(top+hgt/2-14)+'px">'+esc(Btxt)+'</div>'; }
+  if(inTxt) h+='<div class="ap-in'+hl("inside")+'" style="left:'+(left+w/2)+'px;top:'+(top+hgt/2-14)+'px">'+esc(inTxt)+'</div>';
+  if(arTxt) h+='<div class="ap-ar'+hl("around")+'" style="left:'+(left+w/2)+'px;top:'+(top+hgt+(grid?8:36))+'px">'+esc(arTxt)+'</div>';
+  return h+'</div>';
+}
+function model(p,v){ return {maxV:1, rows:[], braces:[]}; }
+function caption(p,v){
+  if(v.phase==="predict") return "First a guess. Then you draw the shape and label its sides.";
+  if(v.phase==="build") return "Draw the shape, one step at a time.";
+  var c={area:"<b>Area</b> is the squares inside: "+p.B+" rows of "+p.L+".", perim:"<b>Perimeter</b> is all the way around: add all 4 sides.",
+    sq:"A square has 4 equal sides. The perimeter <b>"+p.P+" "+u(p)+"</b> is all 4 sides together.",
+    ab:"The <b>area</b> is length × breadth. Find the missing breadth first, then go around.",
+    pa:"The <b>perimeter</b> is two lengths and two breadths. Find the breadth first, then the area."}; return c[p.kind];
+}
+function hints(p){ var U=u(p);
+  if(p.kind==="area") return ["Area is the number of squares inside. How many rows, and how many squares in each row?", p.B+" rows of "+p.L+" squares. Equal rows means multiply.", p.L+" × "+p.B+" = ___ . The area is ___ cm²."];
+  if(p.kind==="perim") return ["Perimeter is the distance all the way around. How many sides does a rectangle have?", "Add all 4 sides: two lengths and two breadths.", p.L+" + "+p.B+" + "+p.L+" + "+p.B+" = ___ "+U+"."];
+  if(p.kind==="sq") return ["A square has 4 equal sides. The perimeter is all 4 together. How long is one side?", "Divide the perimeter by 4 to find one side. Then area is side × side.", p.P+" ÷ 4 = ___ . Then ___ × ___ = ___ "+u2(p)+"."];
+  if(p.kind==="ab") return ["Area is length × breadth. We know the area and the length. What is the breadth?", "Divide the area by the length to find the breadth. Then add all 4 sides.", p.A+" ÷ "+p.L+" = ___ . Then "+p.L+" + ___ + "+p.L+" + ___ = ___ "+U+"."];
+  return ["The perimeter is two lengths and two breadths. Take away the two lengths first.", "What is left is two breadths. Halve it for one breadth. Then area is length × breadth.", p.P+" − "+p.L+" − "+p.L+" = ___ . ___ ÷ 2 = ___ . Then "+p.L+" × ___ = ___ "+u2(p)+"."];
+}
+function hintHL(p){ return isArea(p) ? ["len","bre"] : ["len","bre","around"]; }
+function wrongCandidates(p){
+  var c=[p.answer+1];
+  if(p.kind==="area") c.push(p.L+p.B, 2*(p.L+p.B));
+  if(p.kind==="perim") c.push(p.L+p.B, p.L*p.B);
+  if(p.kind==="sq") c.push(p.s, 4*p.s, p.P*p.P>999?0:p.P*p.P);
+  if(p.kind==="ab") c.push(p.B, p.L+p.B, 2*p.L+p.B);
+  if(p.kind==="pa") c.push(p.B, p.B2, p.L*p.B2, 2*(p.L+p.B));
+  return c.filter(function(x,i,a){ return x>0 && a.indexOf(x)===i; });
+}
+function testWrong(p){ return {area:p.L+p.B, perim:p.L+p.B, sq:p.s, ab:p.B, pa:p.B}[p.kind]; }
+function wrongMsg(p,v){
+  if(p.kind==="area"){ if(v===p.L+p.B) return "That adds the sides. Area is the squares inside: rows times squares in each row."; if(v===2*(p.L+p.B)) return "That is the distance around, the perimeter. The question asks for the area."; }
+  if(p.kind==="perim"){ if(v===p.L+p.B) return "That is only 2 sides. Perimeter goes all the way around: 4 sides."; if(v===p.L*p.B) return "That is the area, the space inside. Perimeter is around the edge."; }
+  if(p.kind==="sq"){ if(v===p.s) return "That is one side. The question asks for the area."; if(v===4*p.s) return "That is the perimeter again. Area is side times side."; }
+  if(p.kind==="ab"){ if(v===p.B) return "That is the breadth. Now go all the way around for the perimeter."; if(v===p.L+p.B) return "That is only 2 sides. Perimeter is all 4 sides."; if(v===2*p.L+p.B) return "Nearly! There are two breadths, not one."; }
+  if(p.kind==="pa"){ if(v===p.B) return "That is the breadth. Now find the area."; if(v===p.B2) return "That is both breadths together. Halve it first."; if(v===p.L*p.B2) return "Use one breadth, not two. Halve first."; if(v===2*(p.L+p.B)) return "That is the perimeter. The question asks for the area."; }
+  return isArea(p) ? "Nearly! Area is length times breadth. Find any missing side first." : "Nearly! Perimeter is all 4 sides added together. Find any missing side first.";
+}
+function praise(p){
+  return {area:"Yes! "+p.B+" rows of "+p.L+" squares is "+p.answer+" square centimetres.", perim:"Yes! Two lengths and two breadths make "+p.answer+" "+(p.u==="m"?"metres":"centimetres")+".",
+    sq:"Yes! Each side is "+p.s+", and "+p.s+" times "+p.s+" is "+p.answer+".", ab:"Yes! The breadth is "+p.B+", and all 4 sides make "+p.answer+".", pa:"Yes! Each breadth is "+p.B+", and "+p.L+" times "+p.B+" is "+p.answer+"."}[p.kind]+" Well done."; }
+function explain(p){ return isArea(p) ? "What is the difference between area and perimeter?" : "Why did you add all 4 sides?"; }
+function plan(p,api){
+  var U=u(p), U2=u2(p), T=cap(the(p));
+  var perimLine=function(n){ api.line({ok:ex(p.L,"+",p.B,"+",p.L,"+",p.B), hl:["around","len","bre"], tag:"all 4 sides", ask:"Line "+n+". Perimeter is all the way around. Which number sentence?",
+      wrong:[[ex(p.L,"+",p.B),"Not quite. That is only 2 sides. Go all the way around."],[ex(p.L,TI,p.B),"Not quite. Multiplying gives the area, the space inside."],[ex(p.L,"+",p.L,"+",p.B),"Not quite. A rectangle has two breadths too."]],
+      stmt:"The perimeter is "+p.answer+" "+U+".", why:"Perimeter is the distance all the way around the edge: the two lengths and the two breadths."}); };
+  if(p.kind==="area") api.line({ok:ex(p.L,TI,p.B), hl:["inside","len","bre"], tag:"the squares inside", ask:"Line 1. Area is the squares inside. Which number sentence?",
+      wrong:[[ex(p.L,"+",p.B),"Not quite. Adding gives part of the edge. Area counts the squares inside: equal rows means multiply."],[ex(p.L,"+",p.B,"+",p.L,"+",p.B),"Not quite. That goes around the edge, the perimeter."],[ex(p.L,MI,p.B),"Not quite. Area counts the squares inside: equal rows means multiply."]],
+      stmt:"The area is "+p.answer+" cm².", why:"There are "+p.B+" rows with "+p.L+" squares in each. Equal rows means multiply. Each square is 1 cm², so the answer is in cm²."});
+  if(p.kind==="perim") perimLine(1);
+  if(p.kind==="sq"){
+    api.line({ok:ex(p.P,DI,4), hl:["around","len"], tag:"the 4 equal sides", ask:"Line 1. The perimeter is 4 equal sides. Which number sentence finds one side?",
+      wrong:[[ex(p.P,DI,2),"Not quite. A square has 4 equal sides, not 2."],[ex(p.P,MI,4),"Not quite. Share the perimeter equally into 4 sides: divide."],[ex(p.P,TI,4),"Not quite. One side is shorter than the perimeter. Divide."]],
+      stmt:"Each side is "+p.s+" "+U+".", why:"The perimeter is all 4 sides together, and they are equal. Sharing equally into 4 means divide by 4."});
+    api.line({ok:ex(p.s,TI,p.s), hl:["inside","len","bre"], tag:"the space inside", ask:"Line 2. Area is length × breadth. Which number sentence?",
+      wrong:[[ex(p.s,"+",p.s),"Not quite. Adding gives part of the edge. Area is length times breadth."],[ex(p.s,TI,4),"Not quite. That goes around again. Area is length times breadth."],[ex(p.P,TI,p.s),"Not quite. Use the side, not the perimeter."]],
+      stmt:"The area is "+p.answer+" "+U2+".", why:"In a square, the length and the breadth are both one side. Area is length times breadth, in square units."});
+  }
+  if(p.kind==="ab"){
+    api.line({ok:ex(p.A,DI,p.L), hl:["inside","bre"], tag:"the missing breadth", ask:"Line 1. Area is length × breadth. Which number sentence finds the breadth?",
+      wrong:[[ex(p.A,MI,p.L),"Not quite. Area is length times breadth, so undo it: divide."],[ex(p.A,TI,p.L),"Not quite. The breadth is smaller than the area. Divide."],[ex(p.A,DI,4),"Not quite. Use the length we know."]],
+      stmt:"The breadth is "+p.B+" "+U+".", why:"Area is length times breadth. We know the area and the length, so divide to undo the times."});
+    perimLine(2);
+  }
+  if(p.kind==="pa"){
+    api.line({ok:ex(p.P,MI,p.L,MI,p.L), hl:["around","len"], tag:"the two lengths", ask:"Line 1. Take the two lengths away from the perimeter. Which number sentence?",
+      wrong:[[ex(p.P,MI,p.L),"Not quite. A rectangle has two lengths. Take both away."],[ex(p.P,DI,4),"Not quite. Only a square has 4 equal sides."],[ex(p.P,"+",p.L,"+",p.L),"Not quite. The lengths are already in the perimeter. Take them away."]],
+      stmt:"The two breadths are "+p.B2+" "+U+" together.", why:"The perimeter is two lengths and two breadths. Take away the two lengths, and the two breadths are left."});
+    api.line({ok:ex(p.B2,DI,2), hl:["bre"], tag:"one breadth", ask:"Line 2. Which number sentence finds one breadth?",
+      wrong:[[ex(p.B2,MI,2),"Not quite. The two breadths are equal. Share equally: divide."],[ex(p.B2,TI,2),"Not quite. One breadth is half of both. Divide."],[ex(p.B2,DI,4),"Not quite. There are only two breadths."]],
+      stmt:"The breadth is "+p.B+" "+U+".", why:"The two breadths are the same length, so share them equally into 2."});
+    api.line({ok:ex(p.L,TI,p.B), hl:["inside","len","bre"], tag:"the space inside", ask:"Line 3. Area is length × breadth. Which number sentence?",
+      wrong:[[ex(p.L,"+",p.B),"Not quite. Adding gives part of the edge. Area is length times breadth."],[ex(p.L,TI,p.B2),"Not quite. Use one breadth, not both."],[ex(p.P,TI,p.B),"Not quite. Use the length, not the perimeter."]],
+      stmt:"The area is "+p.answer+" "+U2+".", why:"Area is length times breadth, in square units."});
+  }
+  var otherQ=isArea(p)?"perimeter":"area";
+  api.answer({right:answerSentence(p), wrong:[[String(p.answer),"Not quite. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit."],["The "+(isArea(p)?"area":"perimeter")+" of "+the(p)+" is "+p.answer+" "+(isArea(p)?U:U2)+".","Not quite. Check the unit. "+(isArea(p)?"Area is in square units, with the little 2.":"Perimeter is a length, so no little 2.")]],
+    why:"The question asks for the "+(isArea(p)?"area":"perimeter")+". The answer sentence has the right unit: "+unitOf(p)+(isArea(p)?" for area.":" for a length.")});
+  if(p.kind==="area") api.line({check:true, ok:ex(p.answer,DI,p.L), hl:["inside","bre"], tag:"undo: squares into rows",
+      ask:"Check line. Share your answer into rows of "+p.L+". Which number sentence should give the "+p.B+" rows?",
+      wrong:[[ex(p.answer,MI,p.L),"Not quite. Undo the times: divide."],[ex(p.answer,DI,2),"Not quite. Each row has "+(p.L>3?"the length":"as many squares as the length")+" in squares."]],
+      stmt:"That gives "+p.B+" rows, the breadth in the story.", why:"Checking catches mistakes. Undo the multiplication: the squares in rows of the length should give back the breadth."});
+  else if(p.kind==="perim") api.line({check:true, ok:ex(p.answer,MI,p.L,MI,p.L,MI,p.B), hl:["around","bre"], tag:"go around and undo",
+      ask:"Check line. Take three sides away from your answer. Which number sentence should leave the last side?",
+      wrong:[[ex(p.answer,"+",p.L,"+",p.L,"+",p.B),"Not quite. To undo adding, take away."],[ex(p.answer,MI,p.L,MI,p.B),"Not quite. Take away three sides: two lengths and one breadth."]],
+      stmt:"That leaves "+p.B+" "+U+", the breadth in the story.", why:"Checking catches mistakes. Take three sides away from the perimeter, and the fourth side should be left."});
+  else if(p.kind==="sq") api.line({check:true, ok:ex(p.answer,DI,p.s), hl:["inside","len"], tag:"undo: area into rows",
+      ask:"Check line. Share your answer into rows of one side. Which number sentence should give one side again?",
+      wrong:[[ex(p.answer,MI,p.s),"Not quite. Undo the times: divide."],[ex(p.answer,DI,4),"Not quite. Share into rows of one side."]],
+      stmt:"That gives "+p.s+" "+U+" again. 4 sides of "+p.s+" "+U+" make "+p.P+" "+U+", the perimeter in the story.", why:"Checking catches mistakes. If the area gives back the side, and 4 sides give the perimeter, the answer makes sense."});
+  else if(p.kind==="ab") api.line({check:true, ok:ex(p.answer,MI,p.L,MI,p.L,MI,p.B), hl:["around","bre","inside"], tag:"go around and undo",
+      ask:"Check line. Take three sides away from your answer. Which number sentence should leave the last side?",
+      wrong:[[ex(p.answer,"+",p.L,"+",p.L,"+",p.B),"Not quite. To undo adding, take away."],[ex(p.answer,MI,p.L,MI,p.B),"Not quite. Take away three sides: two lengths and one breadth."]],
+      stmt:"That leaves "+p.B+" "+U+". And "+p.L+" × "+p.B+" gives "+p.A+" "+U2+", the area in the story.", why:"Checking catches mistakes. The sides should go back to the area in the story."});
+  else api.line({check:true, ok:ex(p.answer,DI,p.L), hl:["inside","bre"], tag:"undo: area back to the breadth",
+      ask:"Check line. Divide your answer by the length. Which number sentence should give the breadth?",
+      wrong:[[ex(p.answer,MI,p.L),"Not quite. Undo the times: divide."],[ex(p.answer,DI,2),"Not quite. Divide by the length."]],
+      stmt:"That gives "+p.B+" "+U+". And "+p.L+" + "+p.B+" + "+p.L+" + "+p.B+" is "+p.P+" "+U+", the perimeter in the story.", why:"Checking catches mistakes. The breadth should go back to the perimeter in the story."});
+  return {unit:unitOf(p)};
+}
+var LIFE=[
+  {emoji:"🖼️🎀", title:"A ribbon around a picture", text:"A picture is 20 cm long and 15 cm wide. To put ribbon all round the edge, you need 20 + 15 + 20 + 15 = 70 cm of ribbon.", rule:"Around the edge is the perimeter: add all 4 sides."},
+  {emoji:"🧩🟦", title:"Tiles on a floor", text:"A floor is 6 tiles long and 4 tiles wide. It needs 4 rows of 6 tiles, which is 24 tiles to cover it.", rule:"Covering the inside is the area: length times breadth."}
+];
+return {key:"areaPerimeterGame", tag:"P3-MEAS-AP-G11", kinds:["area","perim","sq","ab","pa"],
+  drawWhat:"the shape with every side labelled, and what is inside or around",
+  checkDraw:"The diagram: the shape, all 4 sides labelled, and the area or perimeter marked",
+  summaryRule:"Remember: area is inside (square units), perimeter is around (add all 4 sides)!",
+  BANK:BANK, fromSpec:fromSpec, finish:finish, verify:verify, make:make, story:story, question:question,
+  answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, render:render, caption:caption,
+  hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
+})();
+/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+var MUTE_KEY = G.key+".muted";
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
+  var FEMALE = /female|woman|girl|samantha|victoria|karen|moira|tessa|fiona|serena|kate|martha|susan|zira|hazel|libby|sonia|aria|jenny|natasha|catherine|allison|ava|nicky/i;
+  function quality(v){ return /premium/i.test(v.name)?2:(/enhanced/i.test(v.name)?1:0); }
+  function pick(){
+    if(!supported) return null;
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    if(!vs.length) return null;
+    var en = vs.filter(function(v){ return /^en/i.test(v.lang||""); });
+    for(var i=0;i<PREFS.length;i++){
+      var m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0 && (v.lang||"").toLowerCase().replace("_","-").indexOf(PREFS[i][1])===0; });
+      if(!m.length) m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0; });
+      if(m.length){ m.sort(function(a,b){return quality(b)-quality(a);}); return m[0]; }
+    }
+    var f = en.filter(function(v){ return FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/ig,"")); });
+    if(f.length){ f.sort(function(a,b){return quality(b)-quality(a);}); return f[0]; }
+    var g = en.filter(function(v){ return /en[-_](gb|au)/i.test(v.lang||""); });
+    if(g.length) return g[0];
+    return null;
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(text);
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  function play(lines, immediate){
+    var my = ++token, parts = [];
+    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
+    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
+    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
+    if(immediate || !busy) go(); else setTimeout(go, 60);
+  }
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(!supported || muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    supported: supported, say: say,
+    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
+    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); }
+  };
+})();
+function tell(){ Voice.say.apply(null, arguments); }
+/* ===== shared engine: problems, checks, state ===== */
+var ROUND_SIZE=5;
+var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
+function finish(p){ G.finish(p); return p; }
+function ansText(p){ return G.answerText ? G.answerText(p) : String(p.answer); }
+// every line the child sees before the answer must not give the answer away
+function revealOK(p){
+  var a=p.answer, story=numsIn(G.story(p)+" "+G.question(p));
+  if(!G.answerText && story.indexOf(a)>=0) return true;
+  var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
+  G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
+  var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
+  var at=G.answerText?ansText(p):null; if(at && /^\d+$/.test(at)) at=null; // numbers are checked above; only times etc. by text
+  return texts.every(function(t){ return numsIn(t).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
+}
+function verify(p){
+  try{
+    if(!p || !G.verify(p)) return false;
+    if(!isWhole(p.answer) || p.answer<=0) return false;
+    if(!planOK(p)) return false;
+    if(!revealOK(p)) return false;
+    var hs=G.hints(p); if(hs.length!==3 || hs[2].indexOf("___")<0) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function generate(i, small, used){
+  for(var t=0;t<800;t++){
+    var p=G.make(i%ROUND_SIZE, !!small, pickNames(used||[],3)); p.small=!!small; finish(p);
+    if(verify(p)) return p;
+  }
+  throw new Error("could not generate problem");
+}
+function namesOf(p){ return (p.names||[]).slice(); }
+function makeRound(small, fromIndex, existing){
+  var list=[], used=[];
+  for(var i=0;i<ROUND_SIZE;i++){
+    if(existing && i<fromIndex){ list.push(existing[i]); used=used.concat(namesOf(existing[i])); continue; }
+    var p=generate(i,small,used); used=used.concat(namesOf(p)); list.push(p);
+  }
+  return list;
+}
+var BANK=G.BANK.map(function(s,i){ var p=G.fromSpec(s); p.id="L0"+(i+1); p.lesson=true; return finish(p); });
+
+/*WORK-START*/
+/* ---------- "Write the working": exam-style working, one line at a time ---------- */
+var WS = {
+  intro:"Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.",
+  introShort:"Now let's write the working, one line at a time.",
+  offer:"Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.",
+  memory:"This time, write it all from memory. On your paper, draw "+G.drawWhat+". Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  fast:"Great! On your paper, draw "+G.drawWhat+", then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  compare:"Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.",
+  write:"Now write it on your paper. Copy each line, then tick each box when it is on your paper.",
+  ticked:"All ticked. Well done!"
+};
+function wSay(t){ return String(t).replace(/ R /g," remainder ").replace(/ \u2212 /g," take away ").replace(/ \+ /g," plus ").replace(/ \u00d7 /g," times ").replace(/ \u00f7 /g," divided by ").replace(/ = /g," is "); }
+function workingPlan(p){
+  var lines=[], salt=(p.answer||0)+(p.salt||0);
+  var api={
+    line:function(o){
+      var okv=evalExpr(o.ok), ch=[{t:o.ok,ok:true}], seen={}; seen[o.ok]=1;
+      o.wrong.forEach(function(w){ if(!w || ch.length>=3 || seen[w[0]]) return; var v=evalExpr(w[0]); if(v===okv || v===null) return; seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); });
+      var rr=(salt+lines.length)%ch.length; ch=ch.slice(rr).concat(ch.slice(0,rr));
+      var res = o.res!=null ? o.res : okv, rem=null;
+      if(o.rem){ var pr=o.ok.split(" "); rem={a:+pr[0], b:+pr[2], q:Math.floor(+pr[0]/+pr[2]), r:(+pr[0])%(+pr[2])}; res=rem.q+" R "+rem.r; }
+      var L={key:"l"+(lines.length+1), eq:o.ok+" = "+res, stmt:o.stmt, ask:o.ask, why:o.why, choices:ch, hl:o.hl, tag:o.tag};
+      if(o.check){ L.key="check"; L.check=true; }
+      if(rem) L.rem=rem;
+      L.say = "Yes! "+wSay(L.eq)+". "+L.stmt+" Why this line? "+L.why;
+      L.whySay = (o.check?"The check line. ":"Line "+(lines.length+1)+". ")+wSay(L.eq)+". Why this line? "+L.why;
+      lines.push(L);
+    },
+    answer:function(o){
+      var ach=[{t:o.right,ok:true}].concat(o.wrong.map(function(w){ return {t:w[0],nudge:w[1]}; }));
+      var ar=(salt+lines.length)%ach.length; ach=ach.slice(ar).concat(ach.slice(0,ar));
+      var AL={key:"ans", answer:true, stmt:o.right, choices:ach, hl:o.hl||["question"], tag:o.tag||"the question",
+        ask:o.ask||"The answer sentence. Read the question again. Which sentence answers it?", why:o.why};
+      AL.say="Yes! "+o.right+" Why this line? "+AL.why; AL.whySay="The answer sentence. "+o.right+" Why this line? "+AL.why;
+      lines.push(AL);
+    }
+  };
+  var meta=G.plan(p, api) || {};
+  return {lines:lines, unit:meta.unit,
+    checklist:[G.checkDraw,"Each number sentence, worked out, with a short statement","An answer sentence with the unit ("+meta.unit+")","I checked my answer"]};
+}
+// every calculation line is right, every line has 3 different choices, and no wrong choice gives the same number
+function planOK(p){
+  var plan=workingPlan(p);
+  if(!plan.lines.length || !plan.lines[plan.lines.length-1].check) return false;
+  return plan.lines.every(function(L){
+    if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
+    var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
+    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : numsIn(L.stmt).indexOf(p.answer)>=0;
+    if(L.rem){ var m=/^(\d+) \u00f7 (\d+) = (\d+) R (\d+)$/.exec(L.eq); if(!m) return false; var A=+m[1], B=+m[2], Q=+m[3], Rr=+m[4];
+      if(Q*B+Rr!==A || Rr<=0 || Rr>=B || Q<=0 || numsIn(L.stmt).indexOf(Q)<0) return false;
+      return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==A/B; }); }
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==+parts[1] || !isWhole(v) || v<=0) return false;
+    if(L.stmt.indexOf(parts[1])<0) return false;
+    return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
+  });
+}
+/*WORK-END*/
+
+/* ---------- state ---------- */
+var MODE="lesson"; try{ if(localStorage.getItem(MODE_KEY)==="practice") MODE="practice"; }catch(e){}
+function isLesson(){ return MODE==="lesson"; }
+var S;
+function lessonProblems(){ return JSON.parse(JSON.stringify(BANK)); }
+function freshLesson(){ return {lesson:true, round:1, idx:0, small:true, totalStars:0, problems:lessonProblems(), results:[], everPlayed:false, lifeCount:0}; }
+function fresh(){ return {lesson:false, round:1, idx:0, small:false, totalStars:0, problems:makeRound(false), results:[], everPlayed:false, lifeCount:0}; }
+function keyFor(s){ return s.lesson ? LKEY : KEY; }
+function save(){ try{ localStorage.setItem(keyFor(S), JSON.stringify(S)); }catch(e){} }
+function loadLesson(){ try{ var s=JSON.parse(localStorage.getItem(LKEY)||"null"); if(s && s.lesson && s.round>=1 && s.idx>=0 && s.idx<=ROUND_SIZE){ s.problems=lessonProblems(); s.results=s.results||[]; return s; } }catch(e){} return freshLesson(); }
+function loadPractice(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s && !s.lesson && s.problems && s.problems.length===ROUND_SIZE && s.problems.every(verify)) return s; }catch(e){} return fresh(); }
+S = isLesson() ? loadLesson() : loadPractice();
+var P, cur;
+function startProblem(quiet){
+  if(S.idx>=ROUND_SIZE){ renderSummary(); return; }
+  P=S.problems[S.idx];
+  cur={phase:"predict", guess:G.guess(P,S.idx), prediction:null, b:0, count:0, bfb:null, typed:"", hints:0, tries:0, solved:false, hl:[], work:null, plan:null, fb:null, fresh:-1};
+  renderAll();
+  if(!quiet) tell(introLines());
+}
+function introLines(){ return [G.story(P), G.question(P), "Before we draw, make a guess. "+cur.guess.q].join(" "); }
+function guessNote(){
+  if(!cur.prediction) return "";
+  return cur.guess.note(cur.prediction, cur.prediction===cur.guess.right);
+}
+
+/* ---------- DOM ---------- */
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function renderHeader(){
+  $("stars").textContent="★ "+S.totalStars;
+  $("smallToggle").setAttribute("aria-pressed", S.small?"true":"false");
+  $("smallToggle").style.display = isLesson() ? "none" : "";
+  var h=""; for(var i=0;i<ROUND_SIZE;i++){ var cls=i<S.idx?"done":(i===S.idx?"cur":""); h+='<span class="'+cls+'">'+(i<S.idx?"★":(i+1))+'</span>'; }
+  $("progress").innerHTML=h;
+}
+var PHASES=[["predict","1 Guess"],["build","2 Draw"],["answer","3 Answer"],["working","4 Working"],["explain","5 Explain"]];
+function renderStory(){
+  $("story").textContent=G.story(P); $("question").textContent=G.question(P);
+  var order=PHASES.map(function(x){return x[0];}), ci=order.indexOf(cur.phase==="life"?"explain":cur.phase);
+  $("steps").innerHTML=PHASES.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
+}
+function hlOn(k){ return !!(cur && cur.hl && cur.hl.indexOf(k)>=0); }
+/* generic bar model: G.model(P, view) -> {maxV, rows:[{name, cls, segs:[{v, at?, cls, label, hl, fresh}], unders:[{from,to,label,hl}], tail:{label,hl}}], braces:[{from,to,label,hl}]} */
+function view(){ return {b:cur.b, count:cur.count, solved:cur.solved, phase:cur.phase, building:cur.phase==="build", step:cur.b, fresh:cur.fresh}; }
+function renderBars(){
+  if(G.render){ var bx=$("model"); bx.innerHTML=G.render(P, view(), {hlOn:hlOn, esc:esc, W:bx.clientWidth||560}); $("question").classList.toggle("hl", hlOn("question")); return; }
+  var M=G.model(P, view()), box=$("model"), W=box.clientWidth||560, nameW=120;
+  var hasBrace=(M.braces||[]).length>0, tailRoom=M.rows.some(function(r){return r.tail;})?62:0;
+  var trackW=W-nameW-10, sc=(trackW-(hasBrace?100:12)-tailRoom)/M.maxV, x=function(v){return Math.round(v*sc);};
+  var h="";
+  M.rows.forEach(function(r,ri){
+    var t="", pos=0, under=(r.unders||[]).length>0;
+    (r.segs||[]).forEach(function(s){
+      var l=(s.at!=null?s.at:pos), w=s.v; pos=l+w;
+      t+='<div class="seg '+(s.cls||"main")+(s.hl&&hlOn(s.hl)?' hl':'')+(s.fresh?' fresh':'')+'"'+(s.id?' id="'+s.id+'"':'')+' style="left:'+x(l)+'px;width:'+Math.max(4,x(w)-3)+'px"><span class="inlab">'+(s.label!=null?esc(s.label):"")+'</span></div>';
+    });
+    if(!(r.segs||[]).length && r.empty) t+='<div class="emptyrow">'+esc(r.empty)+'</div>';
+    (r.unders||[]).forEach(function(u){ var on=u.hl&&hlOn(u.hl);
+      t+='<div class="ubrace'+(on?' hl':'')+'" style="left:'+x(u.from)+'px;width:'+Math.max(8,x(u.to-u.from)-3)+'px"></div><div class="ublab'+(on?' hl':'')+'" style="left:'+(x(u.from)+x(u.to-u.from)/2)+'px">'+esc(u.label)+'</div>'; });
+    if(r.tail) t+='<div class="tail'+(r.tail.hl&&hlOn(r.tail.hl)?' hl':'')+'" style="left:'+(x(pos)+6)+'px">'+esc(r.tail.label)+'</div>';
+    h+='<div class="row '+(r.cls||"A")+'" id="mrow'+ri+'"><div class="rowname">'+esc(r.name)+'</div><div class="track'+(under?' withunder':'')+'" id="mtrack'+ri+'">'+t+'</div></div>';
+  });
+  (M.braces||[]).forEach(function(b,bi){ h+='<div class="brace'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="brace'+bi+'"></div><div class="bracelab'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="bracelab'+bi+'">'+b.label+'</div>'; });
+  box.innerHTML=h;
+  (M.braces||[]).forEach(function(b,bi){
+    var r0=$("mrow"+b.from), r1=$("mrow"+b.to), t0=$("mtrack"+b.from), br=$("brace"+bi), lab=$("bracelab"+bi);
+    var left=t0.offsetLeft+x(M.maxV)+tailRoom+8, top=r0.offsetTop+4, bot=r1.offsetTop+56;
+    br.style.left=left+"px"; br.style.top=top+"px"; br.style.height=(bot-top)+"px";
+    lab.style.left=(left+24)+"px"; lab.style.top=((top+bot)/2-22)+"px";
+  });
+  $("question").classList.toggle("hl", hlOn("question"));
+}
+function setCaption(t){ $("caption").innerHTML=t; }
+function renderBarBtns(){ $("barbtns").innerHTML=""; }
+
+/* ---------- panels ---------- */
+function renderPanel(){
+  var el=$("panel"), h="";
+  if(cur.phase==="predict"){
+    h+='<h2>1. Make a guess</h2><p>'+esc(cur.guess.q)+' There is no wrong guess!</p>';
+    h+='<div class="choices">'+cur.guess.choices.map(function(c){return '<button class="choice" data-pred="'+esc(c[0])+'">'+esc(c[1])+'</button>';}).join("")+'</div>';
+  } else if(cur.phase==="build"){
+    var steps=G.build(P), s=steps[cur.b];
+    h+='<h2>2. Draw the model ✏️</h2>'+(cur.b===0&&cur.prediction?'<p class="muted">'+esc(guessNote())+'</p>':'');
+    h+='<p class="wask" id="bask">'+esc(s.ask)+'</p>';
+    if(s.type==="count"){
+      h+='<div class="cntrow"><button class="ghost" id="cMinus" aria-label="take one away">− 1</button><span class="ansbox" id="cnt">'+cur.count+'</span><button class="ghost" id="cPlus" aria-label="add one">+ 1 '+esc(s.unitName||"unit")+'</button></div>';
+      h+='<div class="rowbtns"><button class="big green" id="cDone">That\'s right ✓</button></div>';
+    } else {
+      h+='<div class="choices wchoices sent">'+s.choices.map(function(c,i){ return '<button class="choice'+(cur.bfb&&cur.bfb.i===i?' no':'')+'" data-bc="'+i+'">'+esc(c[1])+'</button>'; }).join('')+'</div>';
+    }
+    h+='<div class="feedback'+(cur.bfb?' try':'')+'" id="bfb">'+(cur.bfb?esc(cur.bfb.msg):'')+'</div>';
+    h+='<p class="muted">Step '+(cur.b+1)+' of '+steps.length+'</p>';
+  } else if(cur.phase==="answer"){
+    var al=G.answerLine(P);
+    h+='<h2>3. Your answer</h2>';
+    h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(esc(typedShow())||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
+    h+=hintHTML();
+    h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
+  } else if(cur.phase==="working"){
+    h+=renderWorking();
+  } else if(cur.phase==="explain"){
+    h+='<div class="bigstar">⭐</div><p class="center feedback good">Yes! '+esc(G.answerSentence(P))+'</p>';
+    h+='<p class="prompt">Tell Daddy why in your own words.</p><p class="center muted">'+esc(G.explain(P))+'</p>';
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="explainedBtn">I explained it 🗣️</button></div>';
+  } else if(cur.phase==="life"){
+    h+=lifeHTML(cur.life)+'<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
+  }
+  el.innerHTML=h; bindPanel();
+}
+function typedShow(){ return G.fmtTyped ? G.fmtTyped(cur.typed, P) : cur.typed; }
+function hintList(p){ return G.hints(p||P); }
+function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
+function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
+function check(){
+  if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
+  var v=parseInt(cur.typed,10);
+  if(v===P.answer){
+    cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
+    startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
+  }
+  cur.tries++; var msg=G.wrongMsg(P,v); feedback("try",msg); tell("That's okay, let's look again.", msg);
+}
+/* ---------- life cards ---------- */
+function lifeCard(i){ return G.LIFE[((i%G.LIFE.length)+G.LIFE.length)%G.LIFE.length]; }
+function lifeHTML(L){ return '<div class="life" id="lifeCard"><div class="lemoji">'+L.emoji+'</div><h3>Where do we use this in real life?</h3><p class="center" style="font-weight:700;margin:0">'+esc(L.title)+'</p><p>'+esc(L.text)+'</p><p class="rule">'+esc(L.rule)+'</p></div>'; }
+
+/* ---------- working step UI (same pattern as Games 1 and 3) ---------- */
+var FAST_FROM=3;
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all from memory first
+function startWorking(){
+  cur.plan=workingPlan(P);
+  var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
+  cur.work={mode:memory?"memory":(offer?null:"guided"), stage:memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
+  cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
+  cur.phase="working";
+}
+function workingEntryLines(){ var w=cur.work; if(w.stage==="paper") return [WS.memory]; if(w.stage==="choose") return [WS.offer]; return [S.idx<2?WS.intro:WS.introShort, cur.plan.lines[0].ask]; }
+function wLabel(L,i){ return L.answer?'Ans':(L.check?'Check':String(i+1)); }
+function sheetHTML(upto,on,next,tap){
+  var ls=cur.plan.lines, h='<div class="sheet" id="sheet">', tg=tap?'button':'div';
+  for(var i=0;i<upto;i++){ var L=ls[i];
+    h+='<'+tg+' class="wline'+(on===i?' on':'')+(L.check?' wcheck':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+wLabel(L,i)+'</span><span class="wbody">'+
+      (L.answer?'<span class="wans">'+esc(L.stmt)+'</span>':'<span class="weq">'+esc(L.eq)+(L.check?' ✓':'')+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>'; }
+  if(next!=null){ var X=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+wLabel(X,next)+'</span><span class="wbody">'+(X.answer?'Answer sentence?':(X.check?'Check?':'Number sentence?'))+'</span></div>'; }
+  return h+'</div>';
+}
+function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+(L.check?'':'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the model)</div>')+'</div>'; }
+function renderWorking(){
+  var w=cur.work, ls=cur.plan.lines, h='<h2>4. Write the working ✏️</h2>';
+  if(w.stage==="choose"){
+    h+='<p>Write the working on your own first, or build it with me line by line?</p><div class="rowbtns"><button class="big green" id="fastBtn">I can do it ✏️</button><button class="ghost" id="teachBtn">Teach me line by line</button></div>';
+  } else if(w.stage==="paper"){
+    h+='<p class="prompt">'+(w.mode==="memory"?'From memory ✏️':'Your turn ✏️')+'</p><p>'+(w.mode==="memory"?'Draw '+esc(G.drawWhat)+'. Then write:':'On your paper, write:')+'</p>';
+    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li><li>a check: put the answer back and see if it works</li></ul><p class="muted">The model working stays hidden until you tap the button.</p><div class="rowbtns"><button class="big green" id="wroteBtn">I\'ve written it ✓</button></div>';
+  } else if(w.stage==="ask"||w.stage==="why"){
+    var shown=w.stage==="why"?w.k+1:w.k;
+    if(w.stage==="ask" && w.k===0 && S.idx<2) h+='<p class="muted wintro">Each line: a number sentence, then a short statement. The last lines are the answer sentence and the check.</p>';
+    h+=sheetHTML(shown, w.stage==="why"?w.k:null, w.stage==="ask"?w.k:null, false);
+    if(w.stage==="ask"){ var L=ls[w.k];
+      h+='<p class="wask" id="wask">'+esc(L.ask)+'</p><div class="choices wchoices'+(L.answer?' sent':'')+'">'+L.choices.map(function(c,i){ return '<button class="choice'+(w.fb&&w.fb.i===i?' no':'')+'" data-wc="'+i+'">'+esc(c.t)+'</button>'; }).join('')+'</div>';
+      h+='<div class="feedback'+(w.fb?' try':'')+'" id="wfb">'+(w.fb?esc(w.fb.msg):'')+'</div>';
+    } else { h+=whyHTML(ls[w.k]); h+='<div class="rowbtns">'+(w.k<ls.length-1?'<button class="big" id="nextLineBtn">Next line ➡️</button>':'<button class="big green" id="toPaperBtn">Now write it on paper ✏️</button>')+'</div>'; }
+  } else if(w.stage==="check"){
+    h+='<p class="wintro">'+(w.after==="compare"?'<b>Compare</b> with your paper.':'<b>Now write it on your paper.</b>')+' Tap a line to see why.</p>'+sheetHTML(ls.length,w.open,null,true);
+    if(w.open>=0) h+=whyHTML(ls[w.open]);
+    h+='<div class="checklist" id="checklist">'+cur.plan.checklist.map(function(t,i){ return '<button class="tick" data-tick="'+i+'" aria-pressed="'+(w.ticks[i]?'true':'false')+'"><span class="box">'+(w.ticks[i]?'✅':'⬜')+'</span><span>'+esc(t)+'</span></button>'; }).join('')+'</div>';
+    var all=w.ticks.every(Boolean); h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all '+w.ticks.length+' first')+'</button></div>';
+  }
+  return h;
+}
+function finalCaption(){ return G.caption(P, view()); }
+function workCaption(){
+  var w=cur.work; if(!w) return finalCaption();
+  var i=(w.stage==="ask"||w.stage==="why")?w.k:(w.stage==="check"?w.open:-1);
+  if(i<0) return finalCaption()+(w.stage==="paper"&&w.mode==="memory"?" Draw it on your paper.":"");
+  var L=cur.plan.lines[i];
+  return (L.answer?"The answer sentence":(L.check?"The check line":"Line "+(i+1)))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
+}
+function workRefresh(){ setCaption(workCaption()); renderBars(); renderPanel(); }
+function bindWorking(el){
+  var w=cur.work; if(!w) return; var ls=cur.plan.lines;
+  el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){ var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
+    if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); tell(L.say); }
+    else { w.wrong++; w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
+  if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); tell(ls[w.k].ask); };
+  if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.write); };
+  if($("teachBtn")) $("teachBtn").onclick=function(){ w.mode="guided"; w.stage="ask"; w.k=0; cur.hl=ls[0].hl; workRefresh(); tell(WS.introShort, ls[0].ask); };
+  if($("fastBtn")) $("fastBtn").onclick=function(){ w.mode="fast"; w.stage="paper"; cur.hl=[]; workRefresh(); tell(WS.fast); };
+  if($("wroteBtn")) $("wroteBtn").onclick=function(){ w.stage="check"; w.after="compare"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.compare); };
+  el.querySelectorAll("button[data-wl]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-wl"); w.open=i; cur.hl=ls[i].hl; workRefresh(); tell(ls[i].whySay); }; });
+  el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
+  if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
+    if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    cur.phase="explain"; cur.hl=[]; renderAll(); tell("Can you tell Daddy why, in your own words? "+G.explain(P)); };
+}
+/* ---------- build step: she draws the model ---------- */
+function buildDone(s){
+  cur.bfb=null; cur.fresh=cur.b; cur.b++; cur.count=0; var steps=G.build(P);
+  if(cur.b>=steps.length){ cur.phase="answer"; cur.hl=[]; renderAll(); tell(s.done, G.answerAsk(P)); }
+  else { renderAll(); tell(s.done, steps[cur.b].ask); }
+}
+function bindPanel(){
+  var el=$("panel");
+  el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="build"; cur.b=0; cur.count=0; renderAll();
+    tell(guessNote(), "Now let's draw the model.", G.build(P)[0].ask); }; });
+  el.querySelectorAll("[data-bc]").forEach(function(b){ b.onclick=function(){ var s=G.build(P)[cur.b], c=s.choices[+b.getAttribute("data-bc")];
+    if(c[0]===s.right) buildDone(s); else { cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
+  if($("cPlus")) $("cPlus").onclick=function(){ if(cur.count<12){ cur.count++; cur.fresh=-2; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cMinus")) $("cMinus").onclick=function(){ if(cur.count>0){ cur.count--; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
+    if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
+  el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed=""; else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
+  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
+  if($("checkBtn")) $("checkBtn").onclick=check;
+  if($("explainedBtn")) $("explainedBtn").onclick=afterExplain;
+  bindWorking(el);
+  if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
+}
+var LIFE_AFTER=[1,3]; // after problems 2 and 4
+function afterExplain(){
+  if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
+  else completeProblem();
+}
+function completeProblem(){ S.totalStars++; S.idx++; S.everPlayed=true; save(); startProblem(); }
+function renderSummary(){
+  renderHeader(); var res=S.results.filter(Boolean), pr=res.filter(function(r){return r.predictionRight;}).length;
+  $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round."; $("question").textContent=""; $("steps").innerHTML="";
+  setCaption("Your guesses were right "+pr+" out of "+res.length+" times. "+G.summaryRule);
+  $("model").innerHTML=""; $("barbtns").innerHTML="";
+  var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+  var btn = S.lesson ? '<button class="big" id="newRound">Play these 5 again</button><button class="ghost" id="toPractice">Try 5 new ones in Practice 🎲</button>'
+                     : '<button class="big" id="moreBtn">5 more ➡️</button>';
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
+  tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); };
+  if($("newRound")) $("newRound").onclick=again;
+  if($("moreBtn")) $("moreBtn").onclick=again;
+  if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
+}
+function renderAll(){
+  renderHeader(); renderStory();
+  setCaption(cur.phase==="working"?workCaption():finalCaption());
+  renderBars(); renderBarBtns(); renderPanel();
+}
+/* ---------- controls ---------- */
+$("smallToggle").onclick=function(){
+  if(isLesson()) return;
+  S.small=!S.small; if(S.idx>=ROUND_SIZE){ save(); renderHeader(); return; }
+  S.problems=makeRound(S.small,S.idx,S.problems); save(); startProblem(true);
+  tell(S.small?"Small numbers are on.":"Big numbers are back on.", introLines());
+};
+$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); };
+function renderVoiceCtl(){
+  var mb=$("muteBtn"), ab=$("againBtn"); mb.style.display=ab.style.display=Voice.supported?"":"none"; if(!Voice.supported) return;
+  mb.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; mb.setAttribute("aria-pressed",Voice.muted?"true":"false"); mb.classList.toggle("off",Voice.muted); ab.disabled=Voice.muted;
+}
+$("muteBtn").onclick=function(){ Voice.setMuted(!Voice.muted); renderVoiceCtl(); if(!Voice.muted){ if(!Voice.started) Voice.unlock([]); Voice.again(); } };
+$("againBtn").onclick=function(){ Voice.again(); };
+function renderModeCtl(){
+  var b=$("modeBtn"); b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
+  b.setAttribute("aria-pressed", isLesson()?"false":"true");
+  $("startNote").textContent = isLesson() ? "Lesson mode: 5 problems, from easy to exam level, read by this device's voice. Your progress is saved." : "Practice mode: 5 new random problems at a time, read by this device's voice.";
+  $("startTutor").textContent = Voice.supported ? "Start with my tutor 🔊" : "Start ▶";
+  $("startQuiet").style.display = Voice.supported ? "" : "none";
+}
+$("modeBtn").onclick=function(){
+  Voice.stop(); save();
+  MODE=isLesson()?"practice":"lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){}
+  S=isLesson()?loadLesson():loadPractice(); save(); renderModeCtl(); startProblem(true);
+  if(S.idx<ROUND_SIZE){ if(!Voice.started) Voice.unlock([introLines()]); else tell(introLines()); }
+};
+$("startTutor").onclick=function(){
+  if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
+  $("startScreen").style.display="none";
+  var first=(S.idx>=ROUND_SIZE)?["Hello! Welcome back."]:[(S.everPlayed||S.idx>0||S.round>1)?"Hello! Welcome back.":"Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
+  Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+};
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); };
+renderModeCtl(); renderVoiceCtl();
+window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
+
+/* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
+function lessonScript(){
+  var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
+  var keepP=P, keepCur=cur;
+  BANK.forEach(function(p,i){
+    P=p; var g=G.guess(p,i); cur={guess:g, prediction:null};
+    add(introLines()); g.choices.forEach(function(c){ add(g.note(c[0], c[0]===g.right)); });
+    add("Now let's draw the model."); G.build(p).forEach(function(s){ add(s.ask); add(s.done); (s.choices||[]).forEach(function(c){ add(c[2]); }); add(s.low); add(s.high); });
+    add(G.answerAsk(p));
+    G.hints(p).forEach(function(h){ add("Here's a hint. "+h.replace(/___/g,"blank")); });
+    G.wrongCandidates(p).forEach(function(v){ if(v!==p.answer) add(G.wrongMsg(p,v)); });
+    add(G.praise(p)); add("Can you tell Daddy why, in your own words? "+G.explain(p));
+    workingPlan(p).lines.forEach(function(L){ add(L.ask); add(L.say); add(L.whySay); L.choices.forEach(function(c){ add(c.nudge); }); });
+  });
+  for(var k in WS) add(WS[k]);
+  G.LIFE.forEach(function(L){ add("Where do we use this in real life? "+L.text+" "+L.rule); });
+  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","That's okay, let's look again.","Type your answer on the number pad.","You finished the round and got all 5 stars!"].forEach(add);
+  P=keepP; cur=keepCur;
+  return Object.keys(out);
+}
+/* test hook (no personal data; used by automated checks) */
+window.__game={answerText:ansText, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+  wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
+  storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
+  get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};
+save();
+startProblem();
+})();
+</script>
+</body>
+</html>
