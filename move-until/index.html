@@ -592,8 +592,8 @@ function renderHeader(){
 }
 function renderStory(){
   $("story").textContent=storyText(P); $("question").textContent=questionText(P);
-  var names=[["predict","1 Guess"],["move","2 Move"],["answer","3 Answer"],["working","4 Working"],["explain","5 Explain"]];
-  var order=["predict","move","answer","working","explain"], ci=order.indexOf(cur.phase==="life"?"explain":cur.phase);
+  var names=[["predict","1 Guess"],["move","2 Move"],["answer","3 Answer"],["working","4 Working"]];
+  var order=["predict","move","answer","working"], ci=(cur.phase==="life"?order.length:order.indexOf(cur.phase));
   $("steps").innerHTML=names.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
   var n=N(P); $("nameG0").textContent=n.lg; $("nameR0").textContent=n.lr; $("nameG1").textContent=n.lg; $("nameR1").textContent=n.lr;
 }
@@ -707,16 +707,11 @@ function renderPanel(){
     h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
   } else if(cur.phase==="working"){
     h+=renderWorking();
-  } else if(cur.phase==="explain"){
-    h+='<div class="bigstar">⭐</div><p class="center feedback good">Yes! '+esc(answerSentence(P,false))+'</p>';
-    h+='<p class="prompt">Tell Daddy why in your own words.</p><p class="center muted">'+esc(explainPrompt())+'</p>';
-    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="explainedBtn">I explained it 🗣️</button></div>';
   } else if(cur.phase==="life"){
     h+=lifeHTML(cur.life)+'<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
   }
   el.innerHTML=h; bindPanel();
 }
-function explainPrompt(){ return P.kind==="equal" ? "Why does only half the gap move? Why does the total stay the same?" : "Why did you divide the total by 3, and not by 2?"; }
 function hintList(p){
   p=p||P; var n=N(p);
   var hs=["Look at the total bracket. Did the total change after the move?"];
@@ -822,7 +817,7 @@ function bindWorking(el){
   el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
   if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
     if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
-    cur.phase="explain"; cur.hl=[]; renderAll(); tell("Can you tell Daddy why, in your own words? "+explainPrompt()); };
+    cur.hl=[]; afterWorking(); }; /* the Explain step was removed (Jeremy, 24 Oct 2026): go straight to the real-life card or the next problem */
 }
 function bindPanel(){
   var el=$("panel");
@@ -833,12 +828,11 @@ function bindPanel(){
     $("ansbox").innerHTML=cur.typed||"&nbsp;"; }; });
   if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=["units1","total1"]; renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
   if($("checkBtn")) $("checkBtn").onclick=check;
-  if($("explainedBtn")) $("explainedBtn").onclick=afterExplain;
   bindWorking(el);
   if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
 }
 var LIFE_AFTER=[1,3]; // after problems 2 and 4
-function afterExplain(){
+function afterWorking(){
   if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
   else completeProblem();
 }
@@ -909,7 +903,7 @@ function lessonScript(){
     add(p.kind==="equal" ? "Now they have the same number, so the After model is 2 equal units. The total is still "+p.T+"." : "Now "+N(p).r+" has twice as many as "+N(p).g+". "+cap(N(p).r)+" is 2 units and "+N(p).g+" is 1 unit. The total is still "+p.T+".");
     hintList(p).forEach(function(h){ add("Here's a hint. "+h.replace(/___/g,"blank")); });
     [Math.abs(p.Gb-p.Rb), p.E, p.u, 2*p.u, p.T, -1].forEach(function(v){ if(v!=null && v!==p.M) add(wrongMsg(p,v)); });
-    add(praiseLine()); add("Can you tell Daddy why, in your own words? "+explainPrompt());
+    add(praiseLine());
     workingPlan(p).lines.forEach(function(L){ add(L.ask); add(L.say); add(L.whySay); L.choices.forEach(function(c){ add(c.nudge); }); });
   });
   for(var k in WS) add(WS[k]);

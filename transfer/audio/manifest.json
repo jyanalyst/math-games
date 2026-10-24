@@ -8,9 +8,9 @@
  },
  "format": "mp3 mono 44.1kHz 48kbps",
  "generated": "2026-10-21",
- "count": 253,
- "total_bytes": 15394702,
- "total_seconds": 2556.4,
+ "count": 252,
+ "total_bytes": 15377235,
+ "total_seconds": 2553.53,
  "clips": [
   {
    "id": "sh-welcome",
@@ -131,14 +131,6 @@
    "duration": 7.92,
    "bytes": 47716,
    "job_id": "2980423a-7ec6-44ef-b5eb-2d31d0f9e5d1"
-  },
-  {
-   "id": "sh-explain",
-   "file": "sh-explain.mp3",
-   "text": "Can you tell Daddy why, in your own words?",
-   "duration": 2.87,
-   "bytes": 17467,
-   "job_id": "88e9480c-ed4e-4f37-a636-df270eb583fb"
   },
   {
    "id": "sh-draw",
