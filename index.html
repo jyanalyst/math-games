@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Maths Games</title>
-<style>body{font-family:-apple-system,system-ui,sans-serif;background:#fdf6ec;color:#2b2b3a;margin:0;padding:32px;text-align:center}h1{font-size:34px}a.card{display:block;max-width:480px;margin:18px auto;padding:24px;border-radius:20px;background:#fff;box-shadow:0 3px 10px #0001;font-size:24px;color:#4b3fd6;text-decoration:none;font-weight:700}a.card span{display:block;font-size:18px;color:#666;font-weight:400;margin-top:6px}a.card{position:relative}a.card .lvl{position:absolute;top:12px;right:14px;font-size:14px;font-weight:800;color:#fff;background:#7c6cf0;border-radius:999px;padding:3px 10px;margin:0}a.card .tag{font-size:12px;color:#9a9aa8;letter-spacing:.5px;margin-top:10px}</style></head>
-<body><h1>🧮 Maths Games</h1><a class="card" href="transfer/"><span class="lvl" aria-label="Level P3">P3</span>🔀 Moving Between Groups<span>Bar models: when some move from one group to another</span><span class="tag">P3-WNAS-IT-G01</span></a><a class="card" href="move-until/"><span class="lvl" aria-label="Level P3">P3</span>⚖️ Move Until…<span>Bar models: move some until they are equal, or until one has twice as many</span><span class="tag">P3-WNMD-IT+EU-G03</span></a>
+<style>body{font-family:-apple-system,system-ui,sans-serif;background:#fdf6ec;color:#2b2b3a;margin:0;padding:32px;text-align:center}h1{font-size:34px}a.card{display:block;max-width:480px;margin:18px auto;padding:24px;border-radius:20px;background:#fff;box-shadow:0 3px 10px #0001;font-size:24px;color:#4b3fd6;text-decoration:none;font-weight:700}a.card span{display:block;font-size:18px;color:#666;font-weight:400;margin-top:6px}a.card{position:relative}a.card .lvl{position:absolute;top:12px;right:14px;font-size:14px;font-weight:800;color:#fff;background:#7c6cf0;border-radius:999px;padding:3px 10px;margin:0}a.card .tag{font-size:12px;color:#9a9aa8;letter-spacing:.5px;margin-top:10px}#who,#historySec{max-width:760px;margin:18px auto;background:#fff;border-radius:20px;box-shadow:0 3px 10px #0001;padding:18px 20px}#who h2,#historySec h2{margin:4px 0 12px;font-size:26px}#whoList{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px}#who button,#who input{font:inherit;font-size:20px;border-radius:14px;padding:10px 16px}#who button{border:0;background:#7c6cf0;color:#fff;font-weight:700;cursor:pointer}#whoList button{background:#ece9ff;color:#4b3fd6}#who input{border:2px solid #cfc8ff;width:min(260px,70%)}#whoNow{font-size:20px}#whoNow a{color:#4b3fd6;font-weight:700;margin-left:6px}#historySec{text-align:left}#historySec label{font-size:18px}#hFilter{font:inherit;font-size:18px;border-radius:10px;padding:6px 10px;margin-left:6px}.hday{margin:18px 0 4px;font-size:20px;color:#4b3fd6}.htot{margin:0 0 8px;color:#555;font-size:16px}.hwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}table.hist{border-collapse:collapse;width:100%;font-size:16px;min-width:680px;table-layout:fixed}table.hist th:nth-child(1){width:7%}table.hist th:nth-child(2){width:12%}table.hist th:nth-child(3){width:18%}table.hist th:nth-child(4){width:12%}table.hist th:nth-child(5){width:8%}table.hist th:nth-child(6){width:8%}table.hist th:nth-child(7){width:7%}table.hist th:nth-child(8){width:7%}table.hist th:nth-child(9){width:9%}table.hist th:nth-child(10){width:12%}table.hist td:nth-child(-n+2),table.hist td.n,table.hist td:nth-child(4){white-space:nowrap}table.hist td:nth-child(2){overflow:hidden;text-overflow:ellipsis}table.hist th,table.hist td{padding:8px 6px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}table.hist th{background:#f5f2ff;color:#4b3fd6;font-size:14px;font-weight:800}table.hist td.n{text-align:center}table.hist tr:last-child td{border-bottom:0}.hnote{color:#777;font-size:15px;margin-top:14px}.hempty{color:#777;font-size:18px}#hClear{position:relative;overflow:hidden;font:inherit;font-size:16px;border:2px solid #d9534f;color:#b52b27;background:#fff;border-radius:12px;padding:10px 16px;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}#hClear .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:#f6c9c7;z-index:0}#hClear.holding .fill{width:100%;transition:width 1.5s linear}#hClear .lbl{position:relative;z-index:1}</style></head>
+<body><h1>🧮 Maths Games</h1><div id="who"><div id="whoAsk"><h2>👋 Who is playing?</h2><div id="whoList"></div><form id="whoForm" autocomplete="off"><input id="whoName" maxlength="24" placeholder="Type your name" aria-label="Your name"> <button type="submit">Let's go!</button></form></div><div id="whoNow" hidden>Playing: <b id="whoCur"></b> <a href="#" id="whoChange">Change player</a></div></div><a class="card" href="transfer/"><span class="lvl" aria-label="Level P3">P3</span>🔀 Moving Between Groups<span>Bar models: when some move from one group to another</span><span class="tag">P3-WNAS-IT-G01</span></a><a class="card" href="move-until/"><span class="lvl" aria-label="Level P3">P3</span>⚖️ Move Until…<span>Bar models: move some until they are equal, or until one has twice as many</span><span class="tag">P3-WNMD-IT+EU-G03</span></a>
 <a class="card" href="times-as-many/"><span class="lvl" aria-label="Level P3">P3</span>✖️ Times as Many<span>Bar models: one has 2, 3 or 4 times as many. Find 1 unit first</span><span class="tag">P3-WNMD-MC-G04</span></a>
 <a class="card" href="packed-left/"><span class="lvl" aria-label="Level P3">P3</span>📦 Packed with Some Left<span>Equal groups with some left over, forwards and backwards</span><span class="tag">P3-WNMD-EG-G05</span></a>
 <a class="card" href="total-difference/"><span class="lvl" aria-label="Level P3">P3</span>➕ Total and Difference<span>Bar models: you know the total and how many more. Cut off the extra</span><span class="tag">P3-WNAS-SD-G06</span></a><a class="card" href="boxes-needed/"><span class="lvl" aria-label="Level P3">P3</span>📦❓ Boxes Needed?<span>Division with a remainder: one more box, or only the full ones?</span><span class="tag">P3-WNMD-RD-G07</span></a>
@@ -8,12 +8,13 @@
 <a class="card" href="time-line/"><span class="lvl" aria-label="Level P3">P3</span>⏰ Time Jumps<span>Timelines: end time, start time, or how long</span><span class="tag">P3-MEAS-TM-G09</span></a>
 <a class="card" href="money-steps/"><span class="lvl" aria-label="Level P3">P3</span>💵 Money Steps<span>Bar models: money spent, change, money left, saving up</span><span class="tag">P3-MONY-MO-G10</span></a>
 <a class="card" href="area-perimeter/"><span class="lvl" aria-label="Level P3">P3</span>🟦 Inside and Around<span>Area and perimeter of rectangles and squares</span><span class="tag">P3-MEAS-AP-G11</span></a>
-<details id="voicePanel" style="max-width:480px;margin:28px auto;text-align:left;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 3px 10px #0001;font-size:16px"><summary style="cursor:pointer;font-weight:700">🔊 Tutor voice (for grown-ups)</summary>
-<p style="color:#555">Lines without a recorded clip are read by this device's voice. The best one is chosen automatically; tap ▶ to hear one and ✓ to use it in every game on this device.</p>
-<p>Now using: <b id="vNow">…</b> <button id="vAuto" type="button">Automatic</button></p><ol id="vList" style="padding-left:20px"></ol></details>
+<section id="historySec" aria-labelledby="hTitle"><h2 id="hTitle">📒 My practice history</h2><label for="hFilter">Show:</label><select id="hFilter"><option value="">Everyone</option></select><div id="hBody"></div><p class="hnote">For grown-ups: this history is kept on this iPad only (in this browser). It is never sent anywhere. "Right first try" means right at the first Check with no hints. To clear it, open the grown-ups panel below.</p></section>
+<details id="voicePanel" style="max-width:480px;margin:28px auto;text-align:left;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 3px 10px #0001;font-size:16px"><summary style="cursor:pointer;font-weight:700">🔊 Tutor voice and 📒 history (for grown-ups)</summary>
+<div id="vBlock"><p style="color:#555">Lines without a recorded clip are read by this device's voice. The best one is chosen automatically; tap ▶ to hear one and ✓ to use it in every game on this device.</p>
+<p>Now using: <b id="vNow">…</b> <button id="vAuto" type="button">Automatic</button></p><ol id="vList" style="padding-left:20px"></ol></div><div id="hClearBox" style="border-top:1px solid #eee;margin-top:12px;padding-top:4px"><p style="font-weight:700;margin-bottom:4px">📒 Practice history</p><p style="color:#555;margin-top:4px">The history on the home page is kept on this device only. To clear it for every player, press and hold the button until it fills.</p><button id="hClear" type="button"><span class="fill"></span><span class="lbl">Press and hold to clear history</span></button> <span id="hClearMsg" role="status" style="color:#555"></span></div></details>
 <script>
 (function(){
-  var ss = window.speechSynthesis; if(!ss || typeof SpeechSynthesisUtterance!=="function"){ document.getElementById("voicePanel").style.display="none"; return; }
+  var ss = window.speechSynthesis; if(!ss || typeof SpeechSynthesisUtterance!=="function"){ document.getElementById("vBlock").style.display="none"; return; }
   var VKEY = "barmodel.voice";
   var NOVELTY = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|deranged|hysterical|princess|vicki|victoria|bruce|agnes)\b/i;
   var GOOD = /^(serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|daniel|arthur|oliver|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma)\b|google uk english female|google us english/i;
@@ -51,4 +52,98 @@
   draw(); if(ss.addEventListener) ss.addEventListener("voiceschanged", draw); else ss.onvoiceschanged = draw;
 })();
 </script>
+<!--HUB-HISTORY-START-->
+<script>
+/* Home page: 'Who is playing?' + 'My practice history' (schema v1, written by each game's MathHistory).
+   Everything stays in this browser's localStorage; this page has no network code. */
+(function(){
+  "use strict";
+  var KEY="mathgames.history.v1", PKEY="mathgames.player", PLKEY="mathgames.players", MAXP=8;
+  var TITLES={"math-transfer":"🔀 Moving Between Groups","math-move-until":"⚖️ Move Until…","math-times-as-many":"✖️ Times as Many",
+    "math-packed-left":"📦 Packed with Some Left","math-total-difference":"➕ Total and Difference","math-boxes-needed":"📦❓ Boxes Needed?",
+    "math-more-or-fewer":"🧩 More, Fewer, Altogether","math-time-line":"⏰ Time Jumps","math-money-steps":"💵 Money Steps","math-area-perimeter":"🟦 Inside and Around"};
+  var MODES={lesson:"📘 Lesson",practice:"🎲 Practice",paper:"📝 Paper"}, TAGNAME={answer:"answer",model:"bar model",working:"working"};
+  var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var ISO=/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):\d\d\+08:00$/;
+  function $(id){ return document.getElementById(id); }
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function clean(n){ return String(n||"").replace(/\s+/g," ").trim().slice(0,24); }
+  function players(){ var a=[]; try{ a=JSON.parse(get(PLKEY)||"[]"); }catch(e){} return Array.isArray(a)?a.map(clean).filter(Boolean):[]; }
+  function el(tag, text, cls){ var e=document.createElement(tag); if(text!=null) e.textContent=text; if(cls) e.className=cls; return e; }
+  // ---- who is playing ----
+  function choose(name){
+    name=clean(name)||"Player";
+    var list=players().filter(function(p){ return p!==name; }); list.unshift(name); set(PLKEY, JSON.stringify(list.slice(0,MAXP))); set(PKEY, name);
+    drawWho(false); drawHistory();
+  }
+  function drawWho(asking){
+    var cur=clean(get(PKEY)); if(!cur) asking=true;
+    $("whoAsk").hidden=!asking; $("whoNow").hidden=asking; $("whoCur").textContent=cur;
+    var box=$("whoList"); box.innerHTML="";
+    players().forEach(function(p){ var b=el("button",p); b.type="button"; b.setAttribute("data-player",p); b.onclick=function(){ choose(p); }; box.appendChild(b); });
+    if(asking) $("whoName").value="";
+  }
+  $("whoForm").onsubmit=function(e){ e.preventDefault(); choose($("whoName").value); };
+  $("whoChange").onclick=function(e){ e.preventDefault(); drawWho(true); try{ $("whoName").focus(); }catch(err){} };
+  // ---- history ----
+  function entries(){
+    var a=[]; try{ a=JSON.parse(get(KEY)||"[]"); }catch(e){} if(!Array.isArray(a)) a=[];
+    var seen={}, out=[];
+    for(var i=a.length-1;i>=0;i--){ var x=a[i]; // newest copy of an id wins
+      if(!x || typeof x.id!=="string" || seen[x.id] || !ISO.test(String(x.ended_at)) || !(x.items_done>0)) continue; seen[x.id]=1; out.push(x); }
+    return out.sort(function(p,q){ return p.ended_at<q.ended_at?1:p.ended_at>q.ended_at?-1:0; });
+  }
+  function dayLabel(iso){ var m=ISO.exec(iso), d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3])); return DAYS[d.getUTCDay()]+" "+(+m[3])+" "+MONTHS[+m[2]-1]+" "+m[1]; }
+  function num(v){ v=+v; return isFinite(v)&&v>=0?Math.round(v):0; }
+  function drawFilter(all){
+    var sel=$("hFilter"), want=sel.value, names={};
+    players().concat(all.map(function(x){ return clean(x.player)||"Player"; })).forEach(function(n){ names[n]=1; });
+    sel.innerHTML=""; sel.appendChild(new Option("Everyone",""));
+    Object.keys(names).sort().forEach(function(n){ sel.appendChild(new Option(n,n)); });
+    sel.value=names[want]?want:"";
+  }
+  function drawHistory(){
+    var all=entries(); drawFilter(all);
+    var who=$("hFilter").value, list=all.filter(function(x){ return !who || (clean(x.player)||"Player")===who; });
+    var body=$("hBody"); body.innerHTML="";
+    if(!list.length){ body.appendChild(el("p", all.length?"No games yet for "+who+".":"No games played yet. Finish a problem in any game and it will show here.","hempty")); return; }
+    var days=[], byDay={};
+    list.forEach(function(x){ var k=x.ended_at.slice(0,10); if(!byDay[k]){ byDay[k]=[]; days.push(k); } byDay[k].push(x); });
+    days.forEach(function(k){
+      var rows=byDay[k], items=0, right=0;
+      rows.forEach(function(x){ items+=num(x.items_done); right+=num(x.correct); });
+      var sec=el("div",null,"hdaybox"); sec.setAttribute("data-day",k);
+      sec.appendChild(el("h3",dayLabel(rows[0].ended_at),"hday"));
+      var tot=el("p",rows.length+(rows.length===1?" session":" sessions")+" · "+items+(items===1?" problem":" problems")+" · average score "+(items?Math.round(100*right/items):0)+"%","htot");
+      tot.setAttribute("data-sessions",rows.length); tot.setAttribute("data-items",items); tot.setAttribute("data-avg",items?Math.round(100*right/items):0); sec.appendChild(tot);
+      var wrap=el("div",null,"hwrap"), t=el("table",null,"hist"), th=el("thead"), hr=el("tr");
+      ["Time","Player","Game","Mode","Done","Right first try","Score","Hints","Paper","Tricky parts"].forEach(function(h){ var c=el("th",h); c.scope="col"; hr.appendChild(c); });
+      th.appendChild(hr); t.appendChild(th); var tb=el("tbody");
+      rows.forEach(function(x){ var tr=el("tr"); tr.setAttribute("data-id",x.id);
+        var tags=(Array.isArray(x.top_mistakes)?x.top_mistakes:[]).filter(function(g){ return TAGNAME[g]; }).map(function(g){ return TAGNAME[g]; });
+        [[x.ended_at.slice(11,16)],[clean(x.player)||"Player"],[TITLES[x.game_id]||String(x.game_id).slice(0,40)],[MODES[x.mode]||String(x.mode).slice(0,12)],
+         [num(x.items_done)+" of "+num(x.items_total),"n"],[String(num(x.correct)),"n"],[num(x.score_pct)+"%","n"],[String(num(x.hints_used)),"n"],
+         [num(x.paper_total)?num(x.paper_done)+" of "+num(x.paper_total):"–","n"],[tags.length?tags.join(", "):"–"]].forEach(function(c){ tr.appendChild(el("td",c[0],c[1])); });
+        tb.appendChild(tr); });
+      t.appendChild(tb); wrap.appendChild(t); sec.appendChild(wrap); body.appendChild(sec);
+    });
+  }
+  $("hFilter").onchange=drawHistory;
+  // ---- grown-ups: press and hold to clear (the button fills while held; nothing is counted out) ----
+  var btn=$("hClear"), hold=null, HOLD_MS=1500;
+  function startHold(e){ if(e && e.preventDefault) e.preventDefault(); if(hold) return; $("hClearMsg").textContent=""; btn.classList.add("holding");
+    hold=setTimeout(function(){ hold=null; btn.classList.remove("holding"); try{ localStorage.removeItem(KEY); }catch(err){} $("hClearMsg").textContent="History cleared."; drawHistory(); }, HOLD_MS); }
+  function stopHold(){ if(!hold) return; clearTimeout(hold); hold=null; btn.classList.remove("holding"); $("hClearMsg").textContent="Keep holding until the button fills."; }
+  if(window.PointerEvent){ btn.addEventListener("pointerdown",startHold); ["pointerup","pointerleave","pointercancel"].forEach(function(t){ btn.addEventListener(t,stopHold); }); }
+  else { btn.addEventListener("touchstart",startHold); btn.addEventListener("mousedown",startHold); ["touchend","touchcancel","mouseup","mouseleave"].forEach(function(t){ btn.addEventListener(t,stopHold); }); }
+  btn.addEventListener("keydown",function(e){ if((e.key===" "||e.key==="Enter") && !e.repeat) startHold(e); });
+  btn.addEventListener("keyup",function(e){ if(e.key===" "||e.key==="Enter") stopHold(); });
+  btn.addEventListener("contextmenu",function(e){ e.preventDefault(); });
+  window.addEventListener("storage",function(e){ if(e.key===KEY||e.key===PKEY||e.key===PLKEY){ drawWho(false); drawHistory(); } });
+  window.addEventListener("pageshow",function(e){ if(e.persisted){ drawWho(false); drawHistory(); } }); // back from a game (page cache)
+  drawWho(false); drawHistory();
+})();
+</script>
+<!--HUB-HISTORY-END-->
 </body></html>

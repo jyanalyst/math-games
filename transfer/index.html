@@ -197,6 +197,68 @@
   <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-WNAS-IT-G01</div></div>
 </div>
 
+<!--HISTORY-START-->
+<script>
+var HISTORY_GAME = "transfer";
+/* ===== Practice history (schema v1): one entry per session, kept ONLY in this browser's localStorage =====
+   No network code at all: nothing is ever sent anywhere. The home page shows the entries ('My practice history').
+   A session starts when the round on screen starts (Start button, mode switch, next round, start again) and its entry
+   is written when the round finishes, or saved when she leaves partway (pagehide / page hidden). An entry is only
+   written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
+   the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
+   Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore). */
+var MathHistory=(function(){
+"use strict";
+var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
+var KEY="mathgames.history.v1", PKEY="mathgames.player", MAX=200, TAGS=["answer","model","working"];
+var sess=null, provider=null;
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+function player(){ var n=""; try{ n=localStorage.getItem(PKEY)||""; }catch(e){} n=String(n).replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out="", r=new Uint8Array(6);
+  try{ crypto.getRandomValues(r); }catch(e){ for(var j=0;j<6;j++) r[j]=Math.floor(Math.random()*256); }
+  for(var i=0;i<6;i++) out+=abc.charAt(r[i]%36); return t.toString(36)+"-"+out; }
+function load(){ var a=[]; try{ a=JSON.parse(localStorage.getItem(KEY)||"[]"); }catch(e){} return Array.isArray(a)?a.filter(function(x){ return x && typeof x.id==="string"; }):[]; }
+function entry(s){
+  var m={}, top=[]; TAGS.forEach(function(k){ if(s.mistakes[k]>0){ m[k]=s.mistakes[k]; top.push(k); } });
+  top.sort(function(a,b){ return (m[b]-m[a]) || (TAGS.indexOf(a)-TAGS.indexOf(b)); });
+  return {v:1, id:s.id, player:s.player, game_id:GAME_ID, mode:s.mode, started_at:iso(s.t0), ended_at:iso(Date.now()),
+    items_done:s.done, items_total:s.total, correct:s.correct, score_pct:s.done?Math.round(100*s.correct/s.done):0,
+    hints_used:s.hints, paper_done:s.paperDone, paper_total:s.paperTotal, mistakes:m, top_mistakes:top};
+}
+// upsert by id, drop any duplicate ids, keep the newest MAX
+function save(s){
+  if(!s || !(s.done>0)) return false; // opening a game and leaving with nothing finished writes nothing
+  var e=entry(s), a=load(), seen={}, out=[];
+  for(var i=a.length-1;i>=0;i--){ var x=a[i]; if(seen[x.id] || x.id===e.id) continue; seen[x.id]=1; out.unshift(x); }
+  out.push(e); if(out.length>MAX) out=out.slice(out.length-MAX);
+  try{ localStorage.setItem(KEY, JSON.stringify(out)); return true; }catch(err){ return false; }
+}
+function state(){ try{ return provider ? provider() : null; }catch(e){ return null; } }
+function begin(){
+  var st=state(); sess=null;
+  if(!st || !st.open || !(st.remaining>0)) return;
+  var t=Date.now();
+  sess={id:newId(t), player:player(), mode:st.mode==="practice"?"practice":"lesson", t0:t, done:0, total:st.remaining, correct:0, hints:0, mistakes:{}, paperDone:0, paperTotal:0};
+}
+window.addEventListener("pagehide", function(){ if(sess){ save(sess); sess=null; } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && sess) save(sess); }); // same id: updated, never duplicated
+window.addEventListener("pageshow", function(e){ if(e.persisted && !sess) begin(); });
+return {gameId:GAME_ID, key:KEY,
+  attach:function(f){ provider=f; },
+  // start (or move to) the session for the round on screen; a session left partway with a problem finished is saved first
+  restart:function(){ if(sess) save(sess); begin(); },
+  miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
+  hint:function(){ if(sess) sess.hints++; },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++; if(roundOver){ save(sess); sess=null; } },
+  // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
+  paperOffer:function(){ if(sess) sess.paperTotal++; },
+  paper:function(){ if(sess) sess.paperDone++; },
+  leave:function(){ if(sess){ save(sess); sess=null; } }};
+})();
+</script>
+<!--HISTORY-END-->
 <script>
 (function(){
 "use strict";
@@ -914,6 +976,7 @@ function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all 
 function startWorking(){
   cur.plan = workingPlan(P, C());
   var memory = isMemoryProblem(), offer = !memory && S.idx>=FAST_FROM;
+  if(memory||offer) MathHistory.paperOffer();
   cur.work = {mode: memory?"memory":(offer?null:"guided"), stage: memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
   cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
   cur.phase = "working";
@@ -983,7 +1046,7 @@ function bindWorking(el){
   el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){
     var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
     if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); wsay([L.say]); }
-    else { w.wrong++; w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); wsay([c.nudge]); }
+    else { w.wrong++; MathHistory.miss("working"); w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); wsay([c.nudge]); }
   }; });
   if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); wsay([ls[w.k].ask]); };
   if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); wsay([WS.write]); };
@@ -994,6 +1057,7 @@ function bindWorking(el){
   el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) wsay([WS.ticked]); }; });
   if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
     if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    if(w.mode==="memory"||w.mode==="fast") MathHistory.paper();
     cur.hl=[]; afterWorking(); }; /* the Explain step was removed (Jeremy, 24 Oct 2026): go straight to the real-life card or the next problem */ /* the recorded clip sh-explain is no longer played */
 }
 function predictionNote(){
@@ -1031,7 +1095,7 @@ function bindPanel(){
     else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
     $("ansbox").innerHTML=cur.typed||"&nbsp;";
   }; });
-  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); renderPanel(); tell([["sh-hint1", clip("hint2"), clip("hint3")][cur.hints-1]], ["Here's a hint. "+hintList()[cur.hints-1]]); };
+  if($("hintBtn")) $("hintBtn").onclick=function(){ if(cur.hints<3) MathHistory.hint(); cur.hints=Math.min(3,cur.hints+1); renderPanel(); tell([["sh-hint1", clip("hint2"), clip("hint3")][cur.hints-1]], ["Here's a hint. "+hintList()[cur.hints-1]]); };
   if($("checkBtn")) $("checkBtn").onclick=check;
   bindWorking(el);
   if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
@@ -1071,7 +1135,7 @@ function check(){
     else wsay([praiseLine()].concat(workingEntryLines()));
     return;
   }
-  cur.tries++;
+  cur.tries++; MathHistory.miss("answer");
   // on a wrong answer: show/flash the bar labels, not the answer
   cur.flashLabels=true; renderBars(); setCaption(finalCaption());
   var msg, wid;
@@ -1088,7 +1152,8 @@ function check(){
   tell([wid], ["That's okay, let's look again.", msg]);
 }
 function completeProblem(){
-  S.totalStars++; S.idx++; S.everPlayed=true; save();
+  var r=S.results[S.idx]; S.totalStars++; S.idx++; S.everPlayed=true; save();
+  MathHistory.item(!!(r && r.tries===1 && !r.hints), S.idx>=ROUND_SIZE);
   startProblem();
 }
 function renderSummary(){
@@ -1108,7 +1173,7 @@ function renderSummary(){
   else wsay(["You finished the round and got all "+ROUND_SIZE+" stars! Your first guesses were right "+pr+" out of "+res.length+" times.", "Where do we use this in real life? "+L.text+" "+L.rule]);
   var again=function(){
     S.round++; S.idx=0; S.results=[]; S.problems = S.lesson ? lessonProblems(S.small,S.round) : makeRound(S.small,false); save();
-    $("dotline").style.display=""; startProblem();
+    $("dotline").style.display=""; startProblem(); MathHistory.restart();
   };
   if($("newRound")) $("newRound").onclick=again; if($("moreBtn")) $("moreBtn").onclick=again;
 }
@@ -1125,6 +1190,7 @@ $("smallToggle").onclick=function(){
     Clips.stop(); save(); S = loadLesson(!S.small); save();
     $("dotline").style.display=""; startProblem(S.idx<ROUND_SIZE);
     if(S.idx<ROUND_SIZE) tell([S.small ? "sh-smallOn" : "sh-bigOn", clip("intro")], []);
+    MathHistory.restart();
     return;
   }
   S.small=!S.small;
@@ -1136,7 +1202,7 @@ $("smallToggle").onclick=function(){
 $("resetBtn").onclick=function(){
   if(!confirm("Start again from the beginning? Stars will go back to 0.")) return;
   Clips.stop(); Voice.stop();
-  S = isLesson() ? freshLesson(S.small) : fresh(); save(); $("dotline").style.display=""; startProblem();
+  S = isLesson() ? freshLesson(S.small) : fresh(); save(); $("dotline").style.display=""; startProblem(); MathHistory.restart();
 };
 function renderVoiceCtl(){
   var mb=$("muteBtn"), ab=$("againBtn");
@@ -1177,8 +1243,9 @@ $("modeBtn").onclick=function(){
   // this tap also unlocks the new mode's voice on iPad, if it has not been used yet
   if(isLesson()){ if(!Clips.started) Clips.unlock(Clips.lastIds); Voice.prime(); }
   else if(!Voice.started) Voice.unlock([Voice.lastLine]);
+  MathHistory.restart();
 };
-function hideStart(){ $("startScreen").style.display="none"; }
+function hideStart(){ $("startScreen").style.display="none"; MathHistory.restart(); }
 $("startTutor").onclick=function(){
   if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
   hideStart();
@@ -1195,6 +1262,7 @@ $("startTutor").onclick=function(){
 $("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); hideStart(); if(isLesson()) Clips.unlock([]); else Voice.unlock([]); };
 renderModeCtl();
 renderVoiceCtl();
+MathHistory.attach(function(){ return {mode:MODE, remaining:ROUND_SIZE-S.idx, open:$("startScreen").style.display==="none"}; });
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
 /* test hook (no personal data; used by automated checks) */

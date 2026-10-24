@@ -260,6 +260,68 @@
   <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-MEAS-TM-G09</div></div>
 </div>
 
+<!--HISTORY-START-->
+<script>
+var HISTORY_GAME = "time-line";
+/* ===== Practice history (schema v1): one entry per session, kept ONLY in this browser's localStorage =====
+   No network code at all: nothing is ever sent anywhere. The home page shows the entries ('My practice history').
+   A session starts when the round on screen starts (Start button, mode switch, next round, start again) and its entry
+   is written when the round finishes, or saved when she leaves partway (pagehide / page hidden). An entry is only
+   written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
+   the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
+   Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore). */
+var MathHistory=(function(){
+"use strict";
+var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
+var KEY="mathgames.history.v1", PKEY="mathgames.player", MAX=200, TAGS=["answer","model","working"];
+var sess=null, provider=null;
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+function player(){ var n=""; try{ n=localStorage.getItem(PKEY)||""; }catch(e){} n=String(n).replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out="", r=new Uint8Array(6);
+  try{ crypto.getRandomValues(r); }catch(e){ for(var j=0;j<6;j++) r[j]=Math.floor(Math.random()*256); }
+  for(var i=0;i<6;i++) out+=abc.charAt(r[i]%36); return t.toString(36)+"-"+out; }
+function load(){ var a=[]; try{ a=JSON.parse(localStorage.getItem(KEY)||"[]"); }catch(e){} return Array.isArray(a)?a.filter(function(x){ return x && typeof x.id==="string"; }):[]; }
+function entry(s){
+  var m={}, top=[]; TAGS.forEach(function(k){ if(s.mistakes[k]>0){ m[k]=s.mistakes[k]; top.push(k); } });
+  top.sort(function(a,b){ return (m[b]-m[a]) || (TAGS.indexOf(a)-TAGS.indexOf(b)); });
+  return {v:1, id:s.id, player:s.player, game_id:GAME_ID, mode:s.mode, started_at:iso(s.t0), ended_at:iso(Date.now()),
+    items_done:s.done, items_total:s.total, correct:s.correct, score_pct:s.done?Math.round(100*s.correct/s.done):0,
+    hints_used:s.hints, paper_done:s.paperDone, paper_total:s.paperTotal, mistakes:m, top_mistakes:top};
+}
+// upsert by id, drop any duplicate ids, keep the newest MAX
+function save(s){
+  if(!s || !(s.done>0)) return false; // opening a game and leaving with nothing finished writes nothing
+  var e=entry(s), a=load(), seen={}, out=[];
+  for(var i=a.length-1;i>=0;i--){ var x=a[i]; if(seen[x.id] || x.id===e.id) continue; seen[x.id]=1; out.unshift(x); }
+  out.push(e); if(out.length>MAX) out=out.slice(out.length-MAX);
+  try{ localStorage.setItem(KEY, JSON.stringify(out)); return true; }catch(err){ return false; }
+}
+function state(){ try{ return provider ? provider() : null; }catch(e){ return null; } }
+function begin(){
+  var st=state(); sess=null;
+  if(!st || !st.open || !(st.remaining>0)) return;
+  var t=Date.now();
+  sess={id:newId(t), player:player(), mode:st.mode==="practice"?"practice":"lesson", t0:t, done:0, total:st.remaining, correct:0, hints:0, mistakes:{}, paperDone:0, paperTotal:0};
+}
+window.addEventListener("pagehide", function(){ if(sess){ save(sess); sess=null; } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && sess) save(sess); }); // same id: updated, never duplicated
+window.addEventListener("pageshow", function(e){ if(e.persisted && !sess) begin(); });
+return {gameId:GAME_ID, key:KEY,
+  attach:function(f){ provider=f; },
+  // start (or move to) the session for the round on screen; a session left partway with a problem finished is saved first
+  restart:function(){ if(sess) save(sess); begin(); },
+  miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
+  hint:function(){ if(sess) sess.hints++; },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++; if(roundOver){ save(sess); sess=null; } },
+  // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
+  paperOffer:function(){ if(sess) sess.paperTotal++; },
+  paper:function(){ if(sess) sess.paperDone++; },
+  leave:function(){ if(sess){ save(sess); sess=null; } }};
+})();
+</script>
+<!--HISTORY-END-->
 <script>
 (function(){
 "use strict";
@@ -879,7 +941,7 @@ function check(){
     cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
     startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
   }
-  cur.tries++; var msg=G.wrongMsg(P,v); feedback("try",msg); tell("That's okay, let's look again.", msg);
+  cur.tries++; MathHistory.miss("answer"); var msg=G.wrongMsg(P,v); feedback("try",msg); tell("That's okay, let's look again.", msg);
 }
 /* ---------- life cards ---------- */
 function lifeCard(i){ return G.LIFE[((i%G.LIFE.length)+G.LIFE.length)%G.LIFE.length]; }
@@ -891,6 +953,7 @@ function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all 
 function startWorking(){
   cur.plan=workingPlan(P);
   var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
+  if(memory||offer) MathHistory.paperOffer();
   cur.work={mode:memory?"memory":(offer?null:"guided"), stage:memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
   cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
   cur.phase="working";
@@ -942,7 +1005,7 @@ function bindWorking(el){
   var w=cur.work; if(!w) return; var ls=cur.plan.lines;
   el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){ var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
     if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); tell(L.say); }
-    else { w.wrong++; w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
+    else { w.wrong++; MathHistory.miss("working"); w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
   if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); tell(ls[w.k].ask); };
   if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.write); };
   if($("teachBtn")) $("teachBtn").onclick=function(){ w.mode="guided"; w.stage="ask"; w.k=0; cur.hl=ls[0].hl; workRefresh(); tell(WS.introShort, ls[0].ask); };
@@ -952,6 +1015,7 @@ function bindWorking(el){
   el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
   if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
     if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    if(w.mode==="memory"||w.mode==="fast") MathHistory.paper();
     cur.hl=[]; afterWorking(); }; /* the Explain step was removed (Jeremy, 24 Oct 2026): go straight to the real-life card or the next problem */
 }
 /* ---------- build step: she draws the model ---------- */
@@ -965,18 +1029,18 @@ function bindPanel(){
   el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="build"; cur.b=0; cur.count=0; renderAll();
     tell(guessNote(), "Now let's draw the model.", G.build(P)[0].ask); }; });
   el.querySelectorAll("[data-bc]").forEach(function(b){ b.onclick=function(){ var s=G.build(P)[cur.b], c=s.choices[+b.getAttribute("data-bc")];
-    if(c[0]===s.right) buildDone(s); else { cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
+    if(c[0]===s.right) buildDone(s); else { MathHistory.miss("model"); cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
   if($("cPlus")) $("cPlus").onclick=function(){ if(cur.count<12){ cur.count++; cur.fresh=-2; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
   if($("cMinus")) $("cMinus").onclick=function(){ if(cur.count>0){ cur.count--; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
   if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
-    if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
+    if(cur.count===s.target) buildDone(s); else { MathHistory.miss("model"); var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
   el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
     var lim=dotPad()?7:5;
     if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed="";
     else if(k==="."){ if(cur.typed.indexOf(".")<0 && cur.typed.length<lim) cur.typed=(cur.typed===""?"0":cur.typed)+"."; }
     else if(cur.typed.length<lim) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
     $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
-  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
+  if($("hintBtn")) $("hintBtn").onclick=function(){ if(cur.hints<3) MathHistory.hint(); cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
   if($("checkBtn")) $("checkBtn").onclick=check;
   bindWorking(el);
   if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
@@ -986,7 +1050,7 @@ function afterWorking(){
   if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
   else completeProblem();
 }
-function completeProblem(){ S.totalStars++; S.idx++; S.everPlayed=true; save(); startProblem(); }
+function completeProblem(){ var r=S.results[S.idx]; S.totalStars++; S.idx++; S.everPlayed=true; save(); MathHistory.item(!!(r && r.tries===1 && !r.hints), S.idx>=ROUND_SIZE); startProblem(); }
 function renderSummary(){
   renderHeader(); var res=S.results.filter(Boolean), pr=res.filter(function(r){return r.predictionRight;}).length;
   $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round."; $("question").textContent=""; $("steps").innerHTML="";
@@ -997,7 +1061,7 @@ function renderSummary(){
                      : '<button class="big" id="moreBtn">5 more ➡️</button>';
   $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
   tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
-  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); };
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); MathHistory.restart(); };
   if($("newRound")) $("newRound").onclick=again;
   if($("moreBtn")) $("moreBtn").onclick=again;
   if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
@@ -1014,7 +1078,7 @@ $("smallToggle").onclick=function(){
   S.problems=makeRound(S.small,S.idx,S.problems); save(); startProblem(true);
   tell(S.small?"Small numbers are on.":"Big numbers are back on.", introLines());
 };
-$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); };
+$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); MathHistory.restart(); };
 function renderVoiceCtl(){
   var mb=$("muteBtn"), ab=$("againBtn"); mb.style.display=ab.style.display=Voice.supported?"":"none"; if(!Voice.supported) return;
   mb.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; mb.setAttribute("aria-pressed",Voice.muted?"true":"false"); mb.classList.toggle("off",Voice.muted); ab.disabled=Voice.muted;
@@ -1033,15 +1097,18 @@ $("modeBtn").onclick=function(){
   MODE=isLesson()?"practice":"lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){}
   S=isLesson()?loadLesson():loadPractice(); save(); renderModeCtl(); startProblem(true);
   if(S.idx<ROUND_SIZE){ if(!Voice.started) Voice.unlock([introLines()]); else tell(introLines()); }
+  MathHistory.restart();
 };
 $("startTutor").onclick=function(){
   if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
   $("startScreen").style.display="none";
   var first=(S.idx>=ROUND_SIZE)?["Hello! Welcome back."]:[(S.everPlayed||S.idx>0||S.round>1)?"Hello! Welcome back.":"Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
   Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+  MathHistory.restart();
 };
-$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); };
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); MathHistory.restart(); };
 renderModeCtl(); renderVoiceCtl();
+MathHistory.attach(function(){ return {mode:MODE, remaining:ROUND_SIZE-S.idx, open:$("startScreen").style.display==="none"}; });
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
 /* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
