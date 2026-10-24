@@ -2040,8 +2040,8 @@
  "device_voice_working": {
   "note": "Write-the-working step: NOT recorded. Read by the device voice (Web Speech) in Lesson and Practice mode. Estimate assumes Eleven v4 at about 0.5 credits per 100 characters, numbers spelled out.",
   "generated": "2026-10-24",
-  "count": 658,
-  "chars": 108792,
+  "count": 659,
+  "chars": 108846,
   "chars_numbers_in_words": 124270,
   "est_credits_if_recorded": 621.4,
   "lines": [
@@ -4676,6 +4676,10 @@
    {
     "id": "s10-w5-nudge2",
     "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+   },
+   {
+    "id": "wk-roundDone5",
+    "text": "You finished the round and got all 5 stars! Well done!"
    }
   ]
  }

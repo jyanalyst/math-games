@@ -226,7 +226,7 @@
 (function(){
 "use strict";
 var KEY = "barModelMoveUntilGame.v1";
-var ROUND_SIZE = 10;
+var ROUND_SIZE = 5; // 5 problems per round (Jeremy, 24 Oct)
 function pl(n,s,p){return n===1?s:p;}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
@@ -312,7 +312,7 @@ function generate(kind, small, ctxId, used){
 }
 function makeRound(small, fromIndex, existing){
   // ramp: equal first, then twice as many
-  var kinds=["equal","equal","equal","equal","twice","equal","twice","twice","twice","twice"];
+  var kinds=["equal","equal","twice","twice","twice"];
   var ctxs=shuffle(CONTEXTS.map(function(c){return c.id;})), list=[], used=[];
   for(var i=0;i<ROUND_SIZE;i++){
     if(existing && i<fromIndex){ list.push(existing[i]); used.push(existing[i].gn, existing[i].rn); continue; }
@@ -327,6 +327,9 @@ var BANK_SPEC=[
   ["equal",15,7,"cards","Zara","Ethan"],["equal",14,4,"stamps","Divya","Marcus"],["twice",8,4,"jars"],["equal",19,9,"beads","Yan Ting","Irfan"],["twice",10,5,"stickers","Chloe","Daniel"],
   ["twice",10,11,"tanks"],["equal",18,10,"marbles","Sofia","Amir"],["twice",13,5,"cards","Mei","Ravi"],["twice",11,13,"shelves"],["twice",12,9,"stamps","Aisha","Wei Jie"]
 ];
+/* Lesson uses 5 of these, easy to exam level: equal, equal, then twice as many (the last one: the smaller one gives, like the exam).
+   The other 15 stay here, unused. */
+var LESSON_PICK=[0,3,5,6,8];
 var BANK = BANK_SPEC.map(function(s,i){ var p={id:"L"+(i<9?"0":"")+(i+1), kind:s[0], Gb:s[1], Rb:s[2], ctx:s[3], gn:s[4]||null, rn:s[5]||null, small:true, lesson:true}; return finish(p); });
 
 /* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
@@ -547,7 +550,8 @@ var MODE_KEY="barModelMoveUntilGame.mode", LKEY="barModelMoveUntilGame.lesson.v1
 var MODE="lesson"; try{ if(localStorage.getItem(MODE_KEY)==="practice") MODE="practice"; }catch(e){}
 function isLesson(){ return MODE==="lesson"; }
 var S;
-function lessonProblems(round){ var off=((round-1)%2)*ROUND_SIZE; return JSON.parse(JSON.stringify(BANK.slice(off,off+ROUND_SIZE))); }
+var LESSON=LESSON_PICK.map(function(i){ return BANK[i]; });
+function lessonProblems(round){ return JSON.parse(JSON.stringify(LESSON)); }
 function freshLesson(){ return {lesson:true, round:1, idx:0, small:true, totalStars:0, problems:lessonProblems(1), results:[], everPlayed:false, lifeCount:0}; }
 function fresh(){ return {lesson:false, round:1, idx:0, small:false, totalStars:0, problems:makeRound(false), results:[], everPlayed:false, lifeCount:0}; }
 function keyFor(s){ return s.lesson ? LKEY : KEY; }
@@ -754,7 +758,7 @@ function check(){
 }
 /* ---------- working step UI (same pattern as Game 1) ---------- */
 var FAST_FROM=3;
-function isMemoryProblem(){ return (S.idx+1)%3===0; }
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5
 function startWorking(){
   cur.plan=workingPlan(P);
   var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
@@ -833,7 +837,7 @@ function bindPanel(){
   bindWorking(el);
   if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
 }
-var LIFE_AFTER=[1,4,7];
+var LIFE_AFTER=[1,3]; // after problems 2 and 4
 function afterExplain(){
   if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
   else completeProblem();
@@ -847,9 +851,10 @@ function renderSummary(){
   ["brace0","bracelab0","brace1","bracelab1"].forEach(function(id){ $(id).style.display="none"; });
   $("barbtns").innerHTML="";
   var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
-  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center"><button class="big" id="newRound">Play another round</button></div>';
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+(S.lesson?'<button class="big" id="newRound">Play these 5 again</button>':'<button class="big" id="moreBtn">5 more ➡️</button>')+'</div>';
   tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
-  $("newRound").onclick=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems(S.round):makeRound(S.small); save(); startProblem(); };
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems(S.round):makeRound(S.small); save(); startProblem(); };
+  if($("newRound")) $("newRound").onclick=again; if($("moreBtn")) $("moreBtn").onclick=again;
 }
 function renderAll(){
   renderHeader(); renderStory();
@@ -873,7 +878,7 @@ $("againBtn").onclick=function(){ Voice.again(); };
 function renderModeCtl(){
   var b=$("modeBtn"); b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
   b.setAttribute("aria-pressed", isLesson()?"false":"true");
-  $("startNote").textContent = isLesson() ? "Lesson mode: 20 problems with small numbers, read by this device's voice. Your progress is saved." : "Practice mode: new random problems, read by this device's voice.";
+  $("startNote").textContent = isLesson() ? "Lesson mode: 5 problems with small numbers, read by this device's voice. Your progress is saved." : "Practice mode: 5 new random problems at a time, read by this device's voice.";
   $("startTutor").textContent = Voice.supported ? "Start with my tutor 🔊" : "Start ▶";
   $("startQuiet").style.display = Voice.supported ? "" : "none";
 }
@@ -897,7 +902,7 @@ window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBar
 function lessonScript(){
   var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
   var keepP=P, keepCur=cur;
-  BANK.forEach(function(p,i){
+  LESSON.forEach(function(p,i){
     P=p; cur={guessType:guessTypeFor(i%ROUND_SIZE), prediction:null};
     add(introLines()); guessChoices().forEach(function(c){ cur.prediction=c[0]; add(guessNote()); }); cur.prediction=null;
     add("Watch the total while some move from "+N(p).g+" to "+N(p).r+".");
@@ -909,12 +914,12 @@ function lessonScript(){
   });
   for(var k in WS) add(WS[k]);
   LIFE.forEach(function(c,i){ var L=lifeCard(i); add("Where do we use this in real life? "+L.text+" "+L.rule); });
-  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","Okay. Let's find out. Tap the orange Move button and watch the total.","How many moved? Type it, then tap Check.","That's okay, let's look again.","Type how many move on the number pad.","You finished the round and got all 10 stars!"].forEach(add);
+  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","Okay. Let's find out. Tap the orange Move button and watch the total.","How many moved? Type it, then tap Check.","That's okay, let's look again.","Type how many move on the number pad.","You finished the round and got all "+ROUND_SIZE+" stars!"].forEach(add);
   P=keepP; cur=keepCur;
   return Object.keys(out);
 }
 /* test hook (no personal data; used by automated checks) */
-window.__game={generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:wrongMsg,
+window.__game={generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, LESSON:LESSON, ROUND_SIZE:ROUND_SIZE, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:wrongMsg,
   storyText:storyText, questionText:questionText, answerSentence:answerSentence, ctxById:ctxById, lessonScript:lessonScript, lifeCard:lifeCard,
   get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(s){SPEED=s;}, voice:Voice, get mode(){return MODE;}};
 save();

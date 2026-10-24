@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; media-src 'self'">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Times as Many – Bar Model Game</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .modesw{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:4px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06);font-size:17px;font-weight:700}
+  .modesw span{padding:8px 12px;border-radius:999px;color:var(--soft)}
+  .modesw span.on{background:var(--a);color:#fff}
+  .startcard .note{font-size:17px;color:var(--soft);margin:10px 0 0}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  /* working step */
+  .seg.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75);z-index:2;animation:glow 1.6s ease-in-out infinite}
+  .lab.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .seg.diffbox{top:2px;height:68px;background:rgba(255,216,77,.30);border:3px dashed #d99a00;border-radius:10px;z-index:3;pointer-events:none}
+  .question.hl{background:#fff3c4;border-radius:10px;box-shadow:0 0 0 4px #ffd84d;padding:0 6px}
+  @keyframes glow{50%{box-shadow:0 0 0 6px #ffd84d,0 0 22px 8px rgba(255,190,0,.9)}}
+  .sheet{background:#fffdf5;border:2px solid #efe6c8;border-left:6px solid #f2a7a7;border-radius:12px;padding:4px 10px;margin:4px 0 8px}
+  .wline{display:flex;align-items:flex-start;gap:10px;padding:5px 4px;border-bottom:1px dashed #e8dfc4;width:100%;text-align:left;background:none;border-radius:8px}
+  .wline:last-child{border-bottom:none}
+  .wline.on{background:#fff3c4}
+  .wline.next{color:var(--soft)}
+  .wnum{flex:0 0 auto;min-width:30px;height:28px;border-radius:999px;background:#ece7f8;color:#4b3fc4;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;margin-top:2px}
+  .wbody{display:flex;flex-direction:column}
+  .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .wst,.wans{font-size:18px;line-height:1.3}
+  .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
+  .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
+  .wintro{margin:0 0 6px;font-size:17px}
+  .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
+  .wchoices.sent .choice{flex:1 1 100%;min-height:50px;font-size:18px;text-align:left;padding:6px 12px}
+  .choice.no{border-color:#e9a28f;background:#fdeee9}
+  .why{background:#eef6ff;border:2px solid #cfe3fb;border-radius:14px;padding:8px 12px;font-size:18px;margin:6px 0}
+  .whyh{font-weight:800;color:#2b5aa8;margin-bottom:2px}
+  .why .from{margin-top:4px;font-size:16px;color:var(--soft)}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+  .tick{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:#f1f0f7;border-radius:14px;text-align:left;padding:6px 12px;font-size:17px;font-weight:600}
+  .tick[aria-pressed="true"]{background:#d9f2e3}
+  .tick .box{font-size:22px}
+  .big[disabled]{opacity:.45}
+  .wlist{margin:4px 0 8px;padding-left:22px;font-size:18px}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash,.seg.hl{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+  /* iPad landscape (1024px): keep the header on one row */
+  @media (min-width:900px) and (max-width:1180px){
+    header{gap:8px} header h1{font-size:19px}
+    .ctl{padding:6px 10px;font-size:16px} .modesw{font-size:16px} .modesw span{padding:8px 10px}
+    .toggle{padding:4px 12px 4px 4px;gap:8px;font-size:17px} .toggle .sw{width:48px;height:32px} .toggle .sw::after{width:24px;height:24px} .toggle[aria-pressed="true"] .sw::after{left:20px}
+    .stars{font-size:20px;padding:6px 12px}
+  }
+  /* shared engine: generic bar model */
+  .bars{padding:4px 0}
+  #model{position:relative}
+  .track{height:64px}
+  .track.withunder{height:104px}
+  .rowname{padding-top:12px}
+  .seg{top:6px;height:46px;transition:width .35s ease,left .35s ease}
+  .seg .inlab{font-size:17px}
+  .row.B .seg.unit,.row.B .seg.main{background-color:var(--b)}
+  .row.C .seg.main,.row.C .seg.unit{background-color:#e07bb3}
+  .seg.unit{background-color:var(--a)}
+  .seg.ghostu{background:transparent;border:3px dashed var(--a2)}
+  .seg.left{background:repeating-linear-gradient(135deg,#f2a541 0 8px,#f7c98a 8px 16px)}
+  .seg.left .inlab{color:#3a2600;text-shadow:none}
+  .seg.dots{background:transparent;border-top:4px dotted var(--a);border-bottom:4px dotted var(--a);border-radius:0}
+  .seg.dots .inlab{color:var(--a);text-shadow:none;font-size:22px}
+  .seg.cut{background:repeating-linear-gradient(135deg,rgba(239,111,108,.35) 0 8px,rgba(239,111,108,.12) 8px 16px);border:3px dashed var(--gap)}
+  .seg.cut .inlab{color:#9c2f2c;text-shadow:none}
+  .seg.fresh{animation:grow .45s ease}
+  @keyframes grow{0%{transform:scaleX(.2);transform-origin:left;opacity:.3}100%{transform:scaleX(1);opacity:1}}
+  .tail{position:absolute;top:14px;font-size:20px;font-weight:800;color:#4b3fc4;white-space:nowrap;background:#fff;border-radius:8px;padding:0 6px}
+  .tail.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ubrace{position:absolute;top:58px;height:14px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;pointer-events:none;z-index:3}
+  .ubrace.hl{box-shadow:0 0 0 4px #ffd84d}
+  .ublab{position:absolute;top:74px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap;z-index:4}
+  .ublab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .brace{position:absolute;pointer-events:none;z-index:3;border:4px solid #d99a00;border-left:none;border-radius:0 16px 16px 0;width:18px}
+  .brace.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75)}
+  .bracelab{position:absolute;font-size:17px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:2px 8px;white-space:nowrap;z-index:4;line-height:1.2;text-align:center}
+  .bracelab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .cntrow{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+  .cntrow .ansbox{min-width:90px}
+  .emptyrow{color:var(--soft);font-size:16px;padding-top:18px}
+  .counter{margin-top:4px}
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">✖️📊</div>
+    <h2>Times as Many</h2>
+    <p>One has <b>2, 3 or 4 times as many</b> as the other. Draw <b>1 unit</b> for the smaller one, then count all the units. Your tutor will help, step by step.</p>
+    <p class="note" id="startNote"></p>
+    <button class="big" id="startTutor">Start with my tutor 🔊</button>
+    <button class="quiet" id="startQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Times as Many</h1>
+    <button class="modesw" id="modeBtn" aria-label="Switch between Lesson mode and Practice mode"><span data-m="lesson">📘 Lesson</span><span data-m="practice">🎲 Practice</span></button>
+    <button class="toggle" id="smallToggle" aria-pressed="false"><span class="sw"></span><span>Small numbers</span></button>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <button class="ctl" id="againBtn">🔁 Say it again</button>
+    <div class="stars" id="stars">★ 0</div>
+  </header>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="progress" id="progress"></div>
+        <p class="story" id="story"></p>
+        <p class="question" id="question"></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="caption" id="caption"></div>
+        <div class="bars" id="bars"><div id="model"></div></div>
+        <div class="counter" id="counter"></div>
+        <div class="barbtns" id="barbtns"></div>
+      </div>
+    </div>
+    <div class="card panel" id="panel"></div>
+  </div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-WNMD-MC-G04</div></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ===== shared engine (Games 4+): utilities ===== */
+function pl(n,s,p){return n===1?s:p;}
+function cap(s){s=String(s);return s.charAt(0).toUpperCase()+s.slice(1);}
+function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function isWhole(x){ return typeof x==="number" && isFinite(x) && Math.floor(x)===x; }
+var MI="\u2212", TI="\u00d7", DI="\u00f7";
+function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
+var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
+// tiny evaluator for "a op b op c" with + - x / (x and / first)
+function evalExpr(x){
+  var t=String(x).split(" "); if(t.length%2!==1) return null;
+  var nums=[], ops=[];
+  for(var i=0;i<t.length;i++){ if(i%2===0){ if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  var n2=[nums[0]], o2=[];
+  for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
+    if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
+  var v=n2[0]; for(var k=0;k<o2.length;k++) v = o2[k]==="+" ? v+n2[k+1] : v-n2[k+1];
+  return v;
+}
+function numsIn(s){ return (String(s).match(/\d+/g)||[]).map(Number); }
+var GX={pl:pl,cap:cap,rnd:rnd,pick:pick,shuffle:shuffle,isWhole:isWhole,MI:MI,TI:TI,DI:DI,ex:ex,NAMES:NAMES,pickNames:pickNames,evalExpr:evalExpr};
+/* ===== Game 4: Times as Many (units model), P3-WNMD-MC-G04 =====
+   p.kind "total": A has m times as many as B, total T known.  p.kind "diff": A has m times as many, A has D more.
+   1 unit = B. p.ask "A" or "B". */
+var G=(function(){
+var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole;
+var CTX={
+  stickers:{people:true,u:"sticker",us:"stickers"}, marbles:{people:true,u:"marble",us:"marbles"}, beads:{people:true,u:"bead",us:"beads"},
+  stamps:{people:true,u:"stamp",us:"stamps"}, cards:{people:true,u:"card",us:"cards"},
+  stall:{A:"curry puffs",B:"egg tarts",LA:"Curry puffs",LB:"Egg tarts",
+    s1:function(t){return "A stall sold "+t+" curry puffs as egg tarts.";}, tot:function(T){return "It sold "+T+" curry puffs and egg tarts altogether.";},
+    dif:function(D){return "It sold "+D+" more curry puffs than egg tarts.";}, q:function(w){return "How many "+w+" did it sell?";},
+    ans:function(w,n){return "It sold "+n+" "+w+".";}, pre:"It sold"},
+  farm:{A:"chickens",B:"ducks",LA:"Chickens",LB:"Ducks",
+    s1:function(t){return "A farm has "+t+" chickens as ducks.";}, tot:function(T){return "There are "+T+" chickens and ducks altogether.";},
+    dif:function(D){return "There are "+D+" more chickens than ducks.";}, q:function(w){return "How many "+w+" are there?";},
+    ans:function(w,n){return "There are "+n+" "+w+".";}, pre:"There are"},
+  library:{A:"storybooks",B:"comics",LA:"Storybooks",LB:"Comics",
+    s1:function(t){return "The class library has "+t+" storybooks as comics.";}, tot:function(T){return "It has "+T+" storybooks and comics altogether.";},
+    dif:function(D){return "It has "+D+" more storybooks than comics.";}, q:function(w){return "How many "+w+" does it have?";},
+    ans:function(w,n){return "It has "+n+" "+w+".";}, pre:"It has"}
+};
+var PEOPLE=["stickers","marbles","beads","stamps","cards"], THINGS=["stall","farm","library"];
+function C(p){ return CTX[p.ctx]; }
+function times(m){ return m===2?"twice as many":m+" times as many"; }
+// display names: A (m units) and B (1 unit)
+function nm(p){ var c=C(p); return c.people ? {A:p.an,B:p.bn,LA:p.an,LB:p.bn,wA:c.us,wB:c.us} : {A:"the "+c.A,B:"the "+c.B,LA:c.LA,LB:c.LB,wA:c.A,wB:c.B}; }
+function who(p,side){ var n=nm(p); return side==="A"?n.A:n.B; }
+function word(p,side){ var n=nm(p); return side==="A"?n.wA:n.wB; }
+function story(p){
+  var c=C(p);
+  if(c.people) return p.an+" has "+times(p.m)+" "+c.us+" as "+p.bn+". "+(p.kind==="total" ? "They have "+p.T+" "+c.us+" altogether." : p.an+" has "+p.D+" more "+c.us+" than "+p.bn+".");
+  return c.s1(times(p.m))+" "+(p.kind==="total"?c.tot(p.T):c.dif(p.D));
+}
+function question(p){ var c=C(p); return c.people ? "How many "+c.us+" does "+who(p,p.ask)+" have?" : c.q(word(p,p.ask)); }
+function answerSentence(p,side){ side=side||p.ask; var c=C(p), n=side===p.ask?p.answer:p.answer;
+  return c.people ? who(p,side)+" has "+n+" "+c.us+"." : c.ans(word(p,side),n); }
+function finish(p){
+  p.A=p.m*p.u; p.B=p.u; p.T=(p.m+1)*p.u; p.D=(p.m-1)*p.u;
+  p.answer = p.ask==="A" ? p.A : p.B;
+  p.names = C(p).people ? [p.an,p.bn] : [];
+  return p;
+}
+function verify(p){
+  if(!CTX[p.ctx] || (p.kind!=="total" && p.kind!=="diff") || (p.ask!=="A"&&p.ask!=="B")) return false;
+  if(![p.m,p.u,p.A,p.B,p.T,p.D].every(isWhole)) return false;
+  if(p.m<2 || p.m>9 || p.u<2) return false;
+  if(p.kind==="diff" && p.m<3) return false;
+  if(p.A!==p.m*p.B || p.A+p.B!==p.T || p.A-p.B!==p.D) return false;
+  if(p.answer!==(p.ask==="A"?p.A:p.B)) return false;
+  if(C(p).people && (!p.an || !p.bn || p.an===p.bn)) return false;
+  if(p.small && p.T>60) return false;
+  if(p.T>9999) return false;
+  return true;
+}
+function make(i, small, names){
+  var p={an:names[0], bn:names[1]};
+  p.ctx = Math.random()<0.6 ? pick(PEOPLE) : pick(THINGS);
+  var plan=[["total","B",[2,3]],["total","A",[2,4]],["total","A",[3,5]],["diff",Math.random()<.5?"A":"B",[3,5]],["total","A",[3,6]]][i];
+  p.kind=plan[0]; p.ask=plan[1]; p.m=rnd(plan[2][0],plan[2][1]);
+  p.u = small ? rnd(2, Math.floor(60/(p.m+1))) : rnd(12, Math.floor(999/(p.m+1)));
+  return p;
+}
+function fromSpec(s){ return {kind:s[0], m:s[1], u:s[2], ask:s[3], ctx:s[4], an:s[5]||null, bn:s[6]||null, small:!!s[7]}; }
+/* Lesson: 5 problems, easy to exam level */
+var BANK=[
+  ["total",2,6,"B","stickers","Mei","Kai",true],    // 18 altogether, twice as many: Kai 6
+  ["total",3,6,"A","farm",null,null,true],          // 24 altogether: chickens 18
+  ["total",4,9,"A","marbles","Arjun","Siti",true],  // 45 altogether: Arjun 36
+  ["diff",3,14,"A","library",null,null,true],       // 28 more: storybooks 42
+  ["total",4,73,"A","stall",null,null,false]        // 365 altogether: curry puffs 292 (exam level)
+];
+function answerLine(p){ var c=C(p); return c.people ? [who(p,p.ask)+" has", c.us+"."] : [c.pre, word(p,p.ask)+"."]; }
+function answerAsk(p){ return "Now find the answer. Type it, then tap Check."; }
+/* guess before the model is drawn */
+function guess(p,i){
+  var n=nm(p);
+  if(i%2===0){
+    if(p.kind==="total") return {q:"How many equal units will the whole model have?", choices:[[String(p.m),p.m+" units"],[String(p.m+1),(p.m+1)+" units"],[String(p.m+2),(p.m+2)+" units"]], right:String(p.m+1),
+      note:function(k,ok){ return ok ? "You guessed "+(p.m+1)+" units. Yes: "+p.m+" units and 1 unit make "+(p.m+1)+"!" : "You guessed "+k+" units. Let's draw it and count: "+p.m+" units and 1 unit."; }};
+    return {q:"How many units make the "+p.D+" more?", choices:[[String(p.m-1),(p.m-1)+" units"],[String(p.m),p.m+" units"],[String(p.m+1),(p.m+1)+" units"]], right:String(p.m-1),
+      note:function(k,ok){ return ok ? "You guessed "+(p.m-1)+" units. Yes: the extra is all the units except the one that matches!" : "You guessed "+k+" units. Let's draw it: only the extra units make the difference."; }};
+  }
+  var ref = p.kind==="total" ? "half of "+p.T : p.D, rightMore = p.ask==="A" ? "more" : (p.kind==="total" ? "less" : (p.m===2?"same":"less"));
+  return {q:"Will the answer be more or less than "+ref+"?", choices:[["more","More"],["less","Less"],["same","The same"]], right:rightMore,
+    note:function(k,ok){ return ok ? "Good thinking! You'll see why on the model." : "Interesting guess. Let's draw the model and see."; }};
+}
+/* she draws the model: who is 1 unit, how many units for the other, where the number goes */
+function build(p){
+  var n=nm(p), A=cap(n.A), B=cap(n.B);
+  var s=[{type:"choice", ask:"Who gets just 1 unit? Look for the words 'times as many'.", right:"B",
+      choices:[["B",B,null],["A",A,"Not quite. "+A+" has more, so "+n.A+" gets the longer bar. The one with fewer is 1 unit."],["same","Both get the same","Not quite. One has more than the other, so the bars are not the same."]],
+      done:B+" is 1 unit."},
+    {type:"count", ask:"Now "+n.A+". "+A+" has "+times(p.m)+" "+n.B+". Tap + to give "+n.A+" the right number of units.", target:p.m, unitName:"unit",
+      low:"Not yet. "+cap(times(p.m))+" means "+n.A+" has a unit for each time. Add more.", high:"Too many. Read the story again: how many times as many? Take some away.",
+      done:A+" is "+p.m+" units, and every unit is the same size."}];
+  if(p.kind==="total") s.push({type:"choice", ask:"Where does the "+p.T+" go?", right:"both",
+      choices:[["both","Over both bars: it is the total",null],["A","Over "+n.A+"'s bar only","Not quite. Read again: "+p.T+" is for both of them altogether."],["B","On "+n.B+"'s 1 unit only","Not quite. "+p.T+" is the total for both of them."]],
+      done:"Yes. The bracket covers both bars: "+p.T+" altogether."});
+  else s.push({type:"choice", ask:"Which part of the model is the "+p.D+" more?", right:"extra",
+      choices:[["extra","The extra units on "+n.A+"'s bar",null],["both","Both bars together","Not quite. 'More' is a difference, not a total. Compare the two bars."],["one",cap(n.B)+"'s 1 unit","Not quite. Line up the bars. Which part of "+n.A+"'s bar sticks out past "+n.B+"'s?"]],
+      done:"Yes. The extra units, past "+n.B+"'s bar, are the "+p.D+" more."});
+  return s;
+}
+function model(p,v){
+  var n=nm(p), b=v.b, u=p.u, solved=v.solved, lab=solved?String(u):"";
+  var aUnits = b===1 ? v.count : (b>=2 ? p.m : 0), rows=[];
+  var aSegs=[], bSegs=[];
+  for(var i=0;i<aUnits;i++) aSegs.push({v:u, cls:"unit", label:lab, hl:(p.kind==="diff"&&i>0)?"extra":"unitsA", fresh:(b===1&&i===aUnits-1)||(v.fresh===1&&b===2)});
+  if(b>=1) bSegs.push({v:u, cls:"unit", label:lab, hl:"unitB", fresh:v.fresh===0&&b===1});
+  var qa = b>=3 ? {label: solved ? "= "+p.answer : "?", hl:"question"} : null;
+  var rA={name:n.LA, cls:"A", segs:aSegs, unders:[], empty:b<1?"":"", tail:(p.ask==="A"?qa:null)};
+  var rB={name:n.LB, cls:"B", segs:bSegs, unders:[], tail:(p.ask==="B"?qa:null)};
+  if(b>=3 && p.kind==="diff") rA.unders.push({from:u, to:p.m*u, label:p.D+" more", hl:"extra"});
+  rows=[rA,rB];
+  var braces = (b>=3 && p.kind==="total") ? [{from:0,to:1,label:"Total<br>"+p.T, hl:"total"}] : [];
+  return {maxV:Math.max(p.m,v.count||0)*u, rows:rows, braces:braces};
+}
+function caption(p,v){
+  var n=nm(p);
+  if(v.phase==="predict") return "First a guess. Then you draw the model: <b>1 unit</b> for the smaller one, more units for the other.";
+  if(v.phase==="build") return v.b===0 ? "Which one is <b>1 unit</b>?" : (v.b===1 ? "Count the units for "+n.A+": <b>"+v.count+"</b>." : "Now put the number from the story on the model.");
+  var units = p.kind==="total" ? (p.m+1)+" equal units make <b>"+p.T+"</b>." : (p.m-1)+" extra units make <b>"+p.D+"</b>.";
+  var vb=C(p).people?" is ":" are ";
+  return cap(n.A)+vb+"<b>"+p.m+" units</b>, "+n.B+vb+"<b>1 unit</b>. "+units+(v.solved?" 1 unit = <b>"+p.u+"</b>.":"");
+}
+function hints(p){
+  var n=nm(p), A=cap(n.A), B=cap(n.B);
+  if(p.kind==="total") return ["Look at the bracket. Which units does the "+p.T+" cover?",
+    B+" is 1 unit and "+n.A+" is "+p.m+" units. The "+p.T+" covers all the units on both bars.",
+    (p.m+1)+" units = "+p.T+", so 1 unit = ___ ."+(p.ask==="A"?" "+A+" is "+p.m+" units, so "+p.m+" units = ___ .":" "+B+" is 1 unit, so "+n.B+" has ___ .")];
+  return ["Look at "+n.A+"'s bar. Which units stick out past "+n.B+"'s bar?",
+    B+" is 1 unit and "+n.A+" is "+p.m+" units. The extra units on "+n.A+"'s bar make "+p.D+".",
+    (p.m-1)+" units = "+p.D+", so 1 unit = ___ ."+(p.ask==="A"?" "+A+" is "+p.m+" units, so "+p.m+" units = ___ .":" "+B+" is 1 unit, so "+n.B+" has ___ .")];
+}
+function hintHL(p){ return p.kind==="total" ? ["unitsA","unitB","total"] : ["extra"]; }
+function wrongCandidates(p){ var c=[p.u,p.A,p.T,p.D,p.answer+1]; if(p.T%p.m===0) c.push(p.T/p.m); if(p.D%p.m===0) c.push(p.D/p.m); if(p.kind==="diff") c.push(p.D*p.m); return c.filter(function(x,i,a){return a.indexOf(x)===i;}); }
+function testWrong(p){ return p.ask==="A" ? p.u : p.A; }
+function wrongMsg(p,v){
+  var n=nm(p);
+  if(p.ask==="A" && v===p.u) return "That's 1 unit, "+n.B+". The question asks about "+n.A+".";
+  if(p.ask==="B" && v===p.A) return "That's "+n.A+"'s number. The question asks about "+n.B+".";
+  if(p.kind==="total" && v===p.T) return "That's the total. Share it into equal units first.";
+  if(p.kind==="diff" && v===p.D) return "That's the difference, the extra units. Find 1 unit first.";
+  if(p.kind==="total" && p.T%p.m===0 && v===p.T/p.m) return "It looks like you shared into "+p.m+" units. Count every unit under the bracket, "+n.B+"'s too.";
+  if(p.kind==="diff" && p.D%p.m===0 && v===p.D/p.m) return "It looks like you shared into "+p.m+" units. Only the extra units make the difference.";
+  return "Nearly! Find 1 unit first. Then count the units the question asks about.";
+}
+function praise(p){
+  var n=nm(p), s = p.kind==="total" ? "Yes! "+p.T+" shared into "+(p.m+1)+" units is "+p.u+" each." : "Yes! "+p.D+" shared into "+(p.m-1)+" units is "+p.u+" each.";
+  return s+(p.ask==="A" ? " "+cap(n.A)+" is "+p.m+" units, so "+p.A+". Well done." : " "+cap(n.B)+" is 1 unit, so "+p.u+". Well done.");
+}
+function explain(p){ return p.kind==="total" ? "Why did you divide by "+(p.m+1)+", and not by "+p.m+"?" : "Why did you divide by "+(p.m-1)+"?"; }
+function plan(p,api){
+  var n=nm(p), A=cap(n.A), B=cap(n.B), m=p.m, u=p.u, wB=word(p,"B"), wA=word(p,"A"), wQ=word(p,p.ask);
+  if(p.kind==="total"){
+    api.line({ok:ex(m,"+",1), res:m+1, hl:["unitsA","unitB","total"], tag:"all the units under the total bracket",
+      ask:"Line 1. The "+p.T+" covers both bars. Which number sentence counts all the units?",
+      wrong:[[ex(m,TI,1),"Not quite. That counts only "+n.A+"'s units. Count "+n.B+"'s unit too."],[ex(m,MI,1),"Not quite. The bracket covers both bars, so put all the units together."],[ex(m,"+",2),"Not quite. "+B+" has just 1 unit."]],
+      stmt:"There are "+(m+1)+" units altogether.",
+      why:"The "+p.T+" is the total for both bars: "+n.A+"'s units and "+n.B+"'s unit. Before we share, count every unit under the bracket."});
+    api.line({ok:ex(p.T,DI,m+1), hl:["unitB","total"], tag:"1 unit: "+n.B+"'s bar",
+      ask:"Line 2. "+(m+1)+" equal units make "+p.T+". Which number sentence finds 1 unit?",
+      wrong:[[ex(p.T,DI,m),"Not quite. Count every unit under the bracket, "+n.B+"'s too."],[ex(p.T,MI,m+1),"Not quite. The units are equal parts of the total. Sharing equally means divide."],[ex(p.T,TI,m+1),"Not quite. 1 unit is smaller than the total, so share the total. Sharing equally means divide."]],
+      stmt:"1 unit is "+u+" "+wB+".",
+      why:"All the units are the same size, so the total is shared equally among them. Sharing equally means divide. "+B+" is exactly 1 unit."});
+  } else {
+    api.line({ok:ex(m,MI,1), res:m-1, hl:["extra"], tag:"the extra units on "+n.A+"'s bar",
+      ask:"Line 1. The "+p.D+" more is the extra units on "+n.A+"'s bar. Which number sentence counts them?",
+      wrong:[[ex(m,"+",1),"Not quite. That counts all the units on both bars. The extra is only the part that sticks out."],[ex(m,TI,1),"Not quite. That is all of "+n.A+"'s units. One of them matches "+n.B+"'s bar."],[ex(m,MI,2),"Not quite. Only one of "+n.A+"'s units matches "+n.B+"'s 1 unit."]],
+      stmt:"The "+p.D+" more is "+(m-1)+" units.",
+      why:A+" has "+m+" units and "+n.B+" has 1 unit. Line them up: one of "+n.A+"'s units matches "+n.B+"'s, and the rest stick out. Those extra units are the difference."});
+    api.line({ok:ex(p.D,DI,m-1), hl:["extra","unitB"], tag:"the extra units, then 1 unit",
+      ask:"Line 2. "+(m-1)+" equal units make "+p.D+". Which number sentence finds 1 unit?",
+      wrong:[[ex(p.D,DI,m),"Not quite. Only the extra units make the difference. Count just those."],[ex(p.D,MI,m-1),"Not quite. The units are equal parts. Sharing equally means divide."],[ex(p.D,TI,m-1),"Not quite. 1 unit is smaller than the difference, so share it. Sharing equally means divide."]],
+      stmt:"1 unit is "+u+" "+wB+".",
+      why:"The difference is made of equal units, so we share it equally. Sharing equally means divide. "+B+" is exactly 1 unit."});
+  }
+  if(p.ask==="A") api.line({ok:ex(u,TI,m), hl:["unitsA","question"], tag:n.A+"'s "+m+" units",
+      ask:"Line 3. "+A+" is "+m+" units. Which number sentence finds "+n.A+"'s number?",
+      wrong:[[ex(u,"+",m),"Not quite. Each unit is the same size. Equal groups means multiply."],[ex(u,TI,m+1),"Not quite. That is all the units. Count only "+n.A+"'s units."],[ex(u,DI,m),"Not quite. "+A+" has more than 1 unit, so the answer is bigger. Equal groups means multiply."]],
+      stmt:A+" "+(C(p).people?"has":"is")+" "+p.A+" "+wA+".",
+      why:A+" is "+m+" units and each unit is "+u+". "+m+" equal groups means multiply."});
+  var other=p.ask==="A"?"B":"A";
+  api.answer({right:answerSentence(p,p.ask),
+    wrong:[[String(p.answer),"Not quite. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence."],
+           [C(p).people ? who(p,other)+" has "+p.answer+" "+C(p).us+"." : C(p).ans(word(p,other),p.answer),"Not quite. Read the question again. Who or what does it ask about?"]],
+    why:"The question asks how many "+wQ+(C(p).people?" "+who(p,p.ask)+" has":"")+". The answer sentence uses words from the question and has the unit, "+wQ+"."});
+  if(p.kind==="total"){
+    if(p.ask==="A") api.line({check:true, ok:ex(p.A,"+",u), hl:["unitsA","unitB","total"], tag:"both bars and the total",
+      ask:"Check line. Put the answer back: "+n.A+"'s "+p.A+" and "+n.B+"'s 1 unit. Which number sentence should give "+p.T+"?",
+      wrong:[[ex(p.A,MI,u),"Not quite. Put both bars back together. Together means add."],[ex(p.A,"+",p.A),"Not quite. Add "+n.B+"'s 1 unit, not "+n.A+" again."]],
+      stmt:"Together that is "+p.T+", the total in the story.", why:"Checking catches mistakes. If "+n.A+" and "+n.B+" together make the story's total, the answer makes sense."});
+    else api.line({check:true, ok:ex(u,TI,m+1), hl:["unitsA","unitB","total"], tag:"all the units",
+      ask:"Check line. 1 unit is your answer. Which number sentence should give back the total, "+p.T+"?",
+      wrong:[[ex(u,TI,m),"Not quite. Count every unit, "+n.B+"'s too."],[ex(u,"+",m+1),"Not quite. Each unit is the same size. Equal groups means multiply."]],
+      stmt:(m+1)+" units of "+u+" make "+p.T+", the total in the story.", why:"Checking catches mistakes. If all the units together give back the story's total, the answer makes sense."});
+  } else {
+    if(p.ask==="A") api.line({check:true, ok:ex(p.A,MI,u), hl:["extra","unitB"], tag:"the difference",
+      ask:"Check line. Take "+n.B+"'s 1 unit away from "+n.A+"'s "+p.A+". Which number sentence should give "+p.D+"?",
+      wrong:[[ex(p.A,"+",u),"Not quite. 'More' is a difference. Difference means take away."],[ex(p.A,MI,p.D),"Not quite. Take away "+n.B+"'s number, the 1 unit."]],
+      stmt:"The difference is "+p.D+", as in the story.", why:"Checking catches mistakes. If "+n.A+" has exactly that many more, the answer makes sense."});
+    else api.line({check:true, ok:ex(u,TI,m-1), hl:["extra"], tag:"the extra units",
+      ask:"Check line. 1 unit is your answer. Which number sentence should give back the difference, "+p.D+"?",
+      wrong:[[ex(u,TI,m),"Not quite. Count only the extra units."],[ex(u,"+",m-1),"Not quite. Each unit is the same size. Equal groups means multiply."]],
+      stmt:(m-1)+" units of "+u+" make "+p.D+", the difference in the story.", why:"Checking catches mistakes. If the extra units give back the story's difference, the answer makes sense."});
+  }
+  return {unit:wQ};
+}
+var LIFE=[
+  {emoji:"🧃💧", title:"Mixing a drink", text:"A drink uses 3 cups of water for every 1 cup of syrup. For 12 cups of drink, think of 4 equal units of 3 cups: 9 cups of water and 3 cups of syrup.", rule:"Times as many: draw 1 unit for the smaller one, then count all the units."},
+  {emoji:"🐷💰", title:"Saving pocket money", text:"You save twice as much as your cousin. Together you save 30 dollars. That is 3 equal units of 10 dollars, so you save 20 dollars and your cousin saves 10.", rule:"Find 1 unit first. Then multiply for the one with more units."}
+];
+return {key:"barModelTimesAsManyGame", tag:"P3-WNMD-MC-G04", kinds:["total","diff"],
+  drawWhat:"the bar model with 1 unit for the smaller one, the units for the other, and the number from the story",
+  checkDraw:"The bar model: 1 unit for the smaller one, equal units for the other, and the number in the right place",
+  summaryRule:"Remember: draw 1 unit for the smaller one, then count all the units!",
+  BANK:BANK, fromSpec:fromSpec, finish:finish, verify:verify, make:make, story:story, question:question,
+  answerSentence:function(p){return answerSentence(p,p.ask);}, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
+  hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
+})();
+/* ---------- voice tutor (device voice only; same engine as Game 1) ---------- */
+var MUTE_KEY = G.key+".muted";
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  var PREFS = [["karen","en-au"],["moira","en-ie"],["tessa","en-za"],["samantha","en-us"],["serena","en-gb"],["kate","en-gb"],["martha","en-gb"]];
+  var FEMALE = /female|woman|girl|samantha|victoria|karen|moira|tessa|fiona|serena|kate|martha|susan|zira|hazel|libby|sonia|aria|jenny|natasha|catherine|allison|ava|nicky/i;
+  function quality(v){ return /premium/i.test(v.name)?2:(/enhanced/i.test(v.name)?1:0); }
+  function pick(){
+    if(!supported) return null;
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    if(!vs.length) return null;
+    var en = vs.filter(function(v){ return /^en/i.test(v.lang||""); });
+    for(var i=0;i<PREFS.length;i++){
+      var m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0 && (v.lang||"").toLowerCase().replace("_","-").indexOf(PREFS[i][1])===0; });
+      if(!m.length) m = en.filter(function(v){ return v.name.toLowerCase().indexOf(PREFS[i][0])===0; });
+      if(m.length){ m.sort(function(a,b){return quality(b)-quality(a);}); return m[0]; }
+    }
+    var f = en.filter(function(v){ return FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/ig,"")); });
+    if(f.length){ f.sort(function(a,b){return quality(b)-quality(a);}); return f[0]; }
+    var g = en.filter(function(v){ return /en[-_](gb|au)/i.test(v.lang||""); });
+    if(g.length) return g[0];
+    return null;
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(text);
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  function play(lines, immediate){
+    var my = ++token, parts = [];
+    lines.forEach(function(l){ parts = parts.concat(sentences(l)); });
+    function go(){ if(my!==token) return; parts.forEach(function(p){ try{ ss.speak(utter(p)); }catch(e){} }); }
+    var busy = false; try{ busy = ss.speaking || ss.pending; ss.cancel(); }catch(e){}
+    if(immediate || !busy) go(); else setTimeout(go, 60);
+  }
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(!supported || muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    supported: supported, say: say,
+    again: function(){ if(supported && !muted && started && last.length) play(last,false); },
+    unlock: function(lines){ started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines; if(supported && !muted && lines.length) play(lines, true); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); }
+  };
+})();
+function tell(){ Voice.say.apply(null, arguments); }
+/* ===== shared engine: problems, checks, state ===== */
+var ROUND_SIZE=5;
+var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
+function finish(p){ G.finish(p); return p; }
+// every line the child sees before the answer must not give the answer away
+function revealOK(p){
+  var a=p.answer, story=numsIn(G.story(p)+" "+G.question(p));
+  if(story.indexOf(a)>=0) return true;
+  var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
+  G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
+  var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
+  return texts.every(function(t){ return numsIn(t).indexOf(a)<0; });
+}
+function verify(p){
+  try{
+    if(!p || !G.verify(p)) return false;
+    if(!isWhole(p.answer) || p.answer<=0) return false;
+    if(!planOK(p)) return false;
+    if(!revealOK(p)) return false;
+    var hs=G.hints(p); if(hs.length!==3 || hs[2].indexOf("___")<0) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function generate(i, small, used){
+  for(var t=0;t<800;t++){
+    var p=G.make(i%ROUND_SIZE, !!small, pickNames(used||[],3)); p.small=!!small; finish(p);
+    if(verify(p)) return p;
+  }
+  throw new Error("could not generate problem");
+}
+function namesOf(p){ return (p.names||[]).slice(); }
+function makeRound(small, fromIndex, existing){
+  var list=[], used=[];
+  for(var i=0;i<ROUND_SIZE;i++){
+    if(existing && i<fromIndex){ list.push(existing[i]); used=used.concat(namesOf(existing[i])); continue; }
+    var p=generate(i,small,used); used=used.concat(namesOf(p)); list.push(p);
+  }
+  return list;
+}
+var BANK=G.BANK.map(function(s,i){ var p=G.fromSpec(s); p.id="L0"+(i+1); p.lesson=true; return finish(p); });
+
+/*WORK-START*/
+/* ---------- "Write the working": exam-style working, one line at a time ---------- */
+var WS = {
+  intro:"Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.",
+  introShort:"Now let's write the working, one line at a time.",
+  offer:"Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.",
+  memory:"This time, write it all from memory. On your paper, draw "+G.drawWhat+". Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  fast:"Great! On your paper, draw "+G.drawWhat+", then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  compare:"Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.",
+  write:"Now write it on your paper. Copy each line, then tick each box when it is on your paper.",
+  ticked:"All ticked. Well done!"
+};
+function wSay(t){ return String(t).replace(/ \u2212 /g," take away ").replace(/ \+ /g," plus ").replace(/ \u00d7 /g," times ").replace(/ \u00f7 /g," divided by ").replace(/ = /g," is "); }
+function workingPlan(p){
+  var lines=[], salt=(p.answer||0)+(p.salt||0);
+  var api={
+    line:function(o){
+      var okv=evalExpr(o.ok), ch=[{t:o.ok,ok:true}], seen={}; seen[o.ok]=1;
+      o.wrong.forEach(function(w){ if(!w || ch.length>=3 || seen[w[0]]) return; var v=evalExpr(w[0]); if(v===okv || v===null) return; seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); });
+      var rr=(salt+lines.length)%ch.length; ch=ch.slice(rr).concat(ch.slice(0,rr));
+      var res = o.res!=null ? o.res : okv;
+      var L={key:"l"+(lines.length+1), eq:o.ok+" = "+res, stmt:o.stmt, ask:o.ask, why:o.why, choices:ch, hl:o.hl, tag:o.tag};
+      if(o.check){ L.key="check"; L.check=true; }
+      L.say = "Yes! "+wSay(L.eq)+". "+L.stmt+" Why this line? "+L.why;
+      L.whySay = (o.check?"The check line. ":"Line "+(lines.length+1)+". ")+wSay(L.eq)+". Why this line? "+L.why;
+      lines.push(L);
+    },
+    answer:function(o){
+      var ach=[{t:o.right,ok:true}].concat(o.wrong.map(function(w){ return {t:w[0],nudge:w[1]}; }));
+      var ar=(salt+lines.length)%ach.length; ach=ach.slice(ar).concat(ach.slice(0,ar));
+      var AL={key:"ans", answer:true, stmt:o.right, choices:ach, hl:o.hl||["question"], tag:o.tag||"the question",
+        ask:o.ask||"The answer sentence. Read the question again. Which sentence answers it?", why:o.why};
+      AL.say="Yes! "+o.right+" Why this line? "+AL.why; AL.whySay="The answer sentence. "+o.right+" Why this line? "+AL.why;
+      lines.push(AL);
+    }
+  };
+  var meta=G.plan(p, api) || {};
+  return {lines:lines, unit:meta.unit,
+    checklist:[G.checkDraw,"Each number sentence, worked out, with a short statement","An answer sentence with the unit ("+meta.unit+")","I checked my answer"]};
+}
+// every calculation line is right, every line has 3 different choices, and no wrong choice gives the same number
+function planOK(p){
+  var plan=workingPlan(p);
+  if(!plan.lines.length || !plan.lines[plan.lines.length-1].check) return false;
+  return plan.lines.every(function(L){
+    if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
+    var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
+    if(L.answer) return numsIn(L.stmt).indexOf(p.answer)>=0;
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==+parts[1] || !isWhole(v) || v<=0) return false;
+    if(L.stmt.indexOf(parts[1])<0) return false;
+    return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
+  });
+}
+/*WORK-END*/
+
+/* ---------- state ---------- */
+var MODE="lesson"; try{ if(localStorage.getItem(MODE_KEY)==="practice") MODE="practice"; }catch(e){}
+function isLesson(){ return MODE==="lesson"; }
+var S;
+function lessonProblems(){ return JSON.parse(JSON.stringify(BANK)); }
+function freshLesson(){ return {lesson:true, round:1, idx:0, small:true, totalStars:0, problems:lessonProblems(), results:[], everPlayed:false, lifeCount:0}; }
+function fresh(){ return {lesson:false, round:1, idx:0, small:false, totalStars:0, problems:makeRound(false), results:[], everPlayed:false, lifeCount:0}; }
+function keyFor(s){ return s.lesson ? LKEY : KEY; }
+function save(){ try{ localStorage.setItem(keyFor(S), JSON.stringify(S)); }catch(e){} }
+function loadLesson(){ try{ var s=JSON.parse(localStorage.getItem(LKEY)||"null"); if(s && s.lesson && s.round>=1 && s.idx>=0 && s.idx<=ROUND_SIZE){ s.problems=lessonProblems(); s.results=s.results||[]; return s; } }catch(e){} return freshLesson(); }
+function loadPractice(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s && !s.lesson && s.problems && s.problems.length===ROUND_SIZE && s.problems.every(verify)) return s; }catch(e){} return fresh(); }
+S = isLesson() ? loadLesson() : loadPractice();
+var P, cur;
+function startProblem(quiet){
+  if(S.idx>=ROUND_SIZE){ renderSummary(); return; }
+  P=S.problems[S.idx];
+  cur={phase:"predict", guess:G.guess(P,S.idx), prediction:null, b:0, count:0, bfb:null, typed:"", hints:0, tries:0, solved:false, hl:[], work:null, plan:null, fb:null, fresh:-1};
+  renderAll();
+  if(!quiet) tell(introLines());
+}
+function introLines(){ return [G.story(P), G.question(P), "Before we draw, make a guess. "+cur.guess.q].join(" "); }
+function guessNote(){
+  if(!cur.prediction) return "";
+  return cur.guess.note(cur.prediction, cur.prediction===cur.guess.right);
+}
+
+/* ---------- DOM ---------- */
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function renderHeader(){
+  $("stars").textContent="★ "+S.totalStars;
+  $("smallToggle").setAttribute("aria-pressed", S.small?"true":"false");
+  $("smallToggle").style.display = isLesson() ? "none" : "";
+  var h=""; for(var i=0;i<ROUND_SIZE;i++){ var cls=i<S.idx?"done":(i===S.idx?"cur":""); h+='<span class="'+cls+'">'+(i<S.idx?"★":(i+1))+'</span>'; }
+  $("progress").innerHTML=h;
+}
+var PHASES=[["predict","1 Guess"],["build","2 Draw"],["answer","3 Answer"],["working","4 Working"],["explain","5 Explain"]];
+function renderStory(){
+  $("story").textContent=G.story(P); $("question").textContent=G.question(P);
+  var order=PHASES.map(function(x){return x[0];}), ci=order.indexOf(cur.phase==="life"?"explain":cur.phase);
+  $("steps").innerHTML=PHASES.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
+}
+function hlOn(k){ return !!(cur && cur.hl && cur.hl.indexOf(k)>=0); }
+/* generic bar model: G.model(P, view) -> {maxV, rows:[{name, cls, segs:[{v, at?, cls, label, hl, fresh}], unders:[{from,to,label,hl}], tail:{label,hl}}], braces:[{from,to,label,hl}]} */
+function view(){ return {b:cur.b, count:cur.count, solved:cur.solved, phase:cur.phase, building:cur.phase==="build", step:cur.b, fresh:cur.fresh}; }
+function renderBars(){
+  var M=G.model(P, view()), box=$("model"), W=box.clientWidth||560, nameW=120;
+  var hasBrace=(M.braces||[]).length>0, tailRoom=M.rows.some(function(r){return r.tail;})?62:0;
+  var trackW=W-nameW-10, sc=(trackW-(hasBrace?100:12)-tailRoom)/M.maxV, x=function(v){return Math.round(v*sc);};
+  var h="";
+  M.rows.forEach(function(r,ri){
+    var t="", pos=0, under=(r.unders||[]).length>0;
+    (r.segs||[]).forEach(function(s){
+      var l=(s.at!=null?s.at:pos), w=s.v; pos=l+w;
+      t+='<div class="seg '+(s.cls||"main")+(s.hl&&hlOn(s.hl)?' hl':'')+(s.fresh?' fresh':'')+'"'+(s.id?' id="'+s.id+'"':'')+' style="left:'+x(l)+'px;width:'+Math.max(4,x(w)-3)+'px"><span class="inlab">'+(s.label!=null?esc(s.label):"")+'</span></div>';
+    });
+    if(!(r.segs||[]).length && r.empty) t+='<div class="emptyrow">'+esc(r.empty)+'</div>';
+    (r.unders||[]).forEach(function(u){ var on=u.hl&&hlOn(u.hl);
+      t+='<div class="ubrace'+(on?' hl':'')+'" style="left:'+x(u.from)+'px;width:'+Math.max(8,x(u.to-u.from)-3)+'px"></div><div class="ublab'+(on?' hl':'')+'" style="left:'+(x(u.from)+x(u.to-u.from)/2)+'px">'+esc(u.label)+'</div>'; });
+    if(r.tail) t+='<div class="tail'+(r.tail.hl&&hlOn(r.tail.hl)?' hl':'')+'" style="left:'+(x(pos)+6)+'px">'+esc(r.tail.label)+'</div>';
+    h+='<div class="row '+(r.cls||"A")+'" id="mrow'+ri+'"><div class="rowname">'+esc(r.name)+'</div><div class="track'+(under?' withunder':'')+'" id="mtrack'+ri+'">'+t+'</div></div>';
+  });
+  (M.braces||[]).forEach(function(b,bi){ h+='<div class="brace'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="brace'+bi+'"></div><div class="bracelab'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="bracelab'+bi+'">'+b.label+'</div>'; });
+  box.innerHTML=h;
+  (M.braces||[]).forEach(function(b,bi){
+    var r0=$("mrow"+b.from), r1=$("mrow"+b.to), t0=$("mtrack"+b.from), br=$("brace"+bi), lab=$("bracelab"+bi);
+    var left=t0.offsetLeft+x(M.maxV)+tailRoom+8, top=r0.offsetTop+4, bot=r1.offsetTop+56;
+    br.style.left=left+"px"; br.style.top=top+"px"; br.style.height=(bot-top)+"px";
+    lab.style.left=(left+24)+"px"; lab.style.top=((top+bot)/2-22)+"px";
+  });
+  $("question").classList.toggle("hl", hlOn("question"));
+}
+function setCaption(t){ $("caption").innerHTML=t; }
+function renderBarBtns(){ $("barbtns").innerHTML=""; }
+
+/* ---------- panels ---------- */
+function renderPanel(){
+  var el=$("panel"), h="";
+  if(cur.phase==="predict"){
+    h+='<h2>1. Make a guess</h2><p>'+esc(cur.guess.q)+' There is no wrong guess!</p>';
+    h+='<div class="choices">'+cur.guess.choices.map(function(c){return '<button class="choice" data-pred="'+esc(c[0])+'">'+esc(c[1])+'</button>';}).join("")+'</div>';
+  } else if(cur.phase==="build"){
+    var steps=G.build(P), s=steps[cur.b];
+    h+='<h2>2. Draw the model ✏️</h2>'+(cur.b===0&&cur.prediction?'<p class="muted">'+esc(guessNote())+'</p>':'');
+    h+='<p class="wask" id="bask">'+esc(s.ask)+'</p>';
+    if(s.type==="count"){
+      h+='<div class="cntrow"><button class="ghost" id="cMinus" aria-label="take one away">− 1</button><span class="ansbox" id="cnt">'+cur.count+'</span><button class="ghost" id="cPlus" aria-label="add one">+ 1 '+esc(s.unitName||"unit")+'</button></div>';
+      h+='<div class="rowbtns"><button class="big green" id="cDone">That\'s right ✓</button></div>';
+    } else {
+      h+='<div class="choices wchoices sent">'+s.choices.map(function(c,i){ return '<button class="choice'+(cur.bfb&&cur.bfb.i===i?' no':'')+'" data-bc="'+i+'">'+esc(c[1])+'</button>'; }).join('')+'</div>';
+    }
+    h+='<div class="feedback'+(cur.bfb?' try':'')+'" id="bfb">'+(cur.bfb?esc(cur.bfb.msg):'')+'</div>';
+    h+='<p class="muted">Step '+(cur.b+1)+' of '+steps.length+'</p>';
+  } else if(cur.phase==="answer"){
+    var al=G.answerLine(P);
+    h+='<h2>3. Your answer</h2>';
+    h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(cur.typed||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
+    h+=hintHTML();
+    h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
+  } else if(cur.phase==="working"){
+    h+=renderWorking();
+  } else if(cur.phase==="explain"){
+    h+='<div class="bigstar">⭐</div><p class="center feedback good">Yes! '+esc(G.answerSentence(P))+'</p>';
+    h+='<p class="prompt">Tell Daddy why in your own words.</p><p class="center muted">'+esc(G.explain(P))+'</p>';
+    h+='<div class="rowbtns" style="justify-content:center"><button class="big" id="explainedBtn">I explained it 🗣️</button></div>';
+  } else if(cur.phase==="life"){
+    h+=lifeHTML(cur.life)+'<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
+  }
+  el.innerHTML=h; bindPanel();
+}
+function hintList(p){ return G.hints(p||P); }
+function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
+function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
+function check(){
+  if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
+  var v=parseInt(cur.typed,10);
+  if(v===P.answer){
+    cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
+    startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
+  }
+  cur.tries++; var msg=G.wrongMsg(P,v); feedback("try",msg); tell("That's okay, let's look again.", msg);
+}
+/* ---------- life cards ---------- */
+function lifeCard(i){ return G.LIFE[((i%G.LIFE.length)+G.LIFE.length)%G.LIFE.length]; }
+function lifeHTML(L){ return '<div class="life" id="lifeCard"><div class="lemoji">'+L.emoji+'</div><h3>Where do we use this in real life?</h3><p class="center" style="font-weight:700;margin:0">'+esc(L.title)+'</p><p>'+esc(L.text)+'</p><p class="rule">'+esc(L.rule)+'</p></div>'; }
+
+/* ---------- working step UI (same pattern as Games 1 and 3) ---------- */
+var FAST_FROM=3;
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all from memory first
+function startWorking(){
+  cur.plan=workingPlan(P);
+  var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
+  cur.work={mode:memory?"memory":(offer?null:"guided"), stage:memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
+  cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
+  cur.phase="working";
+}
+function workingEntryLines(){ var w=cur.work; if(w.stage==="paper") return [WS.memory]; if(w.stage==="choose") return [WS.offer]; return [S.idx<2?WS.intro:WS.introShort, cur.plan.lines[0].ask]; }
+function wLabel(L,i){ return L.answer?'Ans':(L.check?'Check':String(i+1)); }
+function sheetHTML(upto,on,next,tap){
+  var ls=cur.plan.lines, h='<div class="sheet" id="sheet">', tg=tap?'button':'div';
+  for(var i=0;i<upto;i++){ var L=ls[i];
+    h+='<'+tg+' class="wline'+(on===i?' on':'')+(L.check?' wcheck':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+wLabel(L,i)+'</span><span class="wbody">'+
+      (L.answer?'<span class="wans">'+esc(L.stmt)+'</span>':'<span class="weq">'+esc(L.eq)+(L.check?' ✓':'')+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>'; }
+  if(next!=null){ var X=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+wLabel(X,next)+'</span><span class="wbody">'+(X.answer?'Answer sentence?':(X.check?'Check?':'Number sentence?'))+'</span></div>'; }
+  return h+'</div>';
+}
+function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+(L.check?'':'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the model)</div>')+'</div>'; }
+function renderWorking(){
+  var w=cur.work, ls=cur.plan.lines, h='<h2>4. Write the working ✏️</h2>';
+  if(w.stage==="choose"){
+    h+='<p>Write the working on your own first, or build it with me line by line?</p><div class="rowbtns"><button class="big green" id="fastBtn">I can do it ✏️</button><button class="ghost" id="teachBtn">Teach me line by line</button></div>';
+  } else if(w.stage==="paper"){
+    h+='<p class="prompt">'+(w.mode==="memory"?'From memory ✏️':'Your turn ✏️')+'</p><p>'+(w.mode==="memory"?'Draw '+esc(G.drawWhat)+'. Then write:':'On your paper, write:')+'</p>';
+    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li><li>a check: put the answer back and see if it works</li></ul><p class="muted">The model working stays hidden until you tap the button.</p><div class="rowbtns"><button class="big green" id="wroteBtn">I\'ve written it ✓</button></div>';
+  } else if(w.stage==="ask"||w.stage==="why"){
+    var shown=w.stage==="why"?w.k+1:w.k;
+    if(w.stage==="ask" && w.k===0 && S.idx<2) h+='<p class="muted wintro">Each line: a number sentence, then a short statement. The last lines are the answer sentence and the check.</p>';
+    h+=sheetHTML(shown, w.stage==="why"?w.k:null, w.stage==="ask"?w.k:null, false);
+    if(w.stage==="ask"){ var L=ls[w.k];
+      h+='<p class="wask" id="wask">'+esc(L.ask)+'</p><div class="choices wchoices'+(L.answer?' sent':'')+'">'+L.choices.map(function(c,i){ return '<button class="choice'+(w.fb&&w.fb.i===i?' no':'')+'" data-wc="'+i+'">'+esc(c.t)+'</button>'; }).join('')+'</div>';
+      h+='<div class="feedback'+(w.fb?' try':'')+'" id="wfb">'+(w.fb?esc(w.fb.msg):'')+'</div>';
+    } else { h+=whyHTML(ls[w.k]); h+='<div class="rowbtns">'+(w.k<ls.length-1?'<button class="big" id="nextLineBtn">Next line ➡️</button>':'<button class="big green" id="toPaperBtn">Now write it on paper ✏️</button>')+'</div>'; }
+  } else if(w.stage==="check"){
+    h+='<p class="wintro">'+(w.after==="compare"?'<b>Compare</b> with your paper.':'<b>Now write it on your paper.</b>')+' Tap a line to see why.</p>'+sheetHTML(ls.length,w.open,null,true);
+    if(w.open>=0) h+=whyHTML(ls[w.open]);
+    h+='<div class="checklist" id="checklist">'+cur.plan.checklist.map(function(t,i){ return '<button class="tick" data-tick="'+i+'" aria-pressed="'+(w.ticks[i]?'true':'false')+'"><span class="box">'+(w.ticks[i]?'✅':'⬜')+'</span><span>'+esc(t)+'</span></button>'; }).join('')+'</div>';
+    var all=w.ticks.every(Boolean); h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all '+w.ticks.length+' first')+'</button></div>';
+  }
+  return h;
+}
+function finalCaption(){ return G.caption(P, view()); }
+function workCaption(){
+  var w=cur.work; if(!w) return finalCaption();
+  var i=(w.stage==="ask"||w.stage==="why")?w.k:(w.stage==="check"?w.open:-1);
+  if(i<0) return finalCaption()+(w.stage==="paper"&&w.mode==="memory"?" Draw it on your paper.":"");
+  var L=cur.plan.lines[i];
+  return (L.answer?"The answer sentence":(L.check?"The check line":"Line "+(i+1)))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
+}
+function workRefresh(){ setCaption(workCaption()); renderBars(); renderPanel(); }
+function bindWorking(el){
+  var w=cur.work; if(!w) return; var ls=cur.plan.lines;
+  el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){ var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
+    if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); tell(L.say); }
+    else { w.wrong++; w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
+  if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); tell(ls[w.k].ask); };
+  if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.write); };
+  if($("teachBtn")) $("teachBtn").onclick=function(){ w.mode="guided"; w.stage="ask"; w.k=0; cur.hl=ls[0].hl; workRefresh(); tell(WS.introShort, ls[0].ask); };
+  if($("fastBtn")) $("fastBtn").onclick=function(){ w.mode="fast"; w.stage="paper"; cur.hl=[]; workRefresh(); tell(WS.fast); };
+  if($("wroteBtn")) $("wroteBtn").onclick=function(){ w.stage="check"; w.after="compare"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.compare); };
+  el.querySelectorAll("button[data-wl]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-wl"); w.open=i; cur.hl=ls[i].hl; workRefresh(); tell(ls[i].whySay); }; });
+  el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
+  if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
+    if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    cur.phase="explain"; cur.hl=[]; renderAll(); tell("Can you tell Daddy why, in your own words? "+G.explain(P)); };
+}
+/* ---------- build step: she draws the model ---------- */
+function buildDone(s){
+  cur.bfb=null; cur.fresh=cur.b; cur.b++; var steps=G.build(P);
+  if(cur.b>=steps.length){ cur.phase="answer"; cur.hl=[]; renderAll(); tell(s.done, G.answerAsk(P)); }
+  else { renderAll(); tell(s.done, steps[cur.b].ask); }
+}
+function bindPanel(){
+  var el=$("panel");
+  el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="build"; cur.b=0; cur.count=0; renderAll();
+    tell(guessNote(), "Now let's draw the model.", G.build(P)[0].ask); }; });
+  el.querySelectorAll("[data-bc]").forEach(function(b){ b.onclick=function(){ var s=G.build(P)[cur.b], c=s.choices[+b.getAttribute("data-bc")];
+    if(c[0]===s.right) buildDone(s); else { cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
+  if($("cPlus")) $("cPlus").onclick=function(){ if(cur.count<12){ cur.count++; cur.fresh=-2; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cMinus")) $("cMinus").onclick=function(){ if(cur.count>0){ cur.count--; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
+    if(cur.count===s.target) buildDone(s); else { var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
+  el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed=""; else if(cur.typed.length<5) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    $("ansbox").innerHTML=cur.typed||"&nbsp;"; }; });
+  if($("hintBtn")) $("hintBtn").onclick=function(){ cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
+  if($("checkBtn")) $("checkBtn").onclick=check;
+  if($("explainedBtn")) $("explainedBtn").onclick=afterExplain;
+  bindWorking(el);
+  if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
+}
+var LIFE_AFTER=[1,3]; // after problems 2 and 4
+function afterExplain(){
+  if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
+  else completeProblem();
+}
+function completeProblem(){ S.totalStars++; S.idx++; S.everPlayed=true; save(); startProblem(); }
+function renderSummary(){
+  renderHeader(); var res=S.results.filter(Boolean), pr=res.filter(function(r){return r.predictionRight;}).length;
+  $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round."; $("question").textContent=""; $("steps").innerHTML="";
+  setCaption("Your guesses were right "+pr+" out of "+res.length+" times. "+G.summaryRule);
+  $("model").innerHTML=""; $("barbtns").innerHTML="";
+  var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+  var btn = S.lesson ? '<button class="big" id="newRound">Play these 5 again</button><button class="ghost" id="toPractice">Try 5 new ones in Practice 🎲</button>'
+                     : '<button class="big" id="moreBtn">5 more ➡️</button>';
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
+  tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); };
+  if($("newRound")) $("newRound").onclick=again;
+  if($("moreBtn")) $("moreBtn").onclick=again;
+  if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
+}
+function renderAll(){
+  renderHeader(); renderStory();
+  setCaption(cur.phase==="working"?workCaption():finalCaption());
+  renderBars(); renderBarBtns(); renderPanel();
+}
+/* ---------- controls ---------- */
+$("smallToggle").onclick=function(){
+  if(isLesson()) return;
+  S.small=!S.small; if(S.idx>=ROUND_SIZE){ save(); renderHeader(); return; }
+  S.problems=makeRound(S.small,S.idx,S.problems); save(); startProblem(true);
+  tell(S.small?"Small numbers are on.":"Big numbers are back on.", introLines());
+};
+$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); };
+function renderVoiceCtl(){
+  var mb=$("muteBtn"), ab=$("againBtn"); mb.style.display=ab.style.display=Voice.supported?"":"none"; if(!Voice.supported) return;
+  mb.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; mb.setAttribute("aria-pressed",Voice.muted?"true":"false"); mb.classList.toggle("off",Voice.muted); ab.disabled=Voice.muted;
+}
+$("muteBtn").onclick=function(){ Voice.setMuted(!Voice.muted); renderVoiceCtl(); if(!Voice.muted){ if(!Voice.started) Voice.unlock([]); Voice.again(); } };
+$("againBtn").onclick=function(){ Voice.again(); };
+function renderModeCtl(){
+  var b=$("modeBtn"); b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
+  b.setAttribute("aria-pressed", isLesson()?"false":"true");
+  $("startNote").textContent = isLesson() ? "Lesson mode: 5 problems, from easy to exam level, read by this device's voice. Your progress is saved." : "Practice mode: 5 new random problems at a time, read by this device's voice.";
+  $("startTutor").textContent = Voice.supported ? "Start with my tutor 🔊" : "Start ▶";
+  $("startQuiet").style.display = Voice.supported ? "" : "none";
+}
+$("modeBtn").onclick=function(){
+  Voice.stop(); save();
+  MODE=isLesson()?"practice":"lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){}
+  S=isLesson()?loadLesson():loadPractice(); save(); renderModeCtl(); startProblem(true);
+  if(S.idx<ROUND_SIZE){ if(!Voice.started) Voice.unlock([introLines()]); else tell(introLines()); }
+};
+$("startTutor").onclick=function(){
+  if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
+  $("startScreen").style.display="none";
+  var first=(S.idx>=ROUND_SIZE)?["Hello! Welcome back."]:[(S.everPlayed||S.idx>0||S.round>1)?"Hello! Welcome back.":"Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
+  Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+};
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); };
+renderModeCtl(); renderVoiceCtl();
+window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
+
+/* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
+function lessonScript(){
+  var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
+  var keepP=P, keepCur=cur;
+  BANK.forEach(function(p,i){
+    P=p; var g=G.guess(p,i); cur={guess:g, prediction:null};
+    add(introLines()); g.choices.forEach(function(c){ add(g.note(c[0], c[0]===g.right)); });
+    add("Now let's draw the model."); G.build(p).forEach(function(s){ add(s.ask); add(s.done); (s.choices||[]).forEach(function(c){ add(c[2]); }); add(s.low); add(s.high); });
+    add(G.answerAsk(p));
+    G.hints(p).forEach(function(h){ add("Here's a hint. "+h.replace(/___/g,"blank")); });
+    G.wrongCandidates(p).forEach(function(v){ if(v!==p.answer) add(G.wrongMsg(p,v)); });
+    add(G.praise(p)); add("Can you tell Daddy why, in your own words? "+G.explain(p));
+    workingPlan(p).lines.forEach(function(L){ add(L.ask); add(L.say); add(L.whySay); L.choices.forEach(function(c){ add(c.nudge); }); });
+  });
+  for(var k in WS) add(WS[k]);
+  G.LIFE.forEach(function(L){ add("Where do we use this in real life? "+L.text+" "+L.rule); });
+  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","That's okay, let's look again.","Type your answer on the number pad.","You finished the round and got all 5 stars!"].forEach(add);
+  P=keepP; cur=keepCur;
+  return Object.keys(out);
+}
+/* test hook (no personal data; used by automated checks) */
+window.__game={generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+  wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
+  storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
+  get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};
+save();
+startProblem();
+})();
+</script>
+</body>
+</html>

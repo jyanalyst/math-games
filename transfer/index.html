@@ -201,7 +201,7 @@
 (function(){
 "use strict";
 var KEY = "barModelTransferGame.v1";
-var ROUND_SIZE = 10;
+var ROUND_SIZE = 5; // 5 problems per round (Jeremy, 24 Oct)
 
 /* ---------- contexts ---------- */
 var CONTEXTS = [
@@ -293,7 +293,7 @@ function canonical(){
   return p;
 }
 function makeRound(small, includeCanonical, fromIndex, existing){
-  var kinds=["more","more","more","more","more","more","more","stay","stay","equal"];
+  var kinds=["more","more","more","stay","equal"];
   // keep the first problem an easy-to-picture "more" case
   var rest=shuffle(kinds.slice(1)); kinds=["more"].concat(rest);
   var ctxs=shuffle(CONTEXTS.map(function(c){return c.id;}));
@@ -612,10 +612,12 @@ var S;
 function fresh(){
   return {round:1, idx:0, small:false, totalStars:0, problems:makeRound(false,true), results:[], phase:"predict", everPlayed:false};
 }
-function lessonProblems(small, round){
-  var off = small ? 0 : ((round-1)%2)*ROUND_SIZE, list = small ? BANK.small : BANK.big;
-  return JSON.parse(JSON.stringify(list.slice(off, off+ROUND_SIZE)));
-}
+/* Lesson: 5 problems per track, easy to exam level. The other recorded problems stay in BANK, unused.
+   Big numbers by size: b07, b03 (still more), b06 (the same), b01 (the original exam question), b02 (biggest). */
+var LESSON_PICK = {big:["b07","b03","b06","b01","b02"], small:["s03","s04","s05","s07","s02"]};
+function lessonList(small){ var list = small ? BANK.small : BANK.big;
+  return LESSON_PICK[small?"small":"big"].map(function(id){ return list.filter(function(p){return p.id===id;})[0]; }); }
+function lessonProblems(small, round){ return JSON.parse(JSON.stringify(lessonList(small))); }
 function freshLesson(small){ return {lesson:true, round:1, idx:0, small:!!small, totalStars:0, problems:lessonProblems(small,1), results:[], phase:"predict", everPlayed:false, lifeCount:0}; }
 function keyFor(s){ return s.lesson ? LKEY[s.small?"small":"big"] : KEY; }
 function save(){ try{ localStorage.setItem(keyFor(S), JSON.stringify(S)); if(S.lesson) localStorage.setItem(TRACK_KEY, S.small?"small":"big"); }catch(e){} }
@@ -852,7 +854,7 @@ function renderPanel(){
 }
 /* ---------- working step UI ---------- */
 var FAST_FROM = 3; // from problem 4 on, offer the faster "I can do it" path
-function isMemoryProblem(){ return (S.idx+1)%3===0; } // problems 3, 6, 9: write it all from memory first
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all from memory first
 function startWorking(){
   cur.plan = workingPlan(P, C());
   var memory = isMemoryProblem(), offer = !memory && S.idx>=FAST_FROM;
@@ -980,7 +982,7 @@ function bindPanel(){
   bindWorking(el);
   if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
 }
-var LIFE_AFTER = [1,4,7]; // problems 2, 5 and 8
+var LIFE_AFTER = [1,3]; // after problems 2 and 4
 // drawing on paper now happens inside the working step (problems 3, 6, 9: bars + working from memory)
 function afterExplain(){ afterDraw(); }
 function afterDraw(){
@@ -1046,12 +1048,15 @@ function renderSummary(){
   $("trackA").innerHTML=""; $("trackB").innerHTML=""; $("nameA").textContent=""; $("nameB").textContent="";
   $("dotline").style.display="none"; $("counter").textContent=""; $("barbtns").innerHTML="";
   var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
-  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center"><button class="big" id="newRound">Play another round</button></div>';
-  tell(["sh-roundDone", "life-"+L.c.id], ["You finished the round and got all "+ROUND_SIZE+" stars! Your first guesses were right "+pr+" out of "+res.length+" times.", "Where do we use this in real life? "+L.text+" "+L.rule]);
-  $("newRound").onclick=function(){
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+(S.lesson?'<button class="big" id="newRound">Play these 5 again</button>':'<button class="big" id="moreBtn">5 more ➡️</button>')+'</div>';
+  // the recorded "round done" clip says ten stars: Lesson plays the life-card clip, then the device voice says the round is done
+  if(isLesson()){ tell(["life-"+L.c.id], []); wsayAfterClips(["You finished the round and got all "+ROUND_SIZE+" stars! Well done!"]); }
+  else wsay(["You finished the round and got all "+ROUND_SIZE+" stars! Your first guesses were right "+pr+" out of "+res.length+" times.", "Where do we use this in real life? "+L.text+" "+L.rule]);
+  var again=function(){
     S.round++; S.idx=0; S.results=[]; S.problems = S.lesson ? lessonProblems(S.small,S.round) : makeRound(S.small,false); save();
     $("dotline").style.display=""; startProblem();
   };
+  if($("newRound")) $("newRound").onclick=again; if($("moreBtn")) $("moreBtn").onclick=again;
 }
 function renderAll(){
   renderHeader(); renderStory();
@@ -1103,8 +1108,8 @@ function renderModeCtl(){
   b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
   b.setAttribute("aria-pressed", isLesson()?"false":"true");
   $("startNote").textContent = isLesson()
-    ? "Lesson mode: 30 problems, read by your recorded tutor. Your progress is saved."
-    : "Practice mode: new random problems, read by this device's voice.";
+    ? "Lesson mode: 5 problems, read by your recorded tutor. Your progress is saved."
+    : "Practice mode: 5 new random problems at a time, read by this device's voice.";
   $("startTutor").textContent = isLesson() ? "Start the lesson 🔊" : (Voice.supported ? "Start with my tutor 🔊" : "Start ▶");
   $("startQuiet").style.display = (isLesson() || Voice.supported) ? "" : "none";
 }
@@ -1139,7 +1144,7 @@ renderVoiceCtl();
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
 /* test hook (no personal data; used by automated checks) */
-window.__game={generate:generate, verify:verify, canonical:canonical, makeRound:makeRound,
+window.__game={generate:generate, verify:verify, canonical:canonical, makeRound:makeRound, LESSON_PICK:LESSON_PICK, lessonList:lessonList, ROUND_SIZE:ROUND_SIZE,
   get state(){return S;}, get problem(){return P;}, get ui(){return cur;},
   setSpeed:function(s){SPEED=s;}, voice:Voice, LIFE:LIFE, lifeNums:lifeNums, lifeCard:lifeCard,
   clips:Clips, BANK:BANK, SHARED_PRELOAD:SHARED_PRELOAD, get mode(){return MODE;},
