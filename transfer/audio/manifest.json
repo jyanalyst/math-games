@@ -2036,5 +2036,2047 @@
    "bytes": 45679,
    "job_id": "162733c3-3177-4bf5-8000-a6a3b4f52db0"
   }
- ]
+ ],
+ "device_voice_working": {
+  "note": "Write-the-working step: NOT recorded. Read by the device voice (Web Speech) in Lesson and Practice mode. Estimate assumes Eleven v4 at about 0.5 credits per 100 characters, numbers spelled out.",
+  "generated": "2026-10-24",
+  "count": 508,
+  "chars": 78881,
+  "chars_numbers_in_words": 88966,
+  "est_credits_if_recorded": 444.8,
+  "lines": [
+   {
+    "id": "wk-intro",
+    "text": "Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking."
+   },
+   {
+    "id": "wk-introShort",
+    "text": "Now let's write the working, one line at a time."
+   },
+   {
+    "id": "wk-offer",
+    "text": "Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line."
+   },
+   {
+    "id": "wk-memory",
+    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, and the answer sentence. Tap I've written it when you're done."
+   },
+   {
+    "id": "wk-fast",
+    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence. Tap I've written it when you're done."
+   },
+   {
+    "id": "wk-compare",
+    "text": "Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper."
+   },
+   {
+    "id": "wk-write",
+    "text": "Now write it on your paper. Copy each line, then tick each box when it is on your paper."
+   },
+   {
+    "id": "wk-ticked",
+    "text": "All ticked. Well done!"
+   },
+   {
+    "id": "b01-w1-ask",
+    "text": "Line 1. The hall's extra 129 students walked over first. Which number sentence finds how many more students moved after that?"
+   },
+   {
+    "id": "b01-w1-say",
+    "text": "Yes! 329 take away 129 is 200. After the hall's extra 129, another 200 students moved. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line."
+   },
+   {
+    "id": "b01-w1-why",
+    "text": "Line 1. 329 take away 129 is 200. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line."
+   },
+   {
+    "id": "b01-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b01-w1-nudge2",
+    "text": "Not quite. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer."
+   },
+   {
+    "id": "b01-w2-ask",
+    "text": "Line 2. The hall is 200 below the dotted line, and the canteen is 329 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b01-w2-say",
+    "text": "Yes! 200 plus 329 is 529. The difference now is 529 students. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b01-w2-why",
+    "text": "Line 2. 200 plus 329 is 529. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b01-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b01-w2-nudge2",
+    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b01-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b01-wans-say",
+    "text": "Yes! The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b01-wans-why",
+    "text": "The answer sentence. The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b01-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b01-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b02-w1-ask",
+    "text": "Line 1. Mei Ling's extra 244 stickers walked over first. Which number sentence finds how many more stickers moved after that?"
+   },
+   {
+    "id": "b02-w1-say",
+    "text": "Yes! 527 take away 244 is 283. After Mei Ling's extra 244, another 283 stickers moved. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b02-w1-why",
+    "text": "Line 1. 527 take away 244 is 283. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b02-w1-nudge1",
+    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+   },
+   {
+    "id": "b02-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b02-w2-ask",
+    "text": "Line 2. Mei Ling is 283 below the dotted line, and Aisha is 527 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b02-w2-say",
+    "text": "Yes! 283 plus 527 is 810. The difference now is 810 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b02-w2-why",
+    "text": "Line 2. 283 plus 527 is 810. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b02-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b02-w2-nudge2",
+    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b02-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b02-wans-say",
+    "text": "Yes! Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b02-wans-why",
+    "text": "The answer sentence. Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b02-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b02-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b03-w1-ask",
+    "text": "Line 1. All 62 marbles come out of Jar A's extra piece. Which number sentence finds how big Jar A's extra piece is now?"
+   },
+   {
+    "id": "b03-w1-say",
+    "text": "Yes! 156 take away 62 is 94. Jar A's extra is now 94 marbles. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b03-w1-why",
+    "text": "Line 1. 156 take away 62 is 94. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b03-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b03-w1-nudge2",
+    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b03-w2-ask",
+    "text": "Line 2. Jar A is 94 above the dotted line, and Jar B is 62 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b03-w2-say",
+    "text": "Yes! 94 take away 62 is 32. The difference now is 32 marbles. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b03-w2-why",
+    "text": "Line 2. 94 take away 62 is 32. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b03-w2-nudge1",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b03-w2-nudge2",
+    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b03-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b03-wans-say",
+    "text": "Yes! Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b03-wans-why",
+    "text": "The answer sentence. Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b03-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b03-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b04-w1-ask",
+    "text": "Line 1. The top shelf's extra 184 books walked over first. Which number sentence finds how many more books moved after that?"
+   },
+   {
+    "id": "b04-w1-say",
+    "text": "Yes! 319 take away 184 is 135. After the top shelf's extra 184, another 135 books moved. Why this line? The first 184 books to walk over only use up the top shelf's extra piece, so the top shelf is back at the dotted line. Taking them away from the 319 tells us how many are still to come, and those take the top shelf below the line."
+   },
+   {
+    "id": "b04-w1-why",
+    "text": "Line 1. 319 take away 184 is 135. Why this line? The first 184 books to walk over only use up the top shelf's extra piece, so the top shelf is back at the dotted line. Taking them away from the 319 tells us how many are still to come, and those take the top shelf below the line."
+   },
+   {
+    "id": "b04-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b04-w1-nudge2",
+    "text": "Not quite. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
+   },
+   {
+    "id": "b04-w2-ask",
+    "text": "Line 2. The top shelf is 135 below the dotted line, and the bottom shelf is 319 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b04-w2-say",
+    "text": "Yes! 135 plus 319 is 454. The difference now is 454 books. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b04-w2-why",
+    "text": "Line 2. 135 plus 319 is 454. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b04-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b04-w2-nudge2",
+    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b04-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b04-wans-say",
+    "text": "Yes! The bottom shelf has 454 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b04-wans-why",
+    "text": "The answer sentence. The bottom shelf has 454 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b04-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b04-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b05-w1-ask",
+    "text": "Line 1. Bus 1's extra 45 passengers walked over first. Which number sentence finds how many more passengers moved after that?"
+   },
+   {
+    "id": "b05-w1-say",
+    "text": "Yes! 286 take away 45 is 241. After Bus 1's extra 45, another 241 passengers moved. Why this line? The first 45 passengers to walk over only use up Bus 1's extra piece, so Bus 1 is back at the dotted line. Taking them away from the 286 tells us how many are still to come, and those take Bus 1 below the line."
+   },
+   {
+    "id": "b05-w1-why",
+    "text": "Line 1. 286 take away 45 is 241. Why this line? The first 45 passengers to walk over only use up Bus 1's extra piece, so Bus 1 is back at the dotted line. Taking them away from the 286 tells us how many are still to come, and those take Bus 1 below the line."
+   },
+   {
+    "id": "b05-w1-nudge1",
+    "text": "Not quite. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
+   },
+   {
+    "id": "b05-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b05-w2-ask",
+    "text": "Line 2. Bus 1 is 241 below the dotted line, and Bus 2 is 286 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b05-w2-say",
+    "text": "Yes! 241 plus 286 is 527. The difference now is 527 passengers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b05-w2-why",
+    "text": "Line 2. 241 plus 286 is 527. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b05-w2-nudge1",
+    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b05-w2-nudge2",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b05-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b05-wans-say",
+    "text": "Yes! Bus 2 has 527 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b05-wans-why",
+    "text": "The answer sentence. Bus 2 has 527 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b05-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b05-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b06-w1-ask",
+    "text": "Line 1. All 141 fish come out of Tank A's extra piece. Which number sentence finds how big Tank A's extra piece is now?"
+   },
+   {
+    "id": "b06-w1-say",
+    "text": "Yes! 282 take away 141 is 141. Tank A's extra is now 141 fish. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b06-w1-why",
+    "text": "Line 1. 282 take away 141 is 141. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b06-w1-nudge1",
+    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b06-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b06-w2-ask",
+    "text": "Line 2. Tank A is 141 above the dotted line, and Tank B is 141 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b06-w2-say",
+    "text": "Yes! 141 take away 141 is 0. The difference now is 0 fish. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "b06-w2-why",
+    "text": "Line 2. 141 take away 141 is 0. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "b06-w2-nudge1",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b06-w2-nudge2",
+    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b06-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b06-wans-say",
+    "text": "Yes! Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b06-wans-why",
+    "text": "The answer sentence. Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b06-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+   },
+   {
+    "id": "b06-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?"
+   },
+   {
+    "id": "b07-w1-ask",
+    "text": "Line 1. Tray A's extra 91 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?"
+   },
+   {
+    "id": "b07-w1-say",
+    "text": "Yes! 164 take away 91 is 73. After Tray A's extra 91, another 73 ang ku kueh moved. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line."
+   },
+   {
+    "id": "b07-w1-why",
+    "text": "Line 1. 164 take away 91 is 73. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line."
+   },
+   {
+    "id": "b07-w1-nudge1",
+    "text": "Not quite. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b07-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b07-w2-ask",
+    "text": "Line 2. Tray A is 73 below the dotted line, and Tray B is 164 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b07-w2-say",
+    "text": "Yes! 73 plus 164 is 237. The difference now is 237 ang ku kueh. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b07-w2-why",
+    "text": "Line 2. 73 plus 164 is 237. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b07-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b07-w2-nudge2",
+    "text": "Not quite. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b07-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b07-wans-say",
+    "text": "Yes! Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b07-wans-why",
+    "text": "The answer sentence. Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b07-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b07-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b08-w1-ask",
+    "text": "Line 1. All 47 students come out of the hall's extra piece. Which number sentence finds how big the hall's extra piece is now?"
+   },
+   {
+    "id": "b08-w1-say",
+    "text": "Yes! 226 take away 47 is 179. The hall's extra is now 179 students. Why this line? The students that move all come out of the hall's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b08-w1-why",
+    "text": "Line 1. 226 take away 47 is 179. Why this line? The students that move all come out of the hall's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b08-w1-nudge1",
+    "text": "Not quite. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b08-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b08-w2-ask",
+    "text": "Line 2. The hall is 179 above the dotted line, and the canteen is 47 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b08-w2-say",
+    "text": "Yes! 179 take away 47 is 132. The difference now is 132 students. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b08-w2-why",
+    "text": "Line 2. 179 take away 47 is 132. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b08-w2-nudge1",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b08-w2-nudge2",
+    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b08-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b08-wans-say",
+    "text": "Yes! The hall has 132 more students than the canteen. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b08-wans-why",
+    "text": "The answer sentence. The hall has 132 more students than the canteen. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b08-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b08-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b09-w1-ask",
+    "text": "Line 1. Mei Ling's extra 237 stickers walked over first. Which number sentence finds how many more stickers moved after that?"
+   },
+   {
+    "id": "b09-w1-say",
+    "text": "Yes! 399 take away 237 is 162. After Mei Ling's extra 237, another 162 stickers moved. Why this line? The first 237 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 399 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b09-w1-why",
+    "text": "Line 1. 399 take away 237 is 162. Why this line? The first 237 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 399 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b09-w1-nudge1",
+    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+   },
+   {
+    "id": "b09-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b09-w2-ask",
+    "text": "Line 2. Mei Ling is 162 below the dotted line, and Aisha is 399 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b09-w2-say",
+    "text": "Yes! 162 plus 399 is 561. The difference now is 561 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b09-w2-why",
+    "text": "Line 2. 162 plus 399 is 561. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b09-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b09-w2-nudge2",
+    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b09-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b09-wans-say",
+    "text": "Yes! Aisha has 561 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b09-wans-why",
+    "text": "The answer sentence. Aisha has 561 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b09-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b09-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b10-w1-ask",
+    "text": "Line 1. Jar A's extra 165 marbles walked over first. Which number sentence finds how many more marbles moved after that?"
+   },
+   {
+    "id": "b10-w1-say",
+    "text": "Yes! 300 take away 165 is 135. After Jar A's extra 165, another 135 marbles moved. Why this line? The first 165 marbles to walk over only use up Jar A's extra piece, so Jar A is back at the dotted line. Taking them away from the 300 tells us how many are still to come, and those take Jar A below the line."
+   },
+   {
+    "id": "b10-w1-why",
+    "text": "Line 1. 300 take away 165 is 135. Why this line? The first 165 marbles to walk over only use up Jar A's extra piece, so Jar A is back at the dotted line. Taking them away from the 300 tells us how many are still to come, and those take Jar A below the line."
+   },
+   {
+    "id": "b10-w1-nudge1",
+    "text": "Not quite. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b10-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b10-w2-ask",
+    "text": "Line 2. Jar A is 135 below the dotted line, and Jar B is 300 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b10-w2-say",
+    "text": "Yes! 135 plus 300 is 435. The difference now is 435 marbles. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b10-w2-why",
+    "text": "Line 2. 135 plus 300 is 435. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b10-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b10-w2-nudge2",
+    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b10-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b10-wans-say",
+    "text": "Yes! Jar B has 435 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b10-wans-why",
+    "text": "The answer sentence. Jar B has 435 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b10-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b10-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b11-w1-ask",
+    "text": "Line 1. The top shelf's extra 70 books walked over first. Which number sentence finds how many more books moved after that?"
+   },
+   {
+    "id": "b11-w1-say",
+    "text": "Yes! 326 take away 70 is 256. After the top shelf's extra 70, another 256 books moved. Why this line? The first 70 books to walk over only use up the top shelf's extra piece, so the top shelf is back at the dotted line. Taking them away from the 326 tells us how many are still to come, and those take the top shelf below the line."
+   },
+   {
+    "id": "b11-w1-why",
+    "text": "Line 1. 326 take away 70 is 256. Why this line? The first 70 books to walk over only use up the top shelf's extra piece, so the top shelf is back at the dotted line. Taking them away from the 326 tells us how many are still to come, and those take the top shelf below the line."
+   },
+   {
+    "id": "b11-w1-nudge1",
+    "text": "Not quite. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
+   },
+   {
+    "id": "b11-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b11-w2-ask",
+    "text": "Line 2. The top shelf is 256 below the dotted line, and the bottom shelf is 326 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b11-w2-say",
+    "text": "Yes! 256 plus 326 is 582. The difference now is 582 books. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b11-w2-why",
+    "text": "Line 2. 256 plus 326 is 582. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b11-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b11-w2-nudge2",
+    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b11-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b11-wans-say",
+    "text": "Yes! The bottom shelf has 582 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b11-wans-why",
+    "text": "The answer sentence. The bottom shelf has 582 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b11-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b11-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b12-w1-ask",
+    "text": "Line 1. All 23 passengers come out of Bus 1's extra piece. Which number sentence finds how big Bus 1's extra piece is now?"
+   },
+   {
+    "id": "b12-w1-say",
+    "text": "Yes! 171 take away 23 is 148. Bus 1's extra is now 148 passengers. Why this line? The passengers that move all come out of Bus 1's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b12-w1-why",
+    "text": "Line 1. 171 take away 23 is 148. Why this line? The passengers that move all come out of Bus 1's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b12-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, Bus 1's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b12-w1-nudge2",
+    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b12-w2-ask",
+    "text": "Line 2. Bus 1 is 148 above the dotted line, and Bus 2 is 23 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b12-w2-say",
+    "text": "Yes! 148 take away 23 is 125. The difference now is 125 passengers. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b12-w2-why",
+    "text": "Line 2. 148 take away 23 is 125. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b12-w2-nudge1",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b12-w2-nudge2",
+    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b12-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b12-wans-say",
+    "text": "Yes! Bus 1 has 125 more passengers than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b12-wans-why",
+    "text": "The answer sentence. Bus 1 has 125 more passengers than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b12-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b12-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b13-w1-ask",
+    "text": "Line 1. Tank A's extra 239 fish walked over first. Which number sentence finds how many more fish moved after that?"
+   },
+   {
+    "id": "b13-w1-say",
+    "text": "Yes! 324 take away 239 is 85. After Tank A's extra 239, another 85 fish moved. Why this line? The first 239 fish to walk over only use up Tank A's extra piece, so Tank A is back at the dotted line. Taking them away from the 324 tells us how many are still to come, and those take Tank A below the line."
+   },
+   {
+    "id": "b13-w1-why",
+    "text": "Line 1. 324 take away 239 is 85. Why this line? The first 239 fish to walk over only use up Tank A's extra piece, so Tank A is back at the dotted line. Taking them away from the 324 tells us how many are still to come, and those take Tank A below the line."
+   },
+   {
+    "id": "b13-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b13-w1-nudge2",
+    "text": "Not quite. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b13-w2-ask",
+    "text": "Line 2. Tank A is 85 below the dotted line, and Tank B is 324 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b13-w2-say",
+    "text": "Yes! 85 plus 324 is 409. The difference now is 409 fish. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b13-w2-why",
+    "text": "Line 2. 85 plus 324 is 409. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b13-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b13-w2-nudge2",
+    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b13-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b13-wans-say",
+    "text": "Yes! Tank B has 409 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b13-wans-why",
+    "text": "The answer sentence. Tank B has 409 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b13-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b13-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b14-w1-ask",
+    "text": "Line 1. Tray A's extra 208 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?"
+   },
+   {
+    "id": "b14-w1-say",
+    "text": "Yes! 382 take away 208 is 174. After Tray A's extra 208, another 174 ang ku kueh moved. Why this line? The first 208 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 382 tells us how many are still to come, and those take Tray A below the line."
+   },
+   {
+    "id": "b14-w1-why",
+    "text": "Line 1. 382 take away 208 is 174. Why this line? The first 208 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 382 tells us how many are still to come, and those take Tray A below the line."
+   },
+   {
+    "id": "b14-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b14-w1-nudge2",
+    "text": "Not quite. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b14-w2-ask",
+    "text": "Line 2. Tray A is 174 below the dotted line, and Tray B is 382 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b14-w2-say",
+    "text": "Yes! 174 plus 382 is 556. The difference now is 556 ang ku kueh. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b14-w2-why",
+    "text": "Line 2. 174 plus 382 is 556. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b14-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b14-w2-nudge2",
+    "text": "Not quite. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b14-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b14-wans-say",
+    "text": "Yes! Tray B has 556 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b14-wans-why",
+    "text": "The answer sentence. Tray B has 556 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b14-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b14-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b15-w1-ask",
+    "text": "Line 1. All 65 students come out of the hall's extra piece. Which number sentence finds how big the hall's extra piece is now?"
+   },
+   {
+    "id": "b15-w1-say",
+    "text": "Yes! 130 take away 65 is 65. The hall's extra is now 65 students. Why this line? The students that move all come out of the hall's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b15-w1-why",
+    "text": "Line 1. 130 take away 65 is 65. Why this line? The students that move all come out of the hall's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b15-w1-nudge1",
+    "text": "Not quite. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b15-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b15-w2-ask",
+    "text": "Line 2. The hall is 65 above the dotted line, and the canteen is 65 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b15-w2-say",
+    "text": "Yes! 65 take away 65 is 0. The difference now is 0 students. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "b15-w2-why",
+    "text": "Line 2. 65 take away 65 is 0. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "b15-w2-nudge1",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b15-w2-nudge2",
+    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b15-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b15-wans-say",
+    "text": "Yes! The hall and the canteen have the same number of students. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b15-wans-why",
+    "text": "The answer sentence. The hall and the canteen have the same number of students. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b15-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+   },
+   {
+    "id": "b15-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which place has more. What do you say when nobody has more?"
+   },
+   {
+    "id": "b16-w1-ask",
+    "text": "Line 1. Mei Ling's extra 32 stickers walked over first. Which number sentence finds how many more stickers moved after that?"
+   },
+   {
+    "id": "b16-w1-say",
+    "text": "Yes! 296 take away 32 is 264. After Mei Ling's extra 32, another 264 stickers moved. Why this line? The first 32 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 296 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b16-w1-why",
+    "text": "Line 1. 296 take away 32 is 264. Why this line? The first 32 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 296 tells us how many are still to come, and those take Mei Ling below the line."
+   },
+   {
+    "id": "b16-w1-nudge1",
+    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+   },
+   {
+    "id": "b16-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b16-w2-ask",
+    "text": "Line 2. Mei Ling is 264 below the dotted line, and Aisha is 296 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b16-w2-say",
+    "text": "Yes! 264 plus 296 is 560. The difference now is 560 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b16-w2-why",
+    "text": "Line 2. 264 plus 296 is 560. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b16-w2-nudge1",
+    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b16-w2-nudge2",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b16-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b16-wans-say",
+    "text": "Yes! Aisha has 560 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b16-wans-why",
+    "text": "The answer sentence. Aisha has 560 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b16-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b16-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b17-w1-ask",
+    "text": "Line 1. Jar A's extra 96 marbles walked over first. Which number sentence finds how many more marbles moved after that?"
+   },
+   {
+    "id": "b17-w1-say",
+    "text": "Yes! 370 take away 96 is 274. After Jar A's extra 96, another 274 marbles moved. Why this line? The first 96 marbles to walk over only use up Jar A's extra piece, so Jar A is back at the dotted line. Taking them away from the 370 tells us how many are still to come, and those take Jar A below the line."
+   },
+   {
+    "id": "b17-w1-why",
+    "text": "Line 1. 370 take away 96 is 274. Why this line? The first 96 marbles to walk over only use up Jar A's extra piece, so Jar A is back at the dotted line. Taking them away from the 370 tells us how many are still to come, and those take Jar A below the line."
+   },
+   {
+    "id": "b17-w1-nudge1",
+    "text": "Not quite. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b17-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b17-w2-ask",
+    "text": "Line 2. Jar A is 274 below the dotted line, and Jar B is 370 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b17-w2-say",
+    "text": "Yes! 274 plus 370 is 644. The difference now is 644 marbles. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b17-w2-why",
+    "text": "Line 2. 274 plus 370 is 644. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b17-w2-nudge1",
+    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b17-w2-nudge2",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b17-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b17-wans-say",
+    "text": "Yes! Jar B has 644 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b17-wans-why",
+    "text": "The answer sentence. Jar B has 644 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b17-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b17-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b18-w1-ask",
+    "text": "Line 1. All 58 books come out of the top shelf's extra piece. Which number sentence finds how big the top shelf's extra piece is now?"
+   },
+   {
+    "id": "b18-w1-say",
+    "text": "Yes! 273 take away 58 is 215. The top shelf's extra is now 215 books. Why this line? The books that move all come out of the top shelf's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b18-w1-why",
+    "text": "Line 1. 273 take away 58 is 215. Why this line? The books that move all come out of the top shelf's extra piece, so the extra piece gets shorter. Shorter means take away."
+   },
+   {
+    "id": "b18-w1-nudge1",
+    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so the extra piece gets shorter, not longer."
+   },
+   {
+    "id": "b18-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the top shelf's extra piece or the move? Start with the longer one."
+   },
+   {
+    "id": "b18-w2-ask",
+    "text": "Line 2. The top shelf is 215 above the dotted line, and the bottom shelf is 58 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b18-w2-say",
+    "text": "Yes! 215 take away 58 is 157. The difference now is 157 books. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b18-w2-why",
+    "text": "Line 2. 215 take away 58 is 157. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."
+   },
+   {
+    "id": "b18-w2-nudge1",
+    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces above the line now."
+   },
+   {
+    "id": "b18-w2-nudge2",
+    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+   },
+   {
+    "id": "b18-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b18-wans-say",
+    "text": "Yes! The top shelf has 157 more books than the bottom shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b18-wans-why",
+    "text": "The answer sentence. The top shelf has 157 more books than the bottom shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b18-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b18-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b19-w1-ask",
+    "text": "Line 1. Bus 1's extra 30 passengers walked over first. Which number sentence finds how many more passengers moved after that?"
+   },
+   {
+    "id": "b19-w1-say",
+    "text": "Yes! 290 take away 30 is 260. After Bus 1's extra 30, another 260 passengers moved. Why this line? The first 30 passengers to walk over only use up Bus 1's extra piece, so Bus 1 is back at the dotted line. Taking them away from the 290 tells us how many are still to come, and those take Bus 1 below the line."
+   },
+   {
+    "id": "b19-w1-why",
+    "text": "Line 1. 290 take away 30 is 260. Why this line? The first 30 passengers to walk over only use up Bus 1's extra piece, so Bus 1 is back at the dotted line. Taking them away from the 290 tells us how many are still to come, and those take Bus 1 below the line."
+   },
+   {
+    "id": "b19-w1-nudge1",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b19-w1-nudge2",
+    "text": "Not quite. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
+   },
+   {
+    "id": "b19-w2-ask",
+    "text": "Line 2. Bus 1 is 260 below the dotted line, and Bus 2 is 290 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b19-w2-say",
+    "text": "Yes! 260 plus 290 is 550. The difference now is 550 passengers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b19-w2-why",
+    "text": "Line 2. 260 plus 290 is 550. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b19-w2-nudge1",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b19-w2-nudge2",
+    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b19-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b19-wans-say",
+    "text": "Yes! Bus 2 has 550 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b19-wans-why",
+    "text": "The answer sentence. Bus 2 has 550 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b19-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b19-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "b20-w1-ask",
+    "text": "Line 1. Tank A's extra 234 fish walked over first. Which number sentence finds how many more fish moved after that?"
+   },
+   {
+    "id": "b20-w1-say",
+    "text": "Yes! 532 take away 234 is 298. After Tank A's extra 234, another 298 fish moved. Why this line? The first 234 fish to walk over only use up Tank A's extra piece, so Tank A is back at the dotted line. Taking them away from the 532 tells us how many are still to come, and those take Tank A below the line."
+   },
+   {
+    "id": "b20-w1-why",
+    "text": "Line 1. 532 take away 234 is 298. Why this line? The first 234 fish to walk over only use up Tank A's extra piece, so Tank A is back at the dotted line. Taking them away from the 532 tells us how many are still to come, and those take Tank A below the line."
+   },
+   {
+    "id": "b20-w1-nudge1",
+    "text": "Not quite. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
+   },
+   {
+    "id": "b20-w1-nudge2",
+    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
+   },
+   {
+    "id": "b20-w2-ask",
+    "text": "Line 2. Tank A is 298 below the dotted line, and Tank B is 532 above it. Which number sentence finds the difference between them now?"
+   },
+   {
+    "id": "b20-w2-say",
+    "text": "Yes! 298 plus 532 is 830. The difference now is 830 fish. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b20-w2-why",
+    "text": "Line 2. 298 plus 532 is 830. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."
+   },
+   {
+    "id": "b20-w2-nudge1",
+    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+   },
+   {
+    "id": "b20-w2-nudge2",
+    "text": "Not quite. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
+   },
+   {
+    "id": "b20-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "b20-wans-say",
+    "text": "Yes! Tank B has 830 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b20-wans-why",
+    "text": "The answer sentence. Tank B has 830 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "b20-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "b20-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s01-w1-ask",
+    "text": "Line 1. Jar A had 11 marbles, and 5 moved out. Which number sentence finds how many Jar A has now?"
+   },
+   {
+    "id": "s01-w1-say",
+    "text": "Yes! 11 take away 5 is 6. Jar A has 6 marbles now. Why this line? We know how many each one had at the start, so we can find each new number first. Jar A loses the marbles that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s01-w1-why",
+    "text": "Line 1. 11 take away 5 is 6. Why this line? We know how many each one had at the start, so we can find each new number first. Jar A loses the marbles that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s01-w1-nudge1",
+    "text": "Not quite. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
+   },
+   {
+    "id": "s01-w1-nudge2",
+    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
+   },
+   {
+    "id": "s01-w2-ask",
+    "text": "Line 2. Jar B had 8 marbles, and gets the 5 that moved. Which number sentence finds how many Jar B has now?"
+   },
+   {
+    "id": "s01-w2-say",
+    "text": "Yes! 8 plus 5 is 13. Jar B has 13 marbles now. Why this line? Jar B gets the marbles that move, so it has more. More means add."
+   },
+   {
+    "id": "s01-w2-why",
+    "text": "Line 2. 8 plus 5 is 13. Why this line? Jar B gets the marbles that move, so it has more. More means add."
+   },
+   {
+    "id": "s01-w2-nudge1",
+    "text": "Not quite. Look at Jar B's bar. It grows when the marbles arrive."
+   },
+   {
+    "id": "s01-w2-nudge2",
+    "text": "Not quite. That starts from Jar A's number. Look at Jar B's bar."
+   },
+   {
+    "id": "s01-w3-ask",
+    "text": "Line 3. Jar A has 6 now, and Jar B has 13. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s01-w3-say",
+    "text": "Yes! 13 take away 6 is 7. The difference is 7 marbles. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s01-w3-why",
+    "text": "Line 3. 13 take away 6 is 7. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s01-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s01-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s01-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s01-wans-say",
+    "text": "Yes! Jar B has 7 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s01-wans-why",
+    "text": "The answer sentence. Jar B has 7 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s01-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s01-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s02-w1-ask",
+    "text": "Line 1. The top shelf had 12 books, and 7 moved out. Which number sentence finds how many the top shelf has now?"
+   },
+   {
+    "id": "s02-w1-say",
+    "text": "Yes! 12 take away 7 is 5. The top shelf has 5 books now. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s02-w1-why",
+    "text": "Line 1. 12 take away 7 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s02-w1-nudge1",
+    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
+   },
+   {
+    "id": "s02-w1-nudge2",
+    "text": "Not quite. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
+   },
+   {
+    "id": "s02-w2-ask",
+    "text": "Line 2. The bottom shelf had 9 books, and gets the 7 that moved. Which number sentence finds how many the bottom shelf has now?"
+   },
+   {
+    "id": "s02-w2-say",
+    "text": "Yes! 9 plus 7 is 16. The bottom shelf has 16 books now. Why this line? The bottom shelf gets the books that move, so it has more. More means add."
+   },
+   {
+    "id": "s02-w2-why",
+    "text": "Line 2. 9 plus 7 is 16. Why this line? The bottom shelf gets the books that move, so it has more. More means add."
+   },
+   {
+    "id": "s02-w2-nudge1",
+    "text": "Not quite. That starts from the top shelf's number. Look at the bottom shelf's bar."
+   },
+   {
+    "id": "s02-w2-nudge2",
+    "text": "Not quite. Look at the bottom shelf's bar. It grows when the books arrive."
+   },
+   {
+    "id": "s02-w3-ask",
+    "text": "Line 3. The top shelf has 5 now, and the bottom shelf has 16. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s02-w3-say",
+    "text": "Yes! 16 take away 5 is 11. The difference is 11 books. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s02-w3-why",
+    "text": "Line 3. 16 take away 5 is 11. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s02-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s02-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s02-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s02-wans-say",
+    "text": "Yes! The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s02-wans-why",
+    "text": "The answer sentence. The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s02-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s02-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s03-w1-ask",
+    "text": "Line 1. Bus 1 had 11 passengers, and 3 moved out. Which number sentence finds how many Bus 1 has now?"
+   },
+   {
+    "id": "s03-w1-say",
+    "text": "Yes! 11 take away 3 is 8. Bus 1 has 8 passengers now. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s03-w1-why",
+    "text": "Line 1. 11 take away 3 is 8. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s03-w1-nudge1",
+    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
+   },
+   {
+    "id": "s03-w1-nudge2",
+    "text": "Not quite. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
+   },
+   {
+    "id": "s03-w2-ask",
+    "text": "Line 2. Bus 2 had 4 passengers, and gets the 3 that moved. Which number sentence finds how many Bus 2 has now?"
+   },
+   {
+    "id": "s03-w2-say",
+    "text": "Yes! 4 plus 3 is 7. Bus 2 has 7 passengers now. Why this line? Bus 2 gets the passengers that move, so it has more. More means add."
+   },
+   {
+    "id": "s03-w2-why",
+    "text": "Line 2. 4 plus 3 is 7. Why this line? Bus 2 gets the passengers that move, so it has more. More means add."
+   },
+   {
+    "id": "s03-w2-nudge1",
+    "text": "Not quite. That starts from Bus 1's number. Look at Bus 2's bar."
+   },
+   {
+    "id": "s03-w2-nudge2",
+    "text": "Not quite. Look at Bus 2's bar. It grows when the passengers arrive."
+   },
+   {
+    "id": "s03-w3-ask",
+    "text": "Line 3. Bus 1 has 8 now, and Bus 2 has 7. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s03-w3-say",
+    "text": "Yes! 8 take away 7 is 1. The difference is 1 passenger. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s03-w3-why",
+    "text": "Line 3. 8 take away 7 is 1. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s03-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s03-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s03-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s03-wans-say",
+    "text": "Yes! Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s03-wans-why",
+    "text": "The answer sentence. Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s03-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s03-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s04-w1-ask",
+    "text": "Line 1. Tank A had 8 fish, and 5 moved out. Which number sentence finds how many Tank A has now?"
+   },
+   {
+    "id": "s04-w1-say",
+    "text": "Yes! 8 take away 5 is 3. Tank A has 3 fish now. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s04-w1-why",
+    "text": "Line 1. 8 take away 5 is 3. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s04-w1-nudge1",
+    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer."
+   },
+   {
+    "id": "s04-w1-nudge2",
+    "text": "Not quite. That takes away Tank B's number. Look at Tank A's bar. How many leave it?"
+   },
+   {
+    "id": "s04-w2-ask",
+    "text": "Line 2. Tank B had 4 fish, and gets the 5 that moved. Which number sentence finds how many Tank B has now?"
+   },
+   {
+    "id": "s04-w2-say",
+    "text": "Yes! 4 plus 5 is 9. Tank B has 9 fish now. Why this line? Tank B gets the fish that move, so it has more. More means add."
+   },
+   {
+    "id": "s04-w2-why",
+    "text": "Line 2. 4 plus 5 is 9. Why this line? Tank B gets the fish that move, so it has more. More means add."
+   },
+   {
+    "id": "s04-w2-nudge1",
+    "text": "Not quite. That starts from Tank A's number. Look at Tank B's bar."
+   },
+   {
+    "id": "s04-w2-nudge2",
+    "text": "Not quite. Look at Tank B's bar. How many arrive?"
+   },
+   {
+    "id": "s04-w3-ask",
+    "text": "Line 3. Tank A has 3 now, and Tank B has 9. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s04-w3-say",
+    "text": "Yes! 9 take away 3 is 6. The difference is 6 fish. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s04-w3-why",
+    "text": "Line 3. 9 take away 3 is 6. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s04-w3-nudge1",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s04-w3-nudge2",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s04-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s04-wans-say",
+    "text": "Yes! Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s04-wans-why",
+    "text": "The answer sentence. Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s04-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s04-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s05-w1-ask",
+    "text": "Line 1. Tray A had 6 ang ku kueh, and 1 moved out. Which number sentence finds how many Tray A has now?"
+   },
+   {
+    "id": "s05-w1-say",
+    "text": "Yes! 6 take away 1 is 5. Tray A has 5 ang ku kueh now. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s05-w1-why",
+    "text": "Line 1. 6 take away 1 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s05-w1-nudge1",
+    "text": "Not quite. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer."
+   },
+   {
+    "id": "s05-w1-nudge2",
+    "text": "Not quite. That takes away Tray B's number. Look at Tray A's bar. How many leave it?"
+   },
+   {
+    "id": "s05-w2-ask",
+    "text": "Line 2. Tray B had 4 ang ku kueh, and gets the 1 that moved. Which number sentence finds how many Tray B has now?"
+   },
+   {
+    "id": "s05-w2-say",
+    "text": "Yes! 4 plus 1 is 5. Tray B has 5 ang ku kueh now. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add."
+   },
+   {
+    "id": "s05-w2-why",
+    "text": "Line 2. 4 plus 1 is 5. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add."
+   },
+   {
+    "id": "s05-w2-nudge1",
+    "text": "Not quite. Look at Tray B's bar. It grows when the ang ku kueh arrive."
+   },
+   {
+    "id": "s05-w2-nudge2",
+    "text": "Not quite. That starts from Tray A's number. Look at Tray B's bar."
+   },
+   {
+    "id": "s05-w3-ask",
+    "text": "Line 3. Tray A has 5 now, and Tray B has 5. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s05-w3-say",
+    "text": "Yes! 5 take away 5 is 0. The difference is 0 ang ku kueh. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "s05-w3-why",
+    "text": "Line 3. 5 take away 5 is 0. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference."
+   },
+   {
+    "id": "s05-w3-nudge1",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s05-w3-nudge2",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s05-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s05-wans-say",
+    "text": "Yes! Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s05-wans-why",
+    "text": "The answer sentence. Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s05-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?"
+   },
+   {
+    "id": "s05-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+   },
+   {
+    "id": "s06-w1-ask",
+    "text": "Line 1. The hall had 8 students, and 5 moved out. Which number sentence finds how many the hall has now?"
+   },
+   {
+    "id": "s06-w1-say",
+    "text": "Yes! 8 take away 5 is 3. The hall has 3 students now. Why this line? We know how many each one had at the start, so we can find each new number first. The hall loses the students that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s06-w1-why",
+    "text": "Line 1. 8 take away 5 is 3. Why this line? We know how many each one had at the start, so we can find each new number first. The hall loses the students that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s06-w1-nudge1",
+    "text": "Not quite. Look at the hall's bar. The students leave the hall, so it gets shorter, not longer."
+   },
+   {
+    "id": "s06-w1-nudge2",
+    "text": "Not quite. That takes away the canteen's number. Look at the hall's bar. How many leave it?"
+   },
+   {
+    "id": "s06-w2-ask",
+    "text": "Line 2. The canteen had 7 students, and gets the 5 that moved. Which number sentence finds how many the canteen has now?"
+   },
+   {
+    "id": "s06-w2-say",
+    "text": "Yes! 7 plus 5 is 12. The canteen has 12 students now. Why this line? The canteen gets the students that move, so it has more. More means add."
+   },
+   {
+    "id": "s06-w2-why",
+    "text": "Line 2. 7 plus 5 is 12. Why this line? The canteen gets the students that move, so it has more. More means add."
+   },
+   {
+    "id": "s06-w2-nudge1",
+    "text": "Not quite. Look at the canteen's bar. It grows when the students arrive."
+   },
+   {
+    "id": "s06-w2-nudge2",
+    "text": "Not quite. That starts from the hall's number. Look at the canteen's bar."
+   },
+   {
+    "id": "s06-w3-ask",
+    "text": "Line 3. The hall has 3 now, and the canteen has 12. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s06-w3-say",
+    "text": "Yes! 12 take away 3 is 9. The difference is 9 students. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s06-w3-why",
+    "text": "Line 3. 12 take away 3 is 9. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s06-w3-nudge1",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s06-w3-nudge2",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s06-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s06-wans-say",
+    "text": "Yes! The canteen has 9 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s06-wans-why",
+    "text": "The answer sentence. The canteen has 9 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s06-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s06-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s07-w1-ask",
+    "text": "Line 1. Mei Ling had 15 stickers, and 2 moved out. Which number sentence finds how many Mei Ling has now?"
+   },
+   {
+    "id": "s07-w1-say",
+    "text": "Yes! 15 take away 2 is 13. Mei Ling has 13 stickers now. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s07-w1-why",
+    "text": "Line 1. 15 take away 2 is 13. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s07-w1-nudge1",
+    "text": "Not quite. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer."
+   },
+   {
+    "id": "s07-w1-nudge2",
+    "text": "Not quite. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?"
+   },
+   {
+    "id": "s07-w2-ask",
+    "text": "Line 2. Aisha had 7 stickers, and gets the 2 that moved. Which number sentence finds how many Aisha has now?"
+   },
+   {
+    "id": "s07-w2-say",
+    "text": "Yes! 7 plus 2 is 9. Aisha has 9 stickers now. Why this line? Aisha gets the stickers that move, so it has more. More means add."
+   },
+   {
+    "id": "s07-w2-why",
+    "text": "Line 2. 7 plus 2 is 9. Why this line? Aisha gets the stickers that move, so it has more. More means add."
+   },
+   {
+    "id": "s07-w2-nudge1",
+    "text": "Not quite. That starts from Mei Ling's number. Look at Aisha's bar."
+   },
+   {
+    "id": "s07-w2-nudge2",
+    "text": "Not quite. Look at Aisha's bar. It grows when the stickers arrive."
+   },
+   {
+    "id": "s07-w3-ask",
+    "text": "Line 3. Mei Ling has 13 now, and Aisha has 9. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s07-w3-say",
+    "text": "Yes! 13 take away 9 is 4. The difference is 4 stickers. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s07-w3-why",
+    "text": "Line 3. 13 take away 9 is 4. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s07-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s07-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s07-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s07-wans-say",
+    "text": "Yes! Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s07-wans-why",
+    "text": "The answer sentence. Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s07-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s07-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s08-w1-ask",
+    "text": "Line 1. Jar A had 9 marbles, and 7 moved out. Which number sentence finds how many Jar A has now?"
+   },
+   {
+    "id": "s08-w1-say",
+    "text": "Yes! 9 take away 7 is 2. Jar A has 2 marbles now. Why this line? We know how many each one had at the start, so we can find each new number first. Jar A loses the marbles that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s08-w1-why",
+    "text": "Line 1. 9 take away 7 is 2. Why this line? We know how many each one had at the start, so we can find each new number first. Jar A loses the marbles that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s08-w1-nudge1",
+    "text": "Not quite. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
+   },
+   {
+    "id": "s08-w1-nudge2",
+    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
+   },
+   {
+    "id": "s08-w2-ask",
+    "text": "Line 2. Jar B had 5 marbles, and gets the 7 that moved. Which number sentence finds how many Jar B has now?"
+   },
+   {
+    "id": "s08-w2-say",
+    "text": "Yes! 5 plus 7 is 12. Jar B has 12 marbles now. Why this line? Jar B gets the marbles that move, so it has more. More means add."
+   },
+   {
+    "id": "s08-w2-why",
+    "text": "Line 2. 5 plus 7 is 12. Why this line? Jar B gets the marbles that move, so it has more. More means add."
+   },
+   {
+    "id": "s08-w2-nudge1",
+    "text": "Not quite. That starts from Jar A's number. Look at Jar B's bar."
+   },
+   {
+    "id": "s08-w2-nudge2",
+    "text": "Not quite. Look at Jar B's bar. How many arrive?"
+   },
+   {
+    "id": "s08-w3-ask",
+    "text": "Line 3. Jar A has 2 now, and Jar B has 12. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s08-w3-say",
+    "text": "Yes! 12 take away 2 is 10. The difference is 10 marbles. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s08-w3-why",
+    "text": "Line 3. 12 take away 2 is 10. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s08-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s08-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s08-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s08-wans-say",
+    "text": "Yes! Jar B has 10 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s08-wans-why",
+    "text": "The answer sentence. Jar B has 10 more marbles than Jar A. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s08-wans-nudge1",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s08-wans-nudge2",
+    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s09-w1-ask",
+    "text": "Line 1. The top shelf had 14 books, and 2 moved out. Which number sentence finds how many the top shelf has now?"
+   },
+   {
+    "id": "s09-w1-say",
+    "text": "Yes! 14 take away 2 is 12. The top shelf has 12 books now. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s09-w1-why",
+    "text": "Line 1. 14 take away 2 is 12. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s09-w1-nudge1",
+    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
+   },
+   {
+    "id": "s09-w1-nudge2",
+    "text": "Not quite. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
+   },
+   {
+    "id": "s09-w2-ask",
+    "text": "Line 2. The bottom shelf had 6 books, and gets the 2 that moved. Which number sentence finds how many the bottom shelf has now?"
+   },
+   {
+    "id": "s09-w2-say",
+    "text": "Yes! 6 plus 2 is 8. The bottom shelf has 8 books now. Why this line? The bottom shelf gets the books that move, so it has more. More means add."
+   },
+   {
+    "id": "s09-w2-why",
+    "text": "Line 2. 6 plus 2 is 8. Why this line? The bottom shelf gets the books that move, so it has more. More means add."
+   },
+   {
+    "id": "s09-w2-nudge1",
+    "text": "Not quite. That starts from the top shelf's number. Look at the bottom shelf's bar."
+   },
+   {
+    "id": "s09-w2-nudge2",
+    "text": "Not quite. Look at the bottom shelf's bar. It grows when the books arrive."
+   },
+   {
+    "id": "s09-w3-ask",
+    "text": "Line 3. The top shelf has 12 now, and the bottom shelf has 8. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s09-w3-say",
+    "text": "Yes! 12 take away 8 is 4. The difference is 4 books. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s09-w3-why",
+    "text": "Line 3. 12 take away 8 is 4. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s09-w3-nudge1",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s09-w3-nudge2",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s09-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s09-wans-say",
+    "text": "Yes! The top shelf has 4 more books than the bottom shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s09-wans-why",
+    "text": "The answer sentence. The top shelf has 4 more books than the bottom shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s09-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s09-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   },
+   {
+    "id": "s10-w1-ask",
+    "text": "Line 1. Bus 1 had 7 passengers, and 5 moved out. Which number sentence finds how many Bus 1 has now?"
+   },
+   {
+    "id": "s10-w1-say",
+    "text": "Yes! 7 take away 5 is 2. Bus 1 has 2 passengers now. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s10-w1-why",
+    "text": "Line 1. 7 take away 5 is 2. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away."
+   },
+   {
+    "id": "s10-w1-nudge1",
+    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
+   },
+   {
+    "id": "s10-w1-nudge2",
+    "text": "Not quite. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
+   },
+   {
+    "id": "s10-w2-ask",
+    "text": "Line 2. Bus 2 had 3 passengers, and gets the 5 that moved. Which number sentence finds how many Bus 2 has now?"
+   },
+   {
+    "id": "s10-w2-say",
+    "text": "Yes! 3 plus 5 is 8. Bus 2 has 8 passengers now. Why this line? Bus 2 gets the passengers that move, so it has more. More means add."
+   },
+   {
+    "id": "s10-w2-why",
+    "text": "Line 2. 3 plus 5 is 8. Why this line? Bus 2 gets the passengers that move, so it has more. More means add."
+   },
+   {
+    "id": "s10-w2-nudge1",
+    "text": "Not quite. That starts from Bus 1's number. Look at Bus 2's bar."
+   },
+   {
+    "id": "s10-w2-nudge2",
+    "text": "Not quite. Look at Bus 2's bar. How many arrive?"
+   },
+   {
+    "id": "s10-w3-ask",
+    "text": "Line 3. Bus 1 has 2 now, and Bus 2 has 8. Which number sentence finds the difference?"
+   },
+   {
+    "id": "s10-w3-say",
+    "text": "Yes! 8 take away 2 is 6. The difference is 6 passengers. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s10-w3-why",
+    "text": "Line 3. 8 take away 2 is 6. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference."
+   },
+   {
+    "id": "s10-w3-nudge1",
+    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+   },
+   {
+    "id": "s10-w3-nudge2",
+    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+   },
+   {
+    "id": "s10-wans-ask",
+    "text": "Last line, the answer sentence. Read the question again. Which sentence answers it?"
+   },
+   {
+    "id": "s10-wans-say",
+    "text": "Yes! Bus 2 has 6 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s10-wans-why",
+    "text": "The answer sentence. Bus 2 has 6 more passengers than Bus 1. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means."
+   },
+   {
+    "id": "s10-wans-nudge1",
+    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+   },
+   {
+    "id": "s10-wans-nudge2",
+    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+   }
+  ]
+ }
 }
