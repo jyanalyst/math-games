@@ -441,9 +441,13 @@ function workingPlan(p, c){
   var A=cap(c.a), B=cap(c.b), a=c.a, b=c.b;
   var whoWord=(c.q.match(/Now, (.+?) has more/)||[0,"who"])[1];
   var lines=[];
+  // value of "a + b - c" (for the choice check below)
+  function wVal(t){ var x=t.split(" "), v=+x[0]; for(var i=1;i<x.length;i+=2) v = x[i]==="+" ? v+ +x[i+1] : v- +x[i+1]; return v; }
   function line(o){
-    var ok=o.ok, seen={}, ch=[{t:ok,ok:true}]; seen[ok]=1;
-    o.wrong.filter(Boolean).forEach(function(w){ if(ch.length<3 && !seen[w[0]]){ seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); } });
+    // 3 different choices, and no wrong choice may give the same number as the right one
+    // (e.g. when one number is exactly double the other, two wrong sentences can match); o.spare are extra wrong choices used only then
+    var ok=o.ok, okv=wVal(ok), seen={}, ch=[{t:ok,ok:true}]; seen[ok]=1;
+    o.wrong.concat(o.spare||[]).filter(Boolean).forEach(function(w){ if(ch.length<3 && !seen[w[0]] && wVal(w[0])!==okv){ seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); } });
     var r=(D+M+lines.length)%ch.length; ch=ch.slice(r).concat(ch.slice(0,r));
     var L={key:"l"+(lines.length+1), eq:ok+" = "+o.res, stmt:o.stmt, ask:o.ask, why:o.why, choices:ch, hl:o.hl, tag:o.tag};
     L.say="Yes! "+wSay(L.eq)+". "+L.stmt+" Why this line? "+L.why;
@@ -466,6 +470,7 @@ function workingPlan(p, c){
         wrong:[[wEq(M,"-",r1),"Not quite. Look at the bars. The difference goes from the end of "+a+", below the line, right up to the end of "+b+", above the line. Is that one piece, or two pieces joined end to end?"],
                [wEq(M,"-",D),"Not quite. That uses "+poss(a)+" extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."],
                [wEq(D,"+",M),"Not quite. Use the two pieces on the bars now, the part below the line and the part above it."]],
+        spare:[[wEq(M,"+",M),"Not quite. Look at the bars. The part below the line and the orange part above it are two different pieces. Use each one once."]],
         stmt:"The difference now is "+ans+" "+un(ans)+".",
         why:"The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them."});
     } else {
@@ -481,6 +486,7 @@ function workingPlan(p, c){
         wrong:[[wEq(r1,"+",M),"Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"],
                [wEq(D,"-",M),"Not quite. That uses "+poss(a)+" extra from the start. Use the two pieces above the line now."],
                [wEq(D,"+",M),"Not quite. Use the two pieces above the line now, and compare them."]],
+        spare:[[wEq(M,"+",M),"Not quite. The two pieces above the line are different. Compare "+poss(a)+" piece with "+poss(b)+" piece."]],
         stmt:"The difference now is "+ans+" "+un(ans)+".",
         why: r1===M ? "Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference."
           : "Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece."});
