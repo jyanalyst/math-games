@@ -27,7 +27,7 @@
     if(/compact|espeak|festival|pico/i.test(n)) s -= 20;
     if(l.indexOf("en-sg")===0) s += 10; else if(l.indexOf("en-gb")===0) s += 9; else if(/^en-(au|ie|nz)/.test(l)) s += 6; else if(l.indexOf("en-us")===0) s += 5; else if(/^en-(in|za)/.test(l)) s += 3;
     if(GOOD.test(n)) s += 6;
-    if(FEMALE.test(n) && !/\bmale\b/i.test(n.replace(/female/ig,""))) s += 4; // match Maeve's recorded voice
+    if(FEMALE.test(n) && !/\bmale\b/i.test(n.replace(/female/ig,""))) s += 4; // match the recorded tutor voice (luna)
     if(v.localService) s += 1; // works offline; ties only
     return s;
   }
