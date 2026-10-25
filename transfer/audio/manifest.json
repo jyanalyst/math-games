@@ -9,15 +9,15 @@
  "format": "mp3 mono 24kHz 48kbps",
  "generated": "2026-10-24",
  "count": 252,
- "total_bytes": 20468256,
- "total_seconds": 2559.29,
+ "total_bytes": 19830360,
+ "total_seconds": 2479,
  "clips": [
   {
    "id": "sh-welcome",
    "file": "sh-welcome.mp3",
-   "text": "Hello! I'm so happy you're here. Let's work these out together, one step at a time.",
-   "duration": 6.14,
-   "bytes": 49344
+   "text": "Hello! Let's work these out together, one step at a time.",
+   "duration": 4.49,
+   "bytes": 36140
   },
   {
    "id": "sh-welcomeBack",
@@ -29,9 +29,9 @@
   {
    "id": "sh-guessAck1",
    "file": "sh-guessAck1.mp3",
-   "text": "Ooh, good guess! Let's find out. Tap the orange Move button, and watch the dotted line.",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Let's find out. Tap the orange Move button, and watch the dotted line.",
+   "duration": 5.28,
+   "bytes": 42476
   },
   {
    "id": "sh-guessAck2",
@@ -78,9 +78,9 @@
   {
    "id": "sh-whoNumber",
    "file": "sh-whoNumber.mp3",
-   "text": "Good. Now type how many more, then tap Check.",
-   "duration": 4.01,
-   "bytes": 32256
+   "text": "Now type how many more, then tap Check.",
+   "duration": 3.36,
+   "bytes": 27116
   },
   {
    "id": "sh-whoSame",
@@ -106,9 +106,9 @@
   {
    "id": "sh-wrongWho",
    "file": "sh-wrongWho.mp3",
-   "text": "Hmm, not quite. Look at the bars again. Whose end sticks out further past the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the bars again. Whose end sticks out further past the dotted line?",
+   "duration": 5.78,
+   "bytes": 46508
   },
   {
    "id": "sh-hint1",
@@ -127,9 +127,9 @@
   {
    "id": "sh-roundDone",
    "file": "sh-roundDone.mp3",
-   "text": "You finished the round, and you got all ten stars! I'm so proud of you.",
-   "duration": 5.09,
-   "bytes": 40896
+   "text": "You finished the round, and you got all ten stars!",
+   "duration": 3.53,
+   "bytes": 28460
   },
   {
    "id": "sh-smallOn",
@@ -148,9 +148,9 @@
   {
    "id": "sh-voiceOn",
    "file": "sh-voiceOn.mp3",
-   "text": "I'm back!",
-   "duration": 1.18,
-   "bytes": 9600
+   "text": "Voice is on.",
+   "duration": 1.44,
+   "bytes": 11756
   },
   {
    "id": "life-sweets",
@@ -246,23 +246,23 @@
   {
    "id": "b01-praise",
    "file": "b01-praise.mp3",
-   "text": "Yes! Two hundred below the line, plus three hundred and twenty-nine above it... that makes five hundred and twenty-nine. You worked that out beautifully.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Yes! Two hundred below the line, plus three hundred and twenty-nine above it... that makes five hundred and twenty-nine.",
+   "duration": 7.61,
+   "bytes": 61100
   },
   {
    "id": "b01-wrongMoved",
    "file": "b01-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and twenty-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 11.14,
-   "bytes": 89280
+   "text": "Not yet. Three hundred and twenty-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 10.01,
+   "bytes": 80300
   },
   {
    "id": "b01-wrongNearly",
    "file": "b01-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Not yet. Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 6.62,
+   "bytes": 53228
   },
   {
    "id": "b02-intro",
@@ -302,23 +302,23 @@
   {
    "id": "b02-praise",
    "file": "b02-praise.mp3",
-   "text": "Yes! Two hundred and eighty-three below the line, plus five hundred and twenty-seven above it... that makes eight hundred and ten. Brilliant thinking!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! Two hundred and eighty-three below the line, plus five hundred and twenty-seven above it... that makes eight hundred and ten.",
+   "duration": 8.52,
+   "bytes": 68396
   },
   {
    "id": "b02-wrongMoved",
    "file": "b02-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five hundred and twenty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.42,
-   "bytes": 83520
+   "text": "Not yet. Five hundred and twenty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.38,
+   "bytes": 75308
   },
   {
    "id": "b02-wrongNearly",
    "file": "b02-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 7.03,
+   "bytes": 56492
   },
   {
    "id": "b03-intro",
@@ -351,23 +351,23 @@
   {
    "id": "b03-praise",
    "file": "b03-praise.mp3",
-   "text": "Yes! Ninety-four take away sixty-two is thirty-two... so Jar A has thirty-two more. That is exactly right. Well done!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! Ninety-four take away sixty-two is thirty-two... so Jar A has thirty-two more. That is exactly right.",
+   "duration": 9.02,
+   "bytes": 72428
   },
   {
    "id": "b03-wrongMoved",
    "file": "b03-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Sixty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Not yet. Sixty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.07,
+   "bytes": 72812
   },
   {
    "id": "b03-wrongNearly",
    "file": "b03-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
-   "duration": 7.92,
-   "bytes": 63552
+   "text": "Not yet. Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.39,
+   "bytes": 59372
   },
   {
    "id": "b04-intro",
@@ -407,23 +407,23 @@
   {
    "id": "b04-praise",
    "file": "b04-praise.mp3",
-   "text": "Yes! One hundred and thirty-five below the line, plus three hundred and nineteen above it... that makes four hundred and fifty-four. Lovely work!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! One hundred and thirty-five below the line, plus three hundred and nineteen above it... that makes four hundred and fifty-four.",
+   "duration": 8.95,
+   "bytes": 71852
   },
   {
    "id": "b04-wrongMoved",
    "file": "b04-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and nineteen is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.42,
-   "bytes": 83520
+   "text": "Not yet. Three hundred and nineteen is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.26,
+   "bytes": 74348
   },
   {
    "id": "b04-wrongNearly",
    "file": "b04-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.3,
+   "bytes": 58604
   },
   {
    "id": "b05-intro",
@@ -463,23 +463,23 @@
   {
    "id": "b05-praise",
    "file": "b05-praise.mp3",
-   "text": "Yes! Two hundred and forty-one below the line, plus two hundred and eighty-six above it... that makes five hundred and twenty-seven. Clever you!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! Two hundred and forty-one below the line, plus two hundred and eighty-six above it... that makes five hundred and twenty-seven.",
+   "duration": 8.86,
+   "bytes": 71084
   },
   {
    "id": "b05-wrongMoved",
    "file": "b05-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Two hundred and eighty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Two hundred and eighty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.84,
+   "bytes": 78956
   },
   {
    "id": "b05-wrongNearly",
    "file": "b05-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.27,
+   "bytes": 58412
   },
   {
    "id": "b06-intro",
@@ -512,9 +512,9 @@
   {
    "id": "b06-praise",
    "file": "b06-praise.mp3",
-   "text": "Yes! They're both one hundred and forty-one above the line... so they have exactly the same. You worked that out beautifully.",
-   "duration": 8.28,
-   "bytes": 66432
+   "text": "Yes! They're both one hundred and forty-one above the line... so they have exactly the same.",
+   "duration": 6.43,
+   "bytes": 51692
   },
   {
    "id": "b07-intro",
@@ -554,23 +554,23 @@
   {
    "id": "b07-praise",
    "file": "b07-praise.mp3",
-   "text": "Yes! Seventy-three below the line, plus one hundred and sixty-four above it... that makes two hundred and thirty-seven. Brilliant thinking!",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Yes! Seventy-three below the line, plus one hundred and sixty-four above it... that makes two hundred and thirty-seven.",
+   "duration": 8.5,
+   "bytes": 68204
   },
   {
    "id": "b07-wrongMoved",
    "file": "b07-wrongMoved.mp3",
-   "text": "That's okay, let's look again. One hundred and sixty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. One hundred and sixty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.84,
+   "bytes": 78956
   },
   {
    "id": "b07-wrongNearly",
    "file": "b07-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
+   "duration": 6.96,
+   "bytes": 55916
   },
   {
    "id": "b08-intro",
@@ -603,23 +603,23 @@
   {
    "id": "b08-praise",
    "file": "b08-praise.mp3",
-   "text": "Yes! One hundred and seventy-nine take away forty-seven is one hundred and thirty-two... so the hall has one hundred and thirty-two more. That is exactly right. Well done!",
-   "duration": 12.91,
-   "bytes": 103488
+   "text": "Yes! One hundred and seventy-nine take away forty-seven is one hundred and thirty-two... so the hall has one hundred and thirty-two more. That is exactly right.",
+   "duration": 11.93,
+   "bytes": 95660
   },
   {
    "id": "b08-wrongMoved",
    "file": "b08-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Forty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Not yet. Forty-seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.02,
+   "bytes": 72428
   },
   {
    "id": "b08-wrongNearly",
    "file": "b08-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 6.94,
+   "bytes": 55724
   },
   {
    "id": "b09-intro",
@@ -659,23 +659,23 @@
   {
    "id": "b09-praise",
    "file": "b09-praise.mp3",
-   "text": "Yes! One hundred and sixty-two below the line, plus three hundred and ninety-nine above it... that makes five hundred and sixty-one. Lovely work!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! One hundred and sixty-two below the line, plus three hundred and ninety-nine above it... that makes five hundred and sixty-one.",
+   "duration": 8.98,
+   "bytes": 72044
   },
   {
    "id": "b09-wrongMoved",
    "file": "b09-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and ninety-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Three hundred and ninety-nine is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.62,
+   "bytes": 77228
   },
   {
    "id": "b09-wrongNearly",
    "file": "b09-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 6.86,
+   "bytes": 55148
   },
   {
    "id": "b10-intro",
@@ -715,23 +715,23 @@
   {
    "id": "b10-praise",
    "file": "b10-praise.mp3",
-   "text": "Yes! One hundred and thirty-five below the line, plus three hundred above it... that makes four hundred and thirty-five. Clever you!",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Yes! One hundred and thirty-five below the line, plus three hundred above it... that makes four hundred and thirty-five.",
+   "duration": 8.45,
+   "bytes": 67820
   },
   {
    "id": "b10-wrongMoved",
    "file": "b10-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Not yet. Three hundred is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.66,
+   "bytes": 69548
   },
   {
    "id": "b10-wrongNearly",
    "file": "b10-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 6.96,
+   "bytes": 55916
   },
   {
    "id": "b11-intro",
@@ -771,23 +771,23 @@
   {
    "id": "b11-praise",
    "file": "b11-praise.mp3",
-   "text": "Yes! Two hundred and fifty-six below the line, plus three hundred and twenty-six above it... that makes five hundred and eighty-two. You worked that out beautifully.",
-   "duration": 11.47,
-   "bytes": 91968
+   "text": "Yes! Two hundred and fifty-six below the line, plus three hundred and twenty-six above it... that makes five hundred and eighty-two.",
+   "duration": 9.62,
+   "bytes": 77228
   },
   {
    "id": "b11-wrongMoved",
    "file": "b11-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and twenty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Three hundred and twenty-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.72,
+   "bytes": 77996
   },
   {
    "id": "b11-wrongNearly",
    "file": "b11-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
-   "duration": 7.92,
-   "bytes": 63552
+   "text": "Not yet. Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.7,
+   "bytes": 61868
   },
   {
    "id": "b12-intro",
@@ -820,23 +820,23 @@
   {
    "id": "b12-praise",
    "file": "b12-praise.mp3",
-   "text": "Yes! One hundred and forty-eight take away twenty-three is one hundred and twenty-five... so Bus 1 has one hundred and twenty-five more. Brilliant thinking!",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Yes! One hundred and forty-eight take away twenty-three is one hundred and twenty-five... so Bus 1 has one hundred and twenty-five more.",
+   "duration": 9.34,
+   "bytes": 74924
   },
   {
    "id": "b12-wrongMoved",
    "file": "b12-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Twenty-three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Not yet. Twenty-three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.74,
+   "bytes": 70124
   },
   {
    "id": "b12-wrongNearly",
    "file": "b12-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.01,
+   "bytes": 56300
   },
   {
    "id": "b13-intro",
@@ -876,23 +876,23 @@
   {
    "id": "b13-praise",
    "file": "b13-praise.mp3",
-   "text": "Yes! Eighty-five below the line, plus three hundred and twenty-four above it... that makes four hundred and nine. That is exactly right. Well done!",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Yes! Eighty-five below the line, plus three hundred and twenty-four above it... that makes four hundred and nine. That is exactly right.",
+   "duration": 8.95,
+   "bytes": 71852
   },
   {
    "id": "b13-wrongMoved",
    "file": "b13-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and twenty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Three hundred and twenty-four is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.74,
+   "bytes": 78188
   },
   {
    "id": "b13-wrongNearly",
    "file": "b13-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.25,
+   "bytes": 58220
   },
   {
    "id": "b14-intro",
@@ -932,23 +932,23 @@
   {
    "id": "b14-praise",
    "file": "b14-praise.mp3",
-   "text": "Yes! One hundred and seventy-four below the line, plus three hundred and eighty-two above it... that makes five hundred and fifty-six. Lovely work!",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Yes! One hundred and seventy-four below the line, plus three hundred and eighty-two above it... that makes five hundred and fifty-six.",
+   "duration": 9.7,
+   "bytes": 77804
   },
   {
    "id": "b14-wrongMoved",
    "file": "b14-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and eighty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Three hundred and eighty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.79,
+   "bytes": 78572
   },
   {
    "id": "b14-wrongNearly",
    "file": "b14-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Not yet. Look at the labels on Tray A and Tray B. How far is each end from the dotted line?",
+   "duration": 6.67,
+   "bytes": 53612
   },
   {
    "id": "b15-intro",
@@ -981,9 +981,9 @@
   {
    "id": "b15-praise",
    "file": "b15-praise.mp3",
-   "text": "Yes! They're both sixty-five above the line... so they have exactly the same. Clever you!",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Yes! They're both sixty-five above the line... so they have exactly the same.",
+   "duration": 5.69,
+   "bytes": 45740
   },
   {
    "id": "b16-intro",
@@ -1023,23 +1023,23 @@
   {
    "id": "b16-praise",
    "file": "b16-praise.mp3",
-   "text": "Yes! Two hundred and sixty-four below the line, plus two hundred and ninety-six above it... that makes five hundred and sixty. You worked that out beautifully.",
-   "duration": 10.42,
-   "bytes": 83520
+   "text": "Yes! Two hundred and sixty-four below the line, plus two hundred and ninety-six above it... that makes five hundred and sixty.",
+   "duration": 8.57,
+   "bytes": 68780
   },
   {
    "id": "b16-wrongMoved",
    "file": "b16-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Two hundred and ninety-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Not yet. Two hundred and ninety-six is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.07,
+   "bytes": 72812
   },
   {
    "id": "b16-wrongNearly",
    "file": "b16-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Not yet. Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 6.6,
+   "bytes": 53036
   },
   {
    "id": "b17-intro",
@@ -1079,23 +1079,23 @@
   {
    "id": "b17-praise",
    "file": "b17-praise.mp3",
-   "text": "Yes! Two hundred and seventy-four below the line, plus three hundred and seventy above it... that makes six hundred and forty-four. Brilliant thinking!",
-   "duration": 10.42,
-   "bytes": 83520
+   "text": "Yes! Two hundred and seventy-four below the line, plus three hundred and seventy above it... that makes six hundred and forty-four.",
+   "duration": 8.93,
+   "bytes": 71660
   },
   {
    "id": "b17-wrongMoved",
    "file": "b17-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three hundred and seventy is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Three hundred and seventy is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.55,
+   "bytes": 76652
   },
   {
    "id": "b17-wrongNearly",
    "file": "b17-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 6.96,
+   "bytes": 55916
   },
   {
    "id": "b18-intro",
@@ -1128,23 +1128,23 @@
   {
    "id": "b18-praise",
    "file": "b18-praise.mp3",
-   "text": "Yes! Two hundred and fifteen take away fifty-eight is one hundred and fifty-seven... so the top shelf has one hundred and fifty-seven more. That is exactly right. Well done!",
-   "duration": 12.19,
-   "bytes": 97728
+   "text": "Yes! Two hundred and fifteen take away fifty-eight is one hundred and fifty-seven... so the top shelf has one hundred and fifty-seven more. That is exactly right.",
+   "duration": 11.42,
+   "bytes": 91628
   },
   {
    "id": "b18-wrongMoved",
    "file": "b18-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Fifty-eight is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Fifty-eight is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.35,
+   "bytes": 67052
   },
   {
    "id": "b18-wrongNearly",
    "file": "b18-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
-   "duration": 7.92,
-   "bytes": 63552
+   "text": "Not yet. Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.7,
+   "bytes": 61868
   },
   {
    "id": "b19-intro",
@@ -1184,23 +1184,23 @@
   {
    "id": "b19-praise",
    "file": "b19-praise.mp3",
-   "text": "Yes! Two hundred and sixty below the line, plus two hundred and ninety above it... that makes five hundred and fifty. Lovely work!",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Yes! Two hundred and sixty below the line, plus two hundred and ninety above it... that makes five hundred and fifty.",
+   "duration": 8.42,
+   "bytes": 67628
   },
   {
    "id": "b19-wrongMoved",
    "file": "b19-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Two hundred and ninety is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.06,
-   "bytes": 80640
+   "text": "Not yet. Two hundred and ninety is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.07,
+   "bytes": 72812
   },
   {
    "id": "b19-wrongNearly",
    "file": "b19-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 6.98,
+   "bytes": 56108
   },
   {
    "id": "b20-intro",
@@ -1240,23 +1240,23 @@
   {
    "id": "b20-praise",
    "file": "b20-praise.mp3",
-   "text": "Yes! Two hundred and ninety-eight below the line, plus five hundred and thirty-two above it... that makes eight hundred and thirty. Clever you!",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Yes! Two hundred and ninety-eight below the line, plus five hundred and thirty-two above it... that makes eight hundred and thirty.",
+   "duration": 8.52,
+   "bytes": 68396
   },
   {
    "id": "b20-wrongMoved",
    "file": "b20-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five hundred and thirty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 10.78,
-   "bytes": 86400
+   "text": "Not yet. Five hundred and thirty-two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 9.74,
+   "bytes": 78188
   },
   {
    "id": "b20-wrongNearly",
    "file": "b20-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.03,
+   "bytes": 56492
   },
   {
    "id": "s01-intro",
@@ -1296,23 +1296,23 @@
   {
    "id": "s01-praise",
    "file": "s01-praise.mp3",
-   "text": "Yes! Two below the line, plus five above it... that makes seven. You worked that out beautifully.",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Yes! Two below the line, plus five above it... that makes seven.",
+   "duration": 4.92,
+   "bytes": 39596
   },
   {
    "id": "s01-wrongMoved",
    "file": "s01-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.28,
+   "bytes": 66476
   },
   {
    "id": "s01-wrongNearly",
    "file": "s01-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.49,
+   "bytes": 60140
   },
   {
    "id": "s02-intro",
@@ -1352,23 +1352,23 @@
   {
    "id": "s02-praise",
    "file": "s02-praise.mp3",
-   "text": "Yes! Four below the line, plus seven above it... that makes eleven. Brilliant thinking!",
-   "duration": 6.14,
-   "bytes": 49344
+   "text": "Yes! Four below the line, plus seven above it... that makes eleven.",
+   "duration": 4.85,
+   "bytes": 39020
   },
   {
    "id": "s02-wrongMoved",
    "file": "s02-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9,
-   "bytes": 72192
+   "text": "Not yet. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.11,
+   "bytes": 65132
   },
   {
    "id": "s02-wrongNearly",
    "file": "s02-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.32,
+   "bytes": 58796
   },
   {
    "id": "s03-intro",
@@ -1401,23 +1401,23 @@
   {
    "id": "s03-praise",
    "file": "s03-praise.mp3",
-   "text": "Yes! Four take away three is one... so Bus 1 has one more. That is exactly right. Well done!",
-   "duration": 7.92,
-   "bytes": 63552
+   "text": "Yes! Four take away three is one... so Bus 1 has one more. That is exactly right.",
+   "duration": 7.18,
+   "bytes": 57644
   },
   {
    "id": "s03-wrongMoved",
    "file": "s03-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.7,
-   "bytes": 77760
+   "text": "Not yet. Three is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.3,
+   "bytes": 66668
   },
   {
    "id": "s03-wrongNearly",
    "file": "s03-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
-   "duration": 6.5,
-   "bytes": 52224
+   "text": "Not yet. Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 6.86,
+   "bytes": 55148
   },
   {
    "id": "s04-intro",
@@ -1457,23 +1457,23 @@
   {
    "id": "s04-praise",
    "file": "s04-praise.mp3",
-   "text": "Yes! One below the line, plus five above it... that makes six. Lovely work!",
-   "duration": 6.5,
-   "bytes": 52224
+   "text": "Yes! One below the line, plus five above it... that makes six.",
+   "duration": 5.42,
+   "bytes": 43628
   },
   {
    "id": "s04-wrongMoved",
    "file": "s04-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.28,
+   "bytes": 66476
   },
   {
    "id": "s04-wrongNearly",
    "file": "s04-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
-   "duration": 8.28,
-   "bytes": 66432
+   "text": "Not yet. Look at the labels on Tank A and Tank B. How far is each end from the dotted line?",
+   "duration": 7.78,
+   "bytes": 62444
   },
   {
    "id": "s05-intro",
@@ -1506,9 +1506,9 @@
   {
    "id": "s05-praise",
    "file": "s05-praise.mp3",
-   "text": "Yes! They're both one above the line... so they have exactly the same. Clever you!",
-   "duration": 6.5,
-   "bytes": 52224
+   "text": "Yes! They're both one above the line... so they have exactly the same.",
+   "duration": 5.18,
+   "bytes": 41708
   },
   {
    "id": "s06-intro",
@@ -1548,23 +1548,23 @@
   {
    "id": "s06-praise",
    "file": "s06-praise.mp3",
-   "text": "Yes! Four below the line, plus five above it... that makes nine. You worked that out beautifully.",
-   "duration": 6.5,
-   "bytes": 52224
+   "text": "Yes! Four below the line, plus five above it... that makes nine.",
+   "duration": 4.85,
+   "bytes": 39020
   },
   {
    "id": "s06-wrongMoved",
    "file": "s06-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9,
-   "bytes": 72192
+   "text": "Not yet. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 7.92,
+   "bytes": 63596
   },
   {
    "id": "s06-wrongNearly",
    "file": "s06-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Not yet. Look at the labels on the hall and the canteen. How far is each end from the dotted line?",
+   "duration": 6.65,
+   "bytes": 53420
   },
   {
    "id": "s07-intro",
@@ -1597,23 +1597,23 @@
   {
    "id": "s07-praise",
    "file": "s07-praise.mp3",
-   "text": "Yes! Six take away two is four... so Mei Ling has four more. Brilliant thinking!",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Yes! Six take away two is four... so Mei Ling has four more.",
+   "duration": 5.62,
+   "bytes": 45164
   },
   {
    "id": "s07-wrongMoved",
    "file": "s07-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.4,
+   "bytes": 67436
   },
   {
    "id": "s07-wrongNearly",
    "file": "s07-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Not yet. Look at the labels on Mei Ling and Aisha. How far is each end from the dotted line?",
+   "duration": 6.6,
+   "bytes": 53036
   },
   {
    "id": "s08-intro",
@@ -1653,23 +1653,23 @@
   {
    "id": "s08-praise",
    "file": "s08-praise.mp3",
-   "text": "Yes! Three below the line, plus seven above it... that makes ten. That is exactly right. Well done!",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Yes! Three below the line, plus seven above it... that makes ten. That is exactly right.",
+   "duration": 6.7,
+   "bytes": 53804
   },
   {
    "id": "s08-wrongMoved",
    "file": "s08-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Seven is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.23,
+   "bytes": 66092
   },
   {
    "id": "s08-wrongNearly",
    "file": "s08-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Jar A and Jar B. How far is each end from the dotted line?",
+   "duration": 7.03,
+   "bytes": 56492
   },
   {
    "id": "s09-intro",
@@ -1702,23 +1702,23 @@
   {
    "id": "s09-praise",
    "file": "s09-praise.mp3",
-   "text": "Yes! Six take away two is four... so the top shelf has four more. Lovely work!",
-   "duration": 6.86,
-   "bytes": 55104
+   "text": "Yes! Six take away two is four... so the top shelf has four more.",
+   "duration": 5.74,
+   "bytes": 46124
   },
   {
    "id": "s09-wrongMoved",
    "file": "s09-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9.36,
-   "bytes": 75072
+   "text": "Not yet. Two is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 8.38,
+   "bytes": 67244
   },
   {
    "id": "s09-wrongNearly",
    "file": "s09-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
-   "duration": 7.56,
-   "bytes": 60672
+   "text": "Not yet. Look at the labels on the top shelf and the bottom shelf. How far is each end from the dotted line?",
+   "duration": 7.34,
+   "bytes": 58988
   },
   {
    "id": "s10-intro",
@@ -1758,30 +1758,30 @@
   {
    "id": "s10-praise",
    "file": "s10-praise.mp3",
-   "text": "Yes! One below the line, plus five above it... that makes six. Clever you!",
-   "duration": 6.14,
-   "bytes": 49344
+   "text": "Yes! One below the line, plus five above it... that makes six.",
+   "duration": 5.06,
+   "bytes": 40748
   },
   {
    "id": "s10-wrongMoved",
    "file": "s10-wrongMoved.mp3",
-   "text": "That's okay, let's look again. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
-   "duration": 9,
-   "bytes": 72192
+   "text": "Not yet. Five is how many moved... but the gap changed from both sides. Check the two labels on the bars.",
+   "duration": 7.85,
+   "bytes": 63020
   },
   {
    "id": "s10-wrongNearly",
    "file": "s10-wrongNearly.mp3",
-   "text": "Ooh, nearly! Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
-   "duration": 7.22,
-   "bytes": 57984
+   "text": "Not yet. Look at the labels on Bus 1 and Bus 2. How far is each end from the dotted line?",
+   "duration": 7.03,
+   "bytes": 56492
   }
  ],
  "device_voice_working": {
   "note": "Write-the-working step: NOT recorded. Read by the device voice (Web Speech) in Lesson and Practice mode. Estimate assumes Eleven v4 at about 0.5 credits per 100 characters, numbers spelled out.",
   "generated": "2026-10-24",
   "count": 659,
-  "chars": 108846,
+  "chars": 108337,
   "chars_numbers_in_words": 124270,
   "est_credits_if_recorded": 621.4,
   "lines": [
@@ -1803,7 +1803,7 @@
    },
    {
     "id": "wk-fast",
-    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done."
+    "text": "On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done."
    },
    {
     "id": "wk-compare",
@@ -1815,7 +1815,7 @@
    },
    {
     "id": "wk-ticked",
-    "text": "All ticked. Well done!"
+    "text": "All ticked. Every line is on your paper."
    },
    {
     "id": "b01-w1-ask",
@@ -1831,11 +1831,11 @@
    },
    {
     "id": "b01-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one."
    },
    {
     "id": "b01-w1-nudge2",
-    "text": "Not quite. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer."
+    "text": "Not yet. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer."
    },
    {
     "id": "b01-w2-ask",
@@ -1851,11 +1851,11 @@
    },
    {
     "id": "b01-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b01-w2-nudge2",
-    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b01-wans-ask",
@@ -1871,11 +1871,11 @@
    },
    {
     "id": "b01-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b01-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b01-w4-ask",
@@ -1891,11 +1891,11 @@
    },
    {
     "id": "b01-w4-nudge1",
-    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b01-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b02-w1-ask",
@@ -1911,11 +1911,11 @@
    },
    {
     "id": "b02-w1-nudge1",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
    },
    {
     "id": "b02-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
    },
    {
     "id": "b02-w2-ask",
@@ -1931,11 +1931,11 @@
    },
    {
     "id": "b02-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b02-w2-nudge2",
-    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b02-wans-ask",
@@ -1951,11 +1951,11 @@
    },
    {
     "id": "b02-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b02-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b02-w4-ask",
@@ -1971,11 +1971,11 @@
    },
    {
     "id": "b02-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b02-w4-nudge2",
-    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b03-w1-ask",
@@ -1991,11 +1991,11 @@
    },
    {
     "id": "b03-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b03-w1-nudge2",
-    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b03-w2-ask",
@@ -2011,11 +2011,11 @@
    },
    {
     "id": "b03-w2-nudge1",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b03-w2-nudge2",
-    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b03-wans-ask",
@@ -2031,11 +2031,11 @@
    },
    {
     "id": "b03-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b03-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b03-w4-ask",
@@ -2051,11 +2051,11 @@
    },
    {
     "id": "b03-w4-nudge1",
-    "text": "Not quite. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b03-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b04-w1-ask",
@@ -2071,11 +2071,11 @@
    },
    {
     "id": "b04-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
    },
    {
     "id": "b04-w1-nudge2",
-    "text": "Not quite. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
+    "text": "Not yet. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
    },
    {
     "id": "b04-w2-ask",
@@ -2091,11 +2091,11 @@
    },
    {
     "id": "b04-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b04-w2-nudge2",
-    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b04-wans-ask",
@@ -2111,11 +2111,11 @@
    },
    {
     "id": "b04-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b04-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b04-w4-ask",
@@ -2131,11 +2131,11 @@
    },
    {
     "id": "b04-w4-nudge1",
-    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b04-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b05-w1-ask",
@@ -2151,11 +2151,11 @@
    },
    {
     "id": "b05-w1-nudge1",
-    "text": "Not quite. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
+    "text": "Not yet. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
    },
    {
     "id": "b05-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
    },
    {
     "id": "b05-w2-ask",
@@ -2171,11 +2171,11 @@
    },
    {
     "id": "b05-w2-nudge1",
-    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b05-w2-nudge2",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b05-wans-ask",
@@ -2191,11 +2191,11 @@
    },
    {
     "id": "b05-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b05-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b05-w4-ask",
@@ -2211,11 +2211,11 @@
    },
    {
     "id": "b05-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b05-w4-nudge2",
-    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b06-w1-ask",
@@ -2231,11 +2231,11 @@
    },
    {
     "id": "b06-w1-nudge1",
-    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b06-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b06-w2-ask",
@@ -2251,11 +2251,11 @@
    },
    {
     "id": "b06-w2-nudge1",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b06-w2-nudge2",
-    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b06-wans-ask",
@@ -2271,11 +2271,11 @@
    },
    {
     "id": "b06-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?"
    },
    {
     "id": "b06-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?"
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?"
    },
    {
     "id": "b06-w4-ask",
@@ -2291,11 +2291,11 @@
    },
    {
     "id": "b06-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b06-w4-nudge2",
-    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
+    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller."
    },
    {
     "id": "b07-w1-ask",
@@ -2311,11 +2311,11 @@
    },
    {
     "id": "b07-w1-nudge1",
-    "text": "Not quite. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
    },
    {
     "id": "b07-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
    },
    {
     "id": "b07-w2-ask",
@@ -2331,11 +2331,11 @@
    },
    {
     "id": "b07-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b07-w2-nudge2",
-    "text": "Not quite. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b07-wans-ask",
@@ -2351,11 +2351,11 @@
    },
    {
     "id": "b07-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b07-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b07-w4-ask",
@@ -2371,11 +2371,11 @@
    },
    {
     "id": "b07-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b07-w4-nudge2",
-    "text": "Not quite. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b08-w1-ask",
@@ -2391,11 +2391,11 @@
    },
    {
     "id": "b08-w1-nudge1",
-    "text": "Not quite. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b08-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b08-w2-ask",
@@ -2411,11 +2411,11 @@
    },
    {
     "id": "b08-w2-nudge1",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b08-w2-nudge2",
-    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b08-wans-ask",
@@ -2431,11 +2431,11 @@
    },
    {
     "id": "b08-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b08-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b08-w4-ask",
@@ -2451,11 +2451,11 @@
    },
    {
     "id": "b08-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b08-w4-nudge2",
-    "text": "Not quite. Look at the bars. The hall is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. The hall is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b09-w1-ask",
@@ -2471,11 +2471,11 @@
    },
    {
     "id": "b09-w1-nudge1",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
    },
    {
     "id": "b09-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
    },
    {
     "id": "b09-w2-ask",
@@ -2491,11 +2491,11 @@
    },
    {
     "id": "b09-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b09-w2-nudge2",
-    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b09-wans-ask",
@@ -2511,11 +2511,11 @@
    },
    {
     "id": "b09-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b09-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b09-w4-ask",
@@ -2531,11 +2531,11 @@
    },
    {
     "id": "b09-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b09-w4-nudge2",
-    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b10-w1-ask",
@@ -2551,11 +2551,11 @@
    },
    {
     "id": "b10-w1-nudge1",
-    "text": "Not quite. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
    },
    {
     "id": "b10-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
    },
    {
     "id": "b10-w2-ask",
@@ -2571,11 +2571,11 @@
    },
    {
     "id": "b10-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b10-w2-nudge2",
-    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b10-wans-ask",
@@ -2591,11 +2591,11 @@
    },
    {
     "id": "b10-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b10-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b10-w4-ask",
@@ -2611,11 +2611,11 @@
    },
    {
     "id": "b10-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b10-w4-nudge2",
-    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b11-w1-ask",
@@ -2631,11 +2631,11 @@
    },
    {
     "id": "b11-w1-nudge1",
-    "text": "Not quite. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
+    "text": "Not yet. Look at the top shelf's bar. The books walk out of the top shelf, so it gets shorter, not longer."
    },
    {
     "id": "b11-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or the top shelf's extra piece? Start with the longer one."
    },
    {
     "id": "b11-w2-ask",
@@ -2651,11 +2651,11 @@
    },
    {
     "id": "b11-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of the top shelf, below the line, right up to the end of the bottom shelf, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b11-w2-nudge2",
-    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses the top shelf's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b11-wans-ask",
@@ -2671,11 +2671,11 @@
    },
    {
     "id": "b11-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b11-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b11-w4-ask",
@@ -2691,11 +2691,11 @@
    },
    {
     "id": "b11-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b11-w4-nudge2",
-    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b12-w1-ask",
@@ -2711,11 +2711,11 @@
    },
    {
     "id": "b12-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, Bus 1's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, Bus 1's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b12-w1-nudge2",
-    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b12-w2-ask",
@@ -2731,11 +2731,11 @@
    },
    {
     "id": "b12-w2-nudge1",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b12-w2-nudge2",
-    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses Bus 1's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b12-wans-ask",
@@ -2751,11 +2751,11 @@
    },
    {
     "id": "b12-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b12-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b12-w4-ask",
@@ -2771,11 +2771,11 @@
    },
    {
     "id": "b12-w4-nudge1",
-    "text": "Not quite. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b12-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b13-w1-ask",
@@ -2791,11 +2791,11 @@
    },
    {
     "id": "b13-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
    },
    {
     "id": "b13-w1-nudge2",
-    "text": "Not quite. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
    },
    {
     "id": "b13-w2-ask",
@@ -2811,11 +2811,11 @@
    },
    {
     "id": "b13-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b13-w2-nudge2",
-    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b13-wans-ask",
@@ -2831,11 +2831,11 @@
    },
    {
     "id": "b13-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b13-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b13-w4-ask",
@@ -2851,11 +2851,11 @@
    },
    {
     "id": "b13-w4-nudge1",
-    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b13-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b14-w1-ask",
@@ -2871,11 +2871,11 @@
    },
    {
     "id": "b14-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one."
    },
    {
     "id": "b14-w1-nudge2",
-    "text": "Not quite. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer."
    },
    {
     "id": "b14-w2-ask",
@@ -2891,11 +2891,11 @@
    },
    {
     "id": "b14-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b14-w2-nudge2",
-    "text": "Not quite. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b14-wans-ask",
@@ -2911,11 +2911,11 @@
    },
    {
     "id": "b14-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b14-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b14-w4-ask",
@@ -2931,11 +2931,11 @@
    },
    {
     "id": "b14-w4-nudge1",
-    "text": "Not quite. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b14-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b15-w1-ask",
@@ -2951,11 +2951,11 @@
    },
    {
     "id": "b15-w1-nudge1",
-    "text": "Not quite. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at the hall's bar. The students leave the hall, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b15-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the hall's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b15-w2-ask",
@@ -2971,11 +2971,11 @@
    },
    {
     "id": "b15-w2-nudge1",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b15-w2-nudge2",
-    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b15-wans-ask",
@@ -2991,11 +2991,11 @@
    },
    {
     "id": "b15-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?"
    },
    {
     "id": "b15-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which place has more. What do you say when nobody has more?"
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which place has more. What do you say when nobody has more?"
    },
    {
     "id": "b15-w4-ask",
@@ -3011,11 +3011,11 @@
    },
    {
     "id": "b15-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b15-w4-nudge2",
-    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
+    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller."
    },
    {
     "id": "b16-w1-ask",
@@ -3031,11 +3031,11 @@
    },
    {
     "id": "b16-w1-nudge1",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
+    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer."
    },
    {
     "id": "b16-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one."
    },
    {
     "id": "b16-w2-ask",
@@ -3051,11 +3051,11 @@
    },
    {
     "id": "b16-w2-nudge1",
-    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b16-w2-nudge2",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b16-wans-ask",
@@ -3071,11 +3071,11 @@
    },
    {
     "id": "b16-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b16-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b16-w4-ask",
@@ -3091,11 +3091,11 @@
    },
    {
     "id": "b16-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b16-w4-nudge2",
-    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b17-w1-ask",
@@ -3111,11 +3111,11 @@
    },
    {
     "id": "b17-w1-nudge1",
-    "text": "Not quite. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Jar A's bar. The marbles walk out of Jar A, so it gets shorter, not longer."
    },
    {
     "id": "b17-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Jar A's extra piece? Start with the longer one."
    },
    {
     "id": "b17-w2-ask",
@@ -3131,11 +3131,11 @@
    },
    {
     "id": "b17-w2-nudge1",
-    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b17-w2-nudge2",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Jar A, below the line, right up to the end of Jar B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b17-wans-ask",
@@ -3151,11 +3151,11 @@
    },
    {
     "id": "b17-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b17-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b17-w4-ask",
@@ -3171,11 +3171,11 @@
    },
    {
     "id": "b17-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b17-w4-nudge2",
-    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b18-w1-ask",
@@ -3191,11 +3191,11 @@
    },
    {
     "id": "b18-w1-nudge1",
-    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so the extra piece gets shorter, not longer."
+    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so the extra piece gets shorter, not longer."
    },
    {
     "id": "b18-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the top shelf's extra piece or the move? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the top shelf's extra piece or the move? Start with the longer one."
    },
    {
     "id": "b18-w2-ask",
@@ -3211,11 +3211,11 @@
    },
    {
     "id": "b18-w2-nudge1",
-    "text": "Not quite. That uses the top shelf's extra from the start. Use the two pieces above the line now."
+    "text": "Not yet. That uses the top shelf's extra from the start. Use the two pieces above the line now."
    },
    {
     "id": "b18-w2-nudge2",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?"
    },
    {
     "id": "b18-wans-ask",
@@ -3231,11 +3231,11 @@
    },
    {
     "id": "b18-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b18-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b18-w4-ask",
@@ -3251,11 +3251,11 @@
    },
    {
     "id": "b18-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b18-w4-nudge2",
-    "text": "Not quite. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "b19-w1-ask",
@@ -3271,11 +3271,11 @@
    },
    {
     "id": "b19-w1-nudge1",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Bus 1's extra piece? Start with the longer one."
    },
    {
     "id": "b19-w1-nudge2",
-    "text": "Not quite. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
+    "text": "Not yet. Look at Bus 1's bar. The passengers walk out of Bus 1, so it gets shorter, not longer."
    },
    {
     "id": "b19-w2-ask",
@@ -3291,11 +3291,11 @@
    },
    {
     "id": "b19-w2-nudge1",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Bus 1, below the line, right up to the end of Bus 2, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b19-w2-nudge2",
-    "text": "Not quite. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Bus 1's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b19-wans-ask",
@@ -3311,11 +3311,11 @@
    },
    {
     "id": "b19-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b19-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b19-w4-ask",
@@ -3331,11 +3331,11 @@
    },
    {
     "id": "b19-w4-nudge1",
-    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "b19-w4-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b20-w1-ask",
@@ -3351,11 +3351,11 @@
    },
    {
     "id": "b20-w1-nudge1",
-    "text": "Not quite. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tank A's bar. The fish walk out of Tank A, so it gets shorter, not longer."
    },
    {
     "id": "b20-w1-nudge2",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tank A's extra piece? Start with the longer one."
    },
    {
     "id": "b20-w2-ask",
@@ -3371,11 +3371,11 @@
    },
    {
     "id": "b20-w2-nudge1",
-    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
+    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it."
    },
    {
     "id": "b20-w2-nudge2",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tank A, below the line, right up to the end of Tank B, above the line. Is that one piece, or two pieces joined end to end?"
    },
    {
     "id": "b20-wans-ask",
@@ -3391,11 +3391,11 @@
    },
    {
     "id": "b20-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "b20-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "b20-w4-ask",
@@ -3411,11 +3411,11 @@
    },
    {
     "id": "b20-w4-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "b20-w4-nudge2",
-    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s01-w1-ask",
@@ -3431,11 +3431,11 @@
    },
    {
     "id": "s01-w1-nudge1",
-    "text": "Not quite. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
+    "text": "Not yet. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
    },
    {
     "id": "s01-w1-nudge2",
-    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
    },
    {
     "id": "s01-w2-ask",
@@ -3451,11 +3451,11 @@
    },
    {
     "id": "s01-w2-nudge1",
-    "text": "Not quite. Look at Jar B's bar. It grows when the marbles arrive."
+    "text": "Not yet. Look at Jar B's bar. It grows when the marbles arrive."
    },
    {
     "id": "s01-w2-nudge2",
-    "text": "Not quite. That starts from Jar A's number. Look at Jar B's bar."
+    "text": "Not yet. That starts from Jar A's number. Look at Jar B's bar."
    },
    {
     "id": "s01-w3-ask",
@@ -3471,11 +3471,11 @@
    },
    {
     "id": "s01-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s01-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s01-wans-ask",
@@ -3491,11 +3491,11 @@
    },
    {
     "id": "s01-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s01-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s01-w5-ask",
@@ -3511,11 +3511,11 @@
    },
    {
     "id": "s01-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s01-w5-nudge2",
-    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s02-w1-ask",
@@ -3531,11 +3531,11 @@
    },
    {
     "id": "s02-w1-nudge1",
-    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
+    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
    },
    {
     "id": "s02-w1-nudge2",
-    "text": "Not quite. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
+    "text": "Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
    },
    {
     "id": "s02-w2-ask",
@@ -3551,11 +3551,11 @@
    },
    {
     "id": "s02-w2-nudge1",
-    "text": "Not quite. That starts from the top shelf's number. Look at the bottom shelf's bar."
+    "text": "Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar."
    },
    {
     "id": "s02-w2-nudge2",
-    "text": "Not quite. Look at the bottom shelf's bar. It grows when the books arrive."
+    "text": "Not yet. Look at the bottom shelf's bar. It grows when the books arrive."
    },
    {
     "id": "s02-w3-ask",
@@ -3571,11 +3571,11 @@
    },
    {
     "id": "s02-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s02-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s02-wans-ask",
@@ -3591,11 +3591,11 @@
    },
    {
     "id": "s02-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s02-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s02-w5-ask",
@@ -3611,11 +3611,11 @@
    },
    {
     "id": "s02-w5-nudge1",
-    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s02-w5-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s03-w1-ask",
@@ -3631,11 +3631,11 @@
    },
    {
     "id": "s03-w1-nudge1",
-    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
+    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
    },
    {
     "id": "s03-w1-nudge2",
-    "text": "Not quite. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
+    "text": "Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
    },
    {
     "id": "s03-w2-ask",
@@ -3651,11 +3651,11 @@
    },
    {
     "id": "s03-w2-nudge1",
-    "text": "Not quite. That starts from Bus 1's number. Look at Bus 2's bar."
+    "text": "Not yet. That starts from Bus 1's number. Look at Bus 2's bar."
    },
    {
     "id": "s03-w2-nudge2",
-    "text": "Not quite. Look at Bus 2's bar. It grows when the passengers arrive."
+    "text": "Not yet. Look at Bus 2's bar. It grows when the passengers arrive."
    },
    {
     "id": "s03-w3-ask",
@@ -3671,11 +3671,11 @@
    },
    {
     "id": "s03-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s03-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s03-wans-ask",
@@ -3691,11 +3691,11 @@
    },
    {
     "id": "s03-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s03-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s03-w5-ask",
@@ -3711,11 +3711,11 @@
    },
    {
     "id": "s03-w5-nudge1",
-    "text": "Not quite. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "s03-w5-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s04-w1-ask",
@@ -3731,11 +3731,11 @@
    },
    {
     "id": "s04-w1-nudge1",
-    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer."
    },
    {
     "id": "s04-w1-nudge2",
-    "text": "Not quite. That takes away Tank B's number. Look at Tank A's bar. How many leave it?"
+    "text": "Not yet. That takes away Tank B's number. Look at Tank A's bar. How many leave it?"
    },
    {
     "id": "s04-w2-ask",
@@ -3751,11 +3751,11 @@
    },
    {
     "id": "s04-w2-nudge1",
-    "text": "Not quite. That starts from Tank A's number. Look at Tank B's bar."
+    "text": "Not yet. That starts from Tank A's number. Look at Tank B's bar."
    },
    {
     "id": "s04-w2-nudge2",
-    "text": "Not quite. Look at Tank B's bar. How many arrive?"
+    "text": "Not yet. Look at Tank B's bar. How many arrive?"
    },
    {
     "id": "s04-w3-ask",
@@ -3771,11 +3771,11 @@
    },
    {
     "id": "s04-w3-nudge1",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s04-w3-nudge2",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s04-wans-ask",
@@ -3791,11 +3791,11 @@
    },
    {
     "id": "s04-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s04-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s04-w5-ask",
@@ -3811,11 +3811,11 @@
    },
    {
     "id": "s04-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s04-w5-nudge2",
-    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s05-w1-ask",
@@ -3831,11 +3831,11 @@
    },
    {
     "id": "s05-w1-nudge1",
-    "text": "Not quite. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer."
    },
    {
     "id": "s05-w1-nudge2",
-    "text": "Not quite. That takes away Tray B's number. Look at Tray A's bar. How many leave it?"
+    "text": "Not yet. That takes away Tray B's number. Look at Tray A's bar. How many leave it?"
    },
    {
     "id": "s05-w2-ask",
@@ -3851,11 +3851,11 @@
    },
    {
     "id": "s05-w2-nudge1",
-    "text": "Not quite. Look at Tray B's bar. It grows when the ang ku kueh arrive."
+    "text": "Not yet. Look at Tray B's bar. It grows when the ang ku kueh arrive."
    },
    {
     "id": "s05-w2-nudge2",
-    "text": "Not quite. That starts from Tray A's number. Look at Tray B's bar."
+    "text": "Not yet. That starts from Tray A's number. Look at Tray B's bar."
    },
    {
     "id": "s05-w3-ask",
@@ -3871,11 +3871,11 @@
    },
    {
     "id": "s05-w3-nudge1",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s05-w3-nudge2",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s05-wans-ask",
@@ -3891,11 +3891,11 @@
    },
    {
     "id": "s05-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?"
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?"
    },
    {
     "id": "s05-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?"
+    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?"
    },
    {
     "id": "s05-w5-ask",
@@ -3911,11 +3911,11 @@
    },
    {
     "id": "s05-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s05-w5-nudge2",
-    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller."
+    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller."
    },
    {
     "id": "s06-w1-ask",
@@ -3931,11 +3931,11 @@
    },
    {
     "id": "s06-w1-nudge1",
-    "text": "Not quite. Look at the hall's bar. The students leave the hall, so it gets shorter, not longer."
+    "text": "Not yet. Look at the hall's bar. The students leave the hall, so it gets shorter, not longer."
    },
    {
     "id": "s06-w1-nudge2",
-    "text": "Not quite. That takes away the canteen's number. Look at the hall's bar. How many leave it?"
+    "text": "Not yet. That takes away the canteen's number. Look at the hall's bar. How many leave it?"
    },
    {
     "id": "s06-w2-ask",
@@ -3951,11 +3951,11 @@
    },
    {
     "id": "s06-w2-nudge1",
-    "text": "Not quite. Look at the canteen's bar. It grows when the students arrive."
+    "text": "Not yet. Look at the canteen's bar. It grows when the students arrive."
    },
    {
     "id": "s06-w2-nudge2",
-    "text": "Not quite. That starts from the hall's number. Look at the canteen's bar."
+    "text": "Not yet. That starts from the hall's number. Look at the canteen's bar."
    },
    {
     "id": "s06-w3-ask",
@@ -3971,11 +3971,11 @@
    },
    {
     "id": "s06-w3-nudge1",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s06-w3-nudge2",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s06-wans-ask",
@@ -3991,11 +3991,11 @@
    },
    {
     "id": "s06-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s06-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s06-w5-ask",
@@ -4011,11 +4011,11 @@
    },
    {
     "id": "s06-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s06-w5-nudge2",
-    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s07-w1-ask",
@@ -4031,11 +4031,11 @@
    },
    {
     "id": "s07-w1-nudge1",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer."
+    "text": "Not yet. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer."
    },
    {
     "id": "s07-w1-nudge2",
-    "text": "Not quite. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?"
+    "text": "Not yet. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?"
    },
    {
     "id": "s07-w2-ask",
@@ -4051,11 +4051,11 @@
    },
    {
     "id": "s07-w2-nudge1",
-    "text": "Not quite. That starts from Mei Ling's number. Look at Aisha's bar."
+    "text": "Not yet. That starts from Mei Ling's number. Look at Aisha's bar."
    },
    {
     "id": "s07-w2-nudge2",
-    "text": "Not quite. Look at Aisha's bar. It grows when the stickers arrive."
+    "text": "Not yet. Look at Aisha's bar. It grows when the stickers arrive."
    },
    {
     "id": "s07-w3-ask",
@@ -4071,11 +4071,11 @@
    },
    {
     "id": "s07-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s07-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s07-wans-ask",
@@ -4091,11 +4091,11 @@
    },
    {
     "id": "s07-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s07-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s07-w5-ask",
@@ -4111,11 +4111,11 @@
    },
    {
     "id": "s07-w5-nudge1",
-    "text": "Not quite. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "s07-w5-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s08-w1-ask",
@@ -4131,11 +4131,11 @@
    },
    {
     "id": "s08-w1-nudge1",
-    "text": "Not quite. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
+    "text": "Not yet. That takes away Jar B's number. Look at Jar A's bar. How many leave it?"
    },
    {
     "id": "s08-w1-nudge2",
-    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
+    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so it gets shorter, not longer."
    },
    {
     "id": "s08-w2-ask",
@@ -4151,11 +4151,11 @@
    },
    {
     "id": "s08-w2-nudge1",
-    "text": "Not quite. That starts from Jar A's number. Look at Jar B's bar."
+    "text": "Not yet. That starts from Jar A's number. Look at Jar B's bar."
    },
    {
     "id": "s08-w2-nudge2",
-    "text": "Not quite. Look at Jar B's bar. How many arrive?"
+    "text": "Not yet. Look at Jar B's bar. How many arrive?"
    },
    {
     "id": "s08-w3-ask",
@@ -4171,11 +4171,11 @@
    },
    {
     "id": "s08-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s08-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s08-wans-ask",
@@ -4191,11 +4191,11 @@
    },
    {
     "id": "s08-wans-nudge1",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s08-wans-nudge2",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s08-w5-ask",
@@ -4211,11 +4211,11 @@
    },
    {
     "id": "s08-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s08-w5-nudge2",
-    "text": "Not quite. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Jar B is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "s09-w1-ask",
@@ -4231,11 +4231,11 @@
    },
    {
     "id": "s09-w1-nudge1",
-    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
+    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer."
    },
    {
     "id": "s09-w1-nudge2",
-    "text": "Not quite. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
+    "text": "Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?"
    },
    {
     "id": "s09-w2-ask",
@@ -4251,11 +4251,11 @@
    },
    {
     "id": "s09-w2-nudge1",
-    "text": "Not quite. That starts from the top shelf's number. Look at the bottom shelf's bar."
+    "text": "Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar."
    },
    {
     "id": "s09-w2-nudge2",
-    "text": "Not quite. Look at the bottom shelf's bar. It grows when the books arrive."
+    "text": "Not yet. Look at the bottom shelf's bar. It grows when the books arrive."
    },
    {
     "id": "s09-w3-ask",
@@ -4271,11 +4271,11 @@
    },
    {
     "id": "s09-w3-nudge1",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s09-w3-nudge2",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s09-wans-ask",
@@ -4291,11 +4291,11 @@
    },
    {
     "id": "s09-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s09-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s09-w5-ask",
@@ -4311,11 +4311,11 @@
    },
    {
     "id": "s09-w5-nudge1",
-    "text": "Not quite. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
+    "text": "Not yet. Look at the bars. The top shelf is ahead now. Moving them back makes that lead bigger, not smaller."
    },
    {
     "id": "s09-w5-nudge2",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s10-w1-ask",
@@ -4331,11 +4331,11 @@
    },
    {
     "id": "s10-w1-nudge1",
-    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
+    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer."
    },
    {
     "id": "s10-w1-nudge2",
-    "text": "Not quite. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
+    "text": "Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?"
    },
    {
     "id": "s10-w2-ask",
@@ -4351,11 +4351,11 @@
    },
    {
     "id": "s10-w2-nudge1",
-    "text": "Not quite. That starts from Bus 1's number. Look at Bus 2's bar."
+    "text": "Not yet. That starts from Bus 1's number. Look at Bus 2's bar."
    },
    {
     "id": "s10-w2-nudge2",
-    "text": "Not quite. Look at Bus 2's bar. How many arrive?"
+    "text": "Not yet. Look at Bus 2's bar. How many arrive?"
    },
    {
     "id": "s10-w3-ask",
@@ -4371,11 +4371,11 @@
    },
    {
     "id": "s10-w3-nudge1",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now."
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now."
    },
    {
     "id": "s10-w3-nudge2",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars."
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars."
    },
    {
     "id": "s10-wans-ask",
@@ -4391,11 +4391,11 @@
    },
    {
     "id": "s10-wans-nudge1",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things."
    },
    {
     "id": "s10-wans-nudge2",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?"
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?"
    },
    {
     "id": "s10-w5-ask",
@@ -4411,11 +4411,11 @@
    },
    {
     "id": "s10-w5-nudge1",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them."
    },
    {
     "id": "s10-w5-nudge2",
-    "text": "Not quite. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
+    "text": "Not yet. Look at the bars. Bus 2 is ahead now. Moving them back takes away from that lead, so the gap gets smaller."
    },
    {
     "id": "wk-roundDone5",
@@ -4444,14 +4444,14 @@
     "bytes": 197376
    },
    {
-    "file": "a53695b6742a.mp3",
-    "text": "Not quite. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer.",
-    "bytes": 63552
+    "file": "99df7d24f84c.mp3",
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer.",
+    "bytes": 64556
    },
    {
-    "file": "ebee45e912ac.mp3",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one.",
-    "bytes": 66432
+    "file": "3cf3c608f8c9.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one.",
+    "bytes": 67052
    },
    {
     "file": "6357abef88af.mp3",
@@ -4469,14 +4469,14 @@
     "bytes": 131904
    },
    {
-    "file": "5a05b17a420a.mp3",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 106176
+    "file": "3d54c59aae9c.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 107564
    },
    {
-    "file": "0046259be7f7.mp3",
-    "text": "Not quite. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 75072
+    "file": "eb53e0e3d55c.mp3",
+    "text": "Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 72236
    },
    {
     "file": "666228e0c694.mp3",
@@ -4489,14 +4489,14 @@
     "bytes": 185856
    },
    {
-    "file": "4b3cd9329343.mp3",
-    "text": "Not quite. Look at the bars again. Whose end sticks out further?",
-    "bytes": 40896
+    "file": "471a47941b6e.mp3",
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?",
+    "bytes": 38060
    },
    {
-    "file": "04ac1de10d26.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83520
+    "file": "e9f41137258d.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 86444
    },
    {
     "file": "ee4fc33b10b7.mp3",
@@ -4514,14 +4514,14 @@
     "bytes": 166080
    },
    {
-    "file": "9f5fc22bda3f.mp3",
-    "text": "Not quite. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.",
-    "bytes": 83520
+    "file": "8006020a2b67.mp3",
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.",
+    "bytes": 83564
    },
    {
-    "file": "bcedcc0018d0.mp3",
-    "text": "Not quite. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 69312
+    "file": "0777033eddee.mp3",
+    "text": "Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 72236
    },
    {
     "file": "98672c0e4bfc.mp3",
@@ -4539,14 +4539,14 @@
     "bytes": 129024
    },
    {
-    "file": "f65c6a6e6766.mp3",
-    "text": "Not quite. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one.",
-    "bytes": 66432
+    "file": "84564a035565.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one.",
+    "bytes": 63596
    },
    {
-    "file": "087fae280bd8.mp3",
-    "text": "Not quite. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer.",
-    "bytes": 63552
+    "file": "46cc1a79d08a.mp3",
+    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer.",
+    "bytes": 66476
    },
    {
     "file": "3466a0409274.mp3",
@@ -4564,14 +4564,14 @@
     "bytes": 129024
    },
    {
-    "file": "000b38be15d4.mp3",
-    "text": "Not quite. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?",
-    "bytes": 83520
+    "file": "d686573578e8.mp3",
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?",
+    "bytes": 84332
    },
    {
-    "file": "a5a7256ddfd7.mp3",
-    "text": "Not quite. That uses Jar A's extra from the start. Use the two pieces above the line now.",
-    "bytes": 55104
+    "file": "8b5cf6a44ef3.mp3",
+    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces above the line now.",
+    "bytes": 56492
    },
    {
     "file": "5ba856cb47ae.mp3",
@@ -4584,9 +4584,9 @@
     "bytes": 185856
    },
    {
-    "file": "2e8748ffdbe9.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 86400
+    "file": "679319133231.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 87212
    },
    {
     "file": "511eef98a131.mp3",
@@ -4604,9 +4604,9 @@
     "bytes": 157440
    },
    {
-    "file": "c1bceeac9432.mp3",
-    "text": "Not quite. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 66432
+    "file": "582581274fed.mp3",
+    "text": "Not yet. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 66476
    },
    {
     "file": "d40bec4eef39.mp3",
@@ -4624,14 +4624,14 @@
     "bytes": 137472
    },
    {
-    "file": "fdf2126cdcc6.mp3",
-    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer.",
-    "bytes": 63552
+    "file": "6e51c454a432.mp3",
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer.",
+    "bytes": 60716
    },
    {
-    "file": "ce8265593756.mp3",
-    "text": "Not quite. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one.",
-    "bytes": 66432
+    "file": "0abf930dc90f.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one.",
+    "bytes": 63596
    },
    {
     "file": "1af66416a855.mp3",
@@ -4649,9 +4649,9 @@
     "bytes": 129024
    },
    {
-    "file": "7db8380f1339.mp3",
-    "text": "Not quite. That uses Tank A's extra from the start. Use the two pieces above the line now.",
-    "bytes": 57984
+    "file": "146a1610133a.mp3",
+    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces above the line now.",
+    "bytes": 58988
    },
    {
     "file": "58d2ba3263a8.mp3",
@@ -4664,14 +4664,14 @@
     "bytes": 174528
    },
    {
-    "file": "70380d9f7cb9.mp3",
-    "text": "Not quite. Look at the bars again. Does one end stick out further than the other?",
-    "bytes": 43776
+    "file": "4cb9fe8f5bba.mp3",
+    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?",
+    "bytes": 44588
    },
    {
-    "file": "1edbab56ade0.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?",
-    "bytes": 91968
+    "file": "8a3b84489529.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?",
+    "bytes": 92012
    },
    {
     "file": "14e023f8e758.mp3",
@@ -4689,9 +4689,9 @@
     "bytes": 160320
    },
    {
-    "file": "d4122ee12350.mp3",
-    "text": "Not quite. Look at the bars. Moving them back makes the gap bigger, not smaller.",
-    "bytes": 46464
+    "file": "28b70cc6adec.mp3",
+    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller.",
+    "bytes": 46508
    },
    {
     "file": "ca9f257e2a3b.mp3",
@@ -4709,14 +4709,14 @@
     "bytes": 194496
    },
    {
-    "file": "ff29f46343c3.mp3",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.",
-    "bytes": 63552
+    "file": "80682fcda81f.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.",
+    "bytes": 66476
    },
    {
-    "file": "a77be17c9663.mp3",
-    "text": "Not quite. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.",
-    "bytes": 55104
+    "file": "f04d5f1d35a6.mp3",
+    "text": "Not yet. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.",
+    "bytes": 55532
    },
    {
     "file": "e79a8b331f60.mp3",
@@ -4734,14 +4734,14 @@
     "bytes": 140352
    },
    {
-    "file": "4280945ecb33.mp3",
-    "text": "Not quite. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 97728
+    "file": "9b401ad3b719.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 109100
    },
    {
-    "file": "e0c86a8a7777.mp3",
-    "text": "Not quite. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 75072
+    "file": "0b50fc4b3305.mp3",
+    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 75116
    },
    {
     "file": "d9e333a715de.mp3",
@@ -4754,9 +4754,9 @@
     "bytes": 188736
    },
    {
-    "file": "cf8bb2fcc940.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83520
+    "file": "4594f499638b.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
    },
    {
     "file": "9a0800f473ed.mp3",
@@ -4774,9 +4774,9 @@
     "bytes": 185856
    },
    {
-    "file": "b8c7ee7c466f.mp3",
-    "text": "Not quite. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 72192
+    "file": "f027f00428d4.mp3",
+    "text": "Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 66476
    },
    {
     "file": "6bac32864bd8.mp3",
@@ -4794,14 +4794,14 @@
     "bytes": 200064
    },
    {
-    "file": "90271aee3a07.mp3",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer.",
-    "bytes": 60672
+    "file": "126744a6f8d6.mp3",
+    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer.",
+    "bytes": 61676
    },
    {
-    "file": "e05b7e51d1b5.mp3",
-    "text": "Not quite. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one.",
-    "bytes": 66432
+    "file": "40a26a817225.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one.",
+    "bytes": 63596
    },
    {
     "file": "66d3c35a09db.mp3",
@@ -4819,14 +4819,14 @@
     "bytes": 137472
    },
    {
-    "file": "10c5d0709d3c.mp3",
-    "text": "Not quite. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 106176
+    "file": "cfc92cf4e3ef.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 109100
    },
    {
-    "file": "39fac44c70fb.mp3",
-    "text": "Not quite. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 75072
+    "file": "0e16fead6351.mp3",
+    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 75116
    },
    {
     "file": "a27470379b51.mp3",
@@ -4839,9 +4839,9 @@
     "bytes": 174528
    },
    {
-    "file": "22c0dec3d41b.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 80640
+    "file": "1f6c997be0f4.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
    },
    {
     "file": "73867fd785f2.mp3",
@@ -4859,9 +4859,9 @@
     "bytes": 171648
    },
    {
-    "file": "bb3bc293df27.mp3",
-    "text": "Not quite. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 63552
+    "file": "83dc2e7a6a07.mp3",
+    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 66476
    },
    {
     "file": "c9c298fe458a.mp3",
@@ -4879,14 +4879,14 @@
     "bytes": 137472
    },
    {
-    "file": "55fc094ce36b.mp3",
-    "text": "Not quite. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer.",
-    "bytes": 66432
+    "file": "31b16ae3a23a.mp3",
+    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer.",
+    "bytes": 58028
    },
    {
-    "file": "b59aed1f466d.mp3",
-    "text": "Not quite. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?",
-    "bytes": 55104
+    "file": "b6b1953362df.mp3",
+    "text": "Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?",
+    "bytes": 52268
    },
    {
     "file": "465695d26de0.mp3",
@@ -4904,14 +4904,14 @@
     "bytes": 83520
    },
    {
-    "file": "e5328c16c81f.mp3",
-    "text": "Not quite. That starts from Bus 1's number. Look at Bus 2's bar.",
-    "bytes": 49344
+    "file": "5f30af018a98.mp3",
+    "text": "Not yet. That starts from Bus 1's number. Look at Bus 2's bar.",
+    "bytes": 46508
    },
    {
-    "file": "ec2e23a68ae1.mp3",
-    "text": "Not quite. Look at Bus 2's bar. It grows when the passengers arrive.",
-    "bytes": 43776
+    "file": "06226d1a6f45.mp3",
+    "text": "Not yet. Look at Bus 2's bar. It grows when the passengers arrive.",
+    "bytes": 43820
    },
    {
     "file": "5e1cdfc8ee3c.mp3",
@@ -4929,14 +4929,14 @@
     "bytes": 111936
    },
    {
-    "file": "01fabf731c09.mp3",
-    "text": "Not quite. Adding finds how many they have together. The question asks how many more, so compare the two bars.",
-    "bytes": 66432
+    "file": "497a78044950.mp3",
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars.",
+    "bytes": 60716
    },
    {
-    "file": "4e5c811b716f.mp3",
-    "text": "Not quite. That takes away the number that moved. Compare the two bars as they are now.",
-    "bytes": 49344
+    "file": "94316b23c77f.mp3",
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now.",
+    "bytes": 46508
    },
    {
     "file": "1ae4ee598b6f.mp3",
@@ -4949,9 +4949,9 @@
     "bytes": 180288
    },
    {
-    "file": "e9f2ff7b71ec.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83520
+    "file": "7505651efbf8.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
    },
    {
     "file": "db53ac3fad76.mp3",
@@ -4969,9 +4969,9 @@
     "bytes": 131904
    },
    {
-    "file": "81a2e7d445f4.mp3",
-    "text": "Not quite. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 63552
+    "file": "8fe995613d75.mp3",
+    "text": "Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 63596
    },
    {
     "file": "6952b1526166.mp3",
@@ -4989,14 +4989,14 @@
     "bytes": 129024
    },
    {
-    "file": "cde1465fdd57.mp3",
-    "text": "Not quite. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer.",
-    "bytes": 60672
+    "file": "6cd53fafc02f.mp3",
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer.",
+    "bytes": 58028
    },
    {
-    "file": "ef1361c84965.mp3",
-    "text": "Not quite. That takes away Tank B's number. Look at Tank A's bar. How many leave it?",
-    "bytes": 57984
+    "file": "53cb60938124.mp3",
+    "text": "Not yet. That takes away Tank B's number. Look at Tank A's bar. How many leave it?",
+    "bytes": 58988
    },
    {
     "file": "4035e7810785.mp3",
@@ -5014,14 +5014,14 @@
     "bytes": 77760
    },
    {
-    "file": "896d04131fb8.mp3",
-    "text": "Not quite. That starts from Tank A's number. Look at Tank B's bar.",
-    "bytes": 40896
+    "file": "fd286ad7910e.mp3",
+    "text": "Not yet. That starts from Tank A's number. Look at Tank B's bar.",
+    "bytes": 42476
    },
    {
-    "file": "21dda105c68d.mp3",
-    "text": "Not quite. Look at Tank B's bar. How many arrive?",
-    "bytes": 35136
+    "file": "8c02709c9816.mp3",
+    "text": "Not yet. Look at Tank B's bar. How many arrive?",
+    "bytes": 35180
    },
    {
     "file": "b76e2eaa2819.mp3",
@@ -5049,9 +5049,9 @@
     "bytes": 174528
    },
    {
-    "file": "85bd46521df1.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 86400
+    "file": "7278ebb84864.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 77804
    },
    {
     "file": "9f5b4134fed3.mp3",
@@ -5069,9 +5069,9 @@
     "bytes": 134784
    },
    {
-    "file": "47a2557c98c9.mp3",
-    "text": "Not quite. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 72192
+    "file": "446d3a2f2e03.mp3",
+    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 75116
    },
    {
     "file": "8d54184af564.mp3",
@@ -5089,14 +5089,14 @@
     "bytes": 137472
    },
    {
-    "file": "dca29b2452af.mp3",
-    "text": "Not quite. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer.",
-    "bytes": 60672
+    "file": "a58cd01bcbe2.mp3",
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer.",
+    "bytes": 60716
    },
    {
-    "file": "5368ec3cbdef.mp3",
-    "text": "Not quite. That takes away Tray B's number. Look at Tray A's bar. How many leave it?",
-    "bytes": 52224
+    "file": "71f0393a555d.mp3",
+    "text": "Not yet. That takes away Tray B's number. Look at Tray A's bar. How many leave it?",
+    "bytes": 52268
    },
    {
     "file": "b4df1c682a1d.mp3",
@@ -5114,14 +5114,14 @@
     "bytes": 97728
    },
    {
-    "file": "9e1df7741b0a.mp3",
-    "text": "Not quite. Look at Tray B's bar. It grows when the ang ku kueh arrive.",
-    "bytes": 46464
+    "file": "da6174dac0f7.mp3",
+    "text": "Not yet. Look at Tray B's bar. It grows when the ang ku kueh arrive.",
+    "bytes": 46508
    },
    {
-    "file": "32ea457a62f1.mp3",
-    "text": "Not quite. That starts from Tray A's number. Look at Tray B's bar.",
-    "bytes": 46464
+    "file": "83ec6c5f3d70.mp3",
+    "text": "Not yet. That starts from Tray A's number. Look at Tray B's bar.",
+    "bytes": 43820
    },
    {
     "file": "92447527b7ec.mp3",
@@ -5149,9 +5149,9 @@
     "bytes": 177408
    },
    {
-    "file": "665f126a6310.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?",
-    "bytes": 97728
+    "file": "9847d7875969.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?",
+    "bytes": 92012
    },
    {
     "file": "7fbf0e84de24.mp3",
@@ -5184,14 +5184,14 @@
     "bytes": 137472
    },
    {
-    "file": "ee12a728ba8e.mp3",
-    "text": "Not quite. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer.",
-    "bytes": 57984
+    "file": "71e008c3821d.mp3",
+    "text": "Not yet. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer.",
+    "bytes": 49388
    },
    {
-    "file": "36d2d68c7c37.mp3",
-    "text": "Not quite. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?",
-    "bytes": 52224
+    "file": "b8a98b8248e0.mp3",
+    "text": "Not yet. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?",
+    "bytes": 53036
    },
    {
     "file": "a361c0e94ab4.mp3",
@@ -5209,14 +5209,14 @@
     "bytes": 80640
    },
    {
-    "file": "a3225448651e.mp3",
-    "text": "Not quite. That starts from Mei Ling's number. Look at Aisha's bar.",
-    "bytes": 40896
+    "file": "030e7eaa193a.mp3",
+    "text": "Not yet. That starts from Mei Ling's number. Look at Aisha's bar.",
+    "bytes": 41900
    },
    {
-    "file": "9874e5de6101.mp3",
-    "text": "Not quite. Look at Aisha's bar. It grows when the stickers arrive.",
-    "bytes": 40896
+    "file": "8a65610b93b9.mp3",
+    "text": "Not yet. Look at Aisha's bar. It grows when the stickers arrive.",
+    "bytes": 41900
    },
    {
     "file": "895d48290473.mp3",
@@ -5259,9 +5259,9 @@
     "bytes": 134784
    },
    {
-    "file": "aeeb919fec4d.mp3",
-    "text": "Not quite. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 60672
+    "file": "411c15920746.mp3",
+    "text": "Not yet. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 61676
    },
    {
     "file": "8fb3df840ec4.mp3",
@@ -5279,14 +5279,14 @@
     "bytes": 137472
    },
    {
-    "file": "14329510681c.mp3",
-    "text": "Not quite. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer.",
-    "bytes": 60672
+    "file": "67063e405d47.mp3",
+    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer.",
+    "bytes": 60716
    },
    {
-    "file": "182daa9ebea4.mp3",
-    "text": "Not quite. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?",
-    "bytes": 60672
+    "file": "e02e416c60f4.mp3",
+    "text": "Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?",
+    "bytes": 60332
    },
    {
     "file": "302561248bc3.mp3",
@@ -5304,14 +5304,14 @@
     "bytes": 94848
    },
    {
-    "file": "4fd0988b0723.mp3",
-    "text": "Not quite. That starts from the top shelf's number. Look at the bottom shelf's bar.",
-    "bytes": 49344
+    "file": "1ca037467864.mp3",
+    "text": "Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar.",
+    "bytes": 48236
    },
    {
-    "file": "d5dce958bb62.mp3",
-    "text": "Not quite. Look at the bottom shelf's bar. It grows when the books arrive.",
-    "bytes": 43776
+    "file": "f7c36fbe2ada.mp3",
+    "text": "Not yet. Look at the bottom shelf's bar. It grows when the books arrive.",
+    "bytes": 43820
    },
    {
     "file": "4e89082ed16f.mp3",
@@ -5339,9 +5339,9 @@
     "bytes": 177408
    },
    {
-    "file": "0204037bbfe7.mp3",
-    "text": "Not quite. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83520
+    "file": "cb2c11632151.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 80684
    },
    {
     "file": "f2602bdf7efc.mp3",
@@ -5359,9 +5359,9 @@
     "bytes": 134784
    },
    {
-    "file": "63cf7713ec13.mp3",
-    "text": "Not quite. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 77760
+    "file": "9a9ea41e89ab.mp3",
+    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 78572
    },
    {
     "file": "4c730990233a.mp3",
@@ -5374,10 +5374,14 @@
     "bytes": 120576
    },
    {
-    "file": "8d0bfb4dc503.mp3",
-    "text": "Great! On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
-    "bytes": 83520
+    "file": "d94dd8ee2617.mp3",
+    "text": "On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
+    "bytes": 78188
    }
   ]
+ },
+ "feedback_defaults": {
+  "note": "25 Oct 2026: the feedback rules (wrong step = 'Not yet' + pointer; specific step praise, never the child; guide not friend). Changed clips were cut from the existing luna audio at the sentence pause, with a new luna 'Not yet.' in front where needed; a few regenerated.",
+  "changed": 90
  }
 }
