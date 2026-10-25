@@ -207,7 +207,8 @@ var HISTORY_GAME = "transfer";
    written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
    the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
    Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
-   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore). */
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore).
+   mode is lesson | practice | test ("Test yourself" check-up, written by MathCheckup through record()). */
 var MathHistory=(function(){
 "use strict";
 var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
@@ -251,7 +252,11 @@ return {gameId:GAME_ID, key:KEY,
   restart:function(){ if(sess) save(sess); begin(); },
   miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
   hint:function(){ if(sess) sess.hints++; },
-  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++; if(roundOver){ save(sess); sess=null; } },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++;
+    if(roundOver){ var wasLesson=sess.mode==="lesson"; save(sess); sess=null;
+      if(wasLesson){ try{ window.dispatchEvent(new Event("mathgames:lessondone")); }catch(e){} } } }, // a finished Lesson round unlocks "Test yourself"
+  // a "Test yourself" check-up (mode "test"): same fields and the same upsert as a round
+  record:function(o){ return !!o && o.mode==="test" && save(o); },
   // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
   paperOffer:function(){ if(sess) sess.paperTotal++; },
   paper:function(){ if(sess) sess.paperDone++; },
@@ -259,6 +264,453 @@ return {gameId:GAME_ID, key:KEY,
 })();
 </script>
 <!--HISTORY-END-->
+<!--CHECKUP-START-->
+<style>
+/* Check-up ("Test yourself") */
+html.ckopen, html.ckopen body{overflow:hidden}
+#ckOverlay{position:fixed;inset:0;z-index:60;background:#f4f1ea;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 40px;font-size:18px;color:#222}
+#ckOverlay[hidden],#ckBanner[hidden],#ckDaddyView[hidden],#ckBtn[hidden]{display:none}
+.ckhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:820px;margin:0 auto 8px}
+.cktitle{font-weight:800;font-size:19px;flex:1 1 auto}
+.ckpts{font-weight:700;background:#fff7d6;border-radius:999px;padding:4px 12px}
+.ckq{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-size:16px;box-shadow:0 1px 4px #0002;cursor:pointer}
+.ckdots{display:flex;gap:8px;justify-content:center;margin:4px auto 10px}
+.ckdots span{min-width:40px;text-align:center;padding:4px 8px;border-radius:999px;background:#e6e1d6;font-weight:700}
+.ckdots .cur{background:#3b6fd8;color:#fff}.ckdots .first{background:#ffe27a}.ckdots .got{background:#fff0b3}.ckdots .skip{background:#ddd;color:#888}
+.ckpaper{max-width:820px;margin:0 auto;background:#fff;border-radius:6px;box-shadow:0 2px 10px #0002;padding:20px 22px;font-family:Georgia,"Times New Roman",serif}
+.ckpaper button{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ckqhead{display:flex;gap:10px;align-items:center;font-family:system-ui,-apple-system,sans-serif;color:#555;font-size:16px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px}
+.ckmarks{margin-left:auto}.cknew{background:#e8f4ff;color:#245;border-radius:999px;padding:2px 10px;font-size:14px}
+.cktext{font-size:21px;line-height:1.55;margin:6px 0 12px}.cknum{font-weight:700;margin-right:6px}
+.ckwork{border:2px dashed #b9b2a2;border-radius:6px;min-height:70px;padding:10px 12px;color:#6a6355;font-size:17px;margin:8px 0 14px;font-family:system-ui,-apple-system,sans-serif}
+.ckans{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;font-size:21px;margin:6px 0 10px}
+.ckanslab{font-weight:700}.ckpre,.ckpost{font-weight:700}
+.ckbox{min-width:120px;border-bottom:3px solid #222;text-align:center;font-size:26px;font-weight:700;padding:0 8px;font-family:system-ui,-apple-system,sans-serif}
+.ckunits{display:inline-flex;gap:6px}
+.ckunit{border:2px solid #9aa;background:#fff;border-radius:10px;padding:6px 14px;font-size:19px;cursor:pointer}
+.ckunit.on{border-color:#2a8a4a;background:#e3f6e8;font-weight:700}.ckunit[disabled]{opacity:.7}
+.ckpad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center;margin:8px 0}
+.ckpad button{height:56px;font-size:24px;border-radius:12px;border:0;background:#eef1f6;box-shadow:0 1px 3px #0002;cursor:pointer}
+.ckfb{min-height:28px;margin:8px 0;font-family:system-ui,-apple-system,sans-serif;font-size:19px;line-height:1.45;border-radius:10px;padding:0 4px}
+.ckfb.try{background:#fff4e0;padding:10px 12px}.ckfb.ok{background:#e6f7ea;padding:10px 12px}
+.ckearn{font-weight:700;white-space:nowrap}
+.ckrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 4px}
+.ckbtn{border:0;border-radius:14px;padding:12px 18px;font-size:19px;font-weight:700;cursor:pointer;background:#3b6fd8;color:#fff;box-shadow:0 2px 6px #0002}
+.ckbtn.green{background:#2a8a4a}.ckbtn.blue{background:#2f63c5}.ckbtn.gold{background:#d99a00}.ckbtn.ghost{background:#fff;color:#234;border:2px solid #cfd6e2;box-shadow:none}
+.cklesson{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#eef4ff;border-radius:12px;padding:10px 12px;margin:10px 0;font-family:system-ui,-apple-system,sans-serif}
+.ckll{font-size:17px;color:#234}
+.cksol{margin-top:14px;font-family:system-ui,-apple-system,sans-serif}.cksol h3{margin:4px 0 8px}
+.cklines{width:100%;border-collapse:collapse;font-size:17px}.cklines th{text-align:left;color:#666;font-weight:600;border-bottom:2px solid #ddd;padding:4px 6px}
+.cklines td{border-bottom:1px solid #eee;padding:8px 6px;vertical-align:top}.ckln{font-weight:700;color:#666;white-space:nowrap}
+.ckeq{font-size:20px;font-weight:700;font-family:Georgia,"Times New Roman",serif}.ckst{color:#234}.ckwhy{color:#444;font-size:16px;line-height:1.45}
+.ckintro,.ckend{text-align:center;font-family:system-ui,-apple-system,sans-serif}.ckbig{font-size:64px}
+.ckrules{display:inline-block;text-align:left;font-size:18px;line-height:1.7}.ckres{font-size:20px}.ckbadge{font-size:21px;font-weight:700;color:#8a5a00}.ckmuted{color:#666}
+.ckoffer{margin-top:14px;background:#eef4ff;border-radius:14px;padding:12px;text-align:center}
+#ckBanner{position:fixed;left:8px;right:8px;bottom:8px;z-index:55;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#fff;border:3px solid #2f63c5;border-radius:16px;padding:10px 12px;box-shadow:0 4px 16px #0003;font-size:18px}
+.ckx{border:0;background:none;font-size:20px;cursor:pointer}
+#ckDaddyView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
+.ckdcard{background:#fff;border-radius:28px;box-shadow:0 8px 30px #0003;padding:28px 32px;text-align:center;max-width:620px;width:100%;font-family:system-ui,-apple-system,sans-serif}
+.ckdbig{font-size:140px;line-height:1.1}.ckdname{font-size:40px;font-weight:800;margin:6px 0}.ckdgame{font-size:24px;color:#444}
+.ckddate{font-size:22px;color:#666;margin:6px 0 14px}.ckdpts{font-size:34px;font-weight:800;color:#8a5a00}.ckdline{font-size:20px;margin:6px 0}
+.ckdtotal{font-size:22px;margin:12px 0 18px;font-weight:700}.ckdbadges{font-size:20px;line-height:1.6;margin:8px 0 14px}
+@media (max-width:600px){.cktext{font-size:19px}.ckpad{grid-template-columns:repeat(3,64px)}.ckdbig{font-size:96px}.ckdname{font-size:30px}}
+.ckfoot{display:block;margin:0 auto 12px;font-size:20px}
+</style>
+<script>
+var CHECKUP_GAME = "transfer", CHECKUP_TITLE = "Moving Between Groups";
+var CHECKUP_CLIPS = {"All three were right on the first try. You earned the Test badge for this game.": "../audio-shared/6c184ff7b2d0.mp3", "Both children change: one gives and one gets. Find both numbers after the move.": "audio/f9a3f3bef835.mp3", "Box A gives some away, so its bar gets shorter. Is the gap bigger or smaller now?": "audio/bf81d65dd774.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "If you want, you could show Daddy your reward points.": "../audio-shared/d533d1e63ffd.mp3", "Moving takes some away from Box A AND gives them to Box B. The gap changes on both sides.": "audio/8be2e0690288.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is how many each tray had at FIRST. The question asks about Tray A in the END.": "audio/7a6abac0fbe4.mp3", "That is how many one child has in the end. The question asks how many MORE.": "audio/30e298345f05.mp3", "That is the gap in the end. The question asks how many cookies are on Tray A.": "audio/2e0aba778f08.mp3", "That was the gap BEFORE the move. Find how many each has after the move.": "audio/060a94dc6581.mp3", "The gap does change when some are moved. Watch what happens to both bars.": "audio/f205f03ed882.mp3", "Tray B GOT the cookies, so to go back to the start, take them away from Tray B.": "audio/d783456f6c02.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3"};
+/* Check-up ("Test yourself") question-bank helpers. Shared by every game's bank file.
+   Original stories and numbers only (modelled on the TYPE of free P3 sample-paper questions; no exam text). */
+var CHECKUP_BANK = CHECKUP_BANK || {};
+var CK = (function(){
+  var MI="\u2212", TI="\u00d7", DI="\u00f7";
+  var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+  var SURN=["Tan","Lim","Goh","Lee","Ong","Ng","Wong","Chua","Koh","Teo"];
+  function R(first){
+    var used=[];
+    return {first:!!first,
+      n:function(lo,hi,fixed,step){ if(first && fixed!=null) return fixed; step=step||1; var k=Math.floor((hi-lo)/step); return lo+step*Math.floor(Math.random()*(k+1)); },
+      pick:function(a,fixed){ if(first && fixed!=null) return fixed; return a[Math.floor(Math.random()*a.length)]; },
+      name:function(fixed){ if(first && fixed!=null){ used.push(fixed); return fixed; } var pool=NAMES.filter(function(x){return used.indexOf(x)<0;}); var x=pool[Math.floor(Math.random()*pool.length)]; used.push(x); return x; },
+      sur:function(fixed){ if(first && fixed!=null) return fixed; return SURN[Math.floor(Math.random()*SURN.length)]; }
+    };
+  }
+  function pl(n,s,p){ return n===1?s:(p||s+"s"); }
+  // money in cents -> "$4.75" (dp:true forces 2 decimal places, "$10.00")
+  function money(c,dp){ var d=Math.floor(c/100), r=c%100; return "$"+d+((dp||r)?"."+(r<10?"0":"")+r:""); }
+  // minutes after midnight -> "4:15 pm" (12:xx is pm, 12-hour clock as in P3)
+  function clock(m){ m=((m%1440)+1440)%1440; var h=Math.floor(m/60), mm=m%60, ap=h>=12?"pm":"am", h12=h%12===0?12:h%12; return h12+":"+(mm<10?"0":"")+mm+" "+ap; }
+  function hm(m){ var h=Math.floor(m/60), mm=m%60; return (h?h+" h":"")+(h&&mm?" ":"")+(mm?mm+" min":""); }
+  // the answer as it is written on the answer line
+  function ansText(p){ return p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
+  // a problem may be used when its question text does not show the answer and it has a wrong value we can diagnose
+  function usable(p, q){
+    if(!p || !(p.answer>0) || Math.floor(p.answer)!==p.answer) return false;
+    var fixed=""; if(q){ for(var k in q.diag) fixed+=" "+q.diag[k][0]; if(q.unitMsg) fixed+=" "+q.unitMsg[0]; }
+    var toks=String(p.text+" "+fixed).match(/\$?\d+(?:[.:]\d+)?(?: [ap]m)?/g)||[], at=ansText(p);
+    if(toks.indexOf(at)>=0 || toks.indexOf(String(p.answer))>=0) return false;
+    p.wrongs=(p.wrongs||[]).filter(function(w){ return w[0]>0 && Math.floor(w[0])===w[0] && w[0]!==p.answer; });
+    return p.wrongs.length>0;
+  }
+  // make a question: the curated first numbers, or fresh numbers (never the same as the one before)
+  function gen(q, first, avoid){
+    for(var t=0;t<400;t++){ var p=q.make(R(first && t===0)); if(usable(p, q) && !(avoid && p.text===avoid)) return p; }
+    return q.make(R(true));
+  }
+  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,usable:usable,gen:gen};
+})();
+CHECKUP_BANK["transfer"]={
+ lessons:{
+  move:{idx:0, phase:"move", label:"Lesson problem 1, step 2 (Move): watch BOTH bars change"},
+  gap:{idx:3, phase:"move", label:"Lesson problem 4, step 2 (Move): the gap closes from both sides"},
+  who:{idx:1, phase:"move", label:"Lesson problem 2, step 2 (Move): who has more after the move?"},
+  start:{idx:0, phase:"move", label:"Lesson problem 1: watch the Move, then write the Before and After working"}
+ },
+ qs:[
+ {id:"tr-1", kind:"short", marks:2, go:"gap",
+  diag:{once:["Moving takes some away from Box A AND gives them to Box B. The gap changes on both sides.","gap"],
+        nomove:["The gap does change when some are moved. Watch what happens to both bars.","move"],
+        added:["Box A gives some away, so its bar gets shorter. Is the gap bigger or smaller now?","move"]},
+  make:function(R){ var M=R.n(4,15,9), D=R.n(2*M+4,80,46), it=R.pick(["marbles","beads","crayons"],"marbles"), a=D-2*M;
+   return {text:"Box A has "+D+" more "+it+" than Box B. "+M+" "+it+" are moved from Box A to Box B. How many more "+it+" does Box A have than Box B now?",
+    type:"int", answer:a, unit:"more "+it,
+    lines:[[M+" + "+M+" = "+(2*M), "The gap gets smaller by "+(2*M)+".", "Box A loses "+M+" and Box B gains "+M+", so the gap closes from both sides."],
+     [D+" "+CK.MI+" "+(2*M)+" = "+a, "Box A has "+a+" more "+it+" than Box B now.", "The old gap take away what closed."]],
+    ans:"Box A has "+a+" more "+it+" than Box B now.", check:[a+" + "+M+" + "+M+" = "+D, "Put the "+M+" back on each side and the gap is "+D+" again."],
+    wrongs:[[D-M,"once"],[D,"nomove"],[D+2*M,"added"],[D+M,"added"]]}; }},
+ {id:"tr-2", kind:"work", marks:3, go:"move",
+  diag:{nomove:["That was the gap BEFORE the move. Find how many each has after the move.","move"],
+        once:["Both children change: one gives and one gets. Find both numbers after the move.","gap"],
+        one:["That is how many one child has in the end. The question asks how many MORE.","who"]},
+  make:function(R){ var a=R.name("Hakim"), b=R.name("Ben"), m=R.n(6,20,12), x=R.n(30,90,47), g=R.n(4,30,14), A2=x+m+g, B2=x+m, y=A2+m;
+   return {text:a+" had "+y+" stickers and "+b+" had "+x+" stickers. "+a+" gave "+b+" "+m+" stickers. How many more stickers did "+a+" have than "+b+" in the end?",
+    type:"int", answer:g, unit:"more stickers",
+    lines:[[y+" "+CK.MI+" "+m+" = "+A2, a+" had "+A2+" stickers in the end.", a+" gave "+m+" away, so take "+m+" from "+a+"'s bar."],
+     [x+" + "+m+" = "+B2, b+" had "+B2+" stickers in the end.", b+" got the "+m+", so add "+m+" to "+b+"'s bar."],
+     [A2+" "+CK.MI+" "+B2+" = "+g, a+" had "+g+" more stickers.", "How many more: compare the two After bars."]],
+    ans:a+" had "+g+" more stickers than "+b+" in the end.", check:[A2+" + "+B2+" = "+(y+x), "Together they still have "+(y+x)+". Moving does not change the total."],
+    wrongs:[[y-x,"nomove"],[y-x-m,"once"],[A2,"one"],[B2,"one"]]}; }},
+ {id:"tr-3", kind:"work", marks:4, go:"start",
+  diag:{first:["That is how many each tray had at FIRST. The question asks about Tray A in the END.","start"],
+        wrongway:["Tray B GOT the cookies, so to go back to the start, take them away from Tray B.","move"],
+        gap:["That is the gap in the end. The question asks how many cookies are on Tray A.","gap"]},
+  make:function(R){ var m=R.n(8,25,15), B1=R.n(40,120,81), A2=B1-m, B2=B1+m;
+   return {text:"Tray A and Tray B had the same number of cookies at first. Then "+m+" cookies were moved from Tray A to Tray B. In the end, Tray B had "+B2+" cookies. How many cookies were on Tray A in the end?",
+    type:"int", answer:A2, unit:"cookies",
+    lines:[[B2+" "+CK.MI+" "+m+" = "+B1, "Each tray had "+B1+" cookies at first.", "Tray B got "+m+". Take them away to go back to the start. Both trays started the same."],
+     [B1+" "+CK.MI+" "+m+" = "+A2, "Tray A had "+A2+" cookies in the end.", "Tray A gave "+m+" away, so its bar is "+m+" shorter than at the start."]],
+    ans:"Tray A had "+A2+" cookies in the end.", check:[A2+" + "+m+" + "+m+" = "+B2, "In the end Tray B has 2 lots of "+m+" more than Tray A."],
+    wrongs:[[B1,"first"],[B2+m,"wrongway"],[2*m,"gap"]]}; }}
+ ]};
+/* ===== Check-up ("Test yourself"): 3 exam-style questions after the Lesson. Kept ONLY in this browser's localStorage. =====
+   No network code. Nothing is timed, no hints during the test, never a gate: it is always optional.
+   Stars: right first try = 2, right on a new try = 1, finishing = 3 more, all 3 right first try = the game's Test badge.
+   Stars never go down. Results also go to the practice history as mode "test" (schema v1). */
+var MathCheckup=(function(){
+"use strict";
+var SLUG=(typeof CHECKUP_GAME==="string")?CHECKUP_GAME:"", BK=CHECKUP_BANK[SLUG], QS=BK.qs, LS=BK.lessons;
+var TITLE=(typeof CHECKUP_TITLE==="string")?CHECKUP_TITLE:document.title;
+var RKEY="mathgames.rewards.v1", UKEY="mathgames.checkup.unlocked.v1", RUNKEY="mathgames.checkup.run."+SLUG, PKEY="mathgames.player", HKEY="mathgames.history.v1";
+var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3;
+// fixed lines (recorded with the tutor voice); lines with numbers or names are read by the device voice
+var SAY={
+  intro:"Test yourself. Three questions, like in your exam.",
+  paper:"Write your working and draw the model on your paper. Then type your answer.",
+  unit:"Choose the unit too.",
+  type:"Type your answer on the number pad.",
+  right:"Yes, that's right. Now check your paper against the worked solution.",
+  rightRetry:"Yes, that's right this time. Check your paper against the worked solution.",
+  notYet:"Not yet.",
+  generic:"Read the question again, then check your working one line at a time. What does the question ask for?",
+  lesson:"Go back to the lesson to see this step again. Then come back to your test.",
+  retry:"Here is a new one like it, with new numbers.",
+  sol:"Here is the worked solution. Read why each line is there.",
+  back:"Welcome back to your test.",
+  end:"You finished the check-up. Every question is done.",
+  badge:"All three were right on the first try. You earned the Test badge for this game.",
+  daddy:"If you want, you could show Daddy your reward points.",
+  money:"Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.",
+  time:"Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm."
+};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function jget(k,d){ try{ var v=JSON.parse(get(k)||"null"); return v==null?d:v; }catch(e){ return d; } }
+function host(){ return window.MathHost||null; }
+function say(){ var h=host(), a=Array.prototype.slice.call(arguments).filter(Boolean); if(h && h.say && a.length) try{ h.say.apply(null,a); }catch(e){} }
+function player(){ var n=String(get(PKEY)||"").replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dateLabel(t){ var d=new Date(t+8*3600000); return DAYS[d.getUTCDay()]+" "+d.getUTCDate()+" "+MONTHS[d.getUTCMonth()]+" "+d.getUTCFullYear(); }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out=""; for(var i=0;i<6;i++) out+=abc.charAt(Math.floor(Math.random()*36)); return "t"+t.toString(36)+"-"+out; }
+
+/* ---------- unlock: after a Lesson round (or an earlier finished Lesson in the history) ---------- */
+function unlocked(){
+  var u=jget(UKEY,{}); if(u && u[SLUG]) return true;
+  var h=jget(HKEY,[]); if(!Array.isArray(h)) return false;
+  return h.some(function(x){ return x && x.game_id==="math-"+SLUG && x.mode==="lesson" && x.items_done>0 && x.items_done>=x.items_total; });
+}
+function unlock(){ var u=jget(UKEY,{}); if(!u || typeof u!=="object") u={}; if(!u[SLUG]){ u[SLUG]=iso(Date.now()); set(UKEY,JSON.stringify(u)); } drawBtn(); }
+
+/* ---------- reward points (per player, never go down) ---------- */
+function rewards(){ var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players) r={v:1, players:{}}; return r; }
+function addStars(n, why){
+  if(!(n>0)) return; var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  P.stars=(+P.stars||0)+n; set(RKEY,JSON.stringify(r));
+}
+function addBadge(){
+  var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]}), b=P.badges[SLUG];
+  if(!b) P.badges[SLUG]={first:iso(Date.now()), count:1}; else b.count=(+b.count||0)+1;
+  set(RKEY,JSON.stringify(r));
+}
+function logTest(run){
+  var r=rewards(), who=run.player, P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  P.tests=(P.tests||[]).filter(function(t){ return t.id!==run.id; });
+  P.tests.push({id:run.id, game:SLUG, at:iso(Date.now()), stars:run.stars, first:firstCount(run), done:doneCount(run), total:QS.length, badge:!!run.badge});
+  if(P.tests.length>50) P.tests=P.tests.slice(P.tests.length-50);
+  set(RKEY,JSON.stringify(r));
+}
+function myStars(){ var P=rewards().players[player()]; return P?(+P.stars||0):0; }
+
+/* ---------- the run (one check-up), saved so she can visit the lesson and come back ---------- */
+var run=null, open=false;
+function fresh(){
+  var t=Date.now();
+  return {v:1, id:newId(t), player:player(), t0:t, slot:0, attempt:1, p:CK.gen(QS[0], true), phase:"intro", typed:"", unit:"", res:QS.map(function(){ return {first:null, got:false, tries:0, stars:0}; }),
+    stars:0, wrongs:0, diag:null, sol:false, bonus:0, badge:false, saved:false, done:false};
+}
+function load(){ var r=jget(RUNKEY,null); if(r && r.v===1 && r.p && r.res && r.res.length===QS.length && !r.done && r.player===player()) return r; return null; }
+function save(){ if(run) set(RUNKEY,JSON.stringify(run)); }
+function firstCount(r){ return r.res.filter(function(x){ return x.first===true; }).length; }
+function doneCount(r){ return r.res.filter(function(x){ return x.got || x.tries>0; }).length; }
+function finishedSlots(r){ return r.res.filter(function(x){ return x.got || x.skipped; }).length; }
+/* practice history entry, mode "test" (same schema v1 as Lesson and Practice) */
+function history(final){
+  if(!run || !window.MathHistory || !MathHistory.record) return;
+  var n=finishedSlots(run); if(!(n>0)) return;
+  var paperDone=0, paperTotal=0; QS.forEach(function(q,i){ if(q.kind==="work"){ paperTotal++; if(run.res[i].got) paperDone++; } });
+  MathHistory.record({id:run.id, player:run.player, mode:"test", t0:run.t0, done:n, total:QS.length, correct:firstCount(run), hints:0,
+    paperDone:paperDone, paperTotal:paperTotal, mistakes:{answer:run.wrongs}});
+}
+
+/* ---------- answers ---------- */
+function q(){ return QS[run.slot]; }
+function units(){ return q().units||null; }
+function needsUnit(){ return !!units() || run.p.type==="time"; }
+function unitChoices(){ return run.p.type==="time" ? ["am","pm"] : (units()||[]); }
+function showTyped(){
+  var t=run.typed, p=run.p; if(t==="") return "";
+  if(p.type==="time"){ return t.length>2 ? t.slice(0,t.length-2)+":"+t.slice(-2) : t; }
+  return t;
+}
+// returns {v:value} or {msg:format help}
+function parse(){
+  var t=run.typed, p=run.p;
+  if(t==="") return {msg:SAY.type};
+  if(p.type==="money"){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); if(!m) return {msg:SAY.money}; return {v:(+m[1])*100+(m[2]?+m[2]:0)}; }
+  if(p.type==="time"){ if(!/^\d{3,4}$/.test(t)) return {msg:SAY.time}; var h=+t.slice(0,t.length-2), mm=+t.slice(-2); if(h<1||h>12||mm>59) return {msg:SAY.time};
+    if(!run.unit) return {msg:SAY.unit}; var hh=h%12+(run.unit==="pm"?12:0); return {v:hh*60+mm, raw:(h%12)*60+mm}; }
+  if(!/^\d+$/.test(t)) return {msg:SAY.type};
+  if(needsUnit() && !run.unit) return {msg:SAY.unit};
+  return {v:+t};
+}
+function check(){
+  var r=parse(), p=run.p, Q=q(), R=run.res[run.slot];
+  if(r.msg){ run.fb={cls:"try", msg:r.msg}; draw(); say(r.msg); return; }
+  R.tries++;
+  var numberRight = p.type==="time" ? (r.raw===p.answer%720) : (r.v===p.answer);
+  var unitRight = p.type==="time" ? (r.v===p.answer) : (!units() || run.unit===p.unit);
+  if(numberRight && unitRight){
+    var first=(run.attempt===1 && R.tries===1);
+    if(R.first===null) R.first=first;
+    var s=first?STAR_FIRST:STAR_RETRY; if(!R.got){ R.got=true; R.stars=s; run.stars+=s; addStars(s); }
+    run.phase="right"; run.sol=true; run.fb=null; save(); history(false); draw();
+    say(praiseLine(), first?SAY.right:SAY.rightRetry); return;
+  }
+  if(R.first===null) R.first=false;
+  run.wrongs++; if(window.MathHistory && MathHistory.miss) {}
+  var d=null;
+  if(numberRight && !unitRight){ d = p.type==="time" ? (Q.diag.ampm||null) : (Q.unitMsg||null); }
+  if(!d){ var v=(p.type==="time")?r.v:r.v; for(var i=0;i<p.wrongs.length;i++){ var w=p.wrongs[i]; if(w[0]===v || (p.type==="time" && w[0]%720===r.raw && !Q.diag.ampm)){ d=Q.diag[w[1]]; break; } } }
+  if(!d) d=[SAY.generic, Q.go];
+  run.diag={msg:d[0], go:d[1]}; run.phase="wrong"; run.sol=false; run.fb=null; save(); history(false); draw();
+  say(SAY.notYet, d[0]);
+}
+function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" ? " "+run.p.unit : ""); }
+// specific, true praise: name what was right (the step or the answer, never the child)
+function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"?" "+p.unit:"")+" answers the question."; }
+
+/* ---------- screens ---------- */
+function ov(){ var o=$("ckOverlay"); if(!o){ o=document.createElement("div"); o.id="ckOverlay"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Test yourself"); document.body.appendChild(o); } return o; }
+function starsTxt(n){ var s=""; for(var i=0;i<n;i++) s+="⭐"; return s||"–"; }
+function head(){
+  var h='<div class="ckhead"><span class="cktitle">📝 Test yourself · '+esc(TITLE)+'</span><span class="ckpts" id="ckPts">⭐ '+run.stars+' this test</span>'+
+    '<button class="ckq" id="ckRead" type="button">🔊 Read it to me</button><button class="ckq" id="ckClose" type="button">✕ Close</button></div>';
+  h+='<div class="ckdots">'+QS.map(function(x,i){ var r=run.res[i], c=i===run.slot&&run.phase!=="end"&&run.phase!=="intro"?"cur":(r.got?(r.first?"first":"got"):(r.skipped?"skip":"")); return '<span class="'+c+'">'+(r.got?(r.first?"⭐⭐":"⭐"):(i+1))+'</span>'; }).join("")+'</div>';
+  return h;
+}
+function paperQ(){
+  var Q=q(), p=run.p;
+  var h='<div class="ckpaper"><div class="ckqhead"><b>Question '+(run.slot+1)+' of '+QS.length+'</b>'+(run.attempt>1?' <span class="cknew">New numbers</span>':'')+'<span class="ckmarks">['+Q.marks+' marks]</span></div>';
+  h+='<p class="cktext" id="ckText"><span class="cknum">'+(run.slot+1)+'.</span> '+esc(p.text)+'</p>';
+  if(Q.kind==="work") h+='<div class="ckwork">✏️ Show your working clearly. Write your working and draw the model on your paper.</div>';
+  return h;
+}
+function ansLine(active){
+  var p=run.p, ch=unitChoices();
+  var pre = p.type==="money" ? '<span class="ckpre">$</span>' : '';
+  var post = (!needsUnit() && p.unit) ? '<span class="ckpost">'+esc(p.unit)+'</span>' : '';
+  var h='<div class="ckans"><span class="ckanslab">Ans:</span>'+pre+'<span class="ckbox" id="ckBox">'+(esc(showTyped())||"&nbsp;")+'</span>'+post;
+  if(needsUnit()) h+='<span class="ckunits" role="group" aria-label="unit">'+ch.map(function(u){ return '<button type="button" class="ckunit'+(run.unit===u?' on':'')+'" data-u="'+esc(u)+'"'+(active?'':' disabled')+'>'+esc(u)+'</button>'; }).join("")+'</span>';
+  h+='</div>';
+  return h;
+}
+function pad(){
+  var dot=run.p.type==="money";
+  return '<div class="ckpad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button type="button" data-ck="'+k+'">'+k+'</button>'; }).join("")+
+    (dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
+}
+function solution(){
+  var p=run.p, h='<div class="cksol" id="ckSol"><h3>Worked solution</h3><table class="cklines"><thead><tr><th></th><th>Working</th><th>Why this line?</th></tr></thead><tbody>';
+  p.lines.forEach(function(L,i){ h+='<tr><td class="ckln">'+(i+1)+'</td><td><div class="ckeq">'+(L[0]?esc(L[0]):'')+'</div><div class="ckst">'+esc(L[1])+'</div></td><td class="ckwhy">'+esc(L[2])+'</td></tr>'; });
+  h+='<tr class="ckansrow"><td class="ckln">Ans</td><td><div class="ckst"><b>'+esc(p.ans)+'</b></div></td><td class="ckwhy">The answer sentence uses words from the question and the unit, so the marker knows what your number means.</td></tr>';
+  h+='<tr><td class="ckln">Check</td><td><div class="ckeq">'+esc(p.check[0])+' ✓</div></td><td class="ckwhy">'+esc(p.check[1])+'</td></tr>';
+  h+='</tbody></table></div>';
+  return h;
+}
+function draw(){
+  var o=ov(), h=head();
+  if(run.phase==="intro"){
+    h+='<div class="ckpaper ckintro"><div class="ckbig">📝</div><h2>Test yourself</h2><p>'+esc(SAY.intro)+' There are no hints, and you can take as long as you need.</p>'+
+      '<p>Question 1 is a short question. For questions 2 and 3, '+esc(SAY.paper.charAt(0).toLowerCase()+SAY.paper.slice(1))+'</p>'+
+      '<ul class="ckrules"><li>⭐⭐ for each question right on the first try</li><li>⭐ for a question right on a new try</li><li>+'+STAR_FINISH+' ⭐ for finishing the test</li><li>🏅 the Test badge for all 3 right on the first try</li></ul>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckStart">Start the test ▶</button><button type="button" class="ckbtn ghost" id="ckLater">Not now</button></div></div>';
+  } else if(run.phase==="q"){
+    h+=paperQ()+ansLine(true)+pad()+'<div class="ckfb'+(run.fb?' '+run.fb.cls:'')+'" id="ckFb">'+(run.fb?esc(run.fb.msg):'')+'</div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckCheck">Check ✓</button></div></div>';
+  } else if(run.phase==="right"){
+    var R=run.res[run.slot];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb ok" id="ckFb">✅ Yes! <b>'+esc(ansShown())+'</b> answers the question. <span class="ckearn">+'+starsTxt(R.stars)+'</span></div>'+solution()+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckNext">'+(run.slot<QS.length-1?'Next question ➡️':'See my result ➡️')+'</button></div></div>';
+  } else if(run.phase==="wrong"){
+    var L=LS[run.diag.go]||LS[q().go];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb try" id="ckFb"><b>Not yet.</b> '+esc(run.diag.msg)+'</div>'+
+      '<div class="cklesson"><button type="button" class="ckbtn blue" id="ckLesson">📘 Go back to the lesson</button><span class="ckll" id="ckLessonLabel">'+esc(L.label)+'</span></div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckRetry">🔁 Try a new one like it</button>'+
+      (run.sol?'':'<button type="button" class="ckbtn ghost" id="ckShowSol">👀 See the worked solution</button>')+
+      '<button type="button" class="ckbtn ghost" id="ckSkip">'+(run.slot<QS.length-1?'Next question ➡️':'Finish the test ➡️')+'</button></div>'+
+      (run.sol?solution():'')+'</div>';
+  } else if(run.phase==="end"){
+    var fc=firstCount(run);
+    h+='<div class="ckpaper ckend"><div class="ckbig">'+(run.badge?'🏅':'🌟')+'</div><h2>'+esc(SAY.end)+'</h2>'+
+      '<p class="ckres">Right on the first try: <b>'+fc+' of '+QS.length+'</b></p>'+
+      '<p class="ckres">Stars from this test: <b id="ckEndStars">⭐ '+run.stars+'</b> (including +'+run.bonus+' for finishing)</p>'+
+      (run.badge?'<p class="ckbadge" id="ckBadgeMsg">🏅 '+esc(SAY.badge)+'</p>':'')+
+      '<p class="ckres">Your reward points: <b id="ckTotal">⭐ '+myStars()+'</b></p>'+
+      '<p class="ckmuted">'+esc(SAY.daddy)+'</p>'+
+      '<div class="ckrow"><button type="button" class="ckbtn gold" id="ckDaddy">🏅 Show Daddy</button><button type="button" class="ckbtn ghost" id="ckDone">Close</button><button type="button" class="ckbtn ghost" id="ckAgain">Test again with new numbers</button></div></div>';
+  }
+  o.innerHTML=h; o.hidden=false; document.documentElement.classList.add("ckopen"); open=true;
+  bind();
+}
+function bind(){
+  var o=ov();
+  if($("ckClose")) $("ckClose").onclick=close;
+  if($("ckRead")) $("ckRead").onclick=readAloud;
+  if($("ckStart")) $("ckStart").onclick=function(){ run.phase="q"; save(); draw(); readQ(); };
+  if($("ckLater")) $("ckLater").onclick=close;
+  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=run.p.type==="money"?7:(run.p.type==="time"?4:5);
+    if(k==="del") run.typed=run.typed.slice(0,-1); else if(k==="clr") run.typed="";
+    else if(k==="."){ if(run.typed.indexOf(".")<0 && run.typed.length<lim) run.typed=(run.typed===""?"0":run.typed)+"."; }
+    else if(run.typed.length<lim) run.typed=(run.typed==="0"?"":run.typed)+k;
+    $("ckBox").innerHTML=esc(showTyped())||"&nbsp;"; save(); }; });
+  o.querySelectorAll("[data-u]").forEach(function(b){ b.onclick=function(){ run.unit=b.getAttribute("data-u"); o.querySelectorAll("[data-u]").forEach(function(x){ x.classList.toggle("on", x===b); }); save(); }; });
+  if($("ckCheck")) $("ckCheck").onclick=check;
+  if($("ckNext")) $("ckNext").onclick=next;
+  if($("ckSkip")) $("ckSkip").onclick=function(){ run.res[run.slot].skipped=true; next(); };
+  if($("ckRetry")) $("ckRetry").onclick=function(){ run.p=CK.gen(q(), false, run.p.text); run.attempt++; run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); say(SAY.retry, run.p.text); };
+  if($("ckShowSol")) $("ckShowSol").onclick=function(){ run.sol=true; save(); draw(); var s=$("ckSol"); if(s && s.scrollIntoView) s.scrollIntoView({block:"start"}); say(SAY.sol); };
+  if($("ckLesson")) $("ckLesson").onclick=goLesson;
+  if($("ckDaddy")) $("ckDaddy").onclick=function(){ daddy(); };
+  if($("ckDone")) $("ckDone").onclick=close;
+  if($("ckAgain")) $("ckAgain").onclick=function(){ run=fresh(); run.phase="q"; save(); draw(); readQ(); };
+}
+function readQ(){ var Q=q(); say(run.p.text, Q.kind==="work"?SAY.paper:null); }
+function readAloud(){
+  if(run.phase==="q") readQ();
+  else if(run.phase==="wrong") say(SAY.notYet, run.diag.msg);
+  else if(run.phase==="right") say(praiseLine(), SAY.sol);
+  else if(run.phase==="end") say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+  else say(SAY.intro);
+}
+function next(){
+  if(run.slot<QS.length-1){ run.slot++; run.attempt=1; run.p=CK.gen(QS[run.slot], true); run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); readQ(); return; }
+  // the end: bonus for finishing, the badge for all right first try
+  run.bonus=STAR_FINISH; run.stars+=STAR_FINISH; addStars(STAR_FINISH);
+  if(firstCount(run)===QS.length){ run.badge=true; addBadge(); }
+  run.phase="end"; run.done=true; logTest(run); history(true); set(RUNKEY,""); try{ localStorage.removeItem(RUNKEY); }catch(e){}
+  draw(); say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+}
+function close(){ var o=$("ckOverlay"); if(o){ o.hidden=true; o.innerHTML=""; } document.documentElement.classList.remove("ckopen"); open=false; var h=host(); if(h && h.stop) try{ h.stop(); }catch(e){} if(run && !run.done) save(); }
+
+/* ---------- back to the lesson at the step that needs another look ---------- */
+function goLesson(){
+  var L=LS[run.diag.go]||LS[q().go], h=host();
+  save(); close();
+  banner(L.label);
+  if(h && h.openLesson) try{ h.openLesson(L); }catch(e){}
+  say(SAY.lesson);
+}
+function banner(label){
+  var b=$("ckBanner"); if(!b){ b=document.createElement("div"); b.id="ckBanner"; document.body.appendChild(b); }
+  b.innerHTML='<span>📘 '+esc(label)+'</span><button type="button" class="ckbtn green" id="ckBackTest">↩ Back to my test</button><button type="button" class="ckx" id="ckBannerX" aria-label="Hide">✕</button>';
+  b.hidden=false;
+  $("ckBackTest").onclick=function(){ b.hidden=true; resume(true); };
+  $("ckBannerX").onclick=function(){ b.hidden=true; };
+}
+function resume(back){ run=load()||run; if(!run || run.done) run=fresh(); draw(); if(back) say(SAY.back); else if(run.phase==="q") readQ(); else readAloud(); }
+function start(){ var h=host(); if(h && h.prime) try{ h.prime(); }catch(e){} run=load(); if(!run){ run=fresh(); save(); draw(); say(SAY.intro); } else resume(false); var b=$("ckBanner"); if(b) b.hidden=true; }
+
+/* ---------- Show Daddy: a full-screen badge with the date and the points ---------- */
+function daddy(){
+  var d=$("ckDaddyView"); if(!d){ d=document.createElement("div"); d.id="ckDaddyView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Show Daddy"); document.body.appendChild(d); }
+  var P=rewards().players[player()]||{stars:0,badges:{}}, nb=Object.keys(P.badges||{}).length, last=run;
+  d.innerHTML='<div class="ckdcard"><div class="ckdbig">'+(last&&last.badge?'🏅':'⭐')+'</div>'+
+    '<div class="ckdname">'+esc(player())+'</div>'+
+    '<div class="ckdgame">Test yourself · '+esc(TITLE)+'</div>'+
+    '<div class="ckddate">'+dateLabel(Date.now())+'</div>'+
+    (last?'<div class="ckdpts">⭐ '+last.stars+' points in this test</div><div class="ckdline">Right on the first try: '+firstCount(last)+' of '+QS.length+(last.badge?' · Test badge earned':'')+'</div>':'')+
+    '<div class="ckdtotal">Reward points: ⭐ '+(+P.stars||0)+' · Test badges: 🏅 '+nb+'</div>'+
+    '<button type="button" class="ckbtn ghost" id="ckDaddyClose">Close</button></div>';
+  d.hidden=false; $("ckDaddyClose").onclick=function(){ d.hidden=true; };
+}
+
+/* ---------- the header button, and the offer under a finished Lesson round ---------- */
+function drawBtnPlace(b, hd){ var h0=hd.offsetHeight, st=$("stars"); if(st) hd.insertBefore(b, st); else hd.appendChild(b);
+  if(hd.offsetHeight>h0+4){ var ft=document.querySelector(".foot"); if(ft){ b.className="ckbtn green ckfoot"; ft.insertBefore(b, ft.firstChild); } } }
+function drawBtn(){
+  var hd=document.querySelector(".app header"); if(!hd) return;
+  var b=$("ckBtn");
+  if(!b){ b=document.createElement("button"); b.id="ckBtn"; b.type="button"; b.className="ctl ckhdr"; b.textContent="📝 Test yourself"; b.title="Test yourself: 3 exam-style questions"; b.onclick=start; b.hidden=true; document.body.appendChild(b); }
+  b.hidden=!unlocked();
+  // placed once it shows: in the header when it still fits on one row, otherwise above "Start again" at the foot of the page
+  if(!b.hidden && b.parentNode===document.body){ b.remove(); drawBtnPlace(b, hd); }
+}
+window.addEventListener("mathgames:lessondone", function(){
+  unlock();
+  setTimeout(function(){ var pn=$("panel"); if(!pn || $("ckOffer")) return; var d=document.createElement("div"); d.id="ckOffer"; d.className="ckoffer";
+    d.innerHTML='<p><b>📝 Ready to test yourself?</b> 3 questions, like in your exam. It is up to you.</p><button type="button" class="ckbtn green" id="ckOfferBtn">Test yourself</button>';
+    pn.appendChild(d); $("ckOfferBtn").onclick=start; }, 0);
+});
+window.addEventListener("pagehide", function(){ if(run && !run.done){ save(); history(false); } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && run && !run.done){ save(); history(false); } });
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", drawBtn); else drawBtn();
+return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ return open; }, get run(){ return run; }, rewards:rewards, QS:QS, LS:LS, slug:SLUG, daddy:daddy};
+})();
+</script>
+<!--CHECKUP-END-->
 <script>
 (function(){
 "use strict";
@@ -374,7 +826,7 @@ var MUTE_KEY = "barModelTransferGame.muted";
 /*CLIPS-START*/
 var CLIPS = {"Not yet.":"../audio-shared/c524cdf0f667.mp3","Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","You guessed 3 units. Yes: 2 units and 1 unit make 3!":"../audio-shared/c333804633c2.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Every line is on your paper.":"../audio-shared/8519fbff1425.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","You finished the round and got all 5 stars!":"../audio-shared/fa2602ca7096.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Not yet. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/76c7cbe343b7.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not yet. Read the story again: more means add.":"../audio-shared/85a5310cb487.mp3","Not yet. To undo adding, take away.":"../audio-shared/c1e90f0915dc.mp3","Line 1. Tray A's extra 91 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?":"audio/9cbd159adb6e.mp3","Yes! 164 take away 91 is 73. After Tray A's extra 91, another 73 ang ku kueh moved. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.":"audio/7be9655ef231.mp3","Line 1. 164 take away 91 is 73. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.":"audio/a486ee1c6f47.mp3","Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer.":"audio/99df7d24f84c.mp3","Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one.":"audio/3cf3c608f8c9.mp3","Line 2. Tray A is 73 below the dotted line, and Tray B is 164 above it. Which number sentence finds the difference between them now?":"audio/6357abef88af.mp3","Yes! 73 plus 164 is 237. The difference now is 237 ang ku kueh. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/8af066e1e2bf.mp3","Line 2. 73 plus 164 is 237. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/d309f30e118f.mp3","Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?":"audio/3d54c59aae9c.mp3","Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.":"audio/eb53e0e3d55c.mp3","Yes! Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.":"audio/666228e0c694.mp3","The answer sentence. Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.":"audio/c9cf9c51bf45.mp3","Not yet. Look at the bars again. Whose end sticks out further?":"audio/471a47941b6e.mp3","Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things.":"audio/e9f41137258d.mp3","Check line. Put your answer back into the story and undo the move. Moving the 164 ang ku kueh back changes the gap by 164 twice, once for each side. Which number sentence should give 91, the gap in the story?":"audio/ee4fc33b10b7.mp3","Yes! 164 plus 164 take away 237 is 91. Moving the 164 back gives a gap of 91, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/6901b3cb8d38.mp3","The check line. 164 plus 164 take away 237 is 91. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/b0e6a50af80a.mp3","Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.":"audio/8006020a2b67.mp3","Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/0777033eddee.mp3","Line 1. All 62 marbles come out of Jar A's extra piece. Which number sentence finds how big Jar A's extra piece is now?":"audio/98672c0e4bfc.mp3","Yes! 156 take away 62 is 94. Jar A's extra is now 94 marbles. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.":"audio/5506e118d97f.mp3","Line 1. 156 take away 62 is 94. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.":"audio/02ed30117d04.mp3","Not yet. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one.":"audio/84564a035565.mp3","Not yet. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer.":"audio/46cc1a79d08a.mp3","Line 2. Jar A is 94 above the dotted line, and Jar B is 62 above it. Which number sentence finds the difference between them now?":"audio/3466a0409274.mp3","Yes! 94 take away 62 is 32. The difference now is 32 marbles. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.":"audio/fca787d0ead1.mp3","Line 2. 94 take away 62 is 32. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.":"audio/38a6d7c77bb2.mp3","Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?":"audio/d686573578e8.mp3","Not yet. That uses Jar A's extra from the start. Use the two pieces above the line now.":"audio/8b5cf6a44ef3.mp3","Yes! Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.":"audio/5ba856cb47ae.mp3","The answer sentence. Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.":"audio/8ad12bf2782c.mp3","Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.":"audio/679319133231.mp3","Check line. Put your answer back into the story and undo the move. Moving the 62 marbles back changes the gap by 62 twice, once for each side. Which number sentence should give 156, the gap in the story?":"audio/511eef98a131.mp3","Yes! 32 plus 62 plus 62 is 156. Moving the 62 back gives a gap of 156, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/80b098526b81.mp3","The check line. 32 plus 62 plus 62 is 156. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/2223f24cc809.mp3","Not yet. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller.":"audio/582581274fed.mp3","Line 1. All 141 fish come out of Tank A's extra piece. Which number sentence finds how big Tank A's extra piece is now?":"audio/d40bec4eef39.mp3","Yes! 282 take away 141 is 141. Tank A's extra is now 141 fish. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.":"audio/9adfaa965fe3.mp3","Line 1. 282 take away 141 is 141. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.":"audio/ff237a161899.mp3","Not yet. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer.":"audio/6e51c454a432.mp3","Not yet. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one.":"audio/0abf930dc90f.mp3","Line 2. Tank A is 141 above the dotted line, and Tank B is 141 above it. Which number sentence finds the difference between them now?":"audio/1af66416a855.mp3","Yes! 141 take away 141 is 0. The difference now is 0 fish. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.":"audio/73b7d21682fc.mp3","Line 2. 141 take away 141 is 0. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.":"audio/458c917d2d6c.mp3","Not yet. That uses Tank A's extra from the start. Use the two pieces above the line now.":"audio/146a1610133a.mp3","Yes! Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.":"audio/58d2ba3263a8.mp3","The answer sentence. Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.":"audio/d3b7f9eb7db1.mp3","Not yet. Look at the bars again. Does one end stick out further than the other?":"audio/4cb9fe8f5bba.mp3","Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?":"audio/8a3b84489529.mp3","Check line. Put your answer back into the story and undo the move. Moving the 141 fish back changes the gap by 141 twice, once for each side. Which number sentence should give 282, the gap in the story?":"audio/14e023f8e758.mp3","Yes! 0 plus 141 plus 141 is 282. Moving the 141 back gives a gap of 282, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/1201a91236cd.mp3","The check line. 0 plus 141 plus 141 is 282. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/6389194811ce.mp3","Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller.":"audio/28b70cc6adec.mp3","Line 1. The hall's extra 129 students walked over first. Which number sentence finds how many more students moved after that?":"audio/ca9f257e2a3b.mp3","Yes! 329 take away 129 is 200. After the hall's extra 129, another 200 students moved. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.":"audio/c8e406542897.mp3","Line 1. 329 take away 129 is 200. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.":"audio/3099e30532f4.mp3","Not yet. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.":"audio/80682fcda81f.mp3","Not yet. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.":"audio/f04d5f1d35a6.mp3","Line 2. The hall is 200 below the dotted line, and the canteen is 329 above it. Which number sentence finds the difference between them now?":"audio/e79a8b331f60.mp3","Yes! 200 plus 329 is 529. The difference now is 529 students. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/777e3f5a6766.mp3","Line 2. 200 plus 329 is 529. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/a0473f6edcfb.mp3","Not yet. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?":"audio/9b401ad3b719.mp3","Not yet. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.":"audio/0b50fc4b3305.mp3","Yes! The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.":"audio/d9e333a715de.mp3","The answer sentence. The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.":"audio/32749d6415f3.mp3","Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.":"audio/4594f499638b.mp3","Check line. Put your answer back into the story and undo the move. Moving the 329 students back changes the gap by 329 twice, once for each side. Which number sentence should give 129, the gap in the story?":"audio/9a0800f473ed.mp3","Yes! 329 plus 329 take away 529 is 129. Moving the 329 back gives a gap of 129, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/c327a52c8f16.mp3","The check line. 329 plus 329 take away 529 is 129. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/0638ad20a9c2.mp3","Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/f027f00428d4.mp3","Line 1. Mei Ling's extra 244 stickers walked over first. Which number sentence finds how many more stickers moved after that?":"audio/6bac32864bd8.mp3","Yes! 527 take away 244 is 283. After Mei Ling's extra 244, another 283 stickers moved. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.":"audio/09a3b3859e82.mp3","Line 1. 527 take away 244 is 283. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.":"audio/5569f5c404db.mp3","Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer.":"audio/126744a6f8d6.mp3","Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one.":"audio/40a26a817225.mp3","Line 2. Mei Ling is 283 below the dotted line, and Aisha is 527 above it. Which number sentence finds the difference between them now?":"audio/66d3c35a09db.mp3","Yes! 283 plus 527 is 810. The difference now is 810 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/4373f32f38e6.mp3","Line 2. 283 plus 527 is 810. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.":"audio/f6e4476257f9.mp3","Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?":"audio/cfc92cf4e3ef.mp3","Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.":"audio/0e16fead6351.mp3","Yes! Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.":"audio/a27470379b51.mp3","The answer sentence. Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.":"audio/81f3531bec00.mp3","Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things.":"audio/1f6c997be0f4.mp3","Check line. Put your answer back into the story and undo the move. Moving the 527 stickers back changes the gap by 527 twice, once for each side. Which number sentence should give 244, the gap in the story?":"audio/73867fd785f2.mp3","Yes! 527 plus 527 take away 810 is 244. Moving the 527 back gives a gap of 244, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/d317a3cf49fa.mp3","The check line. 527 plus 527 take away 810 is 244. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/13640494aaf6.mp3","Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/83dc2e7a6a07.mp3","Line 1. Bus 1 had 11 passengers, and 3 moved out. Which number sentence finds how many Bus 1 has now?":"audio/c9c298fe458a.mp3","Yes! 11 take away 3 is 8. Bus 1 has 8 passengers now. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.":"audio/d6b1d3ed7bd9.mp3","Line 1. 11 take away 3 is 8. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.":"audio/8f36f1471333.mp3","Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer.":"audio/31b16ae3a23a.mp3","Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?":"audio/b6b1953362df.mp3","Line 2. Bus 2 had 4 passengers, and gets the 3 that moved. Which number sentence finds how many Bus 2 has now?":"audio/465695d26de0.mp3","Yes! 4 plus 3 is 7. Bus 2 has 7 passengers now. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.":"audio/679069b6a5b5.mp3","Line 2. 4 plus 3 is 7. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.":"audio/b2ec03621972.mp3","Not yet. That starts from Bus 1's number. Look at Bus 2's bar.":"audio/5f30af018a98.mp3","Not yet. Look at Bus 2's bar. It grows when the passengers arrive.":"audio/06226d1a6f45.mp3","Line 3. Bus 1 has 8 now, and Bus 2 has 7. Which number sentence finds the difference?":"audio/5e1cdfc8ee3c.mp3","Yes! 8 take away 7 is 1. The difference is 1 passenger. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/a3af9b40b781.mp3","Line 3. 8 take away 7 is 1. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/36aa224bc715.mp3","Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars.":"audio/497a78044950.mp3","Not yet. That takes away the number that moved. Compare the two bars as they are now.":"audio/94316b23c77f.mp3","Yes! Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.":"audio/1ae4ee598b6f.mp3","The answer sentence. Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.":"audio/fdc607707277.mp3","Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things.":"audio/7505651efbf8.mp3","Check line. Put your answer back into the story and undo the move. Moving the 3 passengers back changes the gap by 3 twice, once for each side. Which number sentence should give 7? That was the gap at the start: Bus 1 had 7 more.":"audio/db53ac3fad76.mp3","Yes! 1 plus 3 plus 3 is 7. Moving the 3 back gives a gap of 7, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/7aa6a3b84c86.mp3","The check line. 1 plus 3 plus 3 is 7. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/a40c8e8d6f04.mp3","Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller.":"audio/8fe995613d75.mp3","Line 1. Tank A had 8 fish, and 5 moved out. Which number sentence finds how many Tank A has now?":"audio/6952b1526166.mp3","Yes! 8 take away 5 is 3. Tank A has 3 fish now. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.":"audio/76dd06dcff8e.mp3","Line 1. 8 take away 5 is 3. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.":"audio/1dfaa5b58932.mp3","Not yet. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer.":"audio/6cd53fafc02f.mp3","Not yet. That takes away Tank B's number. Look at Tank A's bar. How many leave it?":"audio/53cb60938124.mp3","Line 2. Tank B had 4 fish, and gets the 5 that moved. Which number sentence finds how many Tank B has now?":"audio/4035e7810785.mp3","Yes! 4 plus 5 is 9. Tank B has 9 fish now. Why this line? Tank B gets the fish that move, so it has more. More means add.":"audio/745b7cebb030.mp3","Line 2. 4 plus 5 is 9. Why this line? Tank B gets the fish that move, so it has more. More means add.":"audio/4b6ded9ec7bd.mp3","Not yet. That starts from Tank A's number. Look at Tank B's bar.":"audio/fd286ad7910e.mp3","Not yet. Look at Tank B's bar. How many arrive?":"audio/8c02709c9816.mp3","Line 3. Tank A has 3 now, and Tank B has 9. Which number sentence finds the difference?":"audio/b76e2eaa2819.mp3","Yes! 9 take away 3 is 6. The difference is 6 fish. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/c70d1ce981ad.mp3","Line 3. 9 take away 3 is 6. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/640bcded02d9.mp3","Yes! Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.":"audio/68462f3748bb.mp3","The answer sentence. Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.":"audio/8331814f8b39.mp3","Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.":"audio/7278ebb84864.mp3","Check line. Put your answer back into the story and undo the move. Moving the 5 fish back changes the gap by 5 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Tank A had 4 more.":"audio/9f5b4134fed3.mp3","Yes! 5 plus 5 take away 6 is 4. Moving the 5 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/f8a5aa1b8dde.mp3","The check line. 5 plus 5 take away 6 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/6fa760cc2518.mp3","Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/446d3a2f2e03.mp3","Line 1. Tray A had 6 ang ku kueh, and 1 moved out. Which number sentence finds how many Tray A has now?":"audio/8d54184af564.mp3","Yes! 6 take away 1 is 5. Tray A has 5 ang ku kueh now. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.":"audio/3ffec2b1ecda.mp3","Line 1. 6 take away 1 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.":"audio/f6c1cb91b03d.mp3","Not yet. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer.":"audio/a58cd01bcbe2.mp3","Not yet. That takes away Tray B's number. Look at Tray A's bar. How many leave it?":"audio/71f0393a555d.mp3","Line 2. Tray B had 4 ang ku kueh, and gets the 1 that moved. Which number sentence finds how many Tray B has now?":"audio/b4df1c682a1d.mp3","Yes! 4 plus 1 is 5. Tray B has 5 ang ku kueh now. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.":"audio/9c99516b4610.mp3","Line 2. 4 plus 1 is 5. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.":"audio/35d8524e0fdf.mp3","Not yet. Look at Tray B's bar. It grows when the ang ku kueh arrive.":"audio/da6174dac0f7.mp3","Not yet. That starts from Tray A's number. Look at Tray B's bar.":"audio/83ec6c5f3d70.mp3","Line 3. Tray A has 5 now, and Tray B has 5. Which number sentence finds the difference?":"audio/92447527b7ec.mp3","Yes! 5 take away 5 is 0. The difference is 0 ang ku kueh. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.":"audio/a692784ad83c.mp3","Line 3. 5 take away 5 is 0. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.":"audio/891cc3db04a9.mp3","Yes! Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.":"audio/6190bee30c72.mp3","The answer sentence. Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.":"audio/66dc8a505453.mp3","Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?":"audio/9847d7875969.mp3","Check line. Put your answer back into the story and undo the move. Moving the 1 ang ku kueh back changes the gap by 1 twice, once for each side. Which number sentence should give 2? That was the gap at the start: Tray A had 2 more.":"audio/7fbf0e84de24.mp3","Yes! 0 plus 1 plus 1 is 2. Moving the 1 back gives a gap of 2, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/b90715daf225.mp3","The check line. 0 plus 1 plus 1 is 2. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/879c6f9ea722.mp3","Line 1. Mei Ling had 15 stickers, and 2 moved out. Which number sentence finds how many Mei Ling has now?":"audio/a413b2c34ede.mp3","Yes! 15 take away 2 is 13. Mei Ling has 13 stickers now. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.":"audio/f86554ba2f75.mp3","Line 1. 15 take away 2 is 13. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.":"audio/e74fa831888b.mp3","Not yet. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer.":"audio/71e008c3821d.mp3","Not yet. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?":"audio/b8a98b8248e0.mp3","Line 2. Aisha had 7 stickers, and gets the 2 that moved. Which number sentence finds how many Aisha has now?":"audio/a361c0e94ab4.mp3","Yes! 7 plus 2 is 9. Aisha has 9 stickers now. Why this line? Aisha gets the stickers that move, so it has more. More means add.":"audio/da50734260eb.mp3","Line 2. 7 plus 2 is 9. Why this line? Aisha gets the stickers that move, so it has more. More means add.":"audio/f9aff162485d.mp3","Not yet. That starts from Mei Ling's number. Look at Aisha's bar.":"audio/030e7eaa193a.mp3","Not yet. Look at Aisha's bar. It grows when the stickers arrive.":"audio/8a65610b93b9.mp3","Line 3. Mei Ling has 13 now, and Aisha has 9. Which number sentence finds the difference?":"audio/895d48290473.mp3","Yes! 13 take away 9 is 4. The difference is 4 stickers. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/897220ba0fd9.mp3","Line 3. 13 take away 9 is 4. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/7f1873ee1dab.mp3","Yes! Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.":"audio/e2f2533f8f3b.mp3","The answer sentence. Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.":"audio/9bb8d8ae5948.mp3","Check line. Put your answer back into the story and undo the move. Moving the 2 stickers back changes the gap by 2 twice, once for each side. Which number sentence should give 8? That was the gap at the start: Mei Ling had 8 more.":"audio/68c94676d2a6.mp3","Yes! 4 plus 2 plus 2 is 8. Moving the 2 back gives a gap of 8, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/e6c0f6c71623.mp3","The check line. 4 plus 2 plus 2 is 8. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/f4e2d146d866.mp3","Not yet. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller.":"audio/411c15920746.mp3","Line 1. The top shelf had 12 books, and 7 moved out. Which number sentence finds how many the top shelf has now?":"audio/8fb3df840ec4.mp3","Yes! 12 take away 7 is 5. The top shelf has 5 books now. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.":"audio/84761c210f1b.mp3","Line 1. 12 take away 7 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.":"audio/51866d968ade.mp3","Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer.":"audio/67063e405d47.mp3","Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?":"audio/e02e416c60f4.mp3","Line 2. The bottom shelf had 9 books, and gets the 7 that moved. Which number sentence finds how many the bottom shelf has now?":"audio/302561248bc3.mp3","Yes! 9 plus 7 is 16. The bottom shelf has 16 books now. Why this line? The bottom shelf gets the books that move, so it has more. More means add.":"audio/cf3e940a1343.mp3","Line 2. 9 plus 7 is 16. Why this line? The bottom shelf gets the books that move, so it has more. More means add.":"audio/0ba8bf92876d.mp3","Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar.":"audio/1ca037467864.mp3","Not yet. Look at the bottom shelf's bar. It grows when the books arrive.":"audio/f7c36fbe2ada.mp3","Line 3. The top shelf has 5 now, and the bottom shelf has 16. Which number sentence finds the difference?":"audio/4e89082ed16f.mp3","Yes! 16 take away 5 is 11. The difference is 11 books. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/a47fafde5445.mp3","Line 3. 16 take away 5 is 11. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.":"audio/8688dc62db9e.mp3","Yes! The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.":"audio/3c45dbda2b23.mp3","The answer sentence. The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.":"audio/3b356e30a7ed.mp3","Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.":"audio/cb2c11632151.mp3","Check line. Put your answer back into the story and undo the move. Moving the 7 books back changes the gap by 7 twice, once for each side. Which number sentence should give 3? That was the gap at the start: the top shelf had 3 more.":"audio/f2602bdf7efc.mp3","Yes! 7 plus 7 take away 11 is 3. Moving the 7 back gives a gap of 3, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/19f9aa8edb35.mp3","The check line. 7 plus 7 take away 11 is 3. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.":"audio/e818cbf4819b.mp3","Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller.":"audio/9a9ea41e89ab.mp3","Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.":"audio/4c730990233a.mp3","This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/c9e1dd2cb8cc.mp3","On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.":"audio/d94dd8ee2617.mp3"};
 // Game 1 keeps its rule: Practice uses the device voice; recorded working-step clips play in Lesson mode only
-var CLIPS_WHEN = function(){ return isLesson(); };
+var CLIPS_WHEN = function(){ return isLesson() || !!(window.MathCheckup && MathCheckup.open); };
 var Voice = (function(){
   var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
   var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
@@ -1266,6 +1718,25 @@ $("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); hide
 renderModeCtl();
 renderVoiceCtl();
 MathHistory.attach(function(){ return {mode:MODE, remaining:ROUND_SIZE-S.idx, open:$("startScreen").style.display==="none"}; });
+/* host for "Test yourself" (MathCheckup): the tutor voice, and opening the Lesson at the step a test answer needs */
+if(typeof CHECKUP_CLIPS==="object" && CHECKUP_CLIPS){ for(var ckk in CHECKUP_CLIPS){ if(Object.prototype.hasOwnProperty.call(CHECKUP_CLIPS,ckk) && !Object.prototype.hasOwnProperty.call(CLIPS,ckk)) CLIPS[ckk]=CHECKUP_CLIPS[ckk]; } }
+window.MathHost={
+  say:function(){ Voice.say.apply(null, arguments); },
+  stop:function(){ Voice.stop(); if(typeof Clips!=="undefined") Clips.stop(); },
+  prime:function(){ Voice.prime(); },
+  // t = {idx: Lesson problem 0-4, phase: "move" (the Move step) or "start"}
+  openLesson:function(t){
+    if(cur && cur.animating) return;
+    Voice.stop(); if(typeof Clips!=="undefined") Clips.stop(); save();
+    if(!isLesson()){ MODE="lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){} }
+    S=loadLesson(lessonTrackSmall()); var i=Math.max(0,Math.min(ROUND_SIZE-1,(t&&t.idx)|0)); S.idx=i; S.results=(S.results||[]).slice(0,i); save();
+    renderModeCtl(); renderVoiceCtl(); $("dotline").style.display=""; $("startScreen").style.display="none";
+    startProblem(true);
+    if(t && t.phase==="move"){ cur.prediction=P.answer.who; cur.phase="move"; renderAll(); }
+    Voice.say($("story").textContent, $("question").textContent);
+    MathHistory.restart();
+  }
+};
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
 /* test hook (no personal data; used by automated checks) */

@@ -232,7 +232,8 @@ var HISTORY_GAME = "move-until";
    written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
    the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
    Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
-   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore). */
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore).
+   mode is lesson | practice | test ("Test yourself" check-up, written by MathCheckup through record()). */
 var MathHistory=(function(){
 "use strict";
 var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
@@ -276,7 +277,11 @@ return {gameId:GAME_ID, key:KEY,
   restart:function(){ if(sess) save(sess); begin(); },
   miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
   hint:function(){ if(sess) sess.hints++; },
-  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++; if(roundOver){ save(sess); sess=null; } },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++;
+    if(roundOver){ var wasLesson=sess.mode==="lesson"; save(sess); sess=null;
+      if(wasLesson){ try{ window.dispatchEvent(new Event("mathgames:lessondone")); }catch(e){} } } }, // a finished Lesson round unlocks "Test yourself"
+  // a "Test yourself" check-up (mode "test"): same fields and the same upsert as a round
+  record:function(o){ return !!o && o.mode==="test" && save(o); },
   // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
   paperOffer:function(){ if(sess) sess.paperTotal++; },
   paper:function(){ if(sess) sess.paperDone++; },
@@ -284,6 +289,454 @@ return {gameId:GAME_ID, key:KEY,
 })();
 </script>
 <!--HISTORY-END-->
+<!--CHECKUP-START-->
+<style>
+/* Check-up ("Test yourself") */
+html.ckopen, html.ckopen body{overflow:hidden}
+#ckOverlay{position:fixed;inset:0;z-index:60;background:#f4f1ea;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 40px;font-size:18px;color:#222}
+#ckOverlay[hidden],#ckBanner[hidden],#ckDaddyView[hidden],#ckBtn[hidden]{display:none}
+.ckhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:820px;margin:0 auto 8px}
+.cktitle{font-weight:800;font-size:19px;flex:1 1 auto}
+.ckpts{font-weight:700;background:#fff7d6;border-radius:999px;padding:4px 12px}
+.ckq{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-size:16px;box-shadow:0 1px 4px #0002;cursor:pointer}
+.ckdots{display:flex;gap:8px;justify-content:center;margin:4px auto 10px}
+.ckdots span{min-width:40px;text-align:center;padding:4px 8px;border-radius:999px;background:#e6e1d6;font-weight:700}
+.ckdots .cur{background:#3b6fd8;color:#fff}.ckdots .first{background:#ffe27a}.ckdots .got{background:#fff0b3}.ckdots .skip{background:#ddd;color:#888}
+.ckpaper{max-width:820px;margin:0 auto;background:#fff;border-radius:6px;box-shadow:0 2px 10px #0002;padding:20px 22px;font-family:Georgia,"Times New Roman",serif}
+.ckpaper button{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ckqhead{display:flex;gap:10px;align-items:center;font-family:system-ui,-apple-system,sans-serif;color:#555;font-size:16px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px}
+.ckmarks{margin-left:auto}.cknew{background:#e8f4ff;color:#245;border-radius:999px;padding:2px 10px;font-size:14px}
+.cktext{font-size:21px;line-height:1.55;margin:6px 0 12px}.cknum{font-weight:700;margin-right:6px}
+.ckwork{border:2px dashed #b9b2a2;border-radius:6px;min-height:70px;padding:10px 12px;color:#6a6355;font-size:17px;margin:8px 0 14px;font-family:system-ui,-apple-system,sans-serif}
+.ckans{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;font-size:21px;margin:6px 0 10px}
+.ckanslab{font-weight:700}.ckpre,.ckpost{font-weight:700}
+.ckbox{min-width:120px;border-bottom:3px solid #222;text-align:center;font-size:26px;font-weight:700;padding:0 8px;font-family:system-ui,-apple-system,sans-serif}
+.ckunits{display:inline-flex;gap:6px}
+.ckunit{border:2px solid #9aa;background:#fff;border-radius:10px;padding:6px 14px;font-size:19px;cursor:pointer}
+.ckunit.on{border-color:#2a8a4a;background:#e3f6e8;font-weight:700}.ckunit[disabled]{opacity:.7}
+.ckpad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center;margin:8px 0}
+.ckpad button{height:56px;font-size:24px;border-radius:12px;border:0;background:#eef1f6;box-shadow:0 1px 3px #0002;cursor:pointer}
+.ckfb{min-height:28px;margin:8px 0;font-family:system-ui,-apple-system,sans-serif;font-size:19px;line-height:1.45;border-radius:10px;padding:0 4px}
+.ckfb.try{background:#fff4e0;padding:10px 12px}.ckfb.ok{background:#e6f7ea;padding:10px 12px}
+.ckearn{font-weight:700;white-space:nowrap}
+.ckrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 4px}
+.ckbtn{border:0;border-radius:14px;padding:12px 18px;font-size:19px;font-weight:700;cursor:pointer;background:#3b6fd8;color:#fff;box-shadow:0 2px 6px #0002}
+.ckbtn.green{background:#2a8a4a}.ckbtn.blue{background:#2f63c5}.ckbtn.gold{background:#d99a00}.ckbtn.ghost{background:#fff;color:#234;border:2px solid #cfd6e2;box-shadow:none}
+.cklesson{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#eef4ff;border-radius:12px;padding:10px 12px;margin:10px 0;font-family:system-ui,-apple-system,sans-serif}
+.ckll{font-size:17px;color:#234}
+.cksol{margin-top:14px;font-family:system-ui,-apple-system,sans-serif}.cksol h3{margin:4px 0 8px}
+.cklines{width:100%;border-collapse:collapse;font-size:17px}.cklines th{text-align:left;color:#666;font-weight:600;border-bottom:2px solid #ddd;padding:4px 6px}
+.cklines td{border-bottom:1px solid #eee;padding:8px 6px;vertical-align:top}.ckln{font-weight:700;color:#666;white-space:nowrap}
+.ckeq{font-size:20px;font-weight:700;font-family:Georgia,"Times New Roman",serif}.ckst{color:#234}.ckwhy{color:#444;font-size:16px;line-height:1.45}
+.ckintro,.ckend{text-align:center;font-family:system-ui,-apple-system,sans-serif}.ckbig{font-size:64px}
+.ckrules{display:inline-block;text-align:left;font-size:18px;line-height:1.7}.ckres{font-size:20px}.ckbadge{font-size:21px;font-weight:700;color:#8a5a00}.ckmuted{color:#666}
+.ckoffer{margin-top:14px;background:#eef4ff;border-radius:14px;padding:12px;text-align:center}
+#ckBanner{position:fixed;left:8px;right:8px;bottom:8px;z-index:55;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#fff;border:3px solid #2f63c5;border-radius:16px;padding:10px 12px;box-shadow:0 4px 16px #0003;font-size:18px}
+.ckx{border:0;background:none;font-size:20px;cursor:pointer}
+#ckDaddyView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
+.ckdcard{background:#fff;border-radius:28px;box-shadow:0 8px 30px #0003;padding:28px 32px;text-align:center;max-width:620px;width:100%;font-family:system-ui,-apple-system,sans-serif}
+.ckdbig{font-size:140px;line-height:1.1}.ckdname{font-size:40px;font-weight:800;margin:6px 0}.ckdgame{font-size:24px;color:#444}
+.ckddate{font-size:22px;color:#666;margin:6px 0 14px}.ckdpts{font-size:34px;font-weight:800;color:#8a5a00}.ckdline{font-size:20px;margin:6px 0}
+.ckdtotal{font-size:22px;margin:12px 0 18px;font-weight:700}.ckdbadges{font-size:20px;line-height:1.6;margin:8px 0 14px}
+@media (max-width:600px){.cktext{font-size:19px}.ckpad{grid-template-columns:repeat(3,64px)}.ckdbig{font-size:96px}.ckdname{font-size:30px}}
+.ckfoot{display:block;margin:0 auto 12px;font-size:20px}
+</style>
+<script>
+var CHECKUP_GAME = "move-until", CHECKUP_TITLE = "Move Until…";
+var CHECKUP_CLIPS = {"All three were right on the first try. You earned the Test badge for this game.": "../audio-shared/6c184ff7b2d0.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "If the whole gap moves, the other child ends with more. Each side moves halfway: one loses and one gains.": "audio/cd0014bcdd80.mp3", "If you want, you could show Daddy your reward points.": "../audio-shared/d533d1e63ffd.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is both boxes together. Share into 2 equal boxes.": "audio/5a4ad02ceff4.mp3", "That is how many each will have. The question asks how many must be GIVEN.": "audio/e90b5f524358.mp3", "That is how many pens are MOVED. The question asks how many are in each box then.": "audio/1886ebecb23c.mp3", "That is how many the other child has in the end. The question asks how many are GIVEN.": "audio/866eed742b1c.mp3", "That is the gap at the start. Find the total, then share it equally.": "audio/7d36906e1ab0.mp3", "That would make them the SAME. Here one must have twice as many: 3 units altogether.": "audio/be618ca60c65.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3", "You found 1 unit. That is how many the giver keeps. The question asks how many are GIVEN.": "audio/8a95ddb13566.mp3"};
+/* Check-up ("Test yourself") question-bank helpers. Shared by every game's bank file.
+   Original stories and numbers only (modelled on the TYPE of free P3 sample-paper questions; no exam text). */
+var CHECKUP_BANK = CHECKUP_BANK || {};
+var CK = (function(){
+  var MI="\u2212", TI="\u00d7", DI="\u00f7";
+  var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+  var SURN=["Tan","Lim","Goh","Lee","Ong","Ng","Wong","Chua","Koh","Teo"];
+  function R(first){
+    var used=[];
+    return {first:!!first,
+      n:function(lo,hi,fixed,step){ if(first && fixed!=null) return fixed; step=step||1; var k=Math.floor((hi-lo)/step); return lo+step*Math.floor(Math.random()*(k+1)); },
+      pick:function(a,fixed){ if(first && fixed!=null) return fixed; return a[Math.floor(Math.random()*a.length)]; },
+      name:function(fixed){ if(first && fixed!=null){ used.push(fixed); return fixed; } var pool=NAMES.filter(function(x){return used.indexOf(x)<0;}); var x=pool[Math.floor(Math.random()*pool.length)]; used.push(x); return x; },
+      sur:function(fixed){ if(first && fixed!=null) return fixed; return SURN[Math.floor(Math.random()*SURN.length)]; }
+    };
+  }
+  function pl(n,s,p){ return n===1?s:(p||s+"s"); }
+  // money in cents -> "$4.75" (dp:true forces 2 decimal places, "$10.00")
+  function money(c,dp){ var d=Math.floor(c/100), r=c%100; return "$"+d+((dp||r)?"."+(r<10?"0":"")+r:""); }
+  // minutes after midnight -> "4:15 pm" (12:xx is pm, 12-hour clock as in P3)
+  function clock(m){ m=((m%1440)+1440)%1440; var h=Math.floor(m/60), mm=m%60, ap=h>=12?"pm":"am", h12=h%12===0?12:h%12; return h12+":"+(mm<10?"0":"")+mm+" "+ap; }
+  function hm(m){ var h=Math.floor(m/60), mm=m%60; return (h?h+" h":"")+(h&&mm?" ":"")+(mm?mm+" min":""); }
+  // the answer as it is written on the answer line
+  function ansText(p){ return p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
+  // a problem may be used when its question text does not show the answer and it has a wrong value we can diagnose
+  function usable(p, q){
+    if(!p || !(p.answer>0) || Math.floor(p.answer)!==p.answer) return false;
+    var fixed=""; if(q){ for(var k in q.diag) fixed+=" "+q.diag[k][0]; if(q.unitMsg) fixed+=" "+q.unitMsg[0]; }
+    var toks=String(p.text+" "+fixed).match(/\$?\d+(?:[.:]\d+)?(?: [ap]m)?/g)||[], at=ansText(p);
+    if(toks.indexOf(at)>=0 || toks.indexOf(String(p.answer))>=0) return false;
+    p.wrongs=(p.wrongs||[]).filter(function(w){ return w[0]>0 && Math.floor(w[0])===w[0] && w[0]!==p.answer; });
+    return p.wrongs.length>0;
+  }
+  // make a question: the curated first numbers, or fresh numbers (never the same as the one before)
+  function gen(q, first, avoid){
+    for(var t=0;t<400;t++){ var p=q.make(R(first && t===0)); if(usable(p, q) && !(avoid && p.text===avoid)) return p; }
+    return q.make(R(true));
+  }
+  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,usable:usable,gen:gen};
+})();
+CHECKUP_BANK["move-until"]={
+ lessons:{
+  equal:{idx:0, phase:"move", label:"Lesson problem 1, step 2 (Move): move until both are the same"},
+  half:{idx:1, phase:"move", label:"Lesson problem 2: watch the Move, then the working: total first, then share into 2"},
+  twice:{idx:2, phase:"move", label:"Lesson problem 3, step 2 (Move): move until one has twice as many"},
+  twicew:{idx:3, phase:"move", label:"Lesson problem 4: watch the Move, then the working: total first, then 3 units"}
+ },
+ qs:[
+ {id:"mu-1", kind:"short", marks:2, go:"equal",
+  diag:{gap:["If the whole gap moves, the other child ends with more. Each side moves halfway: one loses and one gains.","equal"],
+        each:["That is how many each will have. The question asks how many must be GIVEN.","half"]},
+  make:function(R){ var a=R.name("Mei"), b=R.name("Ravi"), g=R.n(4,30,8), x=R.n(10,60,18), y=x+2*g;
+   return {text:a+" has "+y+" stamps and "+b+" has "+x+" stamps. How many stamps must "+a+" give "+b+" so that they have the same number of stamps?",
+    type:"int", answer:g, unit:"stamps",
+    lines:[[y+" + "+x+" = "+(x+y), "They have "+(x+y)+" stamps altogether.", "Giving does not change the total. Find it first."],
+     [(x+y)+" "+CK.DI+" 2 = "+(x+g), "In the end each has "+(x+g)+" stamps.", "The same number means 2 equal bars."],
+     [y+" "+CK.MI+" "+(x+g)+" = "+g, a+" must give "+g+" stamps.", a+" goes from "+y+" down to "+(x+g)+"."]],
+    ans:a+" must give "+b+" "+g+" stamps.", check:[x+" + "+g+" = "+(x+g), b+" gets "+g+" and also has "+(x+g)+". Both are the same."],
+    wrongs:[[2*g,"gap"],[x+g,"each"]]}; }},
+ {id:"mu-2", kind:"work", marks:4, go:"twicew",
+  diag:{unit:["You found 1 unit. That is how many the giver keeps. The question asks how many are GIVEN.","twicew"],
+        two:["That is how many the other child has in the end. The question asks how many are GIVEN.","twicew"],
+        equal:["That would make them the SAME. Here one must have twice as many: 3 units altogether.","twice"]},
+  make:function(R){ var a=R.name("Hui Min"), b=R.name("Farid"), u=R.n(12,40,24), x=R.n(4,2*u-4,32), T=3*u, y=T-x, gv=y-u;
+   if(gv<=0 || x>=2*u){ x=2*u-6; y=T-x; gv=y-u; }
+   return {text:a+" has "+y+" beads and "+b+" has "+x+" beads. How many beads must "+a+" give "+b+" so that "+b+" has twice as many beads as "+a+"?",
+    type:"int", answer:gv, unit:"beads",
+    lines:[[y+" + "+x+" = "+T, "They have "+T+" beads altogether.", "Giving does not change the total."],
+     [T+" "+CK.DI+" 3 = "+u, a+" keeps 1 unit: "+u+" beads.", "In the end "+b+" has 2 units and "+a+" has 1 unit: 3 equal units share the total."],
+     [y+" "+CK.MI+" "+u+" = "+gv, a+" must give "+gv+" beads.", a+" goes from "+y+" down to "+u+"."]],
+    ans:a+" must give "+b+" "+gv+" beads.", check:[x+" + "+gv+" = "+(2*u), b+" ends with "+(2*u)+", which is twice "+u+"."],
+    wrongs:[[u,"unit"],[2*u,"two"],[(y-x)/2,"equal"]]}; }},
+ {id:"mu-3", kind:"work", marks:3, go:"half",
+  diag:{moved:["That is how many pens are MOVED. The question asks how many are in each box then.","half"],
+        total:["That is both boxes together. Share into 2 equal boxes.","half"],
+        gap:["That is the gap at the start. Find the total, then share it equally.","half"]},
+  make:function(R){ var g=R.n(6,40,23), x=R.n(30,120,79), y=x+2*g, E=x+g;
+   return {text:"Box P has "+y+" pens and Box Q has "+x+" pens. Some pens are moved from Box P to Box Q until both boxes have the same number of pens. How many pens are in each box then?",
+    type:"int", answer:E, unit:"pens",
+    lines:[[y+" + "+x+" = "+(x+y), "There are "+(x+y)+" pens altogether.", "Moving pens does not change the total."],
+     [(x+y)+" "+CK.DI+" 2 = "+E, "Each box has "+E+" pens then.", "Both boxes the same: 2 equal bars share the total."]],
+    ans:"Each box has "+E+" pens then.", check:[y+" "+CK.MI+" "+E+" = "+g, g+" pens leave Box P, and "+x+" + "+g+" is "+E+" for Box Q too."],
+    wrongs:[[g,"moved"],[x+y,"total"],[2*g,"gap"]]}; }}
+ ]};
+/* ===== Check-up ("Test yourself"): 3 exam-style questions after the Lesson. Kept ONLY in this browser's localStorage. =====
+   No network code. Nothing is timed, no hints during the test, never a gate: it is always optional.
+   Stars: right first try = 2, right on a new try = 1, finishing = 3 more, all 3 right first try = the game's Test badge.
+   Stars never go down. Results also go to the practice history as mode "test" (schema v1). */
+var MathCheckup=(function(){
+"use strict";
+var SLUG=(typeof CHECKUP_GAME==="string")?CHECKUP_GAME:"", BK=CHECKUP_BANK[SLUG], QS=BK.qs, LS=BK.lessons;
+var TITLE=(typeof CHECKUP_TITLE==="string")?CHECKUP_TITLE:document.title;
+var RKEY="mathgames.rewards.v1", UKEY="mathgames.checkup.unlocked.v1", RUNKEY="mathgames.checkup.run."+SLUG, PKEY="mathgames.player", HKEY="mathgames.history.v1";
+var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3;
+// fixed lines (recorded with the tutor voice); lines with numbers or names are read by the device voice
+var SAY={
+  intro:"Test yourself. Three questions, like in your exam.",
+  paper:"Write your working and draw the model on your paper. Then type your answer.",
+  unit:"Choose the unit too.",
+  type:"Type your answer on the number pad.",
+  right:"Yes, that's right. Now check your paper against the worked solution.",
+  rightRetry:"Yes, that's right this time. Check your paper against the worked solution.",
+  notYet:"Not yet.",
+  generic:"Read the question again, then check your working one line at a time. What does the question ask for?",
+  lesson:"Go back to the lesson to see this step again. Then come back to your test.",
+  retry:"Here is a new one like it, with new numbers.",
+  sol:"Here is the worked solution. Read why each line is there.",
+  back:"Welcome back to your test.",
+  end:"You finished the check-up. Every question is done.",
+  badge:"All three were right on the first try. You earned the Test badge for this game.",
+  daddy:"If you want, you could show Daddy your reward points.",
+  money:"Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.",
+  time:"Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm."
+};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function jget(k,d){ try{ var v=JSON.parse(get(k)||"null"); return v==null?d:v; }catch(e){ return d; } }
+function host(){ return window.MathHost||null; }
+function say(){ var h=host(), a=Array.prototype.slice.call(arguments).filter(Boolean); if(h && h.say && a.length) try{ h.say.apply(null,a); }catch(e){} }
+function player(){ var n=String(get(PKEY)||"").replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dateLabel(t){ var d=new Date(t+8*3600000); return DAYS[d.getUTCDay()]+" "+d.getUTCDate()+" "+MONTHS[d.getUTCMonth()]+" "+d.getUTCFullYear(); }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out=""; for(var i=0;i<6;i++) out+=abc.charAt(Math.floor(Math.random()*36)); return "t"+t.toString(36)+"-"+out; }
+
+/* ---------- unlock: after a Lesson round (or an earlier finished Lesson in the history) ---------- */
+function unlocked(){
+  var u=jget(UKEY,{}); if(u && u[SLUG]) return true;
+  var h=jget(HKEY,[]); if(!Array.isArray(h)) return false;
+  return h.some(function(x){ return x && x.game_id==="math-"+SLUG && x.mode==="lesson" && x.items_done>0 && x.items_done>=x.items_total; });
+}
+function unlock(){ var u=jget(UKEY,{}); if(!u || typeof u!=="object") u={}; if(!u[SLUG]){ u[SLUG]=iso(Date.now()); set(UKEY,JSON.stringify(u)); } drawBtn(); }
+
+/* ---------- reward points (per player, never go down) ---------- */
+function rewards(){ var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players) r={v:1, players:{}}; return r; }
+function addStars(n, why){
+  if(!(n>0)) return; var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  P.stars=(+P.stars||0)+n; set(RKEY,JSON.stringify(r));
+}
+function addBadge(){
+  var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]}), b=P.badges[SLUG];
+  if(!b) P.badges[SLUG]={first:iso(Date.now()), count:1}; else b.count=(+b.count||0)+1;
+  set(RKEY,JSON.stringify(r));
+}
+function logTest(run){
+  var r=rewards(), who=run.player, P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  P.tests=(P.tests||[]).filter(function(t){ return t.id!==run.id; });
+  P.tests.push({id:run.id, game:SLUG, at:iso(Date.now()), stars:run.stars, first:firstCount(run), done:doneCount(run), total:QS.length, badge:!!run.badge});
+  if(P.tests.length>50) P.tests=P.tests.slice(P.tests.length-50);
+  set(RKEY,JSON.stringify(r));
+}
+function myStars(){ var P=rewards().players[player()]; return P?(+P.stars||0):0; }
+
+/* ---------- the run (one check-up), saved so she can visit the lesson and come back ---------- */
+var run=null, open=false;
+function fresh(){
+  var t=Date.now();
+  return {v:1, id:newId(t), player:player(), t0:t, slot:0, attempt:1, p:CK.gen(QS[0], true), phase:"intro", typed:"", unit:"", res:QS.map(function(){ return {first:null, got:false, tries:0, stars:0}; }),
+    stars:0, wrongs:0, diag:null, sol:false, bonus:0, badge:false, saved:false, done:false};
+}
+function load(){ var r=jget(RUNKEY,null); if(r && r.v===1 && r.p && r.res && r.res.length===QS.length && !r.done && r.player===player()) return r; return null; }
+function save(){ if(run) set(RUNKEY,JSON.stringify(run)); }
+function firstCount(r){ return r.res.filter(function(x){ return x.first===true; }).length; }
+function doneCount(r){ return r.res.filter(function(x){ return x.got || x.tries>0; }).length; }
+function finishedSlots(r){ return r.res.filter(function(x){ return x.got || x.skipped; }).length; }
+/* practice history entry, mode "test" (same schema v1 as Lesson and Practice) */
+function history(final){
+  if(!run || !window.MathHistory || !MathHistory.record) return;
+  var n=finishedSlots(run); if(!(n>0)) return;
+  var paperDone=0, paperTotal=0; QS.forEach(function(q,i){ if(q.kind==="work"){ paperTotal++; if(run.res[i].got) paperDone++; } });
+  MathHistory.record({id:run.id, player:run.player, mode:"test", t0:run.t0, done:n, total:QS.length, correct:firstCount(run), hints:0,
+    paperDone:paperDone, paperTotal:paperTotal, mistakes:{answer:run.wrongs}});
+}
+
+/* ---------- answers ---------- */
+function q(){ return QS[run.slot]; }
+function units(){ return q().units||null; }
+function needsUnit(){ return !!units() || run.p.type==="time"; }
+function unitChoices(){ return run.p.type==="time" ? ["am","pm"] : (units()||[]); }
+function showTyped(){
+  var t=run.typed, p=run.p; if(t==="") return "";
+  if(p.type==="time"){ return t.length>2 ? t.slice(0,t.length-2)+":"+t.slice(-2) : t; }
+  return t;
+}
+// returns {v:value} or {msg:format help}
+function parse(){
+  var t=run.typed, p=run.p;
+  if(t==="") return {msg:SAY.type};
+  if(p.type==="money"){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); if(!m) return {msg:SAY.money}; return {v:(+m[1])*100+(m[2]?+m[2]:0)}; }
+  if(p.type==="time"){ if(!/^\d{3,4}$/.test(t)) return {msg:SAY.time}; var h=+t.slice(0,t.length-2), mm=+t.slice(-2); if(h<1||h>12||mm>59) return {msg:SAY.time};
+    if(!run.unit) return {msg:SAY.unit}; var hh=h%12+(run.unit==="pm"?12:0); return {v:hh*60+mm, raw:(h%12)*60+mm}; }
+  if(!/^\d+$/.test(t)) return {msg:SAY.type};
+  if(needsUnit() && !run.unit) return {msg:SAY.unit};
+  return {v:+t};
+}
+function check(){
+  var r=parse(), p=run.p, Q=q(), R=run.res[run.slot];
+  if(r.msg){ run.fb={cls:"try", msg:r.msg}; draw(); say(r.msg); return; }
+  R.tries++;
+  var numberRight = p.type==="time" ? (r.raw===p.answer%720) : (r.v===p.answer);
+  var unitRight = p.type==="time" ? (r.v===p.answer) : (!units() || run.unit===p.unit);
+  if(numberRight && unitRight){
+    var first=(run.attempt===1 && R.tries===1);
+    if(R.first===null) R.first=first;
+    var s=first?STAR_FIRST:STAR_RETRY; if(!R.got){ R.got=true; R.stars=s; run.stars+=s; addStars(s); }
+    run.phase="right"; run.sol=true; run.fb=null; save(); history(false); draw();
+    say(praiseLine(), first?SAY.right:SAY.rightRetry); return;
+  }
+  if(R.first===null) R.first=false;
+  run.wrongs++; if(window.MathHistory && MathHistory.miss) {}
+  var d=null;
+  if(numberRight && !unitRight){ d = p.type==="time" ? (Q.diag.ampm||null) : (Q.unitMsg||null); }
+  if(!d){ var v=(p.type==="time")?r.v:r.v; for(var i=0;i<p.wrongs.length;i++){ var w=p.wrongs[i]; if(w[0]===v || (p.type==="time" && w[0]%720===r.raw && !Q.diag.ampm)){ d=Q.diag[w[1]]; break; } } }
+  if(!d) d=[SAY.generic, Q.go];
+  run.diag={msg:d[0], go:d[1]}; run.phase="wrong"; run.sol=false; run.fb=null; save(); history(false); draw();
+  say(SAY.notYet, d[0]);
+}
+function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" ? " "+run.p.unit : ""); }
+// specific, true praise: name what was right (the step or the answer, never the child)
+function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"?" "+p.unit:"")+" answers the question."; }
+
+/* ---------- screens ---------- */
+function ov(){ var o=$("ckOverlay"); if(!o){ o=document.createElement("div"); o.id="ckOverlay"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Test yourself"); document.body.appendChild(o); } return o; }
+function starsTxt(n){ var s=""; for(var i=0;i<n;i++) s+="⭐"; return s||"–"; }
+function head(){
+  var h='<div class="ckhead"><span class="cktitle">📝 Test yourself · '+esc(TITLE)+'</span><span class="ckpts" id="ckPts">⭐ '+run.stars+' this test</span>'+
+    '<button class="ckq" id="ckRead" type="button">🔊 Read it to me</button><button class="ckq" id="ckClose" type="button">✕ Close</button></div>';
+  h+='<div class="ckdots">'+QS.map(function(x,i){ var r=run.res[i], c=i===run.slot&&run.phase!=="end"&&run.phase!=="intro"?"cur":(r.got?(r.first?"first":"got"):(r.skipped?"skip":"")); return '<span class="'+c+'">'+(r.got?(r.first?"⭐⭐":"⭐"):(i+1))+'</span>'; }).join("")+'</div>';
+  return h;
+}
+function paperQ(){
+  var Q=q(), p=run.p;
+  var h='<div class="ckpaper"><div class="ckqhead"><b>Question '+(run.slot+1)+' of '+QS.length+'</b>'+(run.attempt>1?' <span class="cknew">New numbers</span>':'')+'<span class="ckmarks">['+Q.marks+' marks]</span></div>';
+  h+='<p class="cktext" id="ckText"><span class="cknum">'+(run.slot+1)+'.</span> '+esc(p.text)+'</p>';
+  if(Q.kind==="work") h+='<div class="ckwork">✏️ Show your working clearly. Write your working and draw the model on your paper.</div>';
+  return h;
+}
+function ansLine(active){
+  var p=run.p, ch=unitChoices();
+  var pre = p.type==="money" ? '<span class="ckpre">$</span>' : '';
+  var post = (!needsUnit() && p.unit) ? '<span class="ckpost">'+esc(p.unit)+'</span>' : '';
+  var h='<div class="ckans"><span class="ckanslab">Ans:</span>'+pre+'<span class="ckbox" id="ckBox">'+(esc(showTyped())||"&nbsp;")+'</span>'+post;
+  if(needsUnit()) h+='<span class="ckunits" role="group" aria-label="unit">'+ch.map(function(u){ return '<button type="button" class="ckunit'+(run.unit===u?' on':'')+'" data-u="'+esc(u)+'"'+(active?'':' disabled')+'>'+esc(u)+'</button>'; }).join("")+'</span>';
+  h+='</div>';
+  return h;
+}
+function pad(){
+  var dot=run.p.type==="money";
+  return '<div class="ckpad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button type="button" data-ck="'+k+'">'+k+'</button>'; }).join("")+
+    (dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
+}
+function solution(){
+  var p=run.p, h='<div class="cksol" id="ckSol"><h3>Worked solution</h3><table class="cklines"><thead><tr><th></th><th>Working</th><th>Why this line?</th></tr></thead><tbody>';
+  p.lines.forEach(function(L,i){ h+='<tr><td class="ckln">'+(i+1)+'</td><td><div class="ckeq">'+(L[0]?esc(L[0]):'')+'</div><div class="ckst">'+esc(L[1])+'</div></td><td class="ckwhy">'+esc(L[2])+'</td></tr>'; });
+  h+='<tr class="ckansrow"><td class="ckln">Ans</td><td><div class="ckst"><b>'+esc(p.ans)+'</b></div></td><td class="ckwhy">The answer sentence uses words from the question and the unit, so the marker knows what your number means.</td></tr>';
+  h+='<tr><td class="ckln">Check</td><td><div class="ckeq">'+esc(p.check[0])+' ✓</div></td><td class="ckwhy">'+esc(p.check[1])+'</td></tr>';
+  h+='</tbody></table></div>';
+  return h;
+}
+function draw(){
+  var o=ov(), h=head();
+  if(run.phase==="intro"){
+    h+='<div class="ckpaper ckintro"><div class="ckbig">📝</div><h2>Test yourself</h2><p>'+esc(SAY.intro)+' There are no hints, and you can take as long as you need.</p>'+
+      '<p>Question 1 is a short question. For questions 2 and 3, '+esc(SAY.paper.charAt(0).toLowerCase()+SAY.paper.slice(1))+'</p>'+
+      '<ul class="ckrules"><li>⭐⭐ for each question right on the first try</li><li>⭐ for a question right on a new try</li><li>+'+STAR_FINISH+' ⭐ for finishing the test</li><li>🏅 the Test badge for all 3 right on the first try</li></ul>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckStart">Start the test ▶</button><button type="button" class="ckbtn ghost" id="ckLater">Not now</button></div></div>';
+  } else if(run.phase==="q"){
+    h+=paperQ()+ansLine(true)+pad()+'<div class="ckfb'+(run.fb?' '+run.fb.cls:'')+'" id="ckFb">'+(run.fb?esc(run.fb.msg):'')+'</div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckCheck">Check ✓</button></div></div>';
+  } else if(run.phase==="right"){
+    var R=run.res[run.slot];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb ok" id="ckFb">✅ Yes! <b>'+esc(ansShown())+'</b> answers the question. <span class="ckearn">+'+starsTxt(R.stars)+'</span></div>'+solution()+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckNext">'+(run.slot<QS.length-1?'Next question ➡️':'See my result ➡️')+'</button></div></div>';
+  } else if(run.phase==="wrong"){
+    var L=LS[run.diag.go]||LS[q().go];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb try" id="ckFb"><b>Not yet.</b> '+esc(run.diag.msg)+'</div>'+
+      '<div class="cklesson"><button type="button" class="ckbtn blue" id="ckLesson">📘 Go back to the lesson</button><span class="ckll" id="ckLessonLabel">'+esc(L.label)+'</span></div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckRetry">🔁 Try a new one like it</button>'+
+      (run.sol?'':'<button type="button" class="ckbtn ghost" id="ckShowSol">👀 See the worked solution</button>')+
+      '<button type="button" class="ckbtn ghost" id="ckSkip">'+(run.slot<QS.length-1?'Next question ➡️':'Finish the test ➡️')+'</button></div>'+
+      (run.sol?solution():'')+'</div>';
+  } else if(run.phase==="end"){
+    var fc=firstCount(run);
+    h+='<div class="ckpaper ckend"><div class="ckbig">'+(run.badge?'🏅':'🌟')+'</div><h2>'+esc(SAY.end)+'</h2>'+
+      '<p class="ckres">Right on the first try: <b>'+fc+' of '+QS.length+'</b></p>'+
+      '<p class="ckres">Stars from this test: <b id="ckEndStars">⭐ '+run.stars+'</b> (including +'+run.bonus+' for finishing)</p>'+
+      (run.badge?'<p class="ckbadge" id="ckBadgeMsg">🏅 '+esc(SAY.badge)+'</p>':'')+
+      '<p class="ckres">Your reward points: <b id="ckTotal">⭐ '+myStars()+'</b></p>'+
+      '<p class="ckmuted">'+esc(SAY.daddy)+'</p>'+
+      '<div class="ckrow"><button type="button" class="ckbtn gold" id="ckDaddy">🏅 Show Daddy</button><button type="button" class="ckbtn ghost" id="ckDone">Close</button><button type="button" class="ckbtn ghost" id="ckAgain">Test again with new numbers</button></div></div>';
+  }
+  o.innerHTML=h; o.hidden=false; document.documentElement.classList.add("ckopen"); open=true;
+  bind();
+}
+function bind(){
+  var o=ov();
+  if($("ckClose")) $("ckClose").onclick=close;
+  if($("ckRead")) $("ckRead").onclick=readAloud;
+  if($("ckStart")) $("ckStart").onclick=function(){ run.phase="q"; save(); draw(); readQ(); };
+  if($("ckLater")) $("ckLater").onclick=close;
+  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=run.p.type==="money"?7:(run.p.type==="time"?4:5);
+    if(k==="del") run.typed=run.typed.slice(0,-1); else if(k==="clr") run.typed="";
+    else if(k==="."){ if(run.typed.indexOf(".")<0 && run.typed.length<lim) run.typed=(run.typed===""?"0":run.typed)+"."; }
+    else if(run.typed.length<lim) run.typed=(run.typed==="0"?"":run.typed)+k;
+    $("ckBox").innerHTML=esc(showTyped())||"&nbsp;"; save(); }; });
+  o.querySelectorAll("[data-u]").forEach(function(b){ b.onclick=function(){ run.unit=b.getAttribute("data-u"); o.querySelectorAll("[data-u]").forEach(function(x){ x.classList.toggle("on", x===b); }); save(); }; });
+  if($("ckCheck")) $("ckCheck").onclick=check;
+  if($("ckNext")) $("ckNext").onclick=next;
+  if($("ckSkip")) $("ckSkip").onclick=function(){ run.res[run.slot].skipped=true; next(); };
+  if($("ckRetry")) $("ckRetry").onclick=function(){ run.p=CK.gen(q(), false, run.p.text); run.attempt++; run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); say(SAY.retry, run.p.text); };
+  if($("ckShowSol")) $("ckShowSol").onclick=function(){ run.sol=true; save(); draw(); var s=$("ckSol"); if(s && s.scrollIntoView) s.scrollIntoView({block:"start"}); say(SAY.sol); };
+  if($("ckLesson")) $("ckLesson").onclick=goLesson;
+  if($("ckDaddy")) $("ckDaddy").onclick=function(){ daddy(); };
+  if($("ckDone")) $("ckDone").onclick=close;
+  if($("ckAgain")) $("ckAgain").onclick=function(){ run=fresh(); run.phase="q"; save(); draw(); readQ(); };
+}
+function readQ(){ var Q=q(); say(run.p.text, Q.kind==="work"?SAY.paper:null); }
+function readAloud(){
+  if(run.phase==="q") readQ();
+  else if(run.phase==="wrong") say(SAY.notYet, run.diag.msg);
+  else if(run.phase==="right") say(praiseLine(), SAY.sol);
+  else if(run.phase==="end") say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+  else say(SAY.intro);
+}
+function next(){
+  if(run.slot<QS.length-1){ run.slot++; run.attempt=1; run.p=CK.gen(QS[run.slot], true); run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); readQ(); return; }
+  // the end: bonus for finishing, the badge for all right first try
+  run.bonus=STAR_FINISH; run.stars+=STAR_FINISH; addStars(STAR_FINISH);
+  if(firstCount(run)===QS.length){ run.badge=true; addBadge(); }
+  run.phase="end"; run.done=true; logTest(run); history(true); set(RUNKEY,""); try{ localStorage.removeItem(RUNKEY); }catch(e){}
+  draw(); say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+}
+function close(){ var o=$("ckOverlay"); if(o){ o.hidden=true; o.innerHTML=""; } document.documentElement.classList.remove("ckopen"); open=false; var h=host(); if(h && h.stop) try{ h.stop(); }catch(e){} if(run && !run.done) save(); }
+
+/* ---------- back to the lesson at the step that needs another look ---------- */
+function goLesson(){
+  var L=LS[run.diag.go]||LS[q().go], h=host();
+  save(); close();
+  banner(L.label);
+  if(h && h.openLesson) try{ h.openLesson(L); }catch(e){}
+  say(SAY.lesson);
+}
+function banner(label){
+  var b=$("ckBanner"); if(!b){ b=document.createElement("div"); b.id="ckBanner"; document.body.appendChild(b); }
+  b.innerHTML='<span>📘 '+esc(label)+'</span><button type="button" class="ckbtn green" id="ckBackTest">↩ Back to my test</button><button type="button" class="ckx" id="ckBannerX" aria-label="Hide">✕</button>';
+  b.hidden=false;
+  $("ckBackTest").onclick=function(){ b.hidden=true; resume(true); };
+  $("ckBannerX").onclick=function(){ b.hidden=true; };
+}
+function resume(back){ run=load()||run; if(!run || run.done) run=fresh(); draw(); if(back) say(SAY.back); else if(run.phase==="q") readQ(); else readAloud(); }
+function start(){ var h=host(); if(h && h.prime) try{ h.prime(); }catch(e){} run=load(); if(!run){ run=fresh(); save(); draw(); say(SAY.intro); } else resume(false); var b=$("ckBanner"); if(b) b.hidden=true; }
+
+/* ---------- Show Daddy: a full-screen badge with the date and the points ---------- */
+function daddy(){
+  var d=$("ckDaddyView"); if(!d){ d=document.createElement("div"); d.id="ckDaddyView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Show Daddy"); document.body.appendChild(d); }
+  var P=rewards().players[player()]||{stars:0,badges:{}}, nb=Object.keys(P.badges||{}).length, last=run;
+  d.innerHTML='<div class="ckdcard"><div class="ckdbig">'+(last&&last.badge?'🏅':'⭐')+'</div>'+
+    '<div class="ckdname">'+esc(player())+'</div>'+
+    '<div class="ckdgame">Test yourself · '+esc(TITLE)+'</div>'+
+    '<div class="ckddate">'+dateLabel(Date.now())+'</div>'+
+    (last?'<div class="ckdpts">⭐ '+last.stars+' points in this test</div><div class="ckdline">Right on the first try: '+firstCount(last)+' of '+QS.length+(last.badge?' · Test badge earned':'')+'</div>':'')+
+    '<div class="ckdtotal">Reward points: ⭐ '+(+P.stars||0)+' · Test badges: 🏅 '+nb+'</div>'+
+    '<button type="button" class="ckbtn ghost" id="ckDaddyClose">Close</button></div>';
+  d.hidden=false; $("ckDaddyClose").onclick=function(){ d.hidden=true; };
+}
+
+/* ---------- the header button, and the offer under a finished Lesson round ---------- */
+function drawBtnPlace(b, hd){ var h0=hd.offsetHeight, st=$("stars"); if(st) hd.insertBefore(b, st); else hd.appendChild(b);
+  if(hd.offsetHeight>h0+4){ var ft=document.querySelector(".foot"); if(ft){ b.className="ckbtn green ckfoot"; ft.insertBefore(b, ft.firstChild); } } }
+function drawBtn(){
+  var hd=document.querySelector(".app header"); if(!hd) return;
+  var b=$("ckBtn");
+  if(!b){ b=document.createElement("button"); b.id="ckBtn"; b.type="button"; b.className="ctl ckhdr"; b.textContent="📝 Test yourself"; b.title="Test yourself: 3 exam-style questions"; b.onclick=start; b.hidden=true; document.body.appendChild(b); }
+  b.hidden=!unlocked();
+  // placed once it shows: in the header when it still fits on one row, otherwise above "Start again" at the foot of the page
+  if(!b.hidden && b.parentNode===document.body){ b.remove(); drawBtnPlace(b, hd); }
+}
+window.addEventListener("mathgames:lessondone", function(){
+  unlock();
+  setTimeout(function(){ var pn=$("panel"); if(!pn || $("ckOffer")) return; var d=document.createElement("div"); d.id="ckOffer"; d.className="ckoffer";
+    d.innerHTML='<p><b>📝 Ready to test yourself?</b> 3 questions, like in your exam. It is up to you.</p><button type="button" class="ckbtn green" id="ckOfferBtn">Test yourself</button>';
+    pn.appendChild(d); $("ckOfferBtn").onclick=start; }, 0);
+});
+window.addEventListener("pagehide", function(){ if(run && !run.done){ save(); history(false); } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && run && !run.done){ save(); history(false); } });
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", drawBtn); else drawBtn();
+return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ return open; }, get run(){ return run; }, rewards:rewards, QS:QS, LS:LS, slug:SLUG, daddy:daddy};
+})();
+</script>
+<!--CHECKUP-END-->
 <script>
 (function(){
 "use strict";
@@ -1026,6 +1479,25 @@ $("startTutor").onclick=function(){
 $("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); MathHistory.restart(); };
 renderModeCtl(); renderVoiceCtl();
 MathHistory.attach(function(){ return {mode:MODE, remaining:ROUND_SIZE-S.idx, open:$("startScreen").style.display==="none"}; });
+/* host for "Test yourself" (MathCheckup): the tutor voice, and opening the Lesson at the step a test answer needs */
+if(typeof CHECKUP_CLIPS==="object" && CHECKUP_CLIPS){ for(var ckk in CHECKUP_CLIPS){ if(Object.prototype.hasOwnProperty.call(CHECKUP_CLIPS,ckk) && !Object.prototype.hasOwnProperty.call(CLIPS,ckk)) CLIPS[ckk]=CHECKUP_CLIPS[ckk]; } }
+window.MathHost={
+  say:function(){ Voice.say.apply(null, arguments); },
+  stop:function(){ Voice.stop(); },
+  prime:function(){ Voice.prime(); },
+  // t = {idx: Lesson problem 0-4, phase: "move" (the Move step) or "start"}
+  openLesson:function(t){
+    if(cur && cur.animating) return;
+    Voice.stop(); save();
+    if(!isLesson()){ MODE="lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){} }
+    S=loadLesson(); var i=Math.max(0,Math.min(ROUND_SIZE-1,(t&&t.idx)|0)); S.idx=i; S.results=(S.results||[]).slice(0,i); save();
+    renderModeCtl(); renderVoiceCtl(); $("startScreen").style.display="none";
+    startProblem(true);
+    if(t && t.phase==="move"){ cur.prediction=guessRight(); cur.phase="move"; renderAll(); }
+    Voice.say($("story").textContent, $("question").textContent);
+    MathHistory.restart();
+  }
+};
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
 /* every line the device voice could say in Lesson mode (for the recording-cost estimate) */

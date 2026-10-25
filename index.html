@@ -62,7 +62,7 @@
   var TITLES={"math-transfer":"🔀 Moving Between Groups","math-move-until":"⚖️ Move Until…","math-times-as-many":"✖️ Times as Many",
     "math-packed-left":"📦 Packed with Some Left","math-total-difference":"➕ Total and Difference","math-boxes-needed":"📦❓ Boxes Needed?",
     "math-more-or-fewer":"🧩 More, Fewer, Altogether","math-time-line":"⏰ Time Jumps","math-money-steps":"💵 Money Steps","math-area-perimeter":"🟦 Inside and Around"};
-  var MODES={lesson:"📘 Lesson",practice:"🎲 Practice",paper:"📝 Paper"}, TAGNAME={answer:"answer",model:"bar model",working:"working"};
+  var MODES={lesson:"📘 Lesson",practice:"🎲 Practice",paper:"📝 Paper",test:"🏅 Test"}, TAGNAME={answer:"answer",model:"bar model",working:"working"};
   var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   var ISO=/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):\d\d\+08:00$/;
   function $(id){ return document.getElementById(id); }
@@ -146,4 +146,126 @@
 })();
 </script>
 <!--HUB-HISTORY-END-->
+<!--HUB-CHECKUP-START-->
+<style>
+/* Check-up ("Test yourself") */
+html.ckopen, html.ckopen body{overflow:hidden}
+#ckOverlay{position:fixed;inset:0;z-index:60;background:#f4f1ea;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 40px;font-size:18px;color:#222}
+#ckOverlay[hidden],#ckBanner[hidden],#ckDaddyView[hidden],#ckBtn[hidden]{display:none}
+.ckhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:820px;margin:0 auto 8px}
+.cktitle{font-weight:800;font-size:19px;flex:1 1 auto}
+.ckpts{font-weight:700;background:#fff7d6;border-radius:999px;padding:4px 12px}
+.ckq{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-size:16px;box-shadow:0 1px 4px #0002;cursor:pointer}
+.ckdots{display:flex;gap:8px;justify-content:center;margin:4px auto 10px}
+.ckdots span{min-width:40px;text-align:center;padding:4px 8px;border-radius:999px;background:#e6e1d6;font-weight:700}
+.ckdots .cur{background:#3b6fd8;color:#fff}.ckdots .first{background:#ffe27a}.ckdots .got{background:#fff0b3}.ckdots .skip{background:#ddd;color:#888}
+.ckpaper{max-width:820px;margin:0 auto;background:#fff;border-radius:6px;box-shadow:0 2px 10px #0002;padding:20px 22px;font-family:Georgia,"Times New Roman",serif}
+.ckpaper button{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ckqhead{display:flex;gap:10px;align-items:center;font-family:system-ui,-apple-system,sans-serif;color:#555;font-size:16px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px}
+.ckmarks{margin-left:auto}.cknew{background:#e8f4ff;color:#245;border-radius:999px;padding:2px 10px;font-size:14px}
+.cktext{font-size:21px;line-height:1.55;margin:6px 0 12px}.cknum{font-weight:700;margin-right:6px}
+.ckwork{border:2px dashed #b9b2a2;border-radius:6px;min-height:70px;padding:10px 12px;color:#6a6355;font-size:17px;margin:8px 0 14px;font-family:system-ui,-apple-system,sans-serif}
+.ckans{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;font-size:21px;margin:6px 0 10px}
+.ckanslab{font-weight:700}.ckpre,.ckpost{font-weight:700}
+.ckbox{min-width:120px;border-bottom:3px solid #222;text-align:center;font-size:26px;font-weight:700;padding:0 8px;font-family:system-ui,-apple-system,sans-serif}
+.ckunits{display:inline-flex;gap:6px}
+.ckunit{border:2px solid #9aa;background:#fff;border-radius:10px;padding:6px 14px;font-size:19px;cursor:pointer}
+.ckunit.on{border-color:#2a8a4a;background:#e3f6e8;font-weight:700}.ckunit[disabled]{opacity:.7}
+.ckpad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center;margin:8px 0}
+.ckpad button{height:56px;font-size:24px;border-radius:12px;border:0;background:#eef1f6;box-shadow:0 1px 3px #0002;cursor:pointer}
+.ckfb{min-height:28px;margin:8px 0;font-family:system-ui,-apple-system,sans-serif;font-size:19px;line-height:1.45;border-radius:10px;padding:0 4px}
+.ckfb.try{background:#fff4e0;padding:10px 12px}.ckfb.ok{background:#e6f7ea;padding:10px 12px}
+.ckearn{font-weight:700;white-space:nowrap}
+.ckrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 4px}
+.ckbtn{border:0;border-radius:14px;padding:12px 18px;font-size:19px;font-weight:700;cursor:pointer;background:#3b6fd8;color:#fff;box-shadow:0 2px 6px #0002}
+.ckbtn.green{background:#2a8a4a}.ckbtn.blue{background:#2f63c5}.ckbtn.gold{background:#d99a00}.ckbtn.ghost{background:#fff;color:#234;border:2px solid #cfd6e2;box-shadow:none}
+.cklesson{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#eef4ff;border-radius:12px;padding:10px 12px;margin:10px 0;font-family:system-ui,-apple-system,sans-serif}
+.ckll{font-size:17px;color:#234}
+.cksol{margin-top:14px;font-family:system-ui,-apple-system,sans-serif}.cksol h3{margin:4px 0 8px}
+.cklines{width:100%;border-collapse:collapse;font-size:17px}.cklines th{text-align:left;color:#666;font-weight:600;border-bottom:2px solid #ddd;padding:4px 6px}
+.cklines td{border-bottom:1px solid #eee;padding:8px 6px;vertical-align:top}.ckln{font-weight:700;color:#666;white-space:nowrap}
+.ckeq{font-size:20px;font-weight:700;font-family:Georgia,"Times New Roman",serif}.ckst{color:#234}.ckwhy{color:#444;font-size:16px;line-height:1.45}
+.ckintro,.ckend{text-align:center;font-family:system-ui,-apple-system,sans-serif}.ckbig{font-size:64px}
+.ckrules{display:inline-block;text-align:left;font-size:18px;line-height:1.7}.ckres{font-size:20px}.ckbadge{font-size:21px;font-weight:700;color:#8a5a00}.ckmuted{color:#666}
+.ckoffer{margin-top:14px;background:#eef4ff;border-radius:14px;padding:12px;text-align:center}
+#ckBanner{position:fixed;left:8px;right:8px;bottom:8px;z-index:55;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#fff;border:3px solid #2f63c5;border-radius:16px;padding:10px 12px;box-shadow:0 4px 16px #0003;font-size:18px}
+.ckx{border:0;background:none;font-size:20px;cursor:pointer}
+#ckDaddyView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
+.ckdcard{background:#fff;border-radius:28px;box-shadow:0 8px 30px #0003;padding:28px 32px;text-align:center;max-width:620px;width:100%;font-family:system-ui,-apple-system,sans-serif}
+.ckdbig{font-size:140px;line-height:1.1}.ckdname{font-size:40px;font-weight:800;margin:6px 0}.ckdgame{font-size:24px;color:#444}
+.ckddate{font-size:22px;color:#666;margin:6px 0 14px}.ckdpts{font-size:34px;font-weight:800;color:#8a5a00}.ckdline{font-size:20px;margin:6px 0}
+.ckdtotal{font-size:22px;margin:12px 0 18px;font-weight:700}.ckdbadges{font-size:20px;line-height:1.6;margin:8px 0 14px}
+@media (max-width:600px){.cktext{font-size:19px}.ckpad{grid-template-columns:repeat(3,64px)}.ckdbig{font-size:96px}.ckdname{font-size:30px}}
+.ckfoot{display:block;margin:0 auto 12px;font-size:20px}
+</style>
+<script>
+/* Home page: 'My reward points' (stars and Test badges from each game's "Test yourself" check-up) and the 'Show Daddy' view.
+   Everything stays in this browser's localStorage; this page has no network code. Points never go down. */
+(function(){
+  "use strict";
+  var RKEY="mathgames.rewards.v1", PKEY="mathgames.player";
+  var TITLES={"transfer": "Moving Between Groups", "move-until": "Move Until…", "times-as-many": "Times as Many", "packed-left": "Packed with Some Left", "total-difference": "Total and Difference", "boxes-needed": "Boxes Needed?", "more-or-fewer": "More, Fewer, Altogether", "time-line": "Time Jumps", "money-steps": "Money Steps", "area-perimeter": "Inside and Around"};
+  var ORDER=Object.keys(TITLES);
+  var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var ISO=/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):\d\d\+08:00$/;
+  function $(id){ return document.getElementById(id); }
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function clean(n){ return String(n||"").replace(/\s+/g," ").trim().slice(0,24); }
+  function el(tag, text, cls){ var e=document.createElement(tag); if(text!=null) e.textContent=text; if(cls) e.className=cls; return e; }
+  function data(){ var r=null; try{ r=JSON.parse(get(RKEY)||"null"); }catch(e){} return (r && r.players && typeof r.players==="object") ? r.players : {}; }
+  function num(v){ v=+v; return isFinite(v)&&v>=0?Math.round(v):0; }
+  function day(iso){ var m=ISO.exec(String(iso||"")); if(!m) return ""; var d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3])); return DAYS[d.getUTCDay()]+" "+(+m[3])+" "+MONTHS[+m[2]-1]; }
+  function today(){ var d=new Date(Date.now()+8*3600000); return DAYS[d.getUTCDay()]+" "+d.getUTCDate()+" "+MONTHS[d.getUTCMonth()]+" "+d.getUTCFullYear(); }
+  var shown=null; // the player whose card is on screen
+  function current(){ return clean(get(PKEY))||"Player"; }
+  var sec=el("section"); sec.id="rewardSec"; sec.setAttribute("aria-labelledby","rTitle");
+  sec.style.cssText="max-width:720px;margin:24px auto;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 3px 10px #0001;text-align:left";
+  var anchor=$("historySec"); if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(sec, anchor); else document.body.appendChild(sec);
+  function draw(){
+    var all=data(), who=shown||current(), P=all[who]||{stars:0,badges:{},tests:[]}, badges=P.badges||{};
+    sec.innerHTML="";
+    var h=el("h2","🏅 My reward points"); h.id="rTitle"; sec.appendChild(h);
+    var top=el("div",null,"rtop"); top.style.cssText="display:flex;flex-wrap:wrap;gap:12px;align-items:center";
+    var nm=el("b",who); nm.id="rWho"; nm.style.fontSize="22px"; top.appendChild(nm);
+    var st=el("span","⭐ "+num(P.stars)+" reward points"); st.id="rStars"; st.style.cssText="font-size:22px;font-weight:800;background:#fff7d6;border-radius:999px;padding:4px 14px"; top.appendChild(st);
+    var db=el("button","🏅 Show Daddy"); db.type="button"; db.id="rDaddy"; db.className="ckbtn gold"; db.onclick=function(){ daddy(who); }; top.appendChild(db);
+    sec.appendChild(top);
+    sec.appendChild(el("p","Finish a Lesson in any game, then tap 📝 Test for 3 exam-style questions. ⭐⭐ right first try, ⭐ right on a new try, +3 ⭐ for finishing, and 🏅 a Test badge for all 3 right first try.","rhelp"));
+    var ul=el("ul"); ul.id="rBadges"; ul.style.cssText="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px";
+    ORDER.forEach(function(slug){ var b=badges[slug], li=el("li",(b?"🏅 ":"▫️ ")+TITLES[slug]+(b?" · "+day(b.first)+(num(b.count)>1?" · ×"+num(b.count):""):""));
+      li.setAttribute("data-game",slug); li.setAttribute("data-badge",b?"1":"0"); li.style.cssText="padding:6px 8px;border-radius:10px;background:"+(b?"#fff3c4":"#f4f4f4")+";color:"+(b?"#5a3d00":"#888"); ul.appendChild(li); });
+    sec.appendChild(ul);
+    var tests=(P.tests||[]).slice(-5).reverse();
+    if(tests.length){ sec.appendChild(el("h3","Latest tests")); var tl=el("ul"); tl.id="rTests";
+      tests.forEach(function(t){ tl.appendChild(el("li",day(t.at)+" · "+(TITLES[t.game]||t.game)+" · ⭐ "+num(t.stars)+" · right first try "+num(t.first)+" of "+num(t.total)+(t.badge?" · 🏅":""))); }); sec.appendChild(tl); }
+    else sec.appendChild(el("p","No tests yet for "+who+".","rhelp"));
+    var others=Object.keys(all).filter(function(n){ return n!==who; }).sort();
+    if(others.length){ var op=el("p","Other players: "); op.id="rOthers";
+      others.forEach(function(n){ var b=el("button",n+" ⭐ "+num(all[n].stars)); b.type="button"; b.setAttribute("data-rplayer",n); b.style.cssText="margin:2px 6px 2px 0;border:1px solid #ccd;border-radius:10px;background:#fff;padding:4px 10px;font-size:16px"; b.onclick=function(){ shown=n; draw(); }; op.appendChild(b); });
+      sec.appendChild(op); }
+  }
+  function daddy(who){
+    var all=data(), P=all[who]||{stars:0,badges:{},tests:[]}, badges=P.badges||{}, got=ORDER.filter(function(s){ return badges[s]; }), last=(P.tests||[]).slice(-1)[0];
+    var d=$("ckDaddyView"); if(!d){ d=el("div"); d.id="ckDaddyView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Show Daddy"); document.body.appendChild(d); }
+    d.innerHTML="";
+    var c=el("div",null,"ckdcard");
+    c.appendChild(el("div",got.length?"🏅":"⭐","ckdbig"));
+    c.appendChild(el("div",who,"ckdname"));
+    c.appendChild(el("div",today(),"ckddate"));
+    c.appendChild(el("div","⭐ "+num(P.stars)+" reward points","ckdpts"));
+    c.appendChild(el("div","Test badges: 🏅 "+got.length+" of "+ORDER.length,"ckdline"));
+    if(got.length){ var bl=el("div",got.map(function(s){ return "🏅 "+TITLES[s]; }).join(" · "),"ckdbadges"); c.appendChild(bl); }
+    if(last) c.appendChild(el("div","Latest test: "+(TITLES[last.game]||last.game)+", "+day(last.at)+", ⭐ "+num(last.stars),"ckdline"));
+    var x=el("button","Close"); x.type="button"; x.id="ckDaddyClose"; x.className="ckbtn ghost"; x.onclick=function(){ d.hidden=true; }; c.appendChild(x);
+    d.appendChild(c); d.hidden=false;
+  }
+  // redraw when the player changes ('Who is playing?') or another tab writes points
+  var who=$("who"); if(who) who.addEventListener("click", function(){ setTimeout(function(){ shown=null; draw(); }, 0); });
+  var wf=$("whoForm"); if(wf) wf.addEventListener("submit", function(){ setTimeout(function(){ shown=null; draw(); }, 0); });
+  window.addEventListener("storage", function(){ draw(); });
+  window.addEventListener("pageshow", function(){ draw(); });
+  draw();
+})();
+</script>
+<!--HUB-CHECKUP-END-->
 </body></html>
