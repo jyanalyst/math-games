@@ -322,7 +322,10 @@ return {gameId:GAME_ID, key:KEY,
   record:function(o){ return !!o && o.mode==="test" && save(o); },
   // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
   paperOffer:function(){ if(sess) sess.paperTotal++; },
-  paper:function(){ if(sess) sess.paperDone++; },
+  // once per problem (keyed by the problems finished so far in this session); a Lesson step also earns 1 reward star
+  // through the "mathgames:paperdone" event (MathCheckup keeps the key, so it is never counted twice)
+  paper:function(){ if(!sess || sess.lastPaper===sess.done) return; sess.lastPaper=sess.done; sess.paperDone++;
+    if(sess.mode==="lesson"){ try{ window.dispatchEvent(new CustomEvent("mathgames:paperdone",{detail:{key:sess.id+":"+sess.done}})); }catch(e){} } },
   leave:function(){ if(sess){ save(sess); sess=null; } }};
 })();
 </script>
@@ -332,7 +335,7 @@ return {gameId:GAME_ID, key:KEY,
 /* Check-up ("Test yourself") */
 html.ckopen, html.ckopen body{overflow:hidden}
 #ckOverlay{position:fixed;inset:0;z-index:60;background:#f4f1ea;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 40px;font-size:18px;color:#222}
-#ckOverlay[hidden],#ckBanner[hidden],#ckDaddyView[hidden],#ckBtn[hidden]{display:none}
+#ckOverlay[hidden],#ckBanner[hidden],#ckShowView[hidden],#ckBtn[hidden],#ckNote[hidden]{display:none}
 .ckhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:820px;margin:0 auto 8px}
 .cktitle{font-weight:800;font-size:19px;flex:1 1 auto}
 .ckpts{font-weight:700;background:#fff7d6;border-radius:999px;padding:4px 12px}
@@ -371,17 +374,27 @@ html.ckopen, html.ckopen body{overflow:hidden}
 .ckoffer{margin-top:14px;background:#eef4ff;border-radius:14px;padding:12px;text-align:center}
 #ckBanner{position:fixed;left:8px;right:8px;bottom:8px;z-index:55;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#fff;border:3px solid #2f63c5;border-radius:16px;padding:10px 12px;box-shadow:0 4px 16px #0003;font-size:18px}
 .ckx{border:0;background:none;font-size:20px;cursor:pointer}
-#ckDaddyView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
+#ckShowView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
 .ckdcard{background:#fff;border-radius:28px;box-shadow:0 8px 30px #0003;padding:28px 32px;text-align:center;max-width:620px;width:100%;font-family:system-ui,-apple-system,sans-serif}
 .ckdbig{font-size:140px;line-height:1.1}.ckdname{font-size:40px;font-weight:800;margin:6px 0}.ckdgame{font-size:24px;color:#444}
 .ckddate{font-size:22px;color:#666;margin:6px 0 14px}.ckdpts{font-size:34px;font-weight:800;color:#8a5a00}.ckdline{font-size:20px;margin:6px 0}
 .ckdtotal{font-size:22px;margin:12px 0 18px;font-weight:700}.ckdbadges{font-size:20px;line-height:1.6;margin:8px 0 14px}
 @media (max-width:600px){.cktext{font-size:19px}.ckpad{grid-template-columns:repeat(3,64px)}.ckdbig{font-size:96px}.ckdname{font-size:30px}}
 .ckfoot{display:block;margin:0 auto 12px;font-size:20px}
+.ckcan{font-size:23px;font-weight:800;color:#2f5d1e;background:#eef8e6;border-radius:14px;padding:10px 14px;margin:10px auto;max-width:560px;line-height:1.35}
+.ckgoal{font-size:18px;color:#444;max-width:560px;margin:8px auto}.ckgoalcan{font-style:italic}
+.ckstars{font-size:15px;color:#777;margin:8px 0}.ckstars span{font-weight:700;color:#7a6a3a}
+.ckshow{font-size:16px;color:#666;margin:10px 0 0}.cklink{background:none;border:0;padding:4px 2px;font:inherit;color:#2a5bb8;text-decoration:underline;cursor:pointer}
+.ckwrote{margin:8px 0;font:17px system-ui,-apple-system,sans-serif}.ckwrote.done{color:#2f5d1e;font-weight:700}
+.ckdcanh{font-size:22px;font-weight:800;margin:12px 0 4px}.ckdcan{list-style:none;padding:0;margin:0 0 12px;font-size:20px;line-height:1.4;text-align:left}.ckdcan li{background:#eef8e6;border-radius:12px;padding:8px 12px;margin:6px 0}
+.ckdsmall{font-size:15px;color:#777;margin:10px 0 16px}
+#ckNote{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:65;background:#fff7d6;color:#5a3d00;border-radius:999px;padding:8px 18px;font:600 17px system-ui,-apple-system,sans-serif;box-shadow:0 3px 10px #0002;pointer-events:none}
+.ckhead .ckpts{font-size:14px;font-weight:600;color:#7a6a3a;background:#fbf6e6;padding:3px 10px}
 </style>
 <script>
 var CHECKUP_GAME = "money-steps", CHECKUP_TITLE = "Money Steps";
-var CHECKUP_CLIPS = {"All three were right on the first try. You earned the Test badge for this game.": "../audio-shared/6c184ff7b2d0.mp3", "Check the cents. 100 cents make $1, so carry it to the dollars.": "audio/9d404b1e49e2.mp3", "Check the grapes: the price is for EACH kg. Multiply first.": "audio/2208320b1c41.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Did you count the melon? Find all the money spent first.": "audio/379fd365f72d.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "If you want, you could show Daddy your reward points.": "../audio-shared/d533d1e63ffd.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Spend on both things means add the two prices.": "audio/d64df705130d.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is the bag only. The question asks how much for the bag AND the wallet.": "audio/6aa406972bf3.mp3", "That is the money she spent. The question asks for her CHANGE.": "audio/f8712b1a68ab.mp3", "The bag costs MORE than the wallet. Find the bag's price first.": "audio/0d944f18afa7.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3"};
+var CHECKUP_MASTERY = {"transfer": "You can now solve moving-between-groups problems: when some move from one group to the other, both bars change.", "move-until": "You can now solve move-until problems: how many to give so two people have the same, or one has twice as many.", "times-as-many": "You can now solve times-as-many problems: find 1 unit first, then the bigger group or the total.", "packed-left": "You can now solve packed-with-some-left problems: equal groups, plus the ones left over.", "total-difference": "You can now solve total-and-difference problems: take away the difference first, then share by 2.", "boxes-needed": "You can now solve boxes-needed problems: you can tell when the ones left over need one more box.", "more-or-fewer": "You can now solve more, fewer and altogether problems: find the missing bar, then put both bars together.", "time-line": "You can now solve time problems: jump to the o'clock time to find a start time, an end time or how long.", "money-steps": "You can now solve money problems with steps: find the money spent first, then the change.", "area-perimeter": "You can now solve area and perimeter problems for rectangles and squares."};
+var CHECKUP_CLIPS = {"All three right on the first try earns this game's badge.": "../audio-shared/997edc6e60d9.mp3", "All three were right on the first try. This badge is yours.": "../audio-shared/9d1e757e9150.mp3", "Check the cents. 100 cents make $1, so carry it to the dollars.": "audio/9d404b1e49e2.mp3", "Check the grapes: the price is for EACH kg. Multiply first.": "audio/2208320b1c41.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Did you count the melon? Find all the money spent first.": "audio/379fd365f72d.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "If you like, you can show a grown-up.": "../audio-shared/5cc41d04133f.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Spend on both things means add the two prices.": "audio/d64df705130d.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is the bag only. The question asks how much for the bag AND the wallet.": "audio/6aa406972bf3.mp3", "That is the money she spent. The question asks for her CHANGE.": "audio/f8712b1a68ab.mp3", "The bag costs MORE than the wallet. Find the bag's price first.": "audio/0d944f18afa7.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You can now solve money problems with steps: find the money spent first, then the change.": "audio/a15368d05571.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3"};
 /* Check-up ("Test yourself") question-bank helpers. Shared by every game's bank file.
    Original stories and numbers only (modelled on the TYPE of free P3 sample-paper questions; no exam text). */
 var CHECKUP_BANK = CHECKUP_BANK || {};
@@ -468,13 +481,18 @@ CHECKUP_BANK["money-steps"]={
 /* ===== Check-up ("Test yourself"): 3 exam-style questions after the Lesson. Kept ONLY in this browser's localStorage. =====
    No network code. Nothing is timed, no hints during the test, never a gate: it is always optional.
    Stars: right first try = 2, right on a new try = 1, finishing = 3 more, all 3 right first try = the game's Test badge.
-   Stars never go down. Results also go to the practice history as mode "test" (schema v1). */
+   Writing the working on paper also earns 1 star, once per question ('I wrote my working' on questions 2 and 3) and once per
+   Lesson paper step (the "mathgames:paperdone" event from MathHistory.paper(), keyed by session + problem, never counted twice).
+   Stars never go down and hints never cost stars. Badges and the end screen say what she can do now (CHECKUP_MASTERY, one
+   sentence per game); the star total is shown small, as information, not as a price. Showing a grown-up is optional and
+   never needed to carry on. Results also go to the practice history as mode "test" (schema v1). */
 var MathCheckup=(function(){
 "use strict";
 var SLUG=(typeof CHECKUP_GAME==="string")?CHECKUP_GAME:"", BK=CHECKUP_BANK[SLUG], QS=BK.qs, LS=BK.lessons;
 var TITLE=(typeof CHECKUP_TITLE==="string")?CHECKUP_TITLE:document.title;
 var RKEY="mathgames.rewards.v1", UKEY="mathgames.checkup.unlocked.v1", RUNKEY="mathgames.checkup.run."+SLUG, PKEY="mathgames.player", HKEY="mathgames.history.v1";
-var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3;
+var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3, STAR_PAPER=1;
+var MASTERY=(typeof CHECKUP_MASTERY==="object" && CHECKUP_MASTERY)?CHECKUP_MASTERY:{}, CAN=MASTERY[SLUG]||("You can now solve "+TITLE+" problems.");
 // fixed lines (recorded with the tutor voice); lines with numbers or names are read by the device voice
 var SAY={
   intro:"Test yourself. Three questions, like in your exam.",
@@ -490,8 +508,9 @@ var SAY={
   sol:"Here is the worked solution. Read why each line is there.",
   back:"Welcome back to your test.",
   end:"You finished the check-up. Every question is done.",
-  badge:"All three were right on the first try. You earned the Test badge for this game.",
-  daddy:"If you want, you could show Daddy your reward points.",
+  badge:"All three were right on the first try. This badge is yours.",
+  goal:"All three right on the first try earns this game's badge.",
+  show:"If you like, you can show a grown-up.",
   money:"Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.",
   time:"Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm."
 };
@@ -518,22 +537,34 @@ function unlocked(){
 function unlock(){ var u=jget(UKEY,{}); if(!u || typeof u!=="object") u={}; if(!u[SLUG]){ u[SLUG]=iso(Date.now()); set(UKEY,JSON.stringify(u)); } drawBtn(); }
 
 /* ---------- reward points (per player, never go down) ---------- */
-function rewards(){ var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players) r={v:1, players:{}}; return r; }
+function rewards(){ var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players || typeof r.players!=="object") r={v:1, players:{}};
+  // same key and shape as before; older entries get the new optional field (paper) and keep every star they had
+  for(var n in r.players){ var P=r.players[n]; if(!P || typeof P!=="object"){ delete r.players[n]; continue; }
+    P.stars=Math.max(0,Math.round(+P.stars||0)); if(!P.badges || typeof P.badges!=="object") P.badges={}; if(!Array.isArray(P.tests)) P.tests=[]; if(!Array.isArray(P.paper)) P.paper=[]; }
+  r.v=1; return r; }
+function playerRec(r, who){ return r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[], paper:[]}); }
 function addStars(n, why){
-  if(!(n>0)) return; var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  if(!(n>0)) return; var r=rewards(), P=playerRec(r, player());
   P.stars=(+P.stars||0)+n; set(RKEY,JSON.stringify(r));
 }
 function addBadge(){
-  var r=rewards(), who=player(), P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]}), b=P.badges[SLUG];
+  var r=rewards(), P=playerRec(r, player()), b=P.badges[SLUG];
   if(!b) P.badges[SLUG]={first:iso(Date.now()), count:1}; else b.count=(+b.count||0)+1;
   set(RKEY,JSON.stringify(r));
 }
 function logTest(run){
-  var r=rewards(), who=run.player, P=r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[]});
+  var r=rewards(), P=playerRec(r, run.player);
   P.tests=(P.tests||[]).filter(function(t){ return t.id!==run.id; });
-  P.tests.push({id:run.id, game:SLUG, at:iso(Date.now()), stars:run.stars, first:firstCount(run), done:doneCount(run), total:QS.length, badge:!!run.badge});
+  P.tests.push({id:run.id, game:SLUG, at:iso(Date.now()), stars:run.stars, paper:paperCount(run), first:firstCount(run), done:doneCount(run), total:QS.length, badge:!!run.badge});
   if(P.tests.length>50) P.tests=P.tests.slice(P.tests.length-50);
   set(RKEY,JSON.stringify(r));
+}
+/* a Lesson paper working step (key = session id + problem): 1 star, once */
+function paperStar(key){
+  key=String(key||""); if(!key) return false; var r=rewards(), P=playerRec(r, player());
+  if(P.paper.indexOf(key)>=0) return false;
+  P.paper.push(key); if(P.paper.length>200) P.paper=P.paper.slice(P.paper.length-200);
+  P.stars=(+P.stars||0)+STAR_PAPER; set(RKEY,JSON.stringify(r)); return true;
 }
 function myStars(){ var P=rewards().players[player()]; return P?(+P.stars||0):0; }
 
@@ -541,13 +572,14 @@ function myStars(){ var P=rewards().players[player()]; return P?(+P.stars||0):0;
 var run=null, open=false;
 function fresh(){
   var t=Date.now();
-  return {v:1, id:newId(t), player:player(), t0:t, slot:0, attempt:1, p:CK.gen(QS[0], true), phase:"intro", typed:"", unit:"", res:QS.map(function(){ return {first:null, got:false, tries:0, stars:0}; }),
+  return {v:1, id:newId(t), player:player(), t0:t, slot:0, attempt:1, p:CK.gen(QS[0], true), phase:"intro", typed:"", unit:"", res:QS.map(function(){ return {first:null, got:false, tries:0, stars:0, paper:false}; }),
     stars:0, wrongs:0, diag:null, sol:false, bonus:0, badge:false, saved:false, done:false};
 }
 function load(){ var r=jget(RUNKEY,null); if(r && r.v===1 && r.p && r.res && r.res.length===QS.length && !r.done && r.player===player()) return r; return null; }
 function save(){ if(run) set(RUNKEY,JSON.stringify(run)); }
 function firstCount(r){ return r.res.filter(function(x){ return x.first===true; }).length; }
 function doneCount(r){ return r.res.filter(function(x){ return x.got || x.tries>0; }).length; }
+function paperCount(r){ return r.res.filter(function(x){ return x.paper; }).length; }
 function finishedSlots(r){ return r.res.filter(function(x){ return x.got || x.skipped; }).length; }
 /* practice history entry, mode "test" (same schema v1 as Lesson and Practice) */
 function history(final){
@@ -618,7 +650,12 @@ function paperQ(){
   var Q=q(), p=run.p;
   var h='<div class="ckpaper"><div class="ckqhead"><b>Question '+(run.slot+1)+' of '+QS.length+'</b>'+(run.attempt>1?' <span class="cknew">New numbers</span>':'')+'<span class="ckmarks">['+Q.marks+' marks]</span></div>';
   h+='<p class="cktext" id="ckText"><span class="cknum">'+(run.slot+1)+'.</span> '+esc(p.text)+'</p>';
-  if(Q.kind==="work") h+='<div class="ckwork">✏️ Show your working clearly. Write your working and draw the model on your paper.</div>';
+  if(Q.kind==="work"){ var R=run.res[run.slot];
+    h+='<div class="ckwork">✏️ Show your working clearly. Write your working and draw the model on your paper.</div>';
+    // optional: ticking it earns 1 star for the working, once per question (a new try at the same question keeps the tick)
+    h+=R.paper ? '<div class="ckwrote done" id="ckWroteDone">✅ I wrote my working <span class="ckearn">+⭐ for your working</span></div>'
+               : '<div class="ckwrote"><button type="button" class="ckbtn ghost" id="ckWrote">☐ I wrote my working</button><span class="ckmuted"> ⭐ for writing your working on paper</span></div>';
+  }
   return h;
 }
 function ansLine(active){
@@ -643,12 +680,17 @@ function solution(){
   h+='</tbody></table></div>';
   return h;
 }
+function wrote(){
+  var Q=q(), R=run.res[run.slot]; if(Q.kind!=="work" || R.paper) return;
+  R.paper=true; run.stars+=STAR_PAPER; addStars(STAR_PAPER); save(); draw();
+}
+function mastery(){ return '<p class="ckcan" id="ckMastery">🏅 '+esc(CAN)+'</p>'; }
 function draw(){
   var o=ov(), h=head();
   if(run.phase==="intro"){
     h+='<div class="ckpaper ckintro"><div class="ckbig">📝</div><h2>Test yourself</h2><p>'+esc(SAY.intro)+' There are no hints, and you can take as long as you need.</p>'+
       '<p>Question 1 is a short question. For questions 2 and 3, '+esc(SAY.paper.charAt(0).toLowerCase()+SAY.paper.slice(1))+'</p>'+
-      '<ul class="ckrules"><li>⭐⭐ for each question right on the first try</li><li>⭐ for a question right on a new try</li><li>+'+STAR_FINISH+' ⭐ for finishing the test</li><li>🏅 the Test badge for all 3 right on the first try</li></ul>'+
+      '<ul class="ckrules"><li>⭐⭐ for each question right on the first try</li><li>⭐ for a question right on a new try</li><li>⭐ for writing your working on paper (questions 2 and 3)</li><li>+'+STAR_FINISH+' ⭐ for finishing the test</li><li>🏅 the Test badge for all 3 right on the first try</li></ul>'+
       '<div class="ckrow"><button type="button" class="ckbtn green" id="ckStart">Start the test ▶</button><button type="button" class="ckbtn ghost" id="ckLater">Not now</button></div></div>';
   } else if(run.phase==="q"){
     h+=paperQ()+ansLine(true)+pad()+'<div class="ckfb'+(run.fb?' '+run.fb.cls:'')+'" id="ckFb">'+(run.fb?esc(run.fb.msg):'')+'</div>'+
@@ -666,14 +708,15 @@ function draw(){
       '<button type="button" class="ckbtn ghost" id="ckSkip">'+(run.slot<QS.length-1?'Next question ➡️':'Finish the test ➡️')+'</button></div>'+
       (run.sol?solution():'')+'</div>';
   } else if(run.phase==="end"){
-    var fc=firstCount(run);
+    // what she can do now comes first; the stars are small, as information; showing a grown-up is optional
+    var fc=firstCount(run), pc=paperCount(run);
     h+='<div class="ckpaper ckend"><div class="ckbig">'+(run.badge?'🏅':'🌟')+'</div><h2>'+esc(SAY.end)+'</h2>'+
-      '<p class="ckres">Right on the first try: <b>'+fc+' of '+QS.length+'</b></p>'+
-      '<p class="ckres">Stars from this test: <b id="ckEndStars">⭐ '+run.stars+'</b> (including +'+run.bonus+' for finishing)</p>'+
-      (run.badge?'<p class="ckbadge" id="ckBadgeMsg">🏅 '+esc(SAY.badge)+'</p>':'')+
-      '<p class="ckres">Your reward points: <b id="ckTotal">⭐ '+myStars()+'</b></p>'+
-      '<p class="ckmuted">'+esc(SAY.daddy)+'</p>'+
-      '<div class="ckrow"><button type="button" class="ckbtn gold" id="ckDaddy">🏅 Show Daddy</button><button type="button" class="ckbtn ghost" id="ckDone">Close</button><button type="button" class="ckbtn ghost" id="ckAgain">Test again with new numbers</button></div></div>';
+      (run.badge?'<p class="ckbadge" id="ckBadgeMsg">'+esc(SAY.badge)+'</p>'+mastery()
+                :'<p class="ckres">Right on the first try: <b>'+fc+' of '+QS.length+'</b></p><p class="ckgoal" id="ckGoal">'+esc(SAY.goal)+' <span class="ckgoalcan">“'+esc(CAN)+'”</span></p>')+
+      '<p class="ckstars" id="ckStarsLine"><span id="ckEndStars">⭐ '+run.stars+'</span> from this test'+
+        ' (+'+run.bonus+' for finishing'+(pc?', +'+(pc*STAR_PAPER)+' for your working':'')+') · <span id="ckTotal">⭐ '+myStars()+'</span> in all</p>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckDone">Close</button><button type="button" class="ckbtn ghost" id="ckAgain">Test again with new numbers</button></div>'+
+      '<p class="ckshow" id="ckShowLine">'+esc(SAY.show)+' <button type="button" class="cklink" id="ckShow">Show a grown-up, if you like</button></p></div>';
   }
   o.innerHTML=h; o.hidden=false; document.documentElement.classList.add("ckopen"); open=true;
   bind();
@@ -696,7 +739,8 @@ function bind(){
   if($("ckRetry")) $("ckRetry").onclick=function(){ run.p=CK.gen(q(), false, run.p.text); run.attempt++; run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); say(SAY.retry, run.p.text); };
   if($("ckShowSol")) $("ckShowSol").onclick=function(){ run.sol=true; save(); draw(); var s=$("ckSol"); if(s && s.scrollIntoView) s.scrollIntoView({block:"start"}); say(SAY.sol); };
   if($("ckLesson")) $("ckLesson").onclick=goLesson;
-  if($("ckDaddy")) $("ckDaddy").onclick=function(){ daddy(); };
+  if($("ckShow")) $("ckShow").onclick=function(){ showView(); };
+  if($("ckWrote")) $("ckWrote").onclick=wrote;
   if($("ckDone")) $("ckDone").onclick=close;
   if($("ckAgain")) $("ckAgain").onclick=function(){ run=fresh(); run.phase="q"; save(); draw(); readQ(); };
 }
@@ -705,7 +749,7 @@ function readAloud(){
   if(run.phase==="q") readQ();
   else if(run.phase==="wrong") say(SAY.notYet, run.diag.msg);
   else if(run.phase==="right") say(praiseLine(), SAY.sol);
-  else if(run.phase==="end") say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+  else if(run.phase==="end") say(SAY.end, run.badge?SAY.badge:null, run.badge?CAN:null, SAY.show);
   else say(SAY.intro);
 }
 function next(){
@@ -714,7 +758,7 @@ function next(){
   run.bonus=STAR_FINISH; run.stars+=STAR_FINISH; addStars(STAR_FINISH);
   if(firstCount(run)===QS.length){ run.badge=true; addBadge(); }
   run.phase="end"; run.done=true; logTest(run); history(true); set(RUNKEY,""); try{ localStorage.removeItem(RUNKEY); }catch(e){}
-  draw(); say(SAY.end, run.badge?SAY.badge:null, SAY.daddy);
+  draw(); say(SAY.end, run.badge?SAY.badge:null, run.badge?CAN:null, SAY.show);
 }
 function close(){ var o=$("ckOverlay"); if(o){ o.hidden=true; o.innerHTML=""; } document.documentElement.classList.remove("ckopen"); open=false; var h=host(); if(h && h.stop) try{ h.stop(); }catch(e){} if(run && !run.done) save(); }
 
@@ -734,21 +778,29 @@ function banner(label){
   $("ckBannerX").onclick=function(){ b.hidden=true; };
 }
 function resume(back){ run=load()||run; if(!run || run.done) run=fresh(); draw(); if(back) say(SAY.back); else if(run.phase==="q") readQ(); else readAloud(); }
-function start(){ var h=host(); if(h && h.prime) try{ h.prime(); }catch(e){} run=load(); if(!run){ run=fresh(); save(); draw(); say(SAY.intro); } else resume(false); var b=$("ckBanner"); if(b) b.hidden=true; }
+function start(){ var nt=$("ckNote"); if(nt) nt.hidden=true; var h=host(); if(h && h.prime) try{ h.prime(); }catch(e){} run=load(); if(!run){ run=fresh(); save(); draw(); say(SAY.intro); } else resume(false); var b=$("ckBanner"); if(b) b.hidden=true; }
 
-/* ---------- Show Daddy: a full-screen badge with the date and the points ---------- */
-function daddy(){
-  var d=$("ckDaddyView"); if(!d){ d=document.createElement("div"); d.id="ckDaddyView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Show Daddy"); document.body.appendChild(d); }
-  var P=rewards().players[player()]||{stars:0,badges:{}}, nb=Object.keys(P.badges||{}).length, last=run;
-  d.innerHTML='<div class="ckdcard"><div class="ckdbig">'+(last&&last.badge?'🏅':'⭐')+'</div>'+
+/* ---------- "Show a grown-up, if you like": an optional full-screen view of what she can do now ---------- */
+function showView(){
+  var d=$("ckShowView"); if(!d){ d=document.createElement("div"); d.id="ckShowView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","What I can do now"); document.body.appendChild(d); }
+  var P=rewards().players[player()]||{stars:0,badges:{}}, got=Object.keys(P.badges||{}).filter(function(k){ return MASTERY[k] || k===SLUG; }), last=run;
+  var can=got.map(function(k){ return '<li>🏅 '+esc(MASTERY[k]||CAN)+'</li>'; }).join("");
+  d.innerHTML='<div class="ckdcard"><div class="ckdbig">'+(last&&last.badge?'🏅':'🌟')+'</div>'+
     '<div class="ckdname">'+esc(player())+'</div>'+
     '<div class="ckdgame">Test yourself · '+esc(TITLE)+'</div>'+
     '<div class="ckddate">'+dateLabel(Date.now())+'</div>'+
-    (last?'<div class="ckdpts">⭐ '+last.stars+' points in this test</div><div class="ckdline">Right on the first try: '+firstCount(last)+' of '+QS.length+(last.badge?' · Test badge earned':'')+'</div>':'')+
-    '<div class="ckdtotal">Reward points: ⭐ '+(+P.stars||0)+' · Test badges: 🏅 '+nb+'</div>'+
-    '<button type="button" class="ckbtn ghost" id="ckDaddyClose">Close</button></div>';
-  d.hidden=false; $("ckDaddyClose").onclick=function(){ d.hidden=true; };
+    (last?'<div class="ckdline">Right on the first try: '+firstCount(last)+' of '+QS.length+'</div>':'')+
+    (can?'<div class="ckdcanh">What I can do now</div><ul class="ckdcan" id="ckShowCan">'+can+'</ul>':'<div class="ckdline">'+esc(SAY.goal)+'</div>')+
+    '<div class="ckdsmall" id="ckShowStars">'+(last?'⭐ '+last.stars+' from this test · ':'')+'⭐ '+(+P.stars||0)+' stars in all</div>'+
+    '<button type="button" class="ckbtn ghost" id="ckShowClose">Close</button></div>';
+  d.hidden=false; $("ckShowClose").onclick=function(){ d.hidden=true; };
 }
+/* a Lesson paper working step was completed (MathHistory.paper): 1 star once, and a small note that never needs a tap */
+function note(msg){
+  var n=$("ckNote"); if(!n){ n=document.createElement("div"); n.id="ckNote"; n.setAttribute("role","status"); document.body.appendChild(n); }
+  n.textContent=msg; n.hidden=false; clearTimeout(note.t); note.t=setTimeout(function(){ n.hidden=true; }, 3500);
+}
+window.addEventListener("mathgames:paperdone", function(e){ var k=e && e.detail && e.detail.key; if(paperStar(k)) note("⭐ +1 star for writing your working on paper"); });
 
 /* ---------- the header button, and the offer under a finished Lesson round ---------- */
 function drawBtnPlace(b, hd){ var h0=hd.offsetHeight, st=$("stars"); if(st) hd.insertBefore(b, st); else hd.appendChild(b);
@@ -770,7 +822,7 @@ window.addEventListener("mathgames:lessondone", function(){
 window.addEventListener("pagehide", function(){ if(run && !run.done){ save(); history(false); } });
 document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && run && !run.done){ save(); history(false); } });
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", drawBtn); else drawBtn();
-return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ return open; }, get run(){ return run; }, rewards:rewards, QS:QS, LS:LS, slug:SLUG, daddy:daddy};
+return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ return open; }, get run(){ return run; }, rewards:rewards, QS:QS, LS:LS, slug:SLUG, can:CAN, showView:showView, paperStar:paperStar};
 })();
 </script>
 <!--CHECKUP-END-->
