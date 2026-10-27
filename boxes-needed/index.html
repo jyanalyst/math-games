@@ -326,6 +326,8 @@ return {gameId:GAME_ID, key:KEY,
   // through the "mathgames:paperdone" event (MathCheckup keeps the key, so it is never counted twice)
   paper:function(){ if(!sess || sess.lastPaper===sess.done) return; sess.lastPaper=sess.done; sess.paperDone++;
     if(sess.mode==="lesson"){ try{ window.dispatchEvent(new CustomEvent("mathgames:paperdone",{detail:{key:sess.id+":"+sess.done}})); }catch(e){} } },
+  // a round is on screen and not finished yet (the Home button asks once before leaving)
+  active:function(){ return !!sess; },
   leave:function(){ if(sess){ save(sess); sess=null; } }};
 })();
 </script>
@@ -824,6 +826,51 @@ return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ retu
 })();
 </script>
 <!--CHECKUP-END-->
+<!--HOME-START-->
+<style>
+#homeBtn{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:calc(10px + env(safe-area-inset-left));z-index:80;min-width:96px;min-height:48px;padding:8px 14px;border:2px solid #4b3fd6;border-radius:999px;background:#fff;color:#4b3fd6;font:700 19px system-ui,-apple-system,sans-serif;box-shadow:0 2px 8px #0002;cursor:pointer}
+/* bottom-left, so the game header keeps its one row; the check-up's 'Back to my test' banner starts to its right */
+#ckBanner{left:140px}
+.app{padding-bottom:calc(72px + env(safe-area-inset-bottom))}#ckOverlay{padding-bottom:80px}
+#homeAsk[hidden]{display:none}
+#homeAsk{position:fixed;inset:0;z-index:90;background:rgba(30,30,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#homeAsk .hacard{background:#fff;border-radius:22px;padding:24px 26px;max-width:460px;width:100%;text-align:center;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 8px 30px #0003}
+#homeAsk h2{font-size:26px;margin:4px 0 8px}#homeAsk p{font-size:19px;color:#444;margin:0 0 18px}
+#homeAsk .harow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#homeAsk button{min-height:52px;min-width:140px;font:700 20px system-ui,-apple-system,sans-serif;border-radius:16px;padding:10px 18px;cursor:pointer}
+#homeYes{background:#4b3fd6;color:#fff;border:0}#homeStay{background:#fff;color:#2b2b3a;border:2px solid #ccd}
+</style>
+<script>
+/* "🏠 Home" on every screen of the game (start screen, Lesson, Practice, paper steps, Test yourself, end screens).
+   It goes back to the main menu (../#home). Everything she has done is already kept in this browser (progress, stars,
+   history; the page saves again when it is left). Mid-round or mid-test it asks once: "Leave this game? Your stars so far
+   are kept." (Yes / Stay). No network code, nothing timed, no voice. */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  var HOME="../#home";
+  function busy(){
+    var ck=window.MathCheckup; if(ck && ck.open && ck.run && !ck.run.done && ck.run.phase!=="intro" && ck.run.phase!=="end") return true;
+    var h=window.MathHistory; return !!(h && h.active && h.active());
+  }
+  function leave(){ try{ var ck=window.MathCheckup; if(ck && ck.open && window.MathHost && MathHost.stop) MathHost.stop(); }catch(e){} location.href=HOME; }
+  function ask(){
+    var d=$("homeAsk"); if(!d){ d=document.createElement("div"); d.id="homeAsk"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); d.setAttribute("aria-labelledby","homeAskT");
+      d.innerHTML='<div class="hacard"><h2 id="homeAskT">Leave this game?</h2><p>Your stars so far are kept.</p><div class="harow"><button type="button" id="homeYes">Yes, go Home</button><button type="button" id="homeStay">Stay</button></div></div>';
+      document.body.appendChild(d); $("homeYes").onclick=leave; $("homeStay").onclick=function(){ d.hidden=true; }; }
+    d.hidden=false; try{ $("homeStay").focus(); }catch(e){}
+  }
+  function init(){
+    if($("homeBtn")) return;
+    var b=document.createElement("button"); b.type="button"; b.id="homeBtn"; b.textContent="🏠 Home"; b.setAttribute("aria-label","Home: back to the main menu");
+    b.onclick=function(){ if(busy()) ask(); else leave(); };
+    document.body.appendChild(b);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
+  window.MathHome={busy:busy, ask:ask, href:HOME};
+})();
+</script>
+<!--HOME-END-->
 <script>
 (function(){
 "use strict";
