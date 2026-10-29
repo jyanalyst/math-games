@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; media-src 'self'">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Times Tables 6, 7, 8 – Maths Games</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .modesw{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:4px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06);font-size:17px;font-weight:700}
+  .modesw span{padding:8px 12px;border-radius:999px;color:var(--soft)}
+  .modesw span.on{background:var(--a);color:#fff}
+  .startcard .note{font-size:17px;color:var(--soft);margin:10px 0 0}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  /* working step */
+  .seg.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75);z-index:2;animation:glow 1.6s ease-in-out infinite}
+  .lab.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .seg.diffbox{top:2px;height:68px;background:rgba(255,216,77,.30);border:3px dashed #d99a00;border-radius:10px;z-index:3;pointer-events:none}
+  .question.hl{background:#fff3c4;border-radius:10px;box-shadow:0 0 0 4px #ffd84d;padding:0 6px}
+  @keyframes glow{50%{box-shadow:0 0 0 6px #ffd84d,0 0 22px 8px rgba(255,190,0,.9)}}
+  .sheet{background:#fffdf5;border:2px solid #efe6c8;border-left:6px solid #f2a7a7;border-radius:12px;padding:4px 10px;margin:4px 0 8px}
+  .wline{display:flex;align-items:flex-start;gap:10px;padding:5px 4px;border-bottom:1px dashed #e8dfc4;width:100%;text-align:left;background:none;border-radius:8px}
+  .wline:last-child{border-bottom:none}
+  .wline.on{background:#fff3c4}
+  .wline.next{color:var(--soft)}
+  .wnum{flex:0 0 auto;min-width:30px;height:28px;border-radius:999px;background:#ece7f8;color:#4b3fc4;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;margin-top:2px}
+  .wbody{display:flex;flex-direction:column}
+  .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .wst,.wans{font-size:18px;line-height:1.3}
+  .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
+  .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
+  .wintro{margin:0 0 6px;font-size:17px}
+  .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
+  .wchoices.sent .choice{flex:1 1 100%;min-height:50px;font-size:18px;text-align:left;padding:6px 12px}
+  .choice.no{border-color:#e9a28f;background:#fdeee9}
+  .why{background:#eef6ff;border:2px solid #cfe3fb;border-radius:14px;padding:8px 12px;font-size:18px;margin:6px 0}
+  .whyh{font-weight:800;color:#2b5aa8;margin-bottom:2px}
+  .why .from{margin-top:4px;font-size:16px;color:var(--soft)}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+  .tick{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:#f1f0f7;border-radius:14px;text-align:left;padding:6px 12px;font-size:17px;font-weight:600}
+  .tick[aria-pressed="true"]{background:#d9f2e3}
+  .tick .box{font-size:22px}
+  .big[disabled]{opacity:.45}
+  .wlist{margin:4px 0 8px;padding-left:22px;font-size:18px}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash,.seg.hl{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+  /* iPad landscape (1024px): keep the header on one row */
+  @media (min-width:900px) and (max-width:1180px){
+    header{gap:8px} header h1{font-size:19px}
+    .ctl{padding:6px 10px;font-size:16px} .modesw{font-size:16px} .modesw span{padding:8px 10px}
+    .toggle{padding:4px 12px 4px 4px;gap:8px;font-size:17px} .toggle .sw{width:48px;height:32px} .toggle .sw::after{width:24px;height:24px} .toggle[aria-pressed="true"] .sw::after{left:20px}
+    .stars{font-size:20px;padding:6px 12px}
+  }
+  .tmain{max-width:760px;margin:16px auto}
+  .tprog{font-size:20px;font-weight:700;color:#4b3fd6;text-align:center}
+  .tfact{display:flex;align-items:center;justify-content:center;gap:14px;font-size:56px;font-weight:800;margin:18px 0 8px}
+  .tfact .ansbox{min-width:140px;min-height:76px;font-size:52px}
+  .tmain .pad{max-width:420px;margin:10px auto}
+  .shakybox{margin-top:16px;background:#fff6e5;border:3px solid #f2c46d;border-radius:16px;padding:10px 14px}
+  .shakybox h3{margin:2px 0 8px;color:#9a5b00}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:#fff;border:2px solid #f2c46d;border-radius:999px;padding:6px 14px;font-size:20px;font-weight:700}
+  .chip small{display:block;font-weight:400;font-size:14px;color:#7a5a20}
+  .chip.fixed{border-color:#8fd19e;background:#f1fbf3}
+  table.tgrid{border-collapse:separate;border-spacing:4px;margin:16px auto 4px;font-size:16px}
+  table.tgrid th{color:#4b3fd6;padding:2px 6px}
+  table.tgrid td{width:44px;height:36px;border-radius:8px;text-align:center;font-weight:800}
+  td.strong,.legend .strong{background:#d6f3dc;color:#23743a}
+  td.shaky,.legend .shaky{background:#ffe2b8;color:#9a5b00}
+  td.new,.legend .new{background:#eeeef4}
+  .legend{text-align:center;color:#666;font-size:15px}
+  .legend span{display:inline-block;min-width:22px;border-radius:6px;text-align:center;font-weight:800}
+  .tmain .rowbtns{justify-content:center}
+  .tmain .feedback{text-align:center;font-size:20px}
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">✖️🔢</div>
+    <h2>Times Tables 6, 7, 8</h2>
+    <p>A short daily practice: <b>12 facts</b> from the 6, 7 and 8 times tables. There is no clock. If a fact is tricky, you get a nearby fact to build it from, and it comes back later.</p>
+    <p class="note" id="startNote"></p>
+    <button class="big" id="tStart">Start with my tutor 🔊</button>
+    <button class="quiet" id="tQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Times Tables 6, 7, 8</h1>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <div class="stars" id="tStars">⭐ 0</div>
+  </header>
+  <div class="card tmain" id="tMain"></div>
+  <div class="foot"><div class="tag" id="gameTag">Level P3 · P3-WNMD-TT-D01</div></div>
+</div>
+
+<!--HISTORY-START-->
+<script>
+var HISTORY_GAME = "times-tables";
+/* ===== Practice history (schema v1): one entry per session, kept ONLY in this browser's localStorage =====
+   No network code at all: nothing is ever sent anywhere. The home page shows the entries ('My practice history').
+   A session starts when the round on screen starts (Start button, mode switch, next round, start again) and its entry
+   is written when the round finishes, or saved when she leaves partway (pagehide / page hidden). An entry is only
+   written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
+   the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
+   Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore).
+   mode is lesson | practice | test ("Test yourself" check-up, written by MathCheckup through record()). */
+var MathHistory=(function(){
+"use strict";
+var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
+var KEY="mathgames.history.v1", PKEY="mathgames.player", MAX=200, TAGS=["answer","model","working"];
+var sess=null, provider=null;
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+function player(){ var n=""; try{ n=localStorage.getItem(PKEY)||""; }catch(e){} n=String(n).replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out="", r=new Uint8Array(6);
+  try{ crypto.getRandomValues(r); }catch(e){ for(var j=0;j<6;j++) r[j]=Math.floor(Math.random()*256); }
+  for(var i=0;i<6;i++) out+=abc.charAt(r[i]%36); return t.toString(36)+"-"+out; }
+function load(){ var a=[]; try{ a=JSON.parse(localStorage.getItem(KEY)||"[]"); }catch(e){} return Array.isArray(a)?a.filter(function(x){ return x && typeof x.id==="string"; }):[]; }
+function entry(s){
+  var m={}, top=[]; TAGS.forEach(function(k){ if(s.mistakes[k]>0){ m[k]=s.mistakes[k]; top.push(k); } });
+  top.sort(function(a,b){ return (m[b]-m[a]) || (TAGS.indexOf(a)-TAGS.indexOf(b)); });
+  return {v:1, id:s.id, player:s.player, game_id:GAME_ID, mode:s.mode, started_at:iso(s.t0), ended_at:iso(Date.now()),
+    items_done:s.done, items_total:s.total, correct:s.correct, score_pct:s.done?Math.round(100*s.correct/s.done):0,
+    hints_used:s.hints, paper_done:s.paperDone, paper_total:s.paperTotal, mistakes:m, top_mistakes:top};
+}
+// upsert by id, drop any duplicate ids, keep the newest MAX
+function save(s){
+  if(!s || !(s.done>0)) return false; // opening a game and leaving with nothing finished writes nothing
+  var e=entry(s), a=load(), seen={}, out=[];
+  for(var i=a.length-1;i>=0;i--){ var x=a[i]; if(seen[x.id] || x.id===e.id) continue; seen[x.id]=1; out.unshift(x); }
+  out.push(e); if(out.length>MAX) out=out.slice(out.length-MAX);
+  try{ localStorage.setItem(KEY, JSON.stringify(out)); return true; }catch(err){ return false; }
+}
+function state(){ try{ return provider ? provider() : null; }catch(e){ return null; } }
+function begin(){
+  var st=state(); sess=null;
+  if(!st || !st.open || !(st.remaining>0)) return;
+  var t=Date.now();
+  sess={id:newId(t), player:player(), mode:st.mode==="practice"?"practice":"lesson", t0:t, done:0, total:st.remaining, correct:0, hints:0, mistakes:{}, paperDone:0, paperTotal:0};
+}
+window.addEventListener("pagehide", function(){ if(sess){ save(sess); sess=null; } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && sess) save(sess); }); // same id: updated, never duplicated
+window.addEventListener("pageshow", function(e){ if(e.persisted && !sess) begin(); });
+return {gameId:GAME_ID, key:KEY,
+  attach:function(f){ provider=f; },
+  // start (or move to) the session for the round on screen; a session left partway with a problem finished is saved first
+  restart:function(){ if(sess) save(sess); begin(); },
+  miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
+  hint:function(){ if(sess) sess.hints++; },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++;
+    if(roundOver){ var wasLesson=sess.mode==="lesson"; save(sess); sess=null;
+      if(wasLesson){ try{ window.dispatchEvent(new Event("mathgames:lessondone")); }catch(e){} } } }, // a finished Lesson round unlocks "Test yourself"
+  // a "Test yourself" check-up (mode "test"): same fields and the same upsert as a round
+  record:function(o){ return !!o && o.mode==="test" && save(o); },
+  // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
+  paperOffer:function(){ if(sess) sess.paperTotal++; },
+  // once per problem (keyed by the problems finished so far in this session); a Lesson step also earns 1 reward star
+  // through the "mathgames:paperdone" event (MathCheckup keeps the key, so it is never counted twice)
+  paper:function(){ if(!sess || sess.lastPaper===sess.done) return; sess.lastPaper=sess.done; sess.paperDone++;
+    if(sess.mode==="lesson"){ try{ window.dispatchEvent(new CustomEvent("mathgames:paperdone",{detail:{key:sess.id+":"+sess.done}})); }catch(e){} } },
+  // a round is on screen and not finished yet (the Home button asks once before leaving)
+  // a key for "once per problem" rewards (the session and the problems finished so far), or null outside a round
+  key:function(){ return sess ? sess.id+":"+sess.done : null; },
+  active:function(){ return !!sess; },
+  leave:function(){ if(sess){ save(sess); sess=null; } }};
+})();
+</script>
+<!--HISTORY-END-->
+<script>
+var G={key:"mathTimesTables678"};
+/* ---------- voice tutor: recorded clips (Grok voice luna) where we have them, device voice for every other line ---------- */
+var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Not yet.":"../audio-shared/c524cdf0f667.mp3","This one will come back later, so you can try it again.":"audio/d308db234e00.mp3","The shaky facts come first next time. A little practice every day makes them strong.":"audio/94ded5cb6f41.mp3","Every fact was right on the first try today.":"audio/4a4ff11a0b61.mp3","Type your answer on the number pad, then tap Check.":"audio/4edb9ea2cdaa.mp3"};
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  // Device-voice choice (better-device-voice): score every English voice and take the best.
+  // Natural/neural voices (Edge "Online (Natural)", Chrome "Google ...", Apple Premium/Enhanced when Safari exposes them)
+  // beat compact ones; Apple's novelty and Eloquence voices are never used. A voice saved from the #voices panel wins.
+  var VKEY = "barmodel.voice";
+  var NOVELTY = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|deranged|hysterical|princess|vicki|victoria|bruce|agnes)\b/i;
+  var GOOD = /^(serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|daniel|arthur|oliver|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma)\b|google uk english female|google us english/i;
+  var FEMALE = /female|woman|girl|serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma|hazel|zira/i;
+  function vlang(v){ return String(v.lang||"").toLowerCase().replace("_","-"); }
+  function score(v){
+    var n = String(v.name||""), l = vlang(v), s = 0;
+    if(!/^en(-|$)/.test(l) || NOVELTY.test(n)) return -1;
+    if(/premium/i.test(n)) s += 40; else if(/enhanced/i.test(n)) s += 30;
+    if(/natural|neural/i.test(n)) s += 35; else if(/^google/i.test(n)) s += 25;
+    if(/compact|espeak|festival|pico/i.test(n)) s -= 20;
+    if(l.indexOf("en-sg")===0) s += 10; else if(l.indexOf("en-gb")===0) s += 9; else if(/^en-(au|ie|nz)/.test(l)) s += 6; else if(l.indexOf("en-us")===0) s += 5; else if(/^en-(in|za)/.test(l)) s += 3;
+    if(GOOD.test(n)) s += 6;
+    if(FEMALE.test(n) && !/\bmale\b/i.test(n.replace(/female/ig,""))) s += 4; // match the recorded tutor voice (luna)
+    if(v.localService) s += 1; // works offline; ties only
+    return s;
+  }
+  function englishVoices(){
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    return vs.filter(function(v){ return score(v) >= 0; }).sort(function(a,b){ return score(b)-score(a); });
+  }
+  function pick(){
+    if(!supported) return null;
+    var en = englishVoices(); if(!en.length) return null;
+    var want = null; try{ want = localStorage.getItem(VKEY); }catch(e){}
+    if(want){ for(var i=0;i<en.length;i++){ if(en[i].voiceURI===want || en[i].name===want) return en[i]; } }
+    return en[0];
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/\s*\u2212\s*/g," minus ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  // units read out by the device voice (the line itself, and its clip key, stay as written)
+  function spoken(t){ return String(t).replace(/(\d+) m\u2113/g,function(m,n){ return n+(n==="1"?" millilitre":" millilitres"); }).replace(/(\d+) \u2113/g,function(m,n){ return n+(n==="1"?" litre":" litres"); })
+    .replace(/m\u2113/g,"millilitres").replace(/\u2113/g,"litres").replace(/(\d+) kg\b/g,function(m,n){ return n+(n==="1"?" kilogram":" kilograms"); }).replace(/(\d+) g\b/g,function(m,n){ return n+(n==="1"?" gram":" grams"); }).replace(/\bkg\b/g,"kilograms"); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(spoken(text));
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  // Recorded tutor clips (Grok voice luna), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
+  function play(lines, immediate){
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
+  }
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
+  };
+})();
+function tell(){ Voice.say.apply(null, arguments); }
+/* ===== 6, 7 and 8 times tables: a short daily practice (P3-WNMD-TT-D01) =====
+   12 facts a session, no clock and no speed score. A missed fact comes back later in the same session until it is right.
+   A wrong answer gets a nearby-fact nudge first (7 x 8 = 7 x 7 + 7), never the answer; after a second miss the fact is
+   shown, said once, and it comes back later. Facts that are still shaky are listed, and come first next session.
+   Stars follow the reward rules of the games (2 for right on the first try, 1 when right on a later try, +3 for finishing),
+   no daily cap. Each session is one entry in the practice history (mode practice). Everything stays in this browser. */
+(function(){
+"use strict";
+var TABLES=[6,7,8], MULTS=[2,3,4,5,6,7,8,9,10], N=12;
+var FKEY="mathgames.tables.v1", RKEY="mathgames.rewards.v1", PKEY="mathgames.player";
+var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3;
+var MI="\u2212", TI="\u00d7";
+var SAY={hello:"Let's practise the 6, 7 and 8 times tables. 12 facts. Take your time, there is no clock.",
+  back:"This one will come back later, so you can try it again.",
+  end:"You finished today's 12 facts.", shaky:"The shaky facts come first next time. A little practice every day makes them strong.",
+  allStrong:"Every fact was right on the first try today.", type:"Type your answer on the number pad, then tap Check."};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function jget(k,d){ try{ var v=JSON.parse(get(k)||"null"); return v==null?d:v; }catch(e){ return d; } }
+function player(){ var n=String(get(PKEY)||"").replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function fk(t,m){ return t+"x"+m; }
+function fact(k){ var a=k.split("x"); return {t:+a[0], m:+a[1], k:k}; }
+function txt(f){ return f.t+" "+TI+" "+f.m; }
+/* ---------- what she knows (per player, this browser only) ---------- */
+function store(){ var s=jget(FKEY,null); if(!s || typeof s!=="object" || !s.players || typeof s.players!=="object") s={v:1, players:{}}; s.v=1; return s; }
+function mine(s){ var P=s.players[player()]; if(!P || typeof P!=="object" || !P.facts || typeof P.facts!=="object") P=s.players[player()]={facts:{}, sessions:0}; return P; }
+function shakyKeys(P){ return Object.keys(P.facts).filter(function(k){ var x=P.facts[k]; return x && x.shaky; }); }
+/* ---------- reward stars: the same ledger and rules as the games (stars never go down) ---------- */
+function addStars(n){ if(!(n>0)) return; var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players || typeof r.players!=="object") r={v:1, players:{}};
+  var P=r.players[player()]; if(!P || typeof P!=="object") P=r.players[player()]={stars:0, badges:{}, tests:[], paper:[]};
+  P.stars=Math.max(0,Math.round(+P.stars||0))+n; if(!P.badges||typeof P.badges!=="object") P.badges={}; if(!Array.isArray(P.tests)) P.tests=[]; if(!Array.isArray(P.paper)) P.paper=[];
+  r.v=1; set(RKEY, JSON.stringify(r)); }
+function allStars(){ var r=jget(RKEY,null), P=r&&r.players&&r.players[player()]; return P?(+P.stars||0):0; }
+/* ---------- the nudge: a nearby fact she can build from (never the answer) ---------- */
+function nudge(f, n){ var t=f.t, m=f.m;
+  if(n<=1){
+    if(m===2) return "Not yet. "+t+" "+TI+" 2 is double "+t+": "+t+" + "+t+".";
+    if(m===10) return "Not yet. "+t+" "+TI+" 10: put a 0 after the "+t+".";
+    if(m===5) return "Not yet. "+t+" "+TI+" 5 is half of "+t+" "+TI+" 10, which is "+(t*10)+".";
+    if(m===6||m===7) return "Not yet. Start from "+t+" "+TI+" 5 = "+(t*5)+". Then add "+(m-5)+" more "+pl(m-5,"group")+" of "+t+".";
+    if(m===9) return "Not yet. Start from "+t+" "+TI+" 10 = "+(t*10)+". Then take away one "+t+".";
+    return "Not yet. Use a fact you know: "+t+" "+TI+" "+(m-1)+" = "+(t*(m-1))+". "+txt(f)+" is one more "+t+".";
+  }
+  // second nudge: the same fact turned round, or one step from the other side
+  if(m+1<=10 && m!==9 && m!==10) return "Not yet. Try from the other side: "+t+" "+TI+" "+(m+1)+" = "+(t*(m+1))+". "+txt(f)+" is one "+t+" less.";
+  return "Not yet. Turn it round: "+m+" "+TI+" "+t+" is the same. Count on in "+m+"s from "+m+" "+TI+" "+(t-1)+" = "+(m*(t-1))+".";
+}
+function pl(n,s){ return n===1?s:s+"s"; }
+function strategy(f){ var t=f.t, m=f.m; // after the fact is shown: how to rebuild it next time
+  if(m===2) return "Double "+t+".";
+  if(m===10) return "Put a 0 after the "+t+".";
+  if(m===9) return t+" "+TI+" 10 "+MI+" "+t+".";
+  if(m>=6 && m<=7) return t+" "+TI+" 5 and "+(m-5)+" more "+pl(m-5,"group")+" of "+t+".";
+  return t+" "+TI+" "+(m-1)+" and one more "+t+".";
+}
+/* ---------- a session: 12 facts, the shaky ones first ---------- */
+var D=null;
+function pickFacts(P){
+  var all=[]; TABLES.forEach(function(t){ MULTS.forEach(function(m){ all.push(fk(t,m)); }); });
+  var sh=shakyKeys(P).filter(function(k){ return all.indexOf(k)>=0; }).slice(0,6), rest=all.filter(function(k){ return sh.indexOf(k)<0; });
+  // then facts not seen yet or not seen for longest, mixed
+  rest.sort(function(a,b){ var A=P.facts[a], B=P.facts[b]; return ((A&&A.last)||0)-((B&&B.last)||0) || (Math.random()-0.5); });
+  var pick=sh.concat(rest.slice(0,N-sh.length));
+  for(var i=pick.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), x=pick[i]; pick[i]=pick[j]; pick[j]=x; }
+  return pick;
+}
+function fresh(){ var s=store(), P=mine(s); return {queue:pickFacts(P), done:{}, missed:{}, tries:0, typed:"", fb:null, shown:null, stars:0, first:0, n:0, started:false, over:false, hist:{}}; }
+function cur(){ return D.queue.length ? fact(D.queue[0]) : null; }
+function record(k, ok){ var s=store(), P=mine(s), x=P.facts[k]||(P.facts[k]={seen:0, right:0, wrong:0, shaky:false, last:0});
+  x.seen++; x.last=Date.now(); if(ok){ x.right++; } else { x.wrong++; x.shaky=true; } set(FKEY, JSON.stringify(s)); }
+function settle(k, firstTry){ var s=store(), P=mine(s), x=P.facts[k]; if(!x) return; if(firstTry) x.shaky=false; set(FKEY, JSON.stringify(s)); }
+function requeue(k){ D.queue.shift(); var at=Math.min(D.queue.length, 3); D.queue.splice(at,0,k); }
+function tell(){ if(typeof Voice!=="undefined") Voice.say.apply(null, arguments); }
+function spokenFact(f){ return f.t+" times "+f.m+"?"; }
+function check(){ var f=cur(); if(!f || D.shown) return;
+  if(D.typed===""){ D.fb={cls:"try", msg:SAY.type}; draw(); tell(SAY.type); return; }
+  var v=parseInt(D.typed,10), ans=f.t*f.m;
+  if(v===ans){ var firstTry=D.tries===0 && !D.missed[f.k], unaided=D.tries===0, st=firstTry?STAR_FIRST:STAR_RETRY;
+    record(f.k, true); settle(f.k, firstTry); addStars(st); D.stars+=st; if(firstTry) D.first++;
+    var praise = firstTry ? "Yes! "+txt(f)+" = "+ans+"." : (unaided ? "Yes! "+txt(f)+" = "+ans+". You remembered it this time." : "Yes! "+txt(f)+" = "+ans+". You built it from the nearby fact.");
+    D.typed=""; D.fb={cls:"ok", msg:praise+" "+"⭐".repeat(st)};
+    if(unaided){ D.done[f.k]=true; D.n++; D.queue.shift(); D.tries=0; MathHistory.item(firstTry, !D.queue.length); if(!D.queue.length) return finish(praise); }
+    else { D.tries=0; requeue(f.k); D.fb.msg+=" It comes back once more later."; praise+=" "+SAY.back; }
+    draw(); tell(praise, spokenFact(cur())); return; }
+  D.tries++; MathHistory.miss("answer"); record(f.k, false); D.missed[f.k]=(D.missed[f.k]||0)+1; D.typed="";
+  if(D.tries>=2){ D.shown=f.k; D.fb={cls:"try", msg:"Not yet. "+txt(f)+" = "+ans+". "+strategy(f)+" "+SAY.back.replace(/^This one/,"It")}; draw();
+    tell("Not yet.", f.t+" times "+f.m+" is "+ans+". "+strategy(f), SAY.back); return; }
+  var m=nudge(f, D.tries); D.fb={cls:"try", msg:m}; MathHistory.hint(); draw(); tell(m); }
+function next(){ var k=D.shown; D.shown=null; D.tries=0; D.fb=null; requeue(k); draw(); tell(spokenFact(cur())); }
+function finish(praise){ D.over=true; addStars(STAR_FINISH); D.stars+=STAR_FINISH;
+  var s=store(), P=mine(s); P.sessions=(+P.sessions||0)+1; set(FKEY, JSON.stringify(s));
+  draw(); var sh=Object.keys(D.missed); tell(praise, SAY.end, sh.length?SAY.shaky:SAY.allStrong); }
+/* ---------- screen ---------- */
+function gridHTML(){ var P=mine(store()), h='<table class="tgrid" id="tGrid"><tr><th></th>'+MULTS.map(function(m){ return '<th>'+TI+' '+m+'</th>'; }).join("")+'</tr>';
+  TABLES.forEach(function(t){ h+='<tr><th>'+t+'</th>'+MULTS.map(function(m){ var k=fk(t,m), x=P.facts[k], c=!x?"new":(x.shaky?"shaky":"strong");
+    return '<td class="'+c+'" data-f="'+k+'" title="'+t+' '+TI+' '+m+'">'+(c==="shaky"?"!":(c==="strong"?"✓":""))+'</td>'; }).join("")+'</tr>'; });
+  return h+'</table><p class="legend"><span class="strong">✓</span> strong &nbsp; <span class="shaky">!</span> still shaky &nbsp; <span class="new"></span> not practised yet</p>'; }
+function draw(){
+  $("tStars").textContent="⭐ "+allStars();
+  var m=$("tMain"), h="";
+  var shaky=Object.keys(D.missed);
+  if(D.over){
+    var still=shaky.map(fact);
+    h+='<div class="bigstar">🌟</div><h2 class="center">'+esc(SAY.end)+'</h2>';
+    h+='<p class="center">Right on the first try: <b>'+D.first+' of '+N+'</b> · ⭐ '+D.stars+' stars this time (+'+STAR_FINISH+' for finishing)</p>';
+    if(still.length) h+='<div class="shakybox" id="tShakyEnd"><h3>Still shaky</h3><div class="chips">'+still.map(function(f){ return '<span class="chip">'+esc(txt(f))+' = '+(f.t*f.m)+'<small>'+esc(strategy(f))+'</small></span>'; }).join("")+'</div><p>These come first next time.</p></div>';
+    else h+='<p class="center" id="tAllStrong">'+esc(SAY.allStrong)+'</p>';
+    h+=gridHTML();
+    h+='<div class="rowbtns"><button class="big" id="tAgain">12 more facts ➡️</button></div>';
+    m.innerHTML=h; $("tAgain").onclick=function(){ start(); }; return;
+  }
+  var f=cur();
+  h+='<div class="tprog" id="tProg">Fact '+Math.min(N,D.n+1)+' of '+N+' <span class="muted">· right so far: '+D.n+'</span></div>';
+  h+='<div class="tfact" id="tFact">'+esc(txt(f))+' = <span class="ansbox" id="tBox">'+(esc(D.typed)||"&nbsp;")+'</span></div>';
+  h+='<div class="feedback'+(D.fb?' '+D.fb.cls:'')+'" id="tFb">'+(D.fb?esc(D.fb.msg):'')+'</div>';
+  if(D.shown) h+='<div class="rowbtns"><button class="big" id="tNext">Next fact ➡️</button></div>';
+  else { h+='<div class="pad" id="tPad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button data-k="'+k+'">'+k+'</button>'; }).join("")+'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button></div>';
+    h+='<div class="rowbtns"><button class="big green" id="tCheck">Check ✓</button></div>'; }
+  if(shaky.length) h+='<div class="shakybox" id="tShaky"><h3>Shaky today</h3><div class="chips">'+shaky.map(function(k){ var x=fact(k); return '<span class="chip'+(D.done[k]?' fixed':'')+'">'+esc(txt(x))+(D.done[k]?' ✓':'')+'</span>'; }).join("")+'</div><p class="muted">They come back until they are right.</p></div>';
+  m.innerHTML=h;
+  m.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
+    if(k==="del") D.typed=D.typed.slice(0,-1); else if(k==="clr") D.typed=""; else if(D.typed.length<3) D.typed=(D.typed==="0"?"":D.typed)+k;
+    $("tBox").innerHTML=esc(D.typed)||"&nbsp;"; }; });
+  if($("tCheck")) $("tCheck").onclick=check;
+  if($("tNext")) $("tNext").onclick=next;
+}
+function start(quiet){ D=fresh(); D.started=true; MathHistory.restart(); draw(); if(!quiet) tell(spokenFact(cur())); }
+MathHistory.attach(function(){ return {mode:"practice", remaining:D?D.queue.filter(function(k,i,a){ return a.indexOf(k)===i; }).length:N, open:!!(D&&D.started&&!D.over)}; });
+D=fresh(); 
+$("tStart").onclick=function(){ $("startScreen").style.display="none"; if(typeof Voice!=="undefined" && Voice.muted){ Voice.setMuted(false); renderVoice(); } start(true); if(typeof Voice!=="undefined") Voice.unlock([SAY.hello, spokenFact(cur())]); };
+$("tQuiet").onclick=function(){ if(typeof Voice!=="undefined"){ Voice.setMuted(true); Voice.unlock([]); } renderVoice(); $("startScreen").style.display="none"; start(true); };
+function renderVoice(){ var b=$("muteBtn"); if(typeof Voice==="undefined" || !Voice.supported){ b.style.display="none"; return; } b.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; b.setAttribute("aria-pressed",Voice.muted?"true":"false"); }
+$("muteBtn").onclick=function(){ Voice.setMuted(!Voice.muted); renderVoice(); };
+renderVoice(); $("tStars").textContent="⭐ "+allStars();
+var sh0=shakyKeys(mine(store())); if(sh0.length) $("startNote").textContent="Shaky from last time: "+sh0.slice(0,6).map(function(k){ return txt(fact(k)); }).join(", ")+". They come first today.";
+/* test hook (no personal data) */
+window.__drill={get D(){ return D; }, nudge:function(t,m,n){ return nudge({t:t,m:m,k:fk(t,m)}, n||1); }, strategy:function(t,m){ return strategy({t:t,m:m}); }, SAY:SAY, N:N, TABLES:TABLES, MULTS:MULTS, lines:function(){ var o=[]; for(var k in SAY) o.push(SAY[k]); return o; }};
+})();
+</script>
+<!--HOME-START-->
+<style>
+#homeBtn{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:calc(10px + env(safe-area-inset-left));z-index:80;min-width:96px;min-height:48px;padding:8px 14px;border:2px solid #4b3fd6;border-radius:999px;background:#fff;color:#4b3fd6;font:700 19px system-ui,-apple-system,sans-serif;box-shadow:0 2px 8px #0002;cursor:pointer}
+/* bottom-left, so the game header keeps its one row; the check-up's 'Back to my test' banner starts to its right */
+#ckBanner{left:140px}
+.app{padding-bottom:calc(72px + env(safe-area-inset-bottom))}#ckOverlay{padding-bottom:80px}
+#homeAsk[hidden]{display:none}
+#homeAsk{position:fixed;inset:0;z-index:90;background:rgba(30,30,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#homeAsk .hacard{background:#fff;border-radius:22px;padding:24px 26px;max-width:460px;width:100%;text-align:center;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 8px 30px #0003}
+#homeAsk h2{font-size:26px;margin:4px 0 8px}#homeAsk p{font-size:19px;color:#444;margin:0 0 18px}
+#homeAsk .harow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#homeAsk button{min-height:52px;min-width:140px;font:700 20px system-ui,-apple-system,sans-serif;border-radius:16px;padding:10px 18px;cursor:pointer}
+#homeYes{background:#4b3fd6;color:#fff;border:0}#homeStay{background:#fff;color:#2b2b3a;border:2px solid #ccd}
+</style>
+<script>
+/* "🏠 Home" on every screen of the game (start screen, Lesson, Practice, paper steps, Test yourself, end screens).
+   It goes back to the main menu (../#home). Everything she has done is already kept in this browser (progress, stars,
+   history; the page saves again when it is left). Mid-round or mid-test it asks once: "Leave this game? Your stars so far
+   are kept." (Yes / Stay). No network code, nothing timed, no voice. */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  var HOME="../#home";
+  function busy(){
+    var ck=window.MathCheckup; if(ck && ck.open && ck.run && !ck.run.done && ck.run.phase!=="intro" && ck.run.phase!=="end") return true;
+    var h=window.MathHistory; return !!(h && h.active && h.active());
+  }
+  function leave(){ try{ var ck=window.MathCheckup; if(ck && ck.open && window.MathHost && MathHost.stop) MathHost.stop(); }catch(e){} location.href=HOME; }
+  function ask(){
+    var d=$("homeAsk"); if(!d){ d=document.createElement("div"); d.id="homeAsk"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); d.setAttribute("aria-labelledby","homeAskT");
+      d.innerHTML='<div class="hacard"><h2 id="homeAskT">Leave this game?</h2><p>Your stars so far are kept.</p><div class="harow"><button type="button" id="homeYes">Yes, go Home</button><button type="button" id="homeStay">Stay</button></div></div>';
+      document.body.appendChild(d); $("homeYes").onclick=leave; $("homeStay").onclick=function(){ d.hidden=true; }; }
+    d.hidden=false; try{ $("homeStay").focus(); }catch(e){}
+  }
+  function init(){
+    if($("homeBtn")) return;
+    var b=document.createElement("button"); b.type="button"; b.id="homeBtn"; b.textContent="🏠 Home"; b.setAttribute("aria-label","Home: back to the main menu");
+    b.onclick=function(){ if(busy()) ask(); else leave(); };
+    document.body.appendChild(b);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
+  window.MathHome={busy:busy, ask:ask, href:HOME};
+})();
+</script>
+<!--HOME-END-->
+</body>
+</html>

@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; media-src 'self'">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Mass and Volume – Bar Model Game</title>
+<style>
+  :root{
+    --bg:#fdf6ec; --card:#ffffff; --ink:#2d3047; --soft:#6b6f86;
+    --a:#7c6cf0; --a2:#b3a9ff; --b:#22a39f; --moved:#f2a541; --gap:#ef6f6c;
+    --ok:#2e9d5b; --line:#2d3047; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:20px;line-height:1.4;-webkit-text-size-adjust:100%}
+  button{font:inherit;color:inherit;cursor:pointer;border:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  .app{max-width:1200px;margin:0 auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  header h1{font-size:21px;margin:0;flex:1 1 auto}
+  header{gap:10px}
+  .stars{font-size:22px;font-weight:700;background:#fff3c4;border-radius:999px;padding:8px 16px;min-height:48px;display:flex;align-items:center}
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .toggle .sw{width:56px;height:36px;border-radius:999px;background:#d6d6e0;position:relative;transition:background .2s}
+  .toggle .sw::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-pressed="true"] .sw{background:var(--b)}
+  .toggle[aria-pressed="true"] .sw::after{left:24px}
+  .layout{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px) and (orientation:landscape){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  @media (min-width:1100px){ .layout{grid-template-columns:1.35fr 1fr;align-items:start} }
+  .card{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+  .progress{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .progress span{width:26px;height:26px;border-radius:50%;background:#ece7f8;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .progress span.done{background:#ffd84d}
+  .progress span.cur{outline:3px solid var(--a)}
+  .story{font-size:22px;margin:0 0 6px}
+  .question{font-size:22px;font-weight:700;margin:6px 0 0;color:#4b3fc4}
+  .steps{display:flex;gap:6px;margin:10px 0 0;flex-wrap:wrap}
+  .steps span{font-size:16px;padding:4px 10px;border-radius:999px;background:#eee;color:var(--soft)}
+  .steps span.on{background:var(--a);color:#fff}
+  .steps span.past{background:#d9f2e3;color:var(--ok)}
+  /* bars */
+  .bars{position:relative;padding:10px 0 4px}
+  .caption{min-height:62px;font-size:20px;background:#f4f1ff;border-radius:14px;padding:10px 14px;margin-bottom:8px}
+  .row{display:flex;align-items:flex-start;gap:10px;margin:4px 0}
+  .rowname{width:110px;flex:0 0 110px;font-weight:700;font-size:20px;padding-top:18px;text-align:right;overflow-wrap:anywhere}
+  .track{position:relative;flex:1 1 auto;height:104px}
+  .seg{position:absolute;top:8px;height:56px;border-radius:8px}
+  .seg.main{background-color:var(--a)}
+  .row.B .seg.main{background-color:var(--b)}
+  .seg.extra{background-color:var(--a2);border:3px solid var(--a)}
+  .seg.gain{background-color:var(--moved)}
+  .seg.hole{background:repeating-linear-gradient(135deg,rgba(239,111,108,.18) 0 8px,rgba(239,111,108,.05) 8px 16px);border:3px dashed var(--gap)}
+  .seg.blocks{background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(var(--u) - 3px),rgba(255,255,255,.95) calc(var(--u) - 3px),rgba(255,255,255,.95) var(--u))}
+  .seg .inlab{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .lab{position:absolute;top:70px;transform:translateX(-50%);font-size:18px;font-weight:700;white-space:nowrap;padding:1px 8px;border-radius:8px;background:#fff;transition:opacity .3s;z-index:4}
+  .lab.extra{color:var(--a)} .lab.gain{color:#b26b00} .lab.hole{color:var(--gap)}
+  .lab.flash{animation:flash 1.2s ease 2}
+  @keyframes flash{50%{background:#fff3a0;transform:translateX(-50%) scale(1.15)}}
+  .dotline{position:absolute;top:0;bottom:0;width:0;border-left:4px dashed var(--line);pointer-events:none;z-index:3}
+  .dotlab{position:absolute;bottom:-30px;transform:translateX(-50%);font-size:16px;color:var(--soft);white-space:nowrap;z-index:3;background:var(--card);padding:0 6px}
+  .counter{text-align:center;font-size:18px;color:var(--soft);min-height:26px;margin-top:30px}
+  .barbtns{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+  /* panel */
+  .panel h2{font-size:22px;margin:0 0 10px}
+  .big{min-height:64px;padding:12px 22px;border-radius:16px;font-size:22px;font-weight:700;background:var(--a);color:#fff;box-shadow:0 4px 0 #5143c4}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 #5143c4}
+  .big.green{background:var(--ok);box-shadow:0 4px 0 #1f7442}
+  .big.orange{background:var(--moved);box-shadow:0 4px 0 #b97a1c;color:#3a2600}
+  .ghost{min-height:52px;padding:8px 16px;border-radius:14px;background:#eeeaff;color:#4b3fc4;font-weight:700;font-size:19px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 30%;min-height:64px;border-radius:16px;background:#f1f0f7;font-size:21px;font-weight:700;border:3px solid transparent;padding:8px}
+  .choice.sel{border-color:var(--a);background:#e7e2ff}
+  .ansline{display:flex;align-items:center;gap:10px;margin:12px 0 8px;font-size:21px;flex-wrap:wrap}
+  .ansbox{min-width:120px;min-height:56px;border-radius:12px;background:#fff8e1;border:3px solid #f2d27a;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 10px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .pad button{min-height:58px;border-radius:14px;background:#f1f0f7;font-size:26px;font-weight:700;box-shadow:0 3px 0 #d8d6e6}
+  .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8d6e6}
+  .feedback{min-height:30px;font-size:20px;margin:8px 0;padding:0}
+  .feedback.good{color:var(--ok);font-weight:700}
+  .feedback.try{color:#b5462f}
+  .hint{background:#fff8e1;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:19px}
+  .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .prompt{font-size:26px;font-weight:800;text-align:center;margin:10px 0;color:#4b3fc4}
+  .center{text-align:center}
+  .bigstar{font-size:64px;text-align:center;animation:pop .6s ease}
+  @keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .muted{color:var(--soft);font-size:18px}
+  .foot{margin-top:14px;text-align:center}
+  .foot button{background:none;color:var(--soft);font-size:16px;text-decoration:underline;min-height:48px;padding:0 12px}
+  .ctl{min-height:48px;min-width:48px;padding:6px 12px;border-radius:999px;background:#fff;font-size:17px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+  .ctl[disabled]{opacity:.4}
+  .modesw{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:4px;min-height:48px;box-shadow:0 2px 0 rgba(0,0,0,.06);font-size:17px;font-weight:700}
+  .modesw span{padding:8px 12px;border-radius:999px;color:var(--soft)}
+  .modesw span.on{background:var(--a);color:#fff}
+  .startcard .note{font-size:17px;color:var(--soft);margin:10px 0 0}
+  .ctl.off{background:#eee;color:var(--soft)}
+  .startscreen{position:fixed;inset:0;z-index:50;background:rgba(253,246,236,.97);display:flex;align-items:center;justify-content:center;padding:20px}
+  .startcard{background:#fff;border-radius:24px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+  .startcard h2{font-size:30px;margin:6px 0 8px}
+  .startcard .bigemoji{font-size:64px}
+  .startcard .big{width:100%;margin-top:16px;font-size:26px;min-height:76px}
+  .startcard .quiet{margin-top:12px;background:none;color:var(--soft);text-decoration:underline;min-height:48px;font-size:18px}
+  .life{background:#eefaf3;border:3px solid #bfe8cf;border-radius:18px;padding:14px 16px;margin:6px 0}
+  .life .lemoji{font-size:44px;text-align:center;line-height:1.2}
+  .life h3{margin:4px 0 6px;font-size:22px;color:#1f7442;text-align:center}
+  .life p{margin:6px 0;font-size:20px}
+  .life .ba{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .life .ba span{background:#fff;border-radius:12px;padding:6px 12px;font-size:18px;font-weight:700}
+  .life .rule{font-size:18px;color:#1f7442;font-weight:700;text-align:center}
+  /* working step */
+  .seg.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75);z-index:2;animation:glow 1.6s ease-in-out infinite}
+  .lab.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .seg.diffbox{top:2px;height:68px;background:rgba(255,216,77,.30);border:3px dashed #d99a00;border-radius:10px;z-index:3;pointer-events:none}
+  .question.hl{background:#fff3c4;border-radius:10px;box-shadow:0 0 0 4px #ffd84d;padding:0 6px}
+  @keyframes glow{50%{box-shadow:0 0 0 6px #ffd84d,0 0 22px 8px rgba(255,190,0,.9)}}
+  .sheet{background:#fffdf5;border:2px solid #efe6c8;border-left:6px solid #f2a7a7;border-radius:12px;padding:4px 10px;margin:4px 0 8px}
+  .wline{display:flex;align-items:flex-start;gap:10px;padding:5px 4px;border-bottom:1px dashed #e8dfc4;width:100%;text-align:left;background:none;border-radius:8px}
+  .wline:last-child{border-bottom:none}
+  .wline.on{background:#fff3c4}
+  .wline.next{color:var(--soft)}
+  .wnum{flex:0 0 auto;min-width:30px;height:28px;border-radius:999px;background:#ece7f8;color:#4b3fc4;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px;margin-top:2px}
+  .wbody{display:flex;flex-direction:column}
+  .weq{font-size:22px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .wst,.wans{font-size:18px;line-height:1.3}
+  .wans{font-weight:700}
+  .wcheck .weq{color:var(--ok)}
+  .tag{margin-top:2px;font-size:12px;color:#9a9aa8;letter-spacing:.5px}
+  .wask{font-size:19px;font-weight:700;margin:6px 0 8px}
+  .wintro{margin:0 0 6px;font-size:17px}
+  .wchoices .choice{min-height:56px;font-size:20px;padding:6px}
+  .wchoices.sent .choice{flex:1 1 100%;min-height:50px;font-size:18px;text-align:left;padding:6px 12px}
+  .choice.no{border-color:#e9a28f;background:#fdeee9}
+  .why{background:#eef6ff;border:2px solid #cfe3fb;border-radius:14px;padding:8px 12px;font-size:18px;margin:6px 0}
+  .whyh{font-weight:800;color:#2b5aa8;margin-bottom:2px}
+  .why .from{margin-top:4px;font-size:16px;color:var(--soft)}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+  .tick{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:#f1f0f7;border-radius:14px;text-align:left;padding:6px 12px;font-size:17px;font-weight:600}
+  .tick[aria-pressed="true"]{background:#d9f2e3}
+  .tick .box{font-size:22px}
+  .big[disabled]{opacity:.45}
+  .wlist{margin:4px 0 8px;padding-left:22px;font-size:18px}
+  @media (prefers-reduced-motion:reduce){ .bigstar,.lab.flash,.seg.hl{animation:none} }
+  @media (max-width:600px){ .rowname{width:80px;flex-basis:80px;font-size:18px} header h1{font-size:20px} }
+  /* iPad landscape (1024px): keep the header on one row */
+  @media (min-width:900px) and (max-width:1180px){
+    header{gap:8px} header h1{font-size:19px}
+    .ctl{padding:6px 10px;font-size:16px} .modesw{font-size:16px} .modesw span{padding:8px 10px}
+    .toggle{padding:4px 12px 4px 4px;gap:8px;font-size:17px} .toggle .sw{width:48px;height:32px} .toggle .sw::after{width:24px;height:24px} .toggle[aria-pressed="true"] .sw::after{left:20px}
+    .stars{font-size:20px;padding:6px 12px}
+  }
+  /* shared engine: generic bar model */
+  .bars{padding:4px 0}
+  #model{position:relative}
+  .track{height:64px}
+  .track.withunder{height:104px}
+  .rowname{padding-top:12px}
+  .seg{top:6px;height:46px;transition:width .35s ease,left .35s ease}
+  .seg .inlab{font-size:17px}
+  .row.B .seg.unit,.row.B .seg.main{background-color:var(--b)}
+  .row.C .seg.main,.row.C .seg.unit{background-color:#e07bb3}
+  .seg.unit{background-color:var(--a)}
+  .seg.ghostu{background:transparent;border:3px dashed var(--a2)}
+  .seg.left{background:repeating-linear-gradient(135deg,#f2a541 0 8px,#f7c98a 8px 16px)}
+  .seg.left .inlab{color:#3a2600;text-shadow:none}
+  .seg.dots{background:transparent;border-top:4px dotted var(--a);border-bottom:4px dotted var(--a);border-radius:0}
+  .seg.dots .inlab{color:var(--a);text-shadow:none;font-size:22px}
+  .seg.cut{background:repeating-linear-gradient(135deg,rgba(239,111,108,.35) 0 8px,rgba(239,111,108,.12) 8px 16px);border:3px dashed var(--gap)}
+  .seg.cut .inlab{color:#9c2f2c;text-shadow:none}
+  .seg.fresh{animation:grow .45s ease}
+  @keyframes grow{0%{transform:scaleX(.2);transform-origin:left;opacity:.3}100%{transform:scaleX(1);opacity:1}}
+  .tail{position:absolute;top:14px;font-size:20px;font-weight:800;color:#4b3fc4;white-space:nowrap;background:#fff;border-radius:8px;padding:0 6px}
+  .tail.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ubrace{position:absolute;top:58px;height:14px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;pointer-events:none;z-index:3}
+  .ubrace.hl{box-shadow:0 0 0 4px #ffd84d}
+  .ublab{position:absolute;top:74px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap;z-index:4}
+  .ublab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .brace{position:absolute;pointer-events:none;z-index:3;border:4px solid #d99a00;border-left:none;border-radius:0 16px 16px 0;width:18px}
+  .brace.hl{box-shadow:0 0 0 4px #ffd84d,0 0 16px 4px rgba(255,190,0,.75)}
+  .bracelab{position:absolute;font-size:17px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:2px 8px;white-space:nowrap;z-index:4;line-height:1.2;text-align:center}
+  .bracelab.hl{box-shadow:0 0 0 3px #ffd84d}
+  .cntrow{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+  .cntrow .ansbox{min-width:90px}
+  .emptyrow{color:var(--soft);font-size:16px;padding-top:18px}
+  .counter{margin-top:4px}
+  .seg.ghostu .inlab{color:#5a4fc0;text-shadow:none}
+  /* timeline (time game) */
+  .tl{position:relative;height:210px;margin:4px 14px 0}
+  .tl-line{position:absolute;left:0;right:0;top:112px;height:5px;background:#4b3fc4;border-radius:3px}
+  .tl-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .tl-tick{position:absolute;top:100px;width:5px;height:30px;margin-left:-2px;background:#4b3fc4;border-radius:2px}
+  .tl-tick span{position:absolute;top:34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#2b2b3a;background:#fff;padding:1px 5px;border-radius:8px}
+  .tl-tick.ask span{color:#4b3fc4;background:#efeaff}
+  .tl-tick.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-jump{position:absolute;top:58px;height:52px;border:4px solid #e07bb3;border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;box-sizing:border-box}
+  .tl-jump.hr{border-color:#7c6cf0}
+  .tl-jump span{position:absolute;top:-28px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:16px;color:#7a2d5a;background:#fff;padding:0 5px;border-radius:8px}
+  .tl-jump.hr span{color:#4b3fc4}
+  .tl-jump.hl{box-shadow:0 -6px 14px 2px rgba(255,190,0,.75);border-color:#e0a800}
+  .tl-jump.hl span{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .tl-total{position:absolute;top:162px;height:12px;border:4px solid #d99a00;border-top:none;border-radius:0 0 12px 12px;box-sizing:border-box}
+  .tl-totlab{position:absolute;top:178px;transform:translateX(-50%);font-size:16px;font-weight:800;color:#8a5a00;background:#fff3c4;border-radius:10px;padding:1px 8px;white-space:nowrap}
+  .tl-total.hl,.tl-totlab.hl{box-shadow:0 0 0 4px #ffd84d}
+  /* area and perimeter diagram */
+  .ap{position:relative;height:260px}
+  .ap-empty{position:absolute;top:30px;left:0;right:0;text-align:center}
+  .ap-rect{position:absolute;border:4px solid #4b3fc4;border-radius:4px;box-sizing:border-box;background:#fff}
+  .ap-rect.grid{background-image:linear-gradient(to right,rgba(75,63,196,.35) 1px,transparent 1px),linear-gradient(to bottom,rgba(75,63,196,.35) 1px,transparent 1px)}
+  .ap-rect.shade{background-color:#dcd6ff}
+  .ap-rect.around{border-color:#e07bb3;border-style:dashed}
+  .ap-rect.hl{box-shadow:0 0 0 5px #ffd84d,0 0 18px 6px rgba(255,190,0,.7)}
+  .ap-cnt{position:absolute;background:rgba(255,216,77,.55);border:3px solid #d99a00;box-sizing:border-box;pointer-events:none}
+  .ap-lab{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;background:#fff;padding:1px 6px;border-radius:8px;white-space:nowrap;color:#2b2b3a}
+  .ap-lab.side{transform:translateX(-100%)} .ap-lab.side.r{transform:none}
+  .ap-lab.hl,.ap-in.hl,.ap-ar.hl{background:#fff3a0;box-shadow:0 0 0 3px #ffd84d}
+  .ap-in{position:absolute;transform:translateX(-50%);font-weight:800;font-size:17px;color:#4b3fc4;background:rgba(255,255,255,.85);padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .ap-ar{position:absolute;transform:translateX(-50%);font-weight:800;font-size:16px;color:#7a2d5a;background:#fde8f3;padding:1px 8px;border-radius:10px;white-space:nowrap}
+  .pad .padwide{grid-column:1 / -1}
+  /* "Check your answer" step (optional, beside the working) */
+  .csstep{max-width:560px;margin:14px auto 0;background:#f1fbf3;border:3px solid #8fd19e;border-radius:16px;padding:12px 14px;text-align:left}
+  .csstep.small,.csstep.done{background:#f7fbf8;border-width:2px;padding:8px 12px}
+  .csstep .csh{font-weight:800;font-size:20px;color:#23743a}
+  .csstep p{margin:6px 0}
+  .csstep .csexpr{font-size:22px;white-space:nowrap}
+  .csrow{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .csrow .ansbox{min-width:110px;min-height:48px;font-size:24px}
+  .cspad{display:grid;grid-template-columns:repeat(6,52px);gap:6px;margin-top:8px;justify-content:center}
+  .csstep.small,.csstep.done{text-align:center}
+  .csstep p,.csstep .csh{text-align:center}
+  .cspad button{min-width:48px;min-height:46px;font:inherit;font-size:22px;font-weight:700;border-radius:12px;border:2px solid #cfe9d5;background:#fff;cursor:pointer}
+  .pad .sepkey{font-weight:800;color:#4b3fd6}
+</style>
+</head>
+<body>
+<div class="startscreen" id="startScreen">
+  <div class="startcard">
+    <div class="bigemoji">🥛⚖️</div>
+    <h2>Mass and Volume</h2>
+    <p>Capacity and mass problems in <b>ℓ and mℓ</b>, <b>kg and g</b>. Change the units first, draw the model, then <b>check your answer</b> by working backwards. Your tutor will help, step by step.</p>
+    <p class="note" id="startNote"></p>
+    <button class="big" id="startTutor">Start with my tutor 🔊</button>
+    <button class="quiet" id="startQuiet">Play without sound</button>
+  </div>
+</div>
+<div class="app">
+  <header>
+    <h1>Mass and Volume</h1>
+    <button class="modesw" id="modeBtn" aria-label="Switch between Lesson mode and Practice mode"><span data-m="lesson">📘 Lesson</span><span data-m="practice">🎲 Practice</span></button>
+    <button class="toggle" id="smallToggle" aria-pressed="false"><span class="sw"></span><span>Small numbers</span></button>
+    <button class="ctl" id="muteBtn" aria-pressed="false">🔊 Voice on</button>
+    <button class="ctl" id="againBtn">🔁 Say it again</button>
+    <div class="stars" id="stars">★ 0</div>
+  </header>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="progress" id="progress"></div>
+        <p class="story" id="story"></p>
+        <p class="question" id="question"></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="caption" id="caption"></div>
+        <div class="bars" id="bars"><div id="model"></div></div>
+        <div class="counter" id="counter"></div>
+        <div class="barbtns" id="barbtns"></div>
+      </div>
+    </div>
+    <div><div class="card panel" id="panel"></div><div class="csslot" id="csslot"></div></div>
+  </div>
+  <div class="foot"><button id="resetBtn">Start again from the beginning</button><div class="tag" id="gameTag">Level P3 · P3-MEAS-MV-G12</div></div>
+</div>
+
+<!--HISTORY-START-->
+<script>
+var HISTORY_GAME = "mass-volume";
+/* ===== Practice history (schema v1): one entry per session, kept ONLY in this browser's localStorage =====
+   No network code at all: nothing is ever sent anywhere. The home page shows the entries ('My practice history').
+   A session starts when the round on screen starts (Start button, mode switch, next round, start again) and its entry
+   is written when the round finishes, or saved when she leaves partway (pagehide / page hidden). An entry is only
+   written once at least 1 problem is finished. Entries are upserted by id (one per session, never duplicated), and only
+   the newest 200 are kept. Paper working steps are folded in as paper_done of paper_total (not counted as items).
+   Fields (in this order): v, id, player, game_id, mode, started_at, ended_at, items_done, items_total, correct,
+   score_pct, hints_used, paper_done, paper_total, mistakes, top_mistakes. Times are ISO with +08:00 (Singapore).
+   mode is lesson | practice | test ("Test yourself" check-up, written by MathCheckup through record()). */
+var MathHistory=(function(){
+"use strict";
+var GAME_ID="math-"+(typeof HISTORY_GAME==="string"?HISTORY_GAME:"unknown");
+var KEY="mathgames.history.v1", PKEY="mathgames.player", MAX=200, TAGS=["answer","model","working"];
+var sess=null, provider=null;
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+function player(){ var n=""; try{ n=localStorage.getItem(PKEY)||""; }catch(e){} n=String(n).replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out="", r=new Uint8Array(6);
+  try{ crypto.getRandomValues(r); }catch(e){ for(var j=0;j<6;j++) r[j]=Math.floor(Math.random()*256); }
+  for(var i=0;i<6;i++) out+=abc.charAt(r[i]%36); return t.toString(36)+"-"+out; }
+function load(){ var a=[]; try{ a=JSON.parse(localStorage.getItem(KEY)||"[]"); }catch(e){} return Array.isArray(a)?a.filter(function(x){ return x && typeof x.id==="string"; }):[]; }
+function entry(s){
+  var m={}, top=[]; TAGS.forEach(function(k){ if(s.mistakes[k]>0){ m[k]=s.mistakes[k]; top.push(k); } });
+  top.sort(function(a,b){ return (m[b]-m[a]) || (TAGS.indexOf(a)-TAGS.indexOf(b)); });
+  return {v:1, id:s.id, player:s.player, game_id:GAME_ID, mode:s.mode, started_at:iso(s.t0), ended_at:iso(Date.now()),
+    items_done:s.done, items_total:s.total, correct:s.correct, score_pct:s.done?Math.round(100*s.correct/s.done):0,
+    hints_used:s.hints, paper_done:s.paperDone, paper_total:s.paperTotal, mistakes:m, top_mistakes:top};
+}
+// upsert by id, drop any duplicate ids, keep the newest MAX
+function save(s){
+  if(!s || !(s.done>0)) return false; // opening a game and leaving with nothing finished writes nothing
+  var e=entry(s), a=load(), seen={}, out=[];
+  for(var i=a.length-1;i>=0;i--){ var x=a[i]; if(seen[x.id] || x.id===e.id) continue; seen[x.id]=1; out.unshift(x); }
+  out.push(e); if(out.length>MAX) out=out.slice(out.length-MAX);
+  try{ localStorage.setItem(KEY, JSON.stringify(out)); return true; }catch(err){ return false; }
+}
+function state(){ try{ return provider ? provider() : null; }catch(e){ return null; } }
+function begin(){
+  var st=state(); sess=null;
+  if(!st || !st.open || !(st.remaining>0)) return;
+  var t=Date.now();
+  sess={id:newId(t), player:player(), mode:st.mode==="practice"?"practice":"lesson", t0:t, done:0, total:st.remaining, correct:0, hints:0, mistakes:{}, paperDone:0, paperTotal:0};
+}
+window.addEventListener("pagehide", function(){ if(sess){ save(sess); sess=null; } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && sess) save(sess); }); // same id: updated, never duplicated
+window.addEventListener("pageshow", function(e){ if(e.persisted && !sess) begin(); });
+return {gameId:GAME_ID, key:KEY,
+  attach:function(f){ provider=f; },
+  // start (or move to) the session for the round on screen; a session left partway with a problem finished is saved first
+  restart:function(){ if(sess) save(sess); begin(); },
+  miss:function(tag){ if(sess && TAGS.indexOf(tag)>=0) sess.mistakes[tag]=(sess.mistakes[tag]||0)+1; },
+  hint:function(){ if(sess) sess.hints++; },
+  item:function(ok, roundOver){ if(!sess) return; sess.done++; if(ok) sess.correct++;
+    if(roundOver){ var wasLesson=sess.mode==="lesson"; save(sess); sess=null;
+      if(wasLesson){ try{ window.dispatchEvent(new Event("mathgames:lessondone")); }catch(e){} } } }, // a finished Lesson round unlocks "Test yourself"
+  // a "Test yourself" check-up (mode "test"): same fields and the same upsert as a round
+  record:function(o){ return !!o && o.mode==="test" && save(o); },
+  // a paper working step was offered (problem 3 from memory, or the "I can do it" choice) / she completed one
+  paperOffer:function(){ if(sess) sess.paperTotal++; },
+  // once per problem (keyed by the problems finished so far in this session); a Lesson step also earns 1 reward star
+  // through the "mathgames:paperdone" event (MathCheckup keeps the key, so it is never counted twice)
+  paper:function(){ if(!sess || sess.lastPaper===sess.done) return; sess.lastPaper=sess.done; sess.paperDone++;
+    if(sess.mode==="lesson"){ try{ window.dispatchEvent(new CustomEvent("mathgames:paperdone",{detail:{key:sess.id+":"+sess.done}})); }catch(e){} } },
+  // a round is on screen and not finished yet (the Home button asks once before leaving)
+  // a key for "once per problem" rewards (the session and the problems finished so far), or null outside a round
+  key:function(){ return sess ? sess.id+":"+sess.done : null; },
+  active:function(){ return !!sess; },
+  leave:function(){ if(sess){ save(sess); sess=null; } }};
+})();
+</script>
+<!--HISTORY-END-->
+<!--CHECKUP-START-->
+<style>
+/* Check-up ("Test yourself") */
+html.ckopen, html.ckopen body{overflow:hidden}
+#ckOverlay{position:fixed;inset:0;z-index:60;background:#f4f1ea;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 40px;font-size:18px;color:#222}
+#ckOverlay[hidden],#ckBanner[hidden],#ckShowView[hidden],#ckBtn[hidden],#ckNote[hidden]{display:none}
+.ckhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:820px;margin:0 auto 8px}
+.cktitle{font-weight:800;font-size:19px;flex:1 1 auto}
+.ckpts{font-weight:700;background:#fff7d6;border-radius:999px;padding:4px 12px}
+.ckq{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-size:16px;box-shadow:0 1px 4px #0002;cursor:pointer}
+.ckdots{display:flex;gap:8px;justify-content:center;margin:4px auto 10px}
+.ckdots span{min-width:40px;text-align:center;padding:4px 8px;border-radius:999px;background:#e6e1d6;font-weight:700}
+.ckdots .cur{background:#3b6fd8;color:#fff}.ckdots .first{background:#ffe27a}.ckdots .got{background:#fff0b3}.ckdots .skip{background:#ddd;color:#888}
+.ckpaper{max-width:820px;margin:0 auto;background:#fff;border-radius:6px;box-shadow:0 2px 10px #0002;padding:20px 22px;font-family:Georgia,"Times New Roman",serif}
+.ckpaper button{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ckqhead{display:flex;gap:10px;align-items:center;font-family:system-ui,-apple-system,sans-serif;color:#555;font-size:16px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px}
+.ckmarks{margin-left:auto}.cknew{background:#e8f4ff;color:#245;border-radius:999px;padding:2px 10px;font-size:14px}
+.cktext{font-size:21px;line-height:1.55;margin:6px 0 12px}.cknum{font-weight:700;margin-right:6px}
+.ckwork{border:2px dashed #b9b2a2;border-radius:6px;min-height:70px;padding:10px 12px;color:#6a6355;font-size:17px;margin:8px 0 14px;font-family:system-ui,-apple-system,sans-serif}
+.ckans{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;font-size:21px;margin:6px 0 10px}
+.ckanslab{font-weight:700}.ckpre,.ckpost{font-weight:700}
+.ckbox{min-width:120px;border-bottom:3px solid #222;text-align:center;font-size:26px;font-weight:700;padding:0 8px;font-family:system-ui,-apple-system,sans-serif}
+.ckunits{display:inline-flex;gap:6px}
+.ckunit{border:2px solid #9aa;background:#fff;border-radius:10px;padding:6px 14px;font-size:19px;cursor:pointer}
+.ckunit.on{border-color:#2a8a4a;background:#e3f6e8;font-weight:700}.ckunit[disabled]{opacity:.7}
+.ckpad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center;margin:8px 0}
+.ckpad button{height:56px;font-size:24px;border-radius:12px;border:0;background:#eef1f6;box-shadow:0 1px 3px #0002;cursor:pointer}
+.ckfb{min-height:28px;margin:8px 0;font-family:system-ui,-apple-system,sans-serif;font-size:19px;line-height:1.45;border-radius:10px;padding:0 4px}
+.ckfb.try{background:#fff4e0;padding:10px 12px}.ckfb.ok{background:#e6f7ea;padding:10px 12px}
+.ckearn{font-weight:700;white-space:nowrap}
+.ckrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0 4px}
+.ckbtn{border:0;border-radius:14px;padding:12px 18px;font-size:19px;font-weight:700;cursor:pointer;background:#3b6fd8;color:#fff;box-shadow:0 2px 6px #0002}
+.ckbtn.green{background:#2a8a4a}.ckbtn.blue{background:#2f63c5}.ckbtn.gold{background:#d99a00}.ckbtn.ghost{background:#fff;color:#234;border:2px solid #cfd6e2;box-shadow:none}
+.cklesson{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#eef4ff;border-radius:12px;padding:10px 12px;margin:10px 0;font-family:system-ui,-apple-system,sans-serif}
+.ckll{font-size:17px;color:#234}
+.cksol{margin-top:14px;font-family:system-ui,-apple-system,sans-serif}.cksol h3{margin:4px 0 8px}
+.cklines{width:100%;border-collapse:collapse;font-size:17px}.cklines th{text-align:left;color:#666;font-weight:600;border-bottom:2px solid #ddd;padding:4px 6px}
+.cklines td{border-bottom:1px solid #eee;padding:8px 6px;vertical-align:top}.ckln{font-weight:700;color:#666;white-space:nowrap}
+.ckeq{font-size:20px;font-weight:700;font-family:Georgia,"Times New Roman",serif}.ckst{color:#234}.ckwhy{color:#444;font-size:16px;line-height:1.45}
+.ckintro,.ckend{text-align:center;font-family:system-ui,-apple-system,sans-serif}.ckbig{font-size:64px}
+.ckrules{display:inline-block;text-align:left;font-size:18px;line-height:1.7}.ckres{font-size:20px}.ckbadge{font-size:21px;font-weight:700;color:#8a5a00}.ckmuted{color:#666}
+.ckoffer{margin-top:14px;background:#eef4ff;border-radius:14px;padding:12px;text-align:center}
+#ckBanner{position:fixed;left:8px;right:8px;bottom:8px;z-index:55;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#fff;border:3px solid #2f63c5;border-radius:16px;padding:10px 12px;box-shadow:0 4px 16px #0003;font-size:18px}
+.ckx{border:0;background:none;font-size:20px;cursor:pointer}
+#ckShowView{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#fff6d8,#ffe0a3);display:flex;align-items:center;justify-content:center;padding:16px}
+.ckdcard{background:#fff;border-radius:28px;box-shadow:0 8px 30px #0003;padding:28px 32px;text-align:center;max-width:620px;width:100%;font-family:system-ui,-apple-system,sans-serif}
+.ckdbig{font-size:140px;line-height:1.1}.ckdname{font-size:40px;font-weight:800;margin:6px 0}.ckdgame{font-size:24px;color:#444}
+.ckddate{font-size:22px;color:#666;margin:6px 0 14px}.ckdpts{font-size:34px;font-weight:800;color:#8a5a00}.ckdline{font-size:20px;margin:6px 0}
+.ckdtotal{font-size:22px;margin:12px 0 18px;font-weight:700}.ckdbadges{font-size:20px;line-height:1.6;margin:8px 0 14px}
+@media (max-width:600px){.cktext{font-size:19px}.ckpad{grid-template-columns:repeat(3,64px)}.ckdbig{font-size:96px}.ckdname{font-size:30px}}
+.ckfoot{display:block;margin:0 auto 12px;font-size:20px}
+.ckcan{font-size:23px;font-weight:800;color:#2f5d1e;background:#eef8e6;border-radius:14px;padding:10px 14px;margin:10px auto;max-width:560px;line-height:1.35}
+.ckgoal{font-size:18px;color:#444;max-width:560px;margin:8px auto}.ckgoalcan{font-style:italic}
+.ckstars{font-size:15px;color:#777;margin:8px 0}.ckstars span{font-weight:700;color:#7a6a3a}
+.ckshow{font-size:16px;color:#666;margin:10px 0 0}.cklink{background:none;border:0;padding:4px 2px;font:inherit;color:#2a5bb8;text-decoration:underline;cursor:pointer}
+.ckwrote{margin:8px 0;font:17px system-ui,-apple-system,sans-serif}.ckwrote.done{color:#2f5d1e;font-weight:700}
+.ckdcanh{font-size:22px;font-weight:800;margin:12px 0 4px}.ckdcan{list-style:none;padding:0;margin:0 0 12px;font-size:20px;line-height:1.4;text-align:left}.ckdcan li{background:#eef8e6;border-radius:12px;padding:8px 12px;margin:6px 0}
+.ckdsmall{font-size:15px;color:#777;margin:10px 0 16px}
+#ckNote{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:65;background:#fff7d6;color:#5a3d00;border-radius:999px;padding:8px 18px;font:600 17px system-ui,-apple-system,sans-serif;box-shadow:0 3px 10px #0002;pointer-events:none}
+.ckhead .ckpts{font-size:14px;font-weight:600;color:#7a6a3a;background:#fbf6e6;padding:3px 10px}
+</style>
+<script>
+var CHECKUP_GAME = "mass-volume", CHECKUP_TITLE = "Mass and Volume";
+var CHECKUP_MASTERY = {"transfer": "You can now solve moving-between-groups problems: when some move from one group to the other, both bars change.", "move-until": "You can now solve move-until problems: how many to give so two people have the same, or one has twice as many.", "times-as-many": "You can now solve times-as-many problems: find 1 unit first, then the bigger group or the total.", "packed-left": "You can now solve packed-with-some-left problems: equal groups, plus the ones left over.", "total-difference": "You can now solve total-and-difference problems: take away the difference first, then share by 2.", "boxes-needed": "You can now solve boxes-needed problems: you can tell when the ones left over need one more box.", "more-or-fewer": "You can now solve more, fewer and altogether problems: find the missing bar, then put both bars together.", "time-line": "You can now solve time problems: jump to the o'clock time to find a start time, an end time or how long.", "money-steps": "You can now solve money problems with steps: find the money spent first, then the change.", "area-perimeter": "You can now solve area and perimeter problems for rectangles and squares.", "mass-volume": "You can now solve capacity and mass problems: change ℓ into mℓ (or kg into g), and check your answer by working backwards."};
+var CHECKUP_CLIPS = {"All three right on the first try earns this game's badge.": "../audio-shared/997edc6e60d9.mp3", "All three were right on the first try. This badge is yours.": "../audio-shared/9d1e757e9150.mp3", "Box Q is the LIGHTER one: divide to find it, do not multiply.": "audio/f4612c057f5d.mp3", "Change the litres into mℓ first: 1 ℓ = 1000 mℓ.": "audio/48df188366b3.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Count the days again: Monday to Friday is 5 days.": "audio/93a3a215099b.mp3", "Did you add all three boxes? Count the lightest one too.": "audio/7f603f0c0c91.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is one box. The question asks for the total of all three.": "audio/6e660fc7cb5e.mp3", "That is the water poured in. The question asks how much MORE fills the jug.": "audio/139e01e2415a.mp3", "That is what was used from Monday to Friday. The question asks how much was LEFT.": "audio/0df651a402bc.mp3", "Two amounts were poured in. Add both before you take away.": "audio/81705867eaa3.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You can now solve capacity and mass problems: change ℓ into mℓ (or kg into g), and check your answer by working backwards.": "audio/aef43d353d5b.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3", "Your number is right. Check the unit: the question asks for g.": "audio/f6b8836b1015.mp3", "Your number is right. Check the unit: the question asks for mℓ.": "audio/5e021352ce02.mp3", "Your number is right. Check the unit: the working is in mℓ.": "audio/a116567b51fa.mp3"};
+/* Check-up ("Test yourself") question-bank helpers. Shared by every game's bank file.
+   Original stories and numbers only (modelled on the TYPE of free P3 sample-paper questions; no exam text). */
+var CHECKUP_BANK = CHECKUP_BANK || {};
+var CK = (function(){
+  var MI="\u2212", TI="\u00d7", DI="\u00f7";
+  var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+  var SURN=["Tan","Lim","Goh","Lee","Ong","Ng","Wong","Chua","Koh","Teo"];
+  function R(first){
+    var used=[];
+    return {first:!!first,
+      n:function(lo,hi,fixed,step){ if(first && fixed!=null) return fixed; step=step||1; var k=Math.floor((hi-lo)/step); return lo+step*Math.floor(Math.random()*(k+1)); },
+      pick:function(a,fixed){ if(first && fixed!=null) return fixed; return a[Math.floor(Math.random()*a.length)]; },
+      name:function(fixed){ if(first && fixed!=null){ used.push(fixed); return fixed; } var pool=NAMES.filter(function(x){return used.indexOf(x)<0;}); var x=pool[Math.floor(Math.random()*pool.length)]; used.push(x); return x; },
+      sur:function(fixed){ if(first && fixed!=null) return fixed; return SURN[Math.floor(Math.random()*SURN.length)]; }
+    };
+  }
+  function pl(n,s,p){ return n===1?s:(p||s+"s"); }
+  // money in cents -> "$4.75" (dp:true forces 2 decimal places, "$10.00")
+  function money(c,dp){ var d=Math.floor(c/100), r=c%100; return "$"+d+((dp||r)?"."+(r<10?"0":"")+r:""); }
+  // minutes after midnight -> "4:15 pm" (12:xx is pm, 12-hour clock as in P3)
+  function clock(m){ m=((m%1440)+1440)%1440; var h=Math.floor(m/60), mm=m%60, ap=h>=12?"pm":"am", h12=h%12===0?12:h%12; return h12+":"+(mm<10?"0":"")+mm+" "+ap; }
+  function hm(m){ var h=Math.floor(m/60), mm=m%60; return (h?h+" h":"")+(h&&mm?" ":"")+(mm?mm+" min":""); }
+  // the answer as it is written on the answer line
+  function ansText(p){ return p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
+  // a problem may be used when its question text does not show the answer and it has a wrong value we can diagnose
+  function usable(p, q){
+    if(!p || !(p.answer>0) || Math.floor(p.answer)!==p.answer) return false;
+    var fixed=""; if(q){ for(var k in q.diag) fixed+=" "+q.diag[k][0]; if(q.unitMsg) fixed+=" "+q.unitMsg[0]; }
+    var toks=String(p.text+" "+fixed).match(/\$?\d+(?:[.:]\d+)?(?: [ap]m)?/g)||[], at=ansText(p);
+    if(toks.indexOf(at)>=0 || toks.indexOf(String(p.answer))>=0) return false;
+    p.wrongs=(p.wrongs||[]).filter(function(w){ return w[0]>0 && Math.floor(w[0])===w[0] && w[0]!==p.answer; });
+    return p.wrongs.length>0;
+  }
+  // make a question: the curated first numbers, or fresh numbers (never the same as the one before)
+  function gen(q, first, avoid){
+    for(var t=0;t<400;t++){ var p=q.make(R(first && t===0)); if(usable(p, q) && !(avoid && p.text===avoid)) return p; }
+    return q.make(R(true));
+  }
+  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,usable:usable,gen:gen};
+})();
+CHECKUP_BANK["mass-volume"]={
+ lessons:{
+  fill:{idx:0, phase:"working", label:"Lesson problem 1, step 4 (Working): find the jug first, then how much more"},
+  less:{idx:0, phase:"build", b:1, label:"Lesson problem 1, step 2 (Draw): less means a shorter part"},
+  conv:{idx:1, phase:"working", label:"Lesson problem 2, step 4 (Working): change \u2113 into m\u2113 first"},
+  days:{idx:1, phase:"build", b:1, label:"Lesson problem 2, step 2 (Draw): one equal part for each day"},
+  box:{idx:2, phase:"working", label:"Lesson problem 3, step 4 (Working): one thing first, then the empty box"},
+  units:{idx:3, phase:"build", b:2, label:"Lesson problem 4, step 2 (Draw): times as heavy, in units"},
+  chain:{idx:3, phase:"working", label:"Lesson problem 4, step 4 (Working): 1 unit first, then each bag, then the total"}
+ },
+ qs:[
+ {id:"mv-1", kind:"short", marks:2, go:"fill",
+  diag:{poured:["That is the water poured in. The question asks how much MORE fills the jug.","fill"],
+        one:["Two amounts were poured in. Add both before you take away.","fill"],
+        litre:["Change the litres into m\u2113 first: 1 \u2113 = 1000 m\u2113.","conv"]},
+  unitMsg:["Your number is right. Check the unit: the working is in m\u2113.","conv"],
+  units:["m\u2113","\u2113"],
+  make:function(R){ var n=R.name("Hakim"), L=R.n(2,4,2), a=R.n(250,700,650,5), b=R.n(150,600,480,5), s=a+b, Lm=L*1000, m=Lm-s;
+   if(m<50) return {answer:0};
+   return {text:"A jug can hold "+L+" \u2113 of water. "+n+" pours in "+a+" m\u2113 of water, then another "+b+" m\u2113. How much more water is needed to fill the jug? Give your answer in m\u2113.",
+    type:"int", answer:m, unit:"m\u2113",
+    lines:[[L+" "+CK.TI+" 1000 = "+Lm, L+" \u2113 = "+Lm+" m\u2113.", "Change the litres into m\u2113 first, so every amount is in the same unit."],
+     [a+" + "+b+" = "+s, n+" poured in "+s+" m\u2113.", "Both amounts went into the jug: add."],
+     [Lm+" "+CK.MI+" "+s+" = "+m, m+" m\u2113 more water is needed.", "The jug holds "+Lm+" m\u2113. Take away what is in it to find the empty part."]],
+    ans:m+" m\u2113 more water is needed to fill the jug.", check:[m+" + "+s+" = "+Lm, "The water in the jug and the water still needed fill it exactly."],
+    wrongs:[[s,"poured"],[Lm-a,"one"],[Lm-b,"one"],[L*100>s?L*100-s:0,"litre"]]}; }},
+ {id:"mv-2", kind:"work", marks:4, go:"conv",
+  diag:{used:["That is what was used from Monday to Friday. The question asks how much was LEFT.","days"],
+        days:["Count the days again: Monday to Friday is 5 days.","days"],
+        litre:["Change the litres into m\u2113 first: 1 \u2113 = 1000 m\u2113.","conv"]},
+  unitMsg:["Your number is right. Check the unit: the question asks for m\u2113.","conv"],
+  units:["m\u2113","\u2113"],
+  make:function(R){ var n=R.name("Siti"), T=R.n(2,4,3), V=R.n(105,395,245,5), u=5*V, Tm=T*1000, m=Tm-u;
+   if(m<100) return {answer:0};
+   return {text:n+" had a bottle of "+T+" \u2113 of milk. "+n+" used "+V+" m\u2113 of milk each day from Monday to Friday. How much milk was left? Give your answer in m\u2113.",
+    type:"int", answer:m, unit:"m\u2113",
+    lines:[["5 "+CK.TI+" "+V+" = "+u, n+" used "+u+" m\u2113 from Monday to Friday.", "Monday to Friday is 5 days. The same amount each day: multiply."],
+     [T+" "+CK.TI+" 1000 = "+Tm, T+" \u2113 = "+Tm+" m\u2113.", "1 \u2113 = 1000 m\u2113. Change the litres into m\u2113 so both amounts are in the same unit."],
+     [Tm+" "+CK.MI+" "+u+" = "+m, m+" m\u2113 of milk was left.", "Take away the milk used from all the milk."]],
+    ans:m+" m\u2113 of milk was left.", check:[m+" + "+u+" = "+Tm, "The milk left and the milk used make all "+T+" \u2113."],
+    wrongs:[[u,"used"],[Tm-4*V,"days"],[Tm-6*V,"days"],[T*100>u?T*100-u:0,"litre"]]}; }},
+ {id:"mv-3", kind:"work", marks:4, go:"chain",
+  diag:{two:["Did you add all three boxes? Count the lightest one too.","chain"],
+        times:["Box Q is the LIGHTER one: divide to find it, do not multiply.","units"],
+        one:["That is one box. The question asks for the total of all three.","chain"]},
+  unitMsg:["Your number is right. Check the unit: the question asks for g.","chain"],
+  units:["g","kg"],
+  make:function(R){ var b=R.n(2,4,4), a=R.n(2,Math.floor(12/b),2), c=R.n(35,240,82), B=b*c, A=a*B, t=A+B+c;
+   return {text:"Box P is "+(a===2?"twice":a+" times")+" as heavy as Box R. Box R is "+(b===2?"twice":b+" times")+" as heavy as Box Q. Box R has a mass of "+B+" g. What is the total mass of the three boxes? Give your answer in g.",
+    type:"int", answer:t, unit:"g",
+    lines:[[B+" "+CK.DI+" "+b+" = "+c, "Box Q has a mass of "+c+" g.", "Box R is "+b+" units and Box Q is 1 unit: divide."],
+     [a+" "+CK.TI+" "+B+" = "+A, "Box P has a mass of "+A+" g.", "Box P is "+a+" groups of Box R: multiply."],
+     [A+" + "+B+" + "+c+" = "+t, "The three boxes have a mass of "+t+" g.", "Total means all three together: add."]],
+    ans:"The total mass of the three boxes is "+t+" g.", check:[t+" "+CK.MI+" "+A+" "+CK.MI+" "+c+" = "+B, "Take away Box P and Box Q, and Box R is left."],
+    wrongs:[[A+B,"two"],[A+B+B*b,"times"],[A,"one"]]}; }}
+ ]};
+/* ===== Check-up ("Test yourself"): 3 exam-style questions after the Lesson. Kept ONLY in this browser's localStorage. =====
+   No network code. Nothing is timed, no hints during the test, never a gate: it is always optional.
+   Stars: right first try = 2, right on a new try = 1, finishing = 3 more, all 3 right first try = the game's Test badge.
+   Writing the working on paper also earns 1 star, once per question ('I wrote my working' on questions 2 and 3) and once per
+   Lesson paper step (the "mathgames:paperdone" event from MathHistory.paper(), keyed by session + problem, never counted twice).
+   Stars never go down and hints never cost stars. Badges and the end screen say what she can do now (CHECKUP_MASTERY, one
+   sentence per game); the star total is shown small, as information, not as a price. Showing a grown-up is optional and
+   never needed to carry on. Results also go to the practice history as mode "test" (schema v1). */
+var MathCheckup=(function(){
+"use strict";
+var SLUG=(typeof CHECKUP_GAME==="string")?CHECKUP_GAME:"", BK=CHECKUP_BANK[SLUG], QS=BK.qs, LS=BK.lessons;
+var TITLE=(typeof CHECKUP_TITLE==="string")?CHECKUP_TITLE:document.title;
+var RKEY="mathgames.rewards.v1", UKEY="mathgames.checkup.unlocked.v1", RUNKEY="mathgames.checkup.run."+SLUG, PKEY="mathgames.player", HKEY="mathgames.history.v1";
+var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3, STAR_PAPER=1;
+var MASTERY=(typeof CHECKUP_MASTERY==="object" && CHECKUP_MASTERY)?CHECKUP_MASTERY:{}, CAN=MASTERY[SLUG]||("You can now solve "+TITLE+" problems.");
+// fixed lines (recorded with the tutor voice); lines with numbers or names are read by the device voice
+var SAY={
+  intro:"Test yourself. Three questions, like in your exam.",
+  paper:"Write your working and draw the model on your paper. Then type your answer.",
+  unit:"Choose the unit too.",
+  type:"Type your answer on the number pad.",
+  right:"Yes, that's right. Now check your paper against the worked solution.",
+  rightRetry:"Yes, that's right this time. Check your paper against the worked solution.",
+  notYet:"Not yet.",
+  generic:"Read the question again, then check your working one line at a time. What does the question ask for?",
+  lesson:"Go back to the lesson to see this step again. Then come back to your test.",
+  retry:"Here is a new one like it, with new numbers.",
+  sol:"Here is the worked solution. Read why each line is there.",
+  back:"Welcome back to your test.",
+  end:"You finished the check-up. Every question is done.",
+  badge:"All three were right on the first try. This badge is yours.",
+  goal:"All three right on the first try earns this game's badge.",
+  money:"Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.",
+  time:"Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm."
+};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function jget(k,d){ try{ var v=JSON.parse(get(k)||"null"); return v==null?d:v; }catch(e){ return d; } }
+function host(){ return window.MathHost||null; }
+function say(){ var h=host(), a=Array.prototype.slice.call(arguments).filter(Boolean); if(h && h.say && a.length) try{ h.say.apply(null,a); }catch(e){} }
+function player(){ var n=String(get(PKEY)||"").replace(/\s+/g," ").trim().slice(0,24); return n||"Player"; }
+function p2(n){ return (n<10?"0":"")+n; }
+function iso(t){ var d=new Date(t+8*3600000); return d.getUTCFullYear()+"-"+p2(d.getUTCMonth()+1)+"-"+p2(d.getUTCDate())+"T"+p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+"+08:00"; }
+var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dateLabel(t){ var d=new Date(t+8*3600000); return DAYS[d.getUTCDay()]+" "+d.getUTCDate()+" "+MONTHS[d.getUTCMonth()]+" "+d.getUTCFullYear(); }
+function newId(t){ var abc="abcdefghijklmnopqrstuvwxyz0123456789", out=""; for(var i=0;i<6;i++) out+=abc.charAt(Math.floor(Math.random()*36)); return "t"+t.toString(36)+"-"+out; }
+
+/* ---------- unlock: after a Lesson round (or an earlier finished Lesson in the history) ---------- */
+function unlocked(){
+  var u=jget(UKEY,{}); if(u && u[SLUG]) return true;
+  var h=jget(HKEY,[]); if(!Array.isArray(h)) return false;
+  return h.some(function(x){ return x && x.game_id==="math-"+SLUG && x.mode==="lesson" && x.items_done>0 && x.items_done>=x.items_total; });
+}
+function unlock(){ var u=jget(UKEY,{}); if(!u || typeof u!=="object") u={}; if(!u[SLUG]){ u[SLUG]=iso(Date.now()); set(UKEY,JSON.stringify(u)); } drawBtn(); }
+
+/* ---------- reward points (per player, never go down) ---------- */
+function rewards(){ var r=jget(RKEY,null); if(!r || typeof r!=="object" || !r.players || typeof r.players!=="object") r={v:1, players:{}};
+  // same key and shape as before; older entries get the new optional field (paper) and keep every star they had
+  for(var n in r.players){ var P=r.players[n]; if(!P || typeof P!=="object"){ delete r.players[n]; continue; }
+    P.stars=Math.max(0,Math.round(+P.stars||0)); if(!P.badges || typeof P.badges!=="object") P.badges={}; if(!Array.isArray(P.tests)) P.tests=[]; if(!Array.isArray(P.paper)) P.paper=[]; }
+  r.v=1; return r; }
+function playerRec(r, who){ return r.players[who]||(r.players[who]={stars:0, badges:{}, tests:[], paper:[]}); }
+function addStars(n, why){
+  if(!(n>0)) return; var r=rewards(), P=playerRec(r, player());
+  P.stars=(+P.stars||0)+n; set(RKEY,JSON.stringify(r));
+}
+function addBadge(){
+  var r=rewards(), P=playerRec(r, player()), b=P.badges[SLUG];
+  if(!b) P.badges[SLUG]={first:iso(Date.now()), count:1}; else b.count=(+b.count||0)+1;
+  set(RKEY,JSON.stringify(r));
+}
+function logTest(run){
+  var r=rewards(), P=playerRec(r, run.player);
+  P.tests=(P.tests||[]).filter(function(t){ return t.id!==run.id; });
+  P.tests.push({id:run.id, game:SLUG, at:iso(Date.now()), stars:run.stars, paper:paperCount(run), first:firstCount(run), done:doneCount(run), total:QS.length, badge:!!run.badge});
+  if(P.tests.length>50) P.tests=P.tests.slice(P.tests.length-50);
+  set(RKEY,JSON.stringify(r));
+}
+/* a Lesson paper working step (key = session id + problem): 1 star, once */
+function paperStar(key){
+  key=String(key||""); if(!key) return false; var r=rewards(), P=playerRec(r, player());
+  if(P.paper.indexOf(key)>=0) return false;
+  P.paper.push(key); if(P.paper.length>200) P.paper=P.paper.slice(P.paper.length-200);
+  P.stars=(+P.stars||0)+STAR_PAPER; set(RKEY,JSON.stringify(r)); return true;
+}
+function myStars(){ var P=rewards().players[player()]; return P?(+P.stars||0):0; }
+
+/* ---------- the run (one check-up), saved so she can visit the lesson and come back ---------- */
+var run=null, open=false;
+function fresh(){
+  var t=Date.now();
+  return {v:1, id:newId(t), player:player(), t0:t, slot:0, attempt:1, p:CK.gen(QS[0], true), phase:"intro", typed:"", unit:"", res:QS.map(function(){ return {first:null, got:false, tries:0, stars:0, paper:false}; }),
+    stars:0, wrongs:0, diag:null, sol:false, bonus:0, badge:false, saved:false, done:false};
+}
+function load(){ var r=jget(RUNKEY,null); if(r && r.v===1 && r.p && r.res && r.res.length===QS.length && !r.done && r.player===player()) return r; return null; }
+function save(){ if(run) set(RUNKEY,JSON.stringify(run)); }
+function firstCount(r){ return r.res.filter(function(x){ return x.first===true; }).length; }
+function doneCount(r){ return r.res.filter(function(x){ return x.got || x.tries>0; }).length; }
+function paperCount(r){ return r.res.filter(function(x){ return x.paper; }).length; }
+function finishedSlots(r){ return r.res.filter(function(x){ return x.got || x.skipped; }).length; }
+/* practice history entry, mode "test" (same schema v1 as Lesson and Practice) */
+function history(final){
+  if(!run || !window.MathHistory || !MathHistory.record) return;
+  var n=finishedSlots(run); if(!(n>0)) return;
+  var paperDone=0, paperTotal=0; QS.forEach(function(q,i){ if(q.kind==="work"){ paperTotal++; if(run.res[i].got) paperDone++; } });
+  MathHistory.record({id:run.id, player:run.player, mode:"test", t0:run.t0, done:n, total:QS.length, correct:firstCount(run), hints:0,
+    paperDone:paperDone, paperTotal:paperTotal, mistakes:{answer:run.wrongs}});
+}
+
+/* ---------- answers ---------- */
+function q(){ return QS[run.slot]; }
+function units(){ return q().units||null; }
+function needsUnit(){ return !!units() || run.p.type==="time"; }
+function unitChoices(){ return run.p.type==="time" ? ["am","pm"] : (units()||[]); }
+function showTyped(){
+  var t=run.typed, p=run.p; if(t==="") return "";
+  if(p.type==="time"){ return t.length>2 ? t.slice(0,t.length-2)+":"+t.slice(-2) : t; }
+  return t;
+}
+// returns {v:value} or {msg:format help}
+function parse(){
+  var t=run.typed, p=run.p;
+  if(t==="") return {msg:SAY.type};
+  if(p.type==="money"){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); if(!m) return {msg:SAY.money}; return {v:(+m[1])*100+(m[2]?+m[2]:0)}; }
+  if(p.type==="time"){ if(!/^\d{3,4}$/.test(t)) return {msg:SAY.time}; var h=+t.slice(0,t.length-2), mm=+t.slice(-2); if(h<1||h>12||mm>59) return {msg:SAY.time};
+    if(!run.unit) return {msg:SAY.unit}; var hh=h%12+(run.unit==="pm"?12:0); return {v:hh*60+mm, raw:(h%12)*60+mm}; }
+  if(!/^\d+$/.test(t)) return {msg:SAY.type};
+  if(needsUnit() && !run.unit) return {msg:SAY.unit};
+  return {v:+t};
+}
+function check(){
+  var r=parse(), p=run.p, Q=q(), R=run.res[run.slot];
+  if(r.msg){ run.fb={cls:"try", msg:r.msg}; draw(); say(r.msg); return; }
+  R.tries++;
+  var numberRight = p.type==="time" ? (r.raw===p.answer%720) : (r.v===p.answer);
+  var unitRight = p.type==="time" ? (r.v===p.answer) : (!units() || run.unit===p.unit);
+  if(numberRight && unitRight){
+    var first=(run.attempt===1 && R.tries===1);
+    if(R.first===null) R.first=first;
+    var s=first?STAR_FIRST:STAR_RETRY; if(!R.got){ R.got=true; R.stars=s; run.stars+=s; addStars(s); }
+    run.phase="right"; run.sol=true; run.fb=null; save(); history(false); draw();
+    say(praiseLine(), first?SAY.right:SAY.rightRetry); return;
+  }
+  if(R.first===null) R.first=false;
+  run.wrongs++; if(window.MathHistory && MathHistory.miss) {}
+  var d=null;
+  if(numberRight && !unitRight){ d = p.type==="time" ? (Q.diag.ampm||null) : (Q.unitMsg||null); }
+  if(!d){ var v=(p.type==="time")?r.v:r.v; for(var i=0;i<p.wrongs.length;i++){ var w=p.wrongs[i]; if(w[0]===v || (p.type==="time" && w[0]%720===r.raw && !Q.diag.ampm)){ d=Q.diag[w[1]]; break; } } }
+  if(!d) d=[SAY.generic, Q.go];
+  run.diag={msg:d[0], go:d[1]}; run.phase="wrong"; run.sol=false; run.fb=null; save(); history(false); draw();
+  say(SAY.notYet, d[0]);
+}
+function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" ? " "+run.p.unit : ""); }
+// specific, true praise: name what was right (the step or the answer, never the child)
+function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"?" "+p.unit:"")+" answers the question."; }
+
+/* ---------- screens ---------- */
+function ov(){ var o=$("ckOverlay"); if(!o){ o=document.createElement("div"); o.id="ckOverlay"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Test yourself"); document.body.appendChild(o); } return o; }
+function starsTxt(n){ var s=""; for(var i=0;i<n;i++) s+="⭐"; return s||"–"; }
+function head(){
+  var h='<div class="ckhead"><span class="cktitle">📝 Test yourself · '+esc(TITLE)+'</span><span class="ckpts" id="ckPts">⭐ '+run.stars+' this test</span>'+
+    '<button class="ckq" id="ckRead" type="button">🔊 Read it to me</button><button class="ckq" id="ckClose" type="button">✕ Close</button></div>';
+  h+='<div class="ckdots">'+QS.map(function(x,i){ var r=run.res[i], c=i===run.slot&&run.phase!=="end"&&run.phase!=="intro"?"cur":(r.got?(r.first?"first":"got"):(r.skipped?"skip":"")); return '<span class="'+c+'">'+(r.got?(r.first?"⭐⭐":"⭐"):(i+1))+'</span>'; }).join("")+'</div>';
+  return h;
+}
+function paperQ(){
+  var Q=q(), p=run.p;
+  var h='<div class="ckpaper"><div class="ckqhead"><b>Question '+(run.slot+1)+' of '+QS.length+'</b>'+(run.attempt>1?' <span class="cknew">New numbers</span>':'')+'<span class="ckmarks">['+Q.marks+' marks]</span></div>';
+  h+='<p class="cktext" id="ckText"><span class="cknum">'+(run.slot+1)+'.</span> '+esc(p.text)+'</p>';
+  if(Q.kind==="work"){ var R=run.res[run.slot];
+    h+='<div class="ckwork">✏️ Show your working clearly. Write your working and draw the model on your paper.</div>';
+    // optional: ticking it earns 1 star for the working, once per question (a new try at the same question keeps the tick)
+    h+=R.paper ? '<div class="ckwrote done" id="ckWroteDone">✅ I wrote my working <span class="ckearn">+⭐ for your working</span></div>'
+               : '<div class="ckwrote"><button type="button" class="ckbtn ghost" id="ckWrote">☐ I wrote my working</button><span class="ckmuted"> ⭐ for writing your working on paper</span></div>';
+  }
+  return h;
+}
+function ansLine(active){
+  var p=run.p, ch=unitChoices();
+  var pre = p.type==="money" ? '<span class="ckpre">$</span>' : '';
+  var post = (!needsUnit() && p.unit) ? '<span class="ckpost">'+esc(p.unit)+'</span>' : '';
+  var h='<div class="ckans"><span class="ckanslab">Ans:</span>'+pre+'<span class="ckbox" id="ckBox">'+(esc(showTyped())||"&nbsp;")+'</span>'+post;
+  if(needsUnit()) h+='<span class="ckunits" role="group" aria-label="unit">'+ch.map(function(u){ return '<button type="button" class="ckunit'+(run.unit===u?' on':'')+'" data-u="'+esc(u)+'"'+(active?'':' disabled')+'>'+esc(u)+'</button>'; }).join("")+'</span>';
+  h+='</div>';
+  return h;
+}
+function pad(){
+  var dot=run.p.type==="money";
+  return '<div class="ckpad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button type="button" data-ck="'+k+'">'+k+'</button>'; }).join("")+
+    (dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
+}
+function solution(){
+  var p=run.p, h='<div class="cksol" id="ckSol"><h3>Worked solution</h3><table class="cklines"><thead><tr><th></th><th>Working</th><th>Why this line?</th></tr></thead><tbody>';
+  p.lines.forEach(function(L,i){ h+='<tr><td class="ckln">'+(i+1)+'</td><td><div class="ckeq">'+(L[0]?esc(L[0]):'')+'</div><div class="ckst">'+esc(L[1])+'</div></td><td class="ckwhy">'+esc(L[2])+'</td></tr>'; });
+  h+='<tr class="ckansrow"><td class="ckln">Ans</td><td><div class="ckst"><b>'+esc(p.ans)+'</b></div></td><td class="ckwhy">The answer sentence uses words from the question and the unit, so the marker knows what your number means.</td></tr>';
+  h+='<tr><td class="ckln">Check</td><td><div class="ckeq">'+esc(p.check[0])+' ✓</div></td><td class="ckwhy">'+esc(p.check[1])+'</td></tr>';
+  h+='</tbody></table></div>';
+  return h;
+}
+function wrote(){
+  var Q=q(), R=run.res[run.slot]; if(Q.kind!=="work" || R.paper) return;
+  R.paper=true; run.stars+=STAR_PAPER; addStars(STAR_PAPER); save(); draw();
+}
+function mastery(){ return '<p class="ckcan" id="ckMastery">🏅 '+esc(CAN)+'</p>'; }
+function draw(){
+  var o=ov(), h=head();
+  if(run.phase==="intro"){
+    h+='<div class="ckpaper ckintro"><div class="ckbig">📝</div><h2>Test yourself</h2><p>'+esc(SAY.intro)+' There are no hints, and you can take as long as you need.</p>'+
+      '<p>Question 1 is a short question. For questions 2 and 3, '+esc(SAY.paper.charAt(0).toLowerCase()+SAY.paper.slice(1))+'</p>'+
+      '<ul class="ckrules"><li>⭐⭐ for each question right on the first try</li><li>⭐ for a question right on a new try</li><li>⭐ for writing your working on paper (questions 2 and 3)</li><li>+'+STAR_FINISH+' ⭐ for finishing the test</li><li>🏅 the Test badge for all 3 right on the first try</li></ul>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckStart">Start the test ▶</button><button type="button" class="ckbtn ghost" id="ckLater">Not now</button></div></div>';
+  } else if(run.phase==="q"){
+    h+=paperQ()+ansLine(true)+pad()+'<div class="ckfb'+(run.fb?' '+run.fb.cls:'')+'" id="ckFb">'+(run.fb?esc(run.fb.msg):'')+'</div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckCheck">Check ✓</button></div></div>';
+  } else if(run.phase==="right"){
+    var R=run.res[run.slot];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb ok" id="ckFb">✅ Yes! <b>'+esc(ansShown())+'</b> answers the question. <span class="ckearn">+'+starsTxt(R.stars)+'</span></div>'+solution()+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckNext">'+(run.slot<QS.length-1?'Next question ➡️':'See my result ➡️')+'</button></div></div>';
+  } else if(run.phase==="wrong"){
+    var L=LS[run.diag.go]||LS[q().go];
+    h+=paperQ()+ansLine(false)+'<div class="ckfb try" id="ckFb"><b>Not yet.</b> '+esc(run.diag.msg)+'</div>'+
+      '<div class="cklesson"><button type="button" class="ckbtn blue" id="ckLesson">📘 Go back to the lesson</button><span class="ckll" id="ckLessonLabel">'+esc(L.label)+'</span></div>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckRetry">🔁 Try a new one like it</button>'+
+      (run.sol?'':'<button type="button" class="ckbtn ghost" id="ckShowSol">👀 See the worked solution</button>')+
+      '<button type="button" class="ckbtn ghost" id="ckSkip">'+(run.slot<QS.length-1?'Next question ➡️':'Finish the test ➡️')+'</button></div>'+
+      (run.sol?solution():'')+'</div>';
+  } else if(run.phase==="end"){
+    // what she can do now comes first; the stars are small, as information; showing a grown-up is optional
+    var fc=firstCount(run), pc=paperCount(run);
+    h+='<div class="ckpaper ckend"><div class="ckbig">'+(run.badge?'🏅':'🌟')+'</div><h2>'+esc(SAY.end)+'</h2>'+
+      (run.badge?'<p class="ckbadge" id="ckBadgeMsg">'+esc(SAY.badge)+'</p>'+mastery()
+                :'<p class="ckres">Right on the first try: <b>'+fc+' of '+QS.length+'</b></p><p class="ckgoal" id="ckGoal">'+esc(SAY.goal)+' <span class="ckgoalcan">“'+esc(CAN)+'”</span></p>')+
+      '<p class="ckstars" id="ckStarsLine"><span id="ckEndStars">⭐ '+run.stars+'</span> from this test'+
+        ' (+'+run.bonus+' for finishing'+(pc?', +'+(pc*STAR_PAPER)+' for your working':'')+') · <span id="ckTotal">⭐ '+myStars()+'</span> in all</p>'+
+      '<div class="ckrow"><button type="button" class="ckbtn green" id="ckDone">Close</button><button type="button" class="ckbtn ghost" id="ckAgain">Test again with new numbers</button></div>'+
+      '<p class="ckshow" id="ckShowLine"><button type="button" class="cklink" id="ckShow">Show a grown-up, if you like</button></p></div>';
+  }
+  o.innerHTML=h; o.hidden=false; document.documentElement.classList.add("ckopen"); open=true;
+  bind();
+}
+function bind(){
+  var o=ov();
+  if($("ckClose")) $("ckClose").onclick=close;
+  if($("ckRead")) $("ckRead").onclick=readAloud;
+  if($("ckStart")) $("ckStart").onclick=function(){ run.phase="q"; save(); draw(); readQ(); };
+  if($("ckLater")) $("ckLater").onclick=close;
+  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=run.p.type==="money"?7:(run.p.type==="time"?4:5);
+    if(k==="del") run.typed=run.typed.slice(0,-1); else if(k==="clr") run.typed="";
+    else if(k==="."){ if(run.typed.indexOf(".")<0 && run.typed.length<lim) run.typed=(run.typed===""?"0":run.typed)+"."; }
+    else if(run.typed.length<lim) run.typed=(run.typed==="0"?"":run.typed)+k;
+    $("ckBox").innerHTML=esc(showTyped())||"&nbsp;"; save(); }; });
+  o.querySelectorAll("[data-u]").forEach(function(b){ b.onclick=function(){ run.unit=b.getAttribute("data-u"); o.querySelectorAll("[data-u]").forEach(function(x){ x.classList.toggle("on", x===b); }); save(); }; });
+  if($("ckCheck")) $("ckCheck").onclick=check;
+  if($("ckNext")) $("ckNext").onclick=next;
+  if($("ckSkip")) $("ckSkip").onclick=function(){ run.res[run.slot].skipped=true; next(); };
+  if($("ckRetry")) $("ckRetry").onclick=function(){ run.p=CK.gen(q(), false, run.p.text); run.attempt++; run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); say(SAY.retry, run.p.text); };
+  if($("ckShowSol")) $("ckShowSol").onclick=function(){ run.sol=true; save(); draw(); var s=$("ckSol"); if(s && s.scrollIntoView) s.scrollIntoView({block:"start"}); say(SAY.sol); };
+  if($("ckLesson")) $("ckLesson").onclick=goLesson;
+  if($("ckShow")) $("ckShow").onclick=function(){ showView(); };
+  if($("ckWrote")) $("ckWrote").onclick=wrote;
+  if($("ckDone")) $("ckDone").onclick=close;
+  if($("ckAgain")) $("ckAgain").onclick=function(){ run=fresh(); run.phase="q"; save(); draw(); readQ(); };
+}
+function readQ(){ var Q=q(); say(run.p.text, Q.kind==="work"?SAY.paper:null); }
+function readAloud(){
+  if(run.phase==="q") readQ();
+  else if(run.phase==="wrong") say(SAY.notYet, run.diag.msg);
+  else if(run.phase==="right") say(praiseLine(), SAY.sol);
+  else if(run.phase==="end") say(SAY.end, run.badge?SAY.badge:null, run.badge?CAN:null);
+  else say(SAY.intro);
+}
+function next(){
+  if(run.slot<QS.length-1){ run.slot++; run.attempt=1; run.p=CK.gen(QS[run.slot], true); run.typed=""; run.unit=""; run.phase="q"; run.diag=null; run.sol=false; save(); draw(); readQ(); return; }
+  // the end: bonus for finishing, the badge for all right first try
+  run.bonus=STAR_FINISH; run.stars+=STAR_FINISH; addStars(STAR_FINISH);
+  if(firstCount(run)===QS.length){ run.badge=true; addBadge(); }
+  run.phase="end"; run.done=true; logTest(run); history(true); set(RUNKEY,""); try{ localStorage.removeItem(RUNKEY); }catch(e){}
+  draw(); say(SAY.end, run.badge?SAY.badge:null, run.badge?CAN:null);
+}
+function close(){ var o=$("ckOverlay"); if(o){ o.hidden=true; o.innerHTML=""; } document.documentElement.classList.remove("ckopen"); open=false; var h=host(); if(h && h.stop) try{ h.stop(); }catch(e){} if(run && !run.done) save(); }
+
+/* ---------- back to the lesson at the step that needs another look ---------- */
+function goLesson(){
+  var L=LS[run.diag.go]||LS[q().go], h=host();
+  save(); close();
+  banner(L.label);
+  if(h && h.openLesson) try{ h.openLesson(L); }catch(e){}
+  say(SAY.lesson);
+}
+function banner(label){
+  var b=$("ckBanner"); if(!b){ b=document.createElement("div"); b.id="ckBanner"; document.body.appendChild(b); }
+  b.innerHTML='<span>📘 '+esc(label)+'</span><button type="button" class="ckbtn green" id="ckBackTest">↩ Back to my test</button><button type="button" class="ckx" id="ckBannerX" aria-label="Hide">✕</button>';
+  b.hidden=false;
+  $("ckBackTest").onclick=function(){ b.hidden=true; resume(true); };
+  $("ckBannerX").onclick=function(){ b.hidden=true; };
+}
+function resume(back){ run=load()||run; if(!run || run.done) run=fresh(); draw(); if(back) say(SAY.back); else if(run.phase==="q") readQ(); else readAloud(); }
+function start(){ var nt=$("ckNote"); if(nt) nt.hidden=true; var h=host(); if(h && h.prime) try{ h.prime(); }catch(e){} run=load(); if(!run){ run=fresh(); save(); draw(); say(SAY.intro); } else resume(false); var b=$("ckBanner"); if(b) b.hidden=true; }
+
+/* ---------- "Show a grown-up, if you like": an optional full-screen view of what she can do now ---------- */
+function showView(){
+  var d=$("ckShowView"); if(!d){ d=document.createElement("div"); d.id="ckShowView"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","What I can do now"); document.body.appendChild(d); }
+  var P=rewards().players[player()]||{stars:0,badges:{}}, got=Object.keys(P.badges||{}).filter(function(k){ return MASTERY[k] || k===SLUG; }), last=run;
+  var can=got.map(function(k){ return '<li>🏅 '+esc(MASTERY[k]||CAN)+'</li>'; }).join("");
+  d.innerHTML='<div class="ckdcard"><div class="ckdbig">'+(last&&last.badge?'🏅':'🌟')+'</div>'+
+    '<div class="ckdname">'+esc(player())+'</div>'+
+    '<div class="ckdgame">Test yourself · '+esc(TITLE)+'</div>'+
+    '<div class="ckddate">'+dateLabel(Date.now())+'</div>'+
+    (last?'<div class="ckdline">Right on the first try: '+firstCount(last)+' of '+QS.length+'</div>':'')+
+    (can?'<div class="ckdcanh">What I can do now</div><ul class="ckdcan" id="ckShowCan">'+can+'</ul>':'<div class="ckdline">'+esc(SAY.goal)+'</div>')+
+    '<div class="ckdsmall" id="ckShowStars">'+(last?'⭐ '+last.stars+' from this test · ':'')+'⭐ '+(+P.stars||0)+' stars in all</div>'+
+    '<button type="button" class="ckbtn ghost" id="ckShowClose">Close</button></div>';
+  d.hidden=false; $("ckShowClose").onclick=function(){ d.hidden=true; };
+}
+/* a Lesson paper working step was completed (MathHistory.paper): 1 star once, and a small note that never needs a tap */
+function note(msg){
+  var n=$("ckNote"); if(!n){ n=document.createElement("div"); n.id="ckNote"; n.setAttribute("role","status"); document.body.appendChild(n); }
+  n.textContent=msg; n.hidden=false; clearTimeout(note.t); note.t=setTimeout(function(){ n.hidden=true; }, 3500);
+}
+window.addEventListener("mathgames:paperdone", function(e){ var k=e && e.detail && e.detail.key; if(paperStar(k)) note("⭐ +1 star for writing your working on paper"); });
+/* the optional "Check your answer" step was done (inverse sum right): 1 star once per problem (key "check:<session>:<problem>") */
+window.addEventListener("mathgames:checkdone", function(e){ var k=e && e.detail && e.detail.key; if(/^check:/.test(String(k||"")) && paperStar(k)) note("⭐ +1 star for checking your answer"); });
+
+/* ---------- the header button, and the offer under a finished Lesson round ---------- */
+function drawBtnPlace(b, hd){ var h0=hd.offsetHeight, st=$("stars"); if(st) hd.insertBefore(b, st); else hd.appendChild(b);
+  if(hd.offsetHeight>h0+4){ var ft=document.querySelector(".foot"); if(ft){ b.className="ckbtn green ckfoot"; ft.insertBefore(b, ft.firstChild); } } }
+function drawBtn(){
+  var hd=document.querySelector(".app header"); if(!hd) return;
+  var b=$("ckBtn");
+  if(!b){ b=document.createElement("button"); b.id="ckBtn"; b.type="button"; b.className="ctl ckhdr"; b.textContent="📝 Test yourself"; b.title="Test yourself: 3 exam-style questions"; b.onclick=start; b.hidden=true; document.body.appendChild(b); }
+  b.hidden=!unlocked();
+  // placed once it shows: in the header when it still fits on one row, otherwise above "Start again" at the foot of the page
+  if(!b.hidden && b.parentNode===document.body){ b.remove(); drawBtnPlace(b, hd); }
+}
+window.addEventListener("mathgames:lessondone", function(){
+  unlock();
+  setTimeout(function(){ var pn=$("panel"); if(!pn || $("ckOffer")) return; var d=document.createElement("div"); d.id="ckOffer"; d.className="ckoffer";
+    d.innerHTML='<p><b>📝 Ready to test yourself?</b> 3 questions, like in your exam. It is up to you.</p><button type="button" class="ckbtn green" id="ckOfferBtn">Test yourself</button>';
+    pn.appendChild(d); $("ckOfferBtn").onclick=start; }, 0);
+});
+window.addEventListener("pagehide", function(){ if(run && !run.done){ save(); history(false); } });
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && run && !run.done){ save(); history(false); } });
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", drawBtn); else drawBtn();
+return {SAY:SAY, start:start, unlock:unlock, unlocked:unlocked, get open(){ return open; }, get run(){ return run; }, rewards:rewards, QS:QS, LS:LS, slug:SLUG, can:CAN, showView:showView, paperStar:paperStar};
+})();
+</script>
+<!--CHECKUP-END-->
+<!--HOME-START-->
+<style>
+#homeBtn{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:calc(10px + env(safe-area-inset-left));z-index:80;min-width:96px;min-height:48px;padding:8px 14px;border:2px solid #4b3fd6;border-radius:999px;background:#fff;color:#4b3fd6;font:700 19px system-ui,-apple-system,sans-serif;box-shadow:0 2px 8px #0002;cursor:pointer}
+/* bottom-left, so the game header keeps its one row; the check-up's 'Back to my test' banner starts to its right */
+#ckBanner{left:140px}
+.app{padding-bottom:calc(72px + env(safe-area-inset-bottom))}#ckOverlay{padding-bottom:80px}
+#homeAsk[hidden]{display:none}
+#homeAsk{position:fixed;inset:0;z-index:90;background:rgba(30,30,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#homeAsk .hacard{background:#fff;border-radius:22px;padding:24px 26px;max-width:460px;width:100%;text-align:center;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 8px 30px #0003}
+#homeAsk h2{font-size:26px;margin:4px 0 8px}#homeAsk p{font-size:19px;color:#444;margin:0 0 18px}
+#homeAsk .harow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#homeAsk button{min-height:52px;min-width:140px;font:700 20px system-ui,-apple-system,sans-serif;border-radius:16px;padding:10px 18px;cursor:pointer}
+#homeYes{background:#4b3fd6;color:#fff;border:0}#homeStay{background:#fff;color:#2b2b3a;border:2px solid #ccd}
+</style>
+<script>
+/* "🏠 Home" on every screen of the game (start screen, Lesson, Practice, paper steps, Test yourself, end screens).
+   It goes back to the main menu (../#home). Everything she has done is already kept in this browser (progress, stars,
+   history; the page saves again when it is left). Mid-round or mid-test it asks once: "Leave this game? Your stars so far
+   are kept." (Yes / Stay). No network code, nothing timed, no voice. */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  var HOME="../#home";
+  function busy(){
+    var ck=window.MathCheckup; if(ck && ck.open && ck.run && !ck.run.done && ck.run.phase!=="intro" && ck.run.phase!=="end") return true;
+    var h=window.MathHistory; return !!(h && h.active && h.active());
+  }
+  function leave(){ try{ var ck=window.MathCheckup; if(ck && ck.open && window.MathHost && MathHost.stop) MathHost.stop(); }catch(e){} location.href=HOME; }
+  function ask(){
+    var d=$("homeAsk"); if(!d){ d=document.createElement("div"); d.id="homeAsk"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); d.setAttribute("aria-labelledby","homeAskT");
+      d.innerHTML='<div class="hacard"><h2 id="homeAskT">Leave this game?</h2><p>Your stars so far are kept.</p><div class="harow"><button type="button" id="homeYes">Yes, go Home</button><button type="button" id="homeStay">Stay</button></div></div>';
+      document.body.appendChild(d); $("homeYes").onclick=leave; $("homeStay").onclick=function(){ d.hidden=true; }; }
+    d.hidden=false; try{ $("homeStay").focus(); }catch(e){}
+  }
+  function init(){
+    if($("homeBtn")) return;
+    var b=document.createElement("button"); b.type="button"; b.id="homeBtn"; b.textContent="🏠 Home"; b.setAttribute("aria-label","Home: back to the main menu");
+    b.onclick=function(){ if(busy()) ask(); else leave(); };
+    document.body.appendChild(b);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
+  window.MathHome={busy:busy, ask:ask, href:HOME};
+})();
+</script>
+<!--HOME-END-->
+<script>
+(function(){
+"use strict";
+/* ===== shared engine (Games 4+): utilities ===== */
+function pl(n,s,p){return n===1?s:p;}
+function cap(s){s=String(s);return s.charAt(0).toUpperCase()+s.slice(1);}
+function rnd(lo,hi){return lo+Math.floor(Math.random()*(hi-lo+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function isWhole(x){ return typeof x==="number" && isFinite(x) && Math.floor(x)===x; }
+var MI="\u2212", TI="\u00d7", DI="\u00f7";
+function ex(){ return Array.prototype.slice.call(arguments).join(" "); }
+var NAMES=["Mei","Ravi","Aisha","Wei Jie","Siti","Arjun","Hui Min","Farid","Priya","Kai","Nadia","Ben","Li Ting","Hakim","Zara","Ethan","Divya","Marcus","Yan Ting","Irfan","Chloe","Daniel","Sofia","Amir"];
+function pickNames(used,k){ var pool=NAMES.filter(function(x){return (used||[]).indexOf(x)<0;}); if(pool.length<k) pool=NAMES.slice(); shuffle(pool); return pool.slice(0,k||2); }
+// tiny evaluator for "a op b op c" with + - x / (x and / first); "$4.35" tokens count in cents (435)
+function evalExpr(x){
+  var t=String(x).split(" "); if(t.length%2!==1) return null;
+  var nums=[], ops=[];
+  for(var i=0;i<t.length;i++){ if(i%2===0){ var mm=/^\$(\d+)(?:\.(\d\d))?$/.exec(t[i]); if(mm){ nums.push(+mm[1]*100+(mm[2]?+mm[2]:0)); continue; } if(!/^\d+$/.test(t[i])) return null; nums.push(+t[i]); } else { if(["+",MI,TI,DI].indexOf(t[i])<0) return null; ops.push(t[i]); } }
+  var n2=[nums[0]], o2=[];
+  for(var j=0;j<ops.length;j++){ var o=ops[j], b=nums[j+1];
+    if(o===TI) n2[n2.length-1]*=b; else if(o===DI) n2[n2.length-1]/=b; else { o2.push(o); n2.push(b); } }
+  var v=n2[0]; for(var k=0;k<o2.length;k++) v = o2[k]==="+" ? v+n2[k+1] : v-n2[k+1];
+  return v;
+}
+function numsIn(s){ return (String(s).match(/\d+/g)||[]).map(Number); }
+var GX={pl:pl,cap:cap,rnd:rnd,pick:pick,shuffle:shuffle,isWhole:isWhole,MI:MI,TI:TI,DI:DI,ex:ex,NAMES:NAMES,pickNames:pickNames,evalExpr:evalExpr};
+/* ===== Game 12: Mass and Volume (capacity, volume and mass word problems with unit changes), P3-MEAS-MV-G12 =====
+   Original stories and numbers (modelled on the TYPES of P3 measurement problems; no worksheet text or numbers).
+   ALL AMOUNTS ARE WHOLE mℓ OR WHOLE g (integers). 1 ℓ = 1000 mℓ, 1 kg = 1000 g: every change of unit is its own working line.
+   kind "fill":  a container can hold C; it has x in it; a jug has d less than that; the jug is poured in: how much more to fill it? C - (x + (x - d)).
+   kind "days":  T ℓ shared out: V mℓ each day for n days, the rest on the next day: T x 1000 - n x V (in ℓ and mℓ when it is 1 ℓ or more).
+   kind "box":   a box with k identical things weighs M1; r are taken out and it weighs M2 (the box stays the same): the empty box.
+   kind "chain": A is a times as heavy as B, B is b times as heavy as C, B is given: the total (in kg and g when it is 1 kg or more).
+   p.two = true when the answer is written in two units (1 ℓ 85 mℓ, 1 kg 150 g): typed as litres, the ℓ key, then millilitres. */
+var G=(function(){
+var cap=GX.cap, ex=GX.ex, MI=GX.MI, TI=GX.TI, DI=GX.DI, rnd=GX.rnd, pick=GX.pick, isWhole=GX.isWhole;
+var ML="m\u2113", LT="\u2113";
+var CONT=[["pot","soup"],["kettle","water"],["fish tank","water"],["pail","water"],["jar","juice"],["bottle","water"]];
+var JUG=["jug","cup","mug","bowl"];
+var DRINK=["orange juice","soya milk","milk","water","apple juice","barley water"];
+var DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+var THINGS=[["tin","tins"],["book","books"],["jar","jars"],["apple","apples"],["notebook","notebooks"],["bar of soap","bars of soap"]];
+var BAGS=[["red","blue","green"],["big","middle","small"],["yellow","orange","purple"]];
+function small(p){ return p.mass?"g":ML; }
+function big(p){ return p.mass?"kg":LT; }
+// 2085 -> "2 ℓ 85 mℓ" (or "2 kg 85 g"); whole units only when there is nothing left over
+function two(v,p){ var L=Math.floor(v/1000), r=v%1000; return (L?L+" "+big(p):"")+(L&&r?" ":"")+(r||!L?r+" "+small(p):""); }
+function one(v,p){ return v+" "+small(p); }
+function amt(v,p){ return v>=1000 ? two(v,p) : one(v,p); }   // as written in a story
+function ans(p,v){ v=(v==null?p.answer:v); return p.two ? two(v,p) : one(v,p); }
+function tw(n){ return n===2?"twice":n+" times"; }
+function finish(p){
+  if(p.kind==="fill"){ p.mass=false; p.jg=p.x-p.d; p.now=p.x+p.jg; p.answer=p.C-p.now; p.two=false; }
+  else if(p.kind==="days"){ p.mass=false; p.used=p.n*p.V; p.Tm=p.T*1000; p.answer=p.Tm-p.used; p.two=p.answer>=1000; }
+  else if(p.kind==="box"){ p.mass=true; p.left=p.k-p.r; p.M1=p.bx+p.k*p.w; p.M2=p.bx+p.left*p.w; p.diff=p.r*p.w; p.lm=p.left*p.w; p.answer=p.bx; p.two=false; }
+  else { p.mass=true; p.Cg=p.B/p.b; p.A=p.a*p.B; p.answer=p.A+p.B+p.Cg; p.two=p.answer>=1000; }
+  p.names=p.who?[p.who]:[]; return p;
+}
+function cont(p){ return p.cont[0]; } function liq(p){ return p.cont[1]; }
+function it(p,n){ return n===1?p.thing[0]:p.thing[1]; }
+function bag(p,i){ return "the "+p.bags[i]+" bag"; }
+function story(p){ var W=p.who;
+  if(p.kind==="fill") return "A "+cont(p)+" can hold "+amt(p.C,p)+" of "+liq(p)+". It has "+one(p.x,p)+" of "+liq(p)+" in it. A "+p.jug+" has "+one(p.d,p)+" less "+liq(p)+" than the "+cont(p)+". "+W+" pours all the "+liq(p)+" from the "+p.jug+" into the "+cont(p)+".";
+  if(p.kind==="days") return W+" had "+p.T+" "+LT+" of "+p.drink+". "+W+" drank "+one(p.V,p)+" of it each day from Monday to "+DAYS[p.n-1]+". "+W+" drank the rest on "+DAYS[p.n]+".";
+  if(p.kind==="box") return "A box with "+p.k+" identical "+it(p,2)+" has a total mass of "+amt(p.M1,p)+". "+W+" takes out "+p.r+" "+it(p,p.r)+". The box and the "+it(p,2)+" left now have a mass of "+one(p.M2,p)+".";
+  return cap(bag(p,0))+" is "+tw(p.a)+" as heavy as "+bag(p,1)+". "+cap(bag(p,1))+" is "+tw(p.b)+" as heavy as "+bag(p,2)+". "+cap(bag(p,1))+" has a mass of "+one(p.B,p)+"."; }
+function question(p){
+  if(p.kind==="fill") return "How much more "+liq(p)+" is needed to fill the "+cont(p)+"?";
+  if(p.kind==="days") return "How much "+p.drink+" did "+p.who+" drink on "+DAYS[p.n]+"?"+(p.two?" Give your answer in "+LT+" and "+ML+".":"");
+  if(p.kind==="box") return "What is the mass of the empty box?";
+  return "What is the total mass of the three bags?"+(p.two?" Give your answer in kg and g.":""); }
+function answerSentence(p){
+  if(p.kind==="fill") return cap(ans(p))+" more "+liq(p)+" is needed to fill the "+cont(p)+".";
+  if(p.kind==="days") return p.who+" drank "+ans(p)+" of "+p.drink+" on "+DAYS[p.n]+".";
+  if(p.kind==="box") return "The mass of the empty box is "+ans(p)+".";
+  return "The total mass of the three bags is "+ans(p)+"."; }
+function answerLine(p){
+  var u=p.two?"":" "+small(p);
+  if(p.kind==="fill") return ["The "+cont(p)+" needs", ML+" more."];
+  if(p.kind==="days") return [p.who+" drank", (p.two?"":ML+" ")+"on "+DAYS[p.n]+"."];
+  if(p.kind==="box") return ["The empty box is", "g."];
+  return ["The three bags are", (p.two?"":"g ")+"altogether."]; }
+function unitOf(p){ return p.two?big(p):small(p); }
+function unitLabel(p){ return p.two?big(p)+" and "+small(p):small(p); }
+// answers in two units: the litres (or kg), the ℓ (kg) key, then the millilitres (grams)
+function decimalPad(p){ return !!p.two; }
+function padSep(p){ return p.two?big(p):null; }
+function parseTyped(t,p){ t=String(t);
+  if(!p.two) return /^\d+$/.test(t) ? parseInt(t,10) : null;
+  var m=/^(\d+)\.(\d{1,3})$/.exec(t); if(m) return parseInt(m[1],10)*1000+parseInt(m[2],10);
+  return null; }
+function formatMsg(p,t){ var B=big(p), S=small(p);
+  if(!p.two) return "Type the number of "+S+" only.";
+  if(/^\d+$/.test(t)) return "The question asks for "+B+" and "+S+". Type the "+B+", tap the "+B+" key, then type the "+S+". 1000 "+S+" make 1 "+B+".";
+  if(/\.$/.test(t)) return "Now type the "+S+" after the "+B+".";
+  return "After the "+B+", there are at most 3 digits for the "+S+". 1000 "+S+" make 1 "+B+".";
+}
+function fmtTyped(t,p){ t=String(t||""); if(!p || !p.two || t.indexOf(".")<0) return t; var a=t.split("."); return a[0]+" "+big(p)+(a[1]!==""?" "+a[1]+" "+small(p):""); }
+function typeFor(p,v){ if(!p.two) return String(v); return Math.floor(v/1000)+"."+(v%1000); }
+function answerText(p){ return p.two ? two(p.answer,p) : String(p.answer); }
+// numbers as she reads them: plain numbers, and two-unit amounts as one amount (2 ℓ 85 mℓ -> 2085; 3 ℓ -> 3000)
+function numsIn(t,p){ var s=String(t), out=(s.match(/\d+/g)||[]).map(Number), re=/(\d+) (?:\u2113|kg)(?: (\d+) (?:m\u2113|g))?/g, x;
+  while((x=re.exec(s))) out.push(+x[1]*1000+(x[2]?+x[2]:0)); return out; }
+function verify(p){
+  if(p.kind==="fill"){ if(!p.who || !p.cont || !p.jug) return false;
+    if(![p.C,p.x,p.d].every(isWhole) || p.d<20 || p.jg<50 || p.jg>=p.x || p.answer<40 || p.C%50 || p.C===1000) return false;
+    if(p.x<p.d+50 || p.answer===p.jg || p.answer===p.x || p.answer===p.d) return false;
+  } else if(p.kind==="days"){ if(!p.who || !p.drink || p.n<3 || p.n>6) return false;
+    if(![p.T,p.V].every(isWhole) || p.T<2 || p.T>5 || p.V<100 || p.V>480 || p.answer<100) return false;
+    if(p.two && p.answer%1000===0) return false;
+    if(p.two && (p.answer%1000<10 || p.answer%1000===100)) return false;
+  } else if(p.kind==="box"){ if(!p.who || !p.thing) return false;
+    if(![p.k,p.r,p.w,p.bx].every(isWhole) || p.k<4 || p.k>9 || p.r<2 || p.left<2 || p.w<20 || p.bx<50 || p.M2>=1000 || p.M1>2900 || p.M1===1000) return false;
+    if(p.bx===p.w || p.bx===p.diff || p.bx===p.lm || p.bx===p.M2-p.w || p.M1%10) return false;
+  } else if(p.kind==="chain"){ if(!p.bags) return false;
+    if(![p.a,p.b,p.B,p.Cg].every(isWhole) || p.a<2 || p.b<2 || p.a*p.b>10 || p.Cg<20 || p.answer>4900) return false;
+    if(p.two && p.answer%1000===0) return false;
+    if(p.two && (p.answer%1000<10 || p.answer%1000===100)) return false;
+  } else return false;
+  if(p.small && (p.answer>=1000 || (p.C||0)>1000 || (p.M1||0)>=1000)) return false;
+  return true;
+}
+function r5(lo,hi){ return 5*rnd(Math.ceil(lo/5),Math.floor(hi/5)); }
+function make(i, small, names){
+  var kind=["fill","days","box","chain",pick(["fill","days","box","chain"])][i], p={kind:kind, who:names[0]};
+  for(var t=0;t<400;t++){
+    if(kind==="fill"){ p.cont=pick(CONT); p.jug=pick(JUG);
+      p.C=small?50*rnd(10,20):50*rnd(22,100); p.x=r5(small?150:300, Math.floor(p.C*0.45)); p.d=r5(20, p.x-60); }
+    else if(kind==="days"){ p.drink=pick(DRINK); p.n=rnd(3,6); p.T=small?2:rnd(2,5); p.V=small?10*rnd(10,30):r5(105,480); }
+    else if(kind==="box"){ p.thing=pick(THINGS); p.k=rnd(4,9); p.r=rnd(2,p.k-2); p.w=small?10*rnd(3,12):r5(25,160); p.bx=small?10*rnd(5,30):5*rnd(12,90); }
+    else { p.bags=pick(BAGS); p.b=rnd(2,4); p.a=rnd(2,Math.floor(10/p.b)); var c=small?10*rnd(3,10):rnd(25,240); p.B=p.b*c; delete p.who; }
+    p.small=!!small; finish(p); if(verify(p)) return p;
+  }
+  return p;
+}
+function fromSpec(s){
+  if(s[0]==="fill") return {kind:"fill", cont:s[1], jug:s[2], C:s[3], x:s[4], d:s[5], who:s[6], small:!!s[7]};
+  if(s[0]==="days") return {kind:"days", drink:s[1], T:s[2], V:s[3], n:s[4], who:s[5], small:!!s[6]};
+  if(s[0]==="box") return {kind:"box", thing:s[1], k:s[2], r:s[3], w:s[4], bx:s[5], who:s[6], small:!!s[7]};
+  return {kind:"chain", bags:s[1], a:s[2], b:s[3], B:s[4], small:!!s[5]};
+}
+var BANK=[  // amounts in mℓ or g
+  ["fill",["bottle","water"],"cup",900,360,125,"Mei",true],            // cup 235; bottle now 595; 900 - 595 = 305 mℓ
+  ["days","soya milk",2,215,4,"Ravi",false],                             // 4 x 215 = 860; 2 ℓ = 2000 mℓ; 2000 - 860 = 1140 = 1 ℓ 140 mℓ
+  ["box",["tin","tins"],6,4,125,200,"Aisha",false],                     // 950 - 450 = 500; 500 / 4 = 125; 2 x 125 = 250; 450 - 250 = 200 g
+  ["chain",["red","blue","green"],2,3,345,false],                       // green 115; red 690; 690 + 345 + 115 = 1150 = 1 kg 150 g
+  ["fill",["fish tank","water"],"pail",3400,1575,290,"Kai",false]       // 3 ℓ 400 mℓ = 3400; pail 1285; now 2860; 3400 - 2860 = 540 mℓ
+];
+function answerAsk(p){ return p.two ? "Now find the answer. Type the "+big(p)+", tap the "+big(p)+" key, then type the "+small(p)+". Then tap Check." : "Now find the answer. Type it, then tap Check."; }
+function guess(p,i){
+  var B=big(p), S=small(p);
+  if(i%2===0){
+    if(p.kind==="fill") return {q:"What do we find first?", choices:[["jug","How much is in the "+p.jug],["more","How much more straight away"],["add","Add everything in the story"]], right:"jug",
+      note:function(k,ok){ return ok ? "Yes, that's right. The "+p.jug+" is poured in, so we need to know how much it has." : "Let's draw it. The "+p.jug+" is poured in first, so we need its amount."; }};
+    if(p.kind==="days") return {q:"How many days are there from Monday to "+DAYS[p.n-1]+"?", choices:[[String(p.n),p.n+" days"],[String(p.n-1),(p.n-1)+" days"],[String(p.n+1),(p.n+1)+" days"]], right:String(p.n),
+      note:function(k,ok){ return ok ? "Yes! Count the first day and the last day too." : "Count on your fingers: Monday is 1. Count the last day too."; }};
+    if(p.kind==="box") return {q:"What stays the same before and after?", choices:[["box","The box"],["things","The number of "+it(p,2)],["mass","The total mass"]], right:"box",
+      note:function(k,ok){ return ok ? "Yes! The box stays the same. Only some "+it(p,2)+" were taken out." : "Let's draw it. Only some "+it(p,2)+" were taken out. The box stays the same."; }};
+    return {q:"Which bag is the heaviest?", choices:[["a",cap(bag(p,0))],["b",cap(bag(p,1))],["c",cap(bag(p,2))]], right:"a",
+      note:function(k,ok){ return ok ? "Yes! It is "+tw(p.a)+" as heavy as "+bag(p,1)+", which is heavier than "+bag(p,2)+"." : "Read it again: "+bag(p,0)+" is "+tw(p.a)+" as heavy as "+bag(p,1)+"."; }};
+  }
+  return {q:"How many "+S+" make 1 "+B+"?", choices:[["1000","1000 "+S],["100","100 "+S],["10","10 "+S]], right:"1000",
+    note:function(k,ok){ return ok ? "Yes! 1000 "+S+" make 1 "+B+". We will change units in the working." : "1000 "+S+" make 1 "+B+". We will change units in the working."; }};
+}
+function build(p){
+  var W=p.who, S=small(p);
+  if(p.kind==="fill") return [
+    {type:"choice", ask:"What is the whole bar?", right:"C", choices:[["C",amt(p.C,p)+", what the "+cont(p)+" can hold",null],["x",one(p.x,p)+", in the "+cont(p)+" now","Not yet. That is only part of the "+cont(p)+". The whole bar is how much it can hold."],["d",one(p.d,p),"Not yet. That is how much less the "+p.jug+" has. The whole bar is how much the "+cont(p)+" can hold."]],
+     done:"The whole bar is what the "+cont(p)+" can hold: "+amt(p.C,p)+"."},
+    {type:"choice", ask:"Which has less "+liq(p)+": the "+p.jug+", or the "+cont(p)+" before pouring?", right:"jug", choices:[["jug","The "+p.jug,null],["cont","The "+cont(p),"Not yet. Read the story again: the "+p.jug+" has "+one(p.d,p)+" less."],["same","They have the same","Not yet. Read the story again: one has less than the other."]],
+     done:"The "+p.jug+"'s part is shorter: "+one(p.d,p)+" less than "+one(p.x,p)+"."},
+    {type:"choice", ask:"Where does the question mark go?", right:"rest", choices:[["rest","On the empty part at the end",null],["all","Over the whole bar","Not yet. We know how much the "+cont(p)+" can hold."],["jug","On the "+p.jug+"'s part","Not yet. The question asks how much MORE is needed to fill it."]],
+     done:"The question mark is the empty part: how much more is needed."}];
+  if(p.kind==="days") return [
+    {type:"choice", ask:"What is the whole bar?", right:"T", choices:[["T",p.T+" "+LT+", all the "+p.drink,null],["V",one(p.V,p)+", one day","Not yet. That is one day only. The whole bar is all the "+p.drink+"."],["n",p.n+" days","Not yet. The bar shows an amount of "+p.drink+"."]],
+     done:"The whole bar is all the "+p.drink+": "+p.T+" "+LT+"."},
+    {type:"count", ask:"Draw one equal part for each day from Monday to "+DAYS[p.n-1]+". Tap + for each day.", target:p.n, unitName:"day",
+     low:"Not yet. Count the days again, from Monday to "+DAYS[p.n-1]+".", high:"Not yet. Too many. Count the days again, from Monday to "+DAYS[p.n-1]+".", done:p.n+" equal parts of "+one(p.V,p)+", one for each day."},
+    {type:"choice", ask:"Where does the question mark go?", right:"rest", choices:[["rest","On the part left for "+DAYS[p.n],null],["all","Over the whole bar","Not yet. We know the whole: "+p.T+" "+LT+"."],["one","On one day's part","Not yet. Each of those days is "+one(p.V,p)+". We know that."]],
+     done:"The question mark is the rest: what was drunk on "+DAYS[p.n]+"."}];
+  if(p.kind==="box") return [
+    {type:"count", ask:"Draw the Before bar: the box, then tap + for each "+it(p,1)+" in it.", target:p.k, unitName:it(p,1),
+     low:"Not yet. Read the story again: how many "+it(p,2)+" were in the box at first?", high:"Not yet. Too many. Read the story again: how many "+it(p,2)+" at first?", done:"Before: the box and "+p.k+" "+it(p,2)+"."},
+    {type:"count", ask:"Now the After bar: the same box, then tap + for each "+it(p,1)+" still in it.", target:p.left, unitName:it(p,1),
+     low:"Not yet. "+p.r+" "+it(p,p.r)+" were taken out. How many are left?", high:"Not yet. Too many. "+p.r+" "+it(p,p.r)+" were taken out.", done:"After: the box and "+p.left+" "+it(p,2)+"."},
+    {type:"choice", ask:"Why is the After bar shorter?", right:"out", choices:[["out","The "+p.r+" "+it(p,2)+" taken out",null],["box","The box got lighter","Not yet. It is the same box. It stays the same."],["new","Something was added","Not yet. Something was taken out, so it got lighter."]],
+     done:"The difference is the "+p.r+" "+it(p,2)+" taken out. The box is the same in both bars."}];
+  return [
+    {type:"choice", ask:"Which bag is the lightest? It is 1 unit.", right:"c", choices:[["c",cap(bag(p,2)),null],["b",cap(bag(p,1)),"Not yet. "+cap(bag(p,1))+" is "+tw(p.b)+" as heavy as "+bag(p,2)+"."],["a",cap(bag(p,0)),"Not yet. "+cap(bag(p,0))+" is the heaviest."]],
+     done:cap(bag(p,2))+" is 1 unit."},
+    {type:"count", ask:cap(bag(p,1))+" is "+tw(p.b)+" as heavy as "+bag(p,2)+". Tap + for each unit in "+bag(p,1)+".", target:p.b, unitName:"unit",
+     low:"Not yet. "+tw(p.b)+" as heavy means "+p.b+" units.", high:"Not yet. Too many. "+cap(tw(p.b))+" as heavy means "+p.b+" units.", done:cap(bag(p,1))+" is "+p.b+" units."},
+    {type:"count", ask:cap(bag(p,0))+" is "+tw(p.a)+" as heavy as "+bag(p,1)+". Tap + for each unit in "+bag(p,0)+".", target:p.a*p.b, unitName:"unit",
+     low:"Not yet. "+cap(bag(p,0))+" is as heavy as "+p.a+" of "+bag(p,1)+", and each of those is "+p.b+" units.", high:"Not yet. Too many. "+cap(bag(p,0))+" is "+p.a+" groups of "+p.b+" units.", done:cap(bag(p,0))+" is "+p.a+" groups of "+p.b+" units."}];
+}
+function model(p,v){
+  var b=v.b, solved=v.solved, S=small(p);
+  if(v.phase==="predict") return {maxV:20, rows:[{name:p.kind==="chain"?"Bags":(p.kind==="box"?"Before":cap(p.kind==="fill"?cont(p):p.drink)), cls:"A", segs:[], empty:"Make a guess first."}], braces:[]};
+  if(p.kind==="fill"){
+    var xw=Math.max(12,Math.round(40*p.x/p.C)), jw=Math.max(9,Math.round(40*p.jg/p.C)), rw=Math.max(13,Math.round(40*p.answer/p.C)), mx=xw+jw+rw, segs=[], unders=[];
+    if(b===0) segs.push({v:mx, cls:"ghostu", label:"", hl:"whole"});
+    else if(b===1) segs.push({v:mx, cls:"main", label:"", hl:"whole"});
+    else { segs.push({v:xw, cls:"main", label:one(p.x,p), hl:"pot"}); segs.push({v:jw, cls:"unit", label:p.jug, hl:"jug", fresh:v.fresh===1});
+      segs.push({v:rw, cls:b>=3?"cut":"ghostu", label:b>=3?(solved?one(p.answer,p):"?"):"", hl:"rest", fresh:v.fresh===2});
+      unders.push({from:0,to:xw,label:"at first",hl:"pot"}); unders.push({from:xw,to:xw+jw,label:p.d+" less",hl:"jug"}); }
+    return {maxV:mx, rows:[{name:cap(cont(p)), cls:"A", segs:segs, unders:unders}], braces:b>=1?[{from:0,to:0,label:"Holds<br>"+amt(p.C,p), hl:"whole"}]:[]};
+  }
+  if(p.kind==="days"){
+    var U=p.n<=4?8:6, used=p.n*U, rw2=Math.max(10,Math.min(22,Math.round(used*p.answer/p.used))), mx2=used+rw2, sg=[], un=[];
+    if(b===0) sg.push({v:mx2, cls:"ghostu", label:"", hl:"whole"});
+    else if(b===1){ for(var i=0;i<v.count;i++) sg.push({v:U, cls:"unit", label:"", hl:"days", fresh:i===v.count-1}); var u2=v.count*U; if(mx2-u2>0) sg.push({v:mx2-u2, cls:"main", label:"", hl:"whole"}); }
+    else { for(var j=0;j<p.n;j++) sg.push({v:U, cls:"unit", label:DAYS[j].slice(0,3), hl:"days"});
+      sg.push({v:rw2, cls:b>=3?"cut":"ghostu", label:b>=3?(solved?ans(p):"?"):"", hl:"rest", fresh:v.fresh===2});
+      un.push({from:0,to:used,label:p.n+" × "+one(p.V,p),hl:"days"}); }
+    return {maxV:mx2, rows:[{name:cap(p.drink), cls:"A", segs:sg, unders:un}], braces:b>=1?[{from:0,to:0,label:"All<br>"+p.T+" "+LT, hl:"whole"}]:[]};
+  }
+  if(p.kind==="box"){
+    var BX=10, UI=4, mx3=BX+p.k*UI+2;
+    var bef={name:"Before", cls:"A", segs:[], unders:[]}, aft={name:"After", cls:"B", segs:[], unders:[]};
+    var boxSeg=function(){ return {v:BX, cls:"left", label:solved?one(p.bx,p):"box", hl:"box"}; };
+    var nb = b===0 ? v.count : p.k;
+    bef.segs.push(boxSeg()); for(var q=0;q<nb;q++) bef.segs.push({v:UI, cls:"unit", label:"", hl:q<p.left?"left":"out", fresh:b===0&&q===nb-1});
+    if(b>=1){ aft.segs.push(boxSeg()); var na=b===1?v.count:p.left; for(var q2=0;q2<na;q2++) aft.segs.push({v:UI, cls:"main", label:"", hl:"left", fresh:b===1&&q2===na-1}); }
+    else aft.empty="Next: the After bar.";
+    if(b>=1) bef.tail={label:amt(p.M1,p), hl:"before"};
+    if(b>=2) aft.tail={label:one(p.M2,p), hl:"after"};
+    if(b>=3) bef.unders.push({from:BX+p.left*UI, to:BX+p.k*UI, label:p.r+" out", hl:"out"});
+    return {maxV:mx3, rows:[bef,aft], braces:[]};
+  }
+  var UC=4, ab=p.a*p.b, mx4=ab*UC, rows=[{name:cap(p.bags[0]), cls:"A", segs:[]},{name:cap(p.bags[1]), cls:"B", segs:[]},{name:cap(p.bags[2]), cls:"C", segs:[]}];
+  if(b===0){ rows.forEach(function(r){ r.empty="Which is the lightest?"; }); return {maxV:mx4, rows:rows, braces:[]}; }
+  rows[2].segs.push({v:UC, cls:"unit", label:"", hl:"green", fresh:v.fresh===0}); rows[2].tail={label:(b>=3 && solved?one(p.Cg,p):"1 unit"), hl:"green"};
+  var nB=b===1?v.count:p.b; for(var k=0;k<nB;k++) rows[1].segs.push({v:UC, cls:"unit", label:"", hl:"blue", fresh:b===1&&k===nB-1});
+  if(b>=2) rows[1].tail={label:one(p.B,p), hl:"blue"};
+  var nA=b===2?v.count:(b>=3?ab:0); for(var k2=0;k2<nA;k2++) rows[0].segs.push({v:UC, cls:"unit", label:"", hl:"red", fresh:b===2&&k2===nA-1});
+  if(b<2) rows[0].empty="";
+  if(b>=3) rows[0].tail={label:solved?one(p.A,p):"?", hl:"red"};
+  return {maxV:mx4, rows:rows, braces:b>=3?[{from:0,to:2,label:"Total<br>"+(solved?ans(p):"?"), hl:"total"}]:[]};
+}
+function caption(p,v){
+  if(v.phase==="predict") return "First a guess. Then you draw the model.";
+  if(v.phase==="build") return "Draw the model, one step at a time.";
+  if(p.kind==="fill") return "The whole bar is what the "+cont(p)+" can hold, <b>"+amt(p.C,p)+"</b>. Find the "+liq(p)+" in it after pouring. The empty part is what is still needed.";
+  if(p.kind==="days") return "The whole bar is <b>"+p.T+" "+LT+"</b>. Change it into "+ML+" first. "+p.n+" equal parts are the days from Monday to "+DAYS[p.n-1]+". The rest is "+DAYS[p.n]+".";
+  if(p.kind==="box") return "The box is the <b>same</b> in both bars. The difference is the <b>"+p.r+" "+it(p,2)+"</b> taken out. Find one "+it(p,1)+" first.";
+  return cap(bag(p,2))+" is <b>1 unit</b>. Find 1 unit first, then each bag, then the total.";
+}
+function hints(p){ var B="___", S=small(p);
+  if(p.kind==="fill") return ["First find how much "+liq(p)+" is in the "+p.jug+". Less means take away.",
+    "Find the "+liq(p)+" in the "+cont(p)+" after pouring. Then take it away from what the "+cont(p)+" can hold."+(p.C>=1000?" Change "+amt(p.C,p)+" into "+ML+" first.":""),
+    ex(p.x,MI,p.d)+" = "+B+" "+S+". "+p.x+" + "+B+" = "+B+" "+S+". Then "+p.C+" "+MI+" "+B+" = "+B+" "+S+"."];
+  if(p.kind==="days") return ["Count the days from Monday to "+DAYS[p.n-1]+" first.",
+    "The same amount each day: multiply. Then take it away from "+p.T+" "+LT+". 1 "+LT+" = 1000 "+ML+".",
+    ex(p.n,TI,p.V)+" = "+B+" "+S+". "+ex(p.T,TI,1000)+" = "+B+" "+S+". "+B+" "+MI+" "+B+" = "+B+" "+S+"."+(p.two?" Then "+B+" "+S+" = "+B+" "+LT+" "+B+" "+S+".":"")];
+  if(p.kind==="box") return ["What was taken out? The difference between the two masses is the mass of the "+p.r+" "+it(p,2)+".",
+    "Find the mass of one "+it(p,1)+" first. Then take the "+p.left+" "+it(p,2)+" left away from "+one(p.M2,p)+"."+(p.M1>=1000?" Change "+amt(p.M1,p)+" into g first.":""),
+    p.M1+" "+MI+" "+p.M2+" = "+B+" g. "+B+" "+DI+" "+p.r+" = "+B+" g. "+p.left+" "+TI+" "+B+" = "+B+" g. "+p.M2+" "+MI+" "+B+" = "+B+" g."];
+  return ["Start with the bag you can find straight away: "+bag(p,2)+" is lighter than "+bag(p,1)+".",
+    "Divide to find "+bag(p,2)+". Multiply to find "+bag(p,0)+". Then add all three.",
+    ex(p.B,DI,p.b)+" = "+B+" g. "+ex(p.a,TI,p.B)+" = "+B+" g. "+B+" + "+p.B+" + "+B+" = "+B+" g."+(p.two?" Then "+B+" g = "+B+" kg "+B+" g.":"")];
+}
+function hintHL(p){ return {fill:["pot","jug","rest"], days:["days","rest"], box:["out","box"], chain:["green","red","total"]}[p.kind]; }
+function uniq(c,p){ return c.filter(function(x,i,a){ return isWhole(x) && x>0 && x!==p.answer && a.indexOf(x)===i; }); }
+function wrongCandidates(p){
+  var a=p.answer, c;
+  if(p.kind==="fill") c=[p.now, p.C-p.x, p.C-p.jg, p.C-(p.x+p.x+p.d), a+100, a-100, a+10, a-10];
+  else if(p.kind==="days") c=[p.used, p.Tm-(p.n-1)*p.V, p.Tm-(p.n+1)*p.V, a+100, a-100, a+10, a-10];
+  else if(p.kind==="box") c=[p.w, p.diff, p.M1-p.lm, p.M2-p.w, a+10, a-10, a+100];
+  else c=[p.A+p.B, p.A+p.B+p.B*p.b, p.B*p.a+p.B, a+100, a-100, a+10, a-10];
+  return uniq(c,p);
+}
+function testWrong(p){ var c=wrongCandidates(p); if(p.two){ var big1=c.filter(function(x){ return x>=1000 && x%1000>0; }); if(big1.length) return big1[0]; } return c[0]; }
+var CALC="Very close! Check your working line by line: line up the digits and redo each sum.";
+function wrongMsg(p,v){
+  if(Math.abs(v-p.answer)===100 || Math.abs(v-p.answer)===10) return CALC;
+  if(p.kind==="fill"){
+    if(v===p.now) return "That is the "+liq(p)+" in the "+cont(p)+" after pouring. The question asks how much MORE fills it.";
+    if(v===p.C-p.x) return "Don't forget the "+p.jug+". Its "+liq(p)+" was poured in too.";
+    if(v===p.C-p.jg) return "Don't forget the "+liq(p)+" that was in the "+cont(p)+" at first.";
+    if(v===p.C-(p.x+p.x+p.d)) return "Read the story again: the "+p.jug+" has LESS. Less means take away.";
+    return "Find the "+liq(p)+" in the "+p.jug+", then all the "+liq(p)+" in the "+cont(p)+". Take it away from what the "+cont(p)+" can hold.";
+  }
+  if(p.kind==="days"){
+    if(v===p.used) return "That is what was drunk from Monday to "+DAYS[p.n-1]+". The question asks about "+DAYS[p.n]+".";
+    if(v===p.Tm-(p.n-1)*p.V || v===p.Tm-(p.n+1)*p.V) return "Count the days again: Monday to "+DAYS[p.n-1]+". Count the first and the last day.";
+    return "Multiply for the days, change "+p.T+" "+LT+" into "+ML+", then take away.";
+  }
+  if(p.kind==="box"){
+    if(v===p.w) return "That is the mass of one "+it(p,1)+". Now find the empty box.";
+    if(v===p.diff) return "That is the mass of the "+p.r+" "+it(p,2)+" taken out. Find one "+it(p,1)+", then the box.";
+    if(v===p.M1-p.lm) return "Use the mass AFTER: the box with "+p.left+" "+it(p,2)+".";
+    return "Find one "+it(p,1)+" first. Then take the "+it(p,2)+" left away from the After mass.";
+  }
+  if(v===p.A+p.B) return "Don't forget "+bag(p,2)+". The question asks for all three bags.";
+  if(v===p.A+p.B+p.B*p.b) return cap(bag(p,2))+" is the LIGHTER one. Lighter means divide, not multiply.";
+  return "Find "+bag(p,2)+" first, then "+bag(p,0)+". Then add all three.";
+}
+function praise(p){
+  if(p.kind==="fill") return "Yes! You found the "+liq(p)+" in the "+p.jug+" first, then all the "+liq(p)+" in the "+cont(p)+", and took it away from what it can hold.";
+  if(p.kind==="days") return "Yes! You counted "+p.n+" days, changed "+p.T+" "+LT+" into "+p.Tm+" "+ML+", and took away what was drunk.";
+  if(p.kind==="box") return "Yes! You used the "+it(p,2)+" taken out to find one "+it(p,1)+", then took the "+it(p,2)+" left away to leave the box.";
+  return "Yes! You found 1 unit first, then each bag, then added all three.";
+}
+function explain(p){ return "Why do we change "+big(p)+" into "+small(p)+" before we add or take away?"; }
+// a change of unit is its own line, and its statement says both ways: 1 ℓ 500 mℓ = 1500 mℓ
+function toSmall(api,p,v,hl,tag){ var L=Math.floor(v/1000), r=v%1000, B=big(p), S=small(p);
+  var ok=r?ex(L*1000,"+",r):ex(L,TI,1000);
+  api.line({ok:ok, hl:hl, tag:tag, ask:"First change "+amt(v,p)+" into "+S+". Which number sentence?",
+    wrong:r?[[ex(L*100,"+",r),"Not yet. 1 "+B+" is 1000 "+S+", not 100 "+S+"."],[ex(L,"+",r),"Not yet. Change the "+B+" into "+S+" first: 1 "+B+" = 1000 "+S+"."]]
+           :[[ex(L,TI,100),"Not yet. 1 "+B+" is 1000 "+S+", not 100 "+S+"."],[ex(L,"+",1000),"Not yet. Each "+B+" is 1000 "+S+". "+L+" "+B+" is "+L+" groups of 1000."]],
+    stmt:amt(v,p)+" = "+v+" "+S+".", why:"We can only add or take away amounts in the same unit. 1 "+B+" = 1000 "+S+", so change the "+B+" into "+S+" first."});
+}
+function toTwo(api,p,hl,tag){ var v=p.answer, L=Math.floor(v/1000), r=v%1000, B=big(p), S=small(p);
+  api.line({ok:ex(v,MI,L*1000), conv:true, hl:hl, tag:tag, ask:"Now write "+v+" "+S+" in "+B+" and "+S+". Take out the whole "+B+". Which number sentence?",
+    wrong:[[ex(v,MI,L*100),"Not yet. 1 "+B+" is 1000 "+S+", not 100 "+S+"."],[ex(v,"+",L*1000),"Not yet. We take the whole "+B+" OUT of the "+S+". Take away."]].concat(L>=2?[[ex(v,MI,1000),"Not yet. How many whole "+B+" are in it? Each one is 1000 "+S+"."]]:[]),
+    stmt:v+" "+S+" = "+(L*1000)+" "+S+" + "+r+" "+S+" = "+two(v,p)+".", why:"1000 "+S+" = 1 "+B+". So "+(L*1000)+" "+S+" is "+L+" "+B+", and the "+S+" left over stay as "+S+"."});
+}
+function plan(p,api){
+  var W=p.who, S=small(p), L=function(o){ api.line(o); };
+  var Cm=p.C;
+  if(p.kind==="fill"){
+    if(p.C>=1000) toSmall(api,p,p.C,["whole"],"what the "+cont(p)+" can hold");
+    L({ok:ex(p.x,MI,p.d), hl:["pot","jug"], tag:"the "+p.jug+"'s part", ask:"How much "+liq(p)+" is in the "+p.jug+"? Which number sentence?",
+      wrong:[[ex(p.x,"+",p.d),"Not yet. The "+p.jug+" has LESS. Less means take away."],[ex(Cm,MI,p.d),"Not yet. The "+p.jug+" is compared with the "+liq(p)+" in the "+cont(p)+", not with what it can hold."],[ex(p.d,"+",p.d),"Not yet. Start from the "+liq(p)+" in the "+cont(p)+"."]],
+      stmt:"The "+p.jug+" has "+one(p.jg,p)+" of "+liq(p)+".", why:"The "+p.jug+" has "+one(p.d,p)+" less than the "+cont(p)+". Less means take away."});
+    L({ok:ex(p.x,"+",p.jg), hl:["pot","jug"], tag:"the "+liq(p)+" in the "+cont(p)+" now", ask:"After pouring, how much "+liq(p)+" is in the "+cont(p)+"? Which number sentence?",
+      wrong:[[ex(p.x,MI,p.jg),"Not yet. Pouring in makes more. Add."],[ex(Cm,MI,p.jg),"Not yet. First put the two amounts of "+liq(p)+" together."],[ex(p.jg,"+",p.d),"Not yet. Add the "+liq(p)+" already in the "+cont(p)+"."]],
+      stmt:"Now the "+cont(p)+" has "+one(p.now,p)+" of "+liq(p)+".", why:"All the "+liq(p)+" from the "+p.jug+" goes into the "+cont(p)+", on top of what was there. Putting together means add."});
+    L({ok:ex(Cm,MI,p.now), hl:["whole","pot","jug","rest"], tag:"the empty part", ask:"How much more "+liq(p)+" fills the "+cont(p)+"? Which number sentence?",
+      wrong:[[ex(Cm,"+",p.now),"Not yet. The empty part is inside what the "+cont(p)+" can hold. Take away."],[ex(Cm,MI,p.jg),"Not yet. Take away ALL the "+liq(p)+" in the "+cont(p)+" now."],[ex(Cm,MI,p.x),"Not yet. Take away all the "+liq(p)+" in the "+cont(p)+" now, after pouring."]],
+      stmt:"The "+cont(p)+" needs "+one(p.answer,p)+" more.", why:"The whole bar is what the "+cont(p)+" can hold. Take away the "+liq(p)+" in it, and the empty part is what is still needed."});
+    api.answer({right:answerSentence(p), wrong:[[String(p.answer),"Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, "+ML+"."],["The "+cont(p)+" has "+one(p.answer,p)+" of "+liq(p)+".","Not yet. The question asks how much MORE is needed."]],
+      why:"The question asks how much more "+liq(p)+". The answer sentence has the unit, "+ML+"."});
+    L({check:true, ok:ex(p.answer,"+",p.now), hl:["rest","pot","jug","whole"], tag:"the whole bar", ask:"Check line. Put your answer back with the "+liq(p)+" in the "+cont(p)+". Which number sentence should give "+Cm+" "+ML+"?",
+      wrong:[[ex(p.now,MI,p.answer),"Not yet. Put the parts together: add."],[ex(p.answer,"+",p.jg),"Not yet. Add ALL the "+liq(p)+" in the "+cont(p)+", not only the "+p.jug+"'s."]],
+      stmt:"That is "+Cm+" "+ML+(p.C>=1000?" = "+two(p.C,p):"")+", what the "+cont(p)+" can hold.", why:"Checking catches calculation mistakes. Your answer and the "+liq(p)+" in the "+cont(p)+" should fill it exactly."});
+  } else if(p.kind==="days"){
+    var last=DAYS[p.n-1], day=DAYS[p.n];
+    L({ok:ex(p.n,TI,p.V), hl:["days"], tag:"the "+p.n+" equal parts", ask:"How much did "+W+" drink from Monday to "+last+"? Which number sentence?",
+      wrong:[[ex(p.n-1,TI,p.V),"Not yet. Count the days again: Monday to "+last+". Count the first and the last day."],[ex(p.n,"+",p.V),"Not yet. The same amount each day is equal groups. Multiply."],[ex(p.n+1,TI,p.V),"Not yet. Count the days again: Monday to "+last+"."]],
+      stmt:W+" drank "+one(p.used,p)+" from Monday to "+last+".", why:"Monday to "+last+" is "+p.n+" days. The same amount each day means equal groups: multiply."});
+    toSmall(api,p,p.Tm,["whole"],"all the "+p.drink);
+    L({ok:ex(p.Tm,MI,p.used), hl:["whole","days","rest"], tag:"the part for "+day, ask:"How much was left for "+day+"? Which number sentence?",
+      wrong:[[ex(p.Tm,"+",p.used),"Not yet. Drinking makes the "+p.drink+" less. Take away."],[ex(p.T,MI,p.V),"Not yet. Use the same unit, "+ML+", and take away ALL "+p.n+" days."],[ex(p.Tm,MI,p.V),"Not yet. Take away all "+p.n+" days, not one day."]],
+      stmt:W+" drank "+one(p.answer,p)+" on "+day+".", why:"The whole bar is all the "+p.drink+". Take away the "+p.n+" days, and the rest is "+day+"."});
+    if(p.two) toTwo(api,p,["rest"],"the part for "+day);
+    api.answer({right:answerSentence(p), wrong:(p.two?[[W+" drank "+one(p.answer,p)+" of "+p.drink+" on "+day+".","Not yet. That amount is right, but the question asks for "+LT+" and "+ML+"."]]:[[String(p.answer),"Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, "+ML+"."]])
+      .concat([[W+" drank "+one(p.used,p)+" of "+p.drink+" on "+day+".","Not yet. That is Monday to "+last+". The question asks about "+day+" only."]]),
+      why:"The question asks how much on "+day+(p.two?", in "+LT+" and "+ML+". The answer sentence uses both units.":". The answer sentence has the unit, "+ML+".")});
+    L({check:true, ok:ex(p.answer,"+",p.used), hl:["rest","days","whole"], tag:"the whole bar", ask:"Check line. Put "+day+" back with the other days. Which number sentence should give "+p.Tm+" "+ML+"?",
+      wrong:[[ex(p.used,MI,p.answer),"Not yet. Put the parts together: add."],[ex(p.answer,"+",p.V),"Not yet. Add ALL "+p.n+" days, not one day."]],
+      stmt:"That is "+p.Tm+" "+ML+" = "+p.T+" "+LT+", all the "+p.drink+".", why:"Checking catches calculation mistakes. "+day+" and the other days should make all the "+p.drink+"."});
+  } else if(p.kind==="box"){
+    var M1=p.M1;
+    if(p.M1>=1000) toSmall(api,p,p.M1,["before"],"the Before mass");
+    L({ok:ex(M1,MI,p.M2), hl:["before","after","out"], tag:"the "+it(p,2)+" taken out", ask:"What is the mass of the "+p.r+" "+it(p,2)+" taken out? Which number sentence?",
+      wrong:[[ex(M1,"+",p.M2),"Not yet. Something was taken out, so the mass went down. Find the difference: take away."],[ex(M1,MI,p.r),"Not yet. Take away the two masses, Before and After."],[ex(p.M2,MI,p.r),"Not yet. Find the difference between the Before and After masses."]],
+      stmt:"The "+p.r+" "+it(p,2)+" taken out have a mass of "+one(p.diff,p)+".", why:"The box is the same before and after. Only the "+p.r+" "+it(p,2)+" taken out are different, so the difference is their mass."});
+    L({ok:ex(p.diff,DI,p.r), hl:["out"], tag:"one "+it(p,1), ask:"What is the mass of one "+it(p,1)+"? Which number sentence?",
+      wrong:[[ex(p.diff,TI,p.r),"Not yet. "+p.r+" identical "+it(p,2)+" share that mass equally. Divide."],[ex(p.diff,DI,p.k),"Not yet. Only "+p.r+" "+it(p,2)+" were taken out. Divide by the number taken out."],[ex(p.diff,MI,p.r),"Not yet. Equal shares means divide."]],
+      stmt:"One "+it(p,1)+" has a mass of "+one(p.w,p)+".", why:"The "+it(p,2)+" are identical, so each one has the same mass. Share the mass into "+p.r+" equal parts: divide."});
+    L({ok:ex(p.left,TI,p.w), hl:["left"], tag:"the "+it(p,2)+" still in the box", ask:"What is the mass of the "+p.left+" "+it(p,2)+" still in the box? Which number sentence?",
+      wrong:[[ex(p.k,TI,p.w),"Not yet. Use only the "+it(p,2)+" still in the box, After."],[ex(p.left,"+",p.w),"Not yet. Equal masses: multiply."],[ex(p.r,TI,p.w),"Not yet. Those were taken out. Use the "+it(p,2)+" still in the box."]],
+      stmt:"The "+p.left+" "+it(p,2)+" left have a mass of "+one(p.lm,p)+".", why:p.left+" "+it(p,2)+" of the same mass are equal groups: multiply."});
+    L({ok:ex(p.M2,MI,p.lm), hl:["after","left","box"], tag:"the box", ask:"What is the mass of the empty box? Which number sentence?",
+      wrong:[[ex(p.M2,"+",p.lm),"Not yet. Take the "+it(p,2)+" away to leave only the box."],[ex(M1,MI,p.lm),"Not yet. Use the After mass, with "+p.left+" "+it(p,2)+" in the box."],[ex(p.M2,MI,p.w),"Not yet. Take away ALL the "+it(p,2)+" still in the box."]],
+      stmt:"The empty box has a mass of "+one(p.bx,p)+".", why:"The After bar is the box and the "+it(p,2)+" left. Take the "+it(p,2)+" away, and the box is what remains."});
+    api.answer({right:answerSentence(p), wrong:[[String(p.bx),"Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, g."],["One "+it(p,1)+" has a mass of "+one(p.bx,p)+".","Not yet. The question asks for the empty box."]],
+      why:"The question asks for the mass of the empty box. The answer sentence has the unit, g."});
+    L({check:true, ok:[p.bx,"+",p.k,TI,p.w].join(" "), hl:["box","out","left","before"], tag:"the Before bar", ask:"Check line. Put all "+p.k+" "+it(p,2)+" back in the box. Which number sentence should give "+M1+" g?",
+      wrong:[[[p.bx,"+",p.left,TI,p.w].join(" "),"Not yet. Put back ALL "+p.k+" "+it(p,2)+", not only the ones left."],[ex(p.bx,"+",p.w),"Not yet. Every "+it(p,1)+" counts: "+p.k+" of them. Multiply."]],
+      stmt:"That is "+M1+" g"+(p.M1>=1000?" = "+two(p.M1,p):"")+", the box with all "+p.k+" "+it(p,2)+".", why:"Checking catches calculation mistakes. The box and all "+p.k+" "+it(p,2)+" should make the Before mass."});
+  } else {
+    L({ok:ex(p.B,DI,p.b), hl:["blue","green"], tag:bag(p,2)+": 1 unit", ask:"What is the mass of "+bag(p,2)+"? Which number sentence?",
+      wrong:[[ex(p.B,TI,p.b),"Not yet. "+cap(bag(p,2))+" is the lighter one. Lighter means a smaller number: divide."],[ex(p.B,MI,p.b),"Not yet. "+cap(tw(p.b))+" as heavy means "+p.b+" equal units. Divide into "+p.b+" units."],[ex(p.B,"+",p.b),"Not yet. "+cap(bag(p,2))+" is lighter. Share into equal units: divide."]],
+      stmt:cap(bag(p,2))+" has a mass of "+one(p.Cg,p)+".", why:cap(bag(p,1))+" is "+tw(p.b)+" as heavy as "+bag(p,2)+": it is "+p.b+" units, and "+bag(p,2)+" is 1 unit. So divide by "+p.b+"."});
+    L({ok:ex(p.a,TI,p.B), hl:["red","blue"], tag:bag(p,0), ask:"What is the mass of "+bag(p,0)+"? Which number sentence?",
+      wrong:[[ex(p.a,"+",p.B),"Not yet. "+cap(tw(p.a))+" as heavy means "+p.a+" groups of "+bag(p,1)+". Multiply."],[ex(p.a,TI,p.Cg),"Not yet. Compare with "+bag(p,1)+", not "+bag(p,2)+"."],[ex(p.B,MI,p.a),"Not yet. "+cap(bag(p,0))+" is the heaviest. Multiply."]],
+      stmt:cap(bag(p,0))+" has a mass of "+one(p.A,p)+".", why:cap(bag(p,0))+" is "+tw(p.a)+" as heavy as "+bag(p,1)+": "+p.a+" equal groups of "+one(p.B,p)+". Multiply."});
+    L({ok:[p.A,"+",p.B,"+",p.Cg].join(" "), hl:["red","blue","green","total"], tag:"all three bags", ask:"What is the total mass of the three bags? Which number sentence?",
+      wrong:[[ex(p.A,"+",p.B),"Not yet. Add ALL three bags."],[ex(p.A,"+",p.Cg),"Not yet. Add "+bag(p,1)+" too."],[[p.A,MI,p.B,MI,p.Cg].join(" "),"Not yet. Total means put together. Add."]],
+      stmt:"The three bags have a mass of "+one(p.answer,p)+" altogether.", why:"Total means all three bags together. Putting together means add."});
+    if(p.two) toTwo(api,p,["total"],"the total");
+    api.answer({right:answerSentence(p), wrong:(p.two?[["The total mass of the three bags is "+one(p.answer,p)+".","Not yet. That mass is right, but the question asks for kg and g."]]:[[String(p.answer),"Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, g."]])
+      .concat([["The mass of "+bag(p,0)+" is "+ans(p)+".","Not yet. The question asks for all three bags."]]),
+      why:"The question asks for the total mass"+(p.two?" in kg and g. The answer sentence uses both units.":". The answer sentence has the unit, g.")});
+    L({check:true, ok:[p.answer,MI,p.A,MI,p.Cg].join(" "), hl:["total","blue"], tag:bag(p,1), ask:"Check line. Take "+bag(p,0)+" and "+bag(p,2)+" away from the total. Which number sentence should give "+one(p.B,p)+"?",
+      wrong:[[[p.answer,"+",p.A,"+",p.Cg].join(" "),"Not yet. Take away the other two bags."],[ex(p.answer,MI,p.A),"Not yet. Take away "+bag(p,2)+" too."]],
+      stmt:"That leaves "+one(p.B,p)+", the mass of "+bag(p,1)+" in the story.", why:"Checking catches calculation mistakes. Taking away the other two bags should leave "+bag(p,1)+" exactly."});
+  }
+  return {unit:unitOf(p), unitLabel:unitLabel(p)};
+}
+var LIFE=[
+  {emoji:"🥛🍳", title:"In the kitchen", text:"A recipe needs 1 ℓ 200 mℓ of stock. You have 750 mℓ. Change 1 ℓ 200 mℓ into 1200 mℓ first: you need 450 mℓ more.", rule:"Change ℓ into mℓ first. 1 ℓ = 1000 mℓ. Then add or take away."},
+  {emoji:"📦⚖️", title:"At the post office", text:"A parcel has a mass of 2 kg 300 g. That is 2300 g. Two of them are 4600 g, which is 4 kg 600 g.", rule:"1 kg = 1000 g. Work in g, then write the answer in kg and g."}
+];
+return {key:"barModelMassVolumeGame", tag:"P3-MEAS-MV-G12", kinds:["fill","days","box","chain"],
+  drawWhat:"the bar model with the whole, the parts, and the question mark",
+  checkDraw:"The bar model: the whole, the parts, and the question mark",
+  summaryRule:"Remember: change ℓ into mℓ (or kg into g) first, and check your answer by working backwards.",
+  BANK:BANK, fromSpec:fromSpec, finish:finish, verify:verify, make:make, story:story, question:question,
+  answerSentence:answerSentence, answerLine:answerLine, answerAsk:answerAsk, guess:guess, build:build, model:model, caption:caption,
+  decimalPad:decimalPad, padSep:padSep, parseTyped:parseTyped, formatMsg:formatMsg, typeFor:typeFor, fmtTyped:fmtTyped, numsIn:numsIn, answerText:answerText,
+  hints:hints, hintHL:hintHL, wrongMsg:wrongMsg, wrongCandidates:wrongCandidates, testWrong:testWrong, praise:praise, explain:explain, plan:plan, LIFE:LIFE};
+})();
+/* ---------- voice tutor: recorded clips (Grok voice luna) where we have them, device voice for every other line ---------- */
+var MUTE_KEY = G.key+".muted";
+var CLIPS = {"Not yet.":"../audio-shared/c524cdf0f667.mp3","Last line, the answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/ddc42f7df081.mp3","You guessed 3 units. Yes: 2 units and 1 unit make 3!":"../audio-shared/c333804633c2.mp3","Now let's write the working, one line at a time.":"../audio-shared/c217dea5fa66.mp3","Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.":"../audio-shared/906c128f2f2f.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the bars. Tick each box when it is on your paper.":"../audio-shared/167b97fb34a5.mp3","Now write it on your paper. Copy each line, then tick each box when it is on your paper.":"../audio-shared/1b76d890032c.mp3","All ticked. Every line is on your paper.":"../audio-shared/8519fbff1425.mp3","Hello! I'm your maths tutor, and I'll help you, step by step.":"../audio-shared/7cb083a0586a.mp3","Hello! Welcome back.":"../audio-shared/28c880a14309.mp3","You finished the round and got all 5 stars!":"../audio-shared/fa2602ca7096.mp3","Now let's draw the model.":"../audio-shared/9a87d29d52d5.mp3","Now find the answer. Type it, then tap Check.":"../audio-shared/2eeb00adc8ee.mp3","The answer sentence. Read the question again. Which sentence answers it?":"../audio-shared/4a01b8d31256.mp3","Not yet. That number is right, but on its own it doesn't say what it counts. Answer the question in a full sentence.":"../audio-shared/76c7cbe343b7.mp3","Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.":"../audio-shared/807b456a728c.mp3","Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.":"../audio-shared/22ff2f6b6950.mp3","Type your answer on the number pad.":"../audio-shared/098891a2f4db.mp3","Which number is the whole bar?":"../audio-shared/5cb28f100e7d.mp3","Yes! Always check what the question asks for.":"../audio-shared/f91c992e38cb.mp3","Where does the question mark go?":"../audio-shared/bfc04b7381a6.mp3","Not yet. Read the story again: more means add.":"../audio-shared/85a5310cb487.mp3","Not yet. To undo adding, take away.":"../audio-shared/c1e90f0915dc.mp3","Want a star? Check your answer by working backwards. Work out this sum on your paper, then type what you get.":"../audio-shared/4681748a8d35.mp3","Not yet. Work it again on your paper, one step at a time, then type what you get.":"../audio-shared/48f53159e4c9.mp3","Type the number you get on the small number pad.":"../audio-shared/7e61c0aa788b.mp3","That's fine. You can check it later.":"../audio-shared/0e0e275fc0a5.mp3","Yes, that's right. The cup is poured in, so we need to know how much it has.":"audio/13269d5e346b.mp3","Let's draw it. The cup is poured in first, so we need its amount.":"audio/6cce21866b46.mp3","What is the whole bar?":"audio/aec230a25157.mp3","Not yet. That is only part of the bottle. The whole bar is how much it can hold.":"audio/93fac185eb4d.mp3","Not yet. That is how much less the cup has. The whole bar is how much the bottle can hold.":"audio/79ed3f44d78c.mp3","Which has less water: the cup, or the bottle before pouring?":"audio/5e15fa481fb7.mp3","Not yet. Read the story again: one has less than the other.":"audio/173b9353d9c0.mp3","The question mark is the empty part: how much more is needed.":"audio/779a4d8787a1.mp3","Not yet. We know how much the bottle can hold.":"audio/3a839fdbf9e3.mp3","Not yet. The question asks how much MORE is needed to fill it.":"audio/791aef207922.mp3","Here's a hint. First find how much water is in the cup. Less means take away.":"audio/14104368e267.mp3","Here's a hint. Find the water in the bottle after pouring. Then take it away from what the bottle can hold.":"audio/485c07b285b7.mp3","That is the water in the bottle after pouring. The question asks how much MORE fills it.":"audio/b7e666b818ef.mp3","Don't forget the cup. Its water was poured in too.":"audio/6179b93d72f3.mp3","Don't forget the water that was in the bottle at first.":"audio/b1885ae4bb35.mp3","Read the story again: the cup has LESS. Less means take away.":"audio/ac213dcf4c56.mp3","Very close! Check your working line by line: line up the digits and redo each sum.":"audio/4efe97778229.mp3","Yes! You found the water in the cup first, then all the water in the bottle, and took it away from what it can hold.":"audio/a749ad37f572.mp3","How much water is in the cup? Which number sentence?":"audio/fb8d5f3bf30f.mp3","Not yet. The cup is compared with the water in the bottle, not with what it can hold.":"audio/8c06c7056f36.mp3","Not yet. The cup has LESS. Less means take away.":"audio/322fffdb059c.mp3","After pouring, how much water is in the bottle? Which number sentence?":"audio/6198e0cd8e7c.mp3","Not yet. Pouring in makes more. Add.":"audio/8a038694625e.mp3","Not yet. First put the two amounts of water together.":"audio/14094e0a1192.mp3","How much more water fills the bottle? Which number sentence?":"audio/3dce3416ad4d.mp3","Not yet. The empty part is inside what the bottle can hold. Take away.":"audio/a690160a1768.mp3","Not yet. Take away ALL the water in the bottle now.":"audio/ed83f5a25339.mp3","Not yet. The question asks how much MORE is needed.":"audio/1dcbda1bbc4f.mp3","Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, mℓ.":"audio/cc3e2021c4ea.mp3","Not yet. Put the parts together: add.":"audio/d7950d4542ec.mp3","Not yet. Add ALL the water in the bottle, not only the cup's.":"audio/0ff5399303f0.mp3","Not yet. That is one day only. The whole bar is all the soya milk.":"audio/4f5f12e6e72f.mp3","Not yet. The bar shows an amount of soya milk.":"audio/a4c88a4356c4.mp3","Draw one equal part for each day from Monday to Thursday. Tap + for each day.":"audio/c6def6502307.mp3","Not yet. Count the days again, from Monday to Thursday.":"audio/d8ef2ec870a4.mp3","Not yet. Too many. Count the days again, from Monday to Thursday.":"audio/61b01e326f19.mp3","The question mark is the rest: what was drunk on Friday.":"audio/0536a6c4ce24.mp3","Now find the answer. Type the ℓ, tap the ℓ key, then type the mℓ. Then tap Check.":"audio/6cadeb4afdce.mp3","Here's a hint. Count the days from Monday to Thursday first.":"audio/e075df9e9724.mp3","That is what was drunk from Monday to Thursday. The question asks about Friday.":"audio/8f72161c215c.mp3","Count the days again: Monday to Thursday. Count the first and the last day.":"audio/d06bc4b0dc33.mp3","How much did Ravi drink from Monday to Thursday? Which number sentence?":"audio/bf7ac4b08607.mp3","Not yet. Count the days again: Monday to Thursday. Count the first and the last day.":"audio/3ef1c5a50a66.mp3","Not yet. The same amount each day is equal groups. Multiply.":"audio/8555e583f357.mp3","How much was left for Friday? Which number sentence?":"audio/d83eb10b27b7.mp3","Not yet. Drinking makes the soya milk less. Take away.":"audio/0a0e5041a649.mp3","Not yet. We take the whole ℓ OUT of the mℓ. Take away.":"audio/ac516510b419.mp3","Not yet. That amount is right, but the question asks for ℓ and mℓ.":"audio/3bd232a3a9a3.mp3","Not yet. That is Monday to Thursday. The question asks about Friday only.":"audio/0572e0878989.mp3","Yes! The box stays the same. Only some tins were taken out.":"audio/1e2876f846a3.mp3","Let's draw it. Only some tins were taken out. The box stays the same.":"audio/eccfeeee63e2.mp3","Draw the Before bar: the box, then tap + for each tin in it.":"audio/615d3df42574.mp3","Not yet. Read the story again: how many tins were in the box at first?":"audio/3e01ed237150.mp3","Not yet. Too many. Read the story again: how many tins at first?":"audio/f7b8417c09f0.mp3","Now the After bar: the same box, then tap + for each tin still in it.":"audio/555ec1d88457.mp3","Why is the After bar shorter?":"audio/a35521757162.mp3","Not yet. It is the same box. It stays the same.":"audio/1ff06744df0f.mp3","Not yet. Something was taken out, so it got lighter.":"audio/9dc2b89bf8f0.mp3","That is the mass of one tin. Now find the empty box.":"audio/e595149a4415.mp3","Find one tin first. Then take the tins left away from the After mass.":"audio/6d72ad78c8af.mp3","Yes! You used the tins taken out to find one tin, then took the tins left away to leave the box.":"audio/c43a28db575c.mp3","Not yet. Take away the two masses, Before and After.":"audio/b61252e1da28.mp3","Not yet. Something was taken out, so the mass went down. Find the difference: take away.":"audio/a3ae118fcd9e.mp3","What is the mass of one tin? Which number sentence?":"audio/da592f854ffa.mp3","Not yet. Use only the tins still in the box, After.":"audio/5318bfc4fdb4.mp3","Not yet. Equal masses: multiply.":"audio/77991a76036a.mp3","What is the mass of the empty box? Which number sentence?":"audio/8e5134d1c03c.mp3","Not yet. Take the tins away to leave only the box.":"audio/a136a5e83729.mp3","Not yet. That number is right, but on its own it doesn't say what it means. Answer the question in a full sentence with the unit, g.":"audio/ac0edd9c5fb1.mp3","Not yet. The question asks for the empty box.":"audio/d681c9827c1d.mp3","Not yet. The red bag is the heaviest.":"audio/db0de29b361b.mp3","The red bag is twice as heavy as the blue bag. Tap + for each unit in the red bag.":"audio/c6f6ee124583.mp3","Now find the answer. Type the kg, tap the kg key, then type the g. Then tap Check.":"audio/8cb67eb26ef3.mp3","Here's a hint. Start with the bag you can find straight away: the green bag is lighter than the blue bag.":"audio/186f8fb81712.mp3","Here's a hint. Divide to find the green bag. Multiply to find the red bag. Then add all three.":"audio/682f6f8e44eb.mp3","Don't forget the green bag. The question asks for all three bags.":"audio/12bac4996d9d.mp3","The green bag is the LIGHTER one. Lighter means divide, not multiply.":"audio/18847ccdeff8.mp3","What is the mass of the green bag? Which number sentence?":"audio/13927cbdaf7f.mp3","Not yet. The green bag is the lighter one. Lighter means a smaller number: divide.":"audio/0099adb24075.mp3","What is the mass of the red bag? Which number sentence?":"audio/dd8e7c0d1edc.mp3","Not yet. Compare with the blue bag, not the green bag.":"audio/656a9b2c8f87.mp3","What is the total mass of the three bags? Which number sentence?":"audio/81b2eef97561.mp3","Not yet. Add ALL three bags.":"audio/2a41cc38cd5f.mp3","Not yet. Add the blue bag too.":"audio/e6e3e5083a5b.mp3","Not yet. We take the whole kg OUT of the g. Take away.":"audio/ddca5e5b740d.mp3","Not yet. The question asks for all three bags.":"audio/8d947a50bdaf.mp3","Not yet. That mass is right, but the question asks for kg and g.":"audio/25e9bfcea18e.mp3","Not yet. Take away the other two bags.":"audio/1a5f6962bcdb.mp3","Not yet. Take away the green bag too.":"audio/4bf7b5b0b8a1.mp3","Yes, that's right. The pail is poured in, so we need to know how much it has.":"audio/0e457b7809e9.mp3","Let's draw it. The pail is poured in first, so we need its amount.":"audio/01318960a523.mp3","Not yet. That is only part of the fish tank. The whole bar is how much it can hold.":"audio/fba7479c9481.mp3","Not yet. That is how much less the pail has. The whole bar is how much the fish tank can hold.":"audio/1b4f6d648486.mp3","Which has less water: the pail, or the fish tank before pouring?":"audio/1a99eb44a996.mp3","Not yet. We know how much the fish tank can hold.":"audio/70a7d80725b8.mp3","Here's a hint. First find how much water is in the pail. Less means take away.":"audio/10a7fb1eedcb.mp3","That is the water in the fish tank after pouring. The question asks how much MORE fills it.":"audio/4b0e44e150df.mp3","Don't forget the pail. Its water was poured in too.":"audio/9f99c05e1fe1.mp3","Don't forget the water that was in the fish tank at first.":"audio/0d3d6e45ef70.mp3","Yes! You found the water in the pail first, then all the water in the fish tank, and took it away from what it can hold.":"audio/fe176be904d9.mp3","How much water is in the pail? Which number sentence?":"audio/4e85b6fac570.mp3","Not yet. The pail has LESS. Less means take away.":"audio/c47f22550c17.mp3","Not yet. The pail is compared with the water in the fish tank, not with what it can hold.":"audio/fd8d47e833bd.mp3","After pouring, how much water is in the fish tank? Which number sentence?":"audio/200cd8226654.mp3","How much more water fills the fish tank? Which number sentence?":"audio/2e73ec4d8314.mp3","Not yet. The empty part is inside what the fish tank can hold. Take away.":"audio/fdc370048f4f.mp3","Not yet. Take away ALL the water in the fish tank now.":"audio/05dde7f88188.mp3","Not yet. Add ALL the water in the fish tank, not only the pail's.":"audio/0ae4362a5ff2.mp3","This time, write it all from memory. On your paper, draw the bar model with the whole, the parts, and the question mark. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/3a008bb50657.mp3","On your paper, draw the bar model with the whole, the parts, and the question mark, then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.":"audio/968df6615409.mp3"};
+var Voice = (function(){
+  var ss = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+  var hasUtt = typeof window.SpeechSynthesisUtterance === "function";
+  var supported = !!(ss && hasUtt);
+  var voice = null, last = [], token = 0, started = false, primed = false, aud = null, audOk = false, log = [], clipSeq = 0;
+  var muted = false;
+  try{ muted = localStorage.getItem(MUTE_KEY)==="1"; }catch(e){}
+  // Device-voice choice (better-device-voice): score every English voice and take the best.
+  // Natural/neural voices (Edge "Online (Natural)", Chrome "Google ...", Apple Premium/Enhanced when Safari exposes them)
+  // beat compact ones; Apple's novelty and Eloquence voices are never used. A voice saved from the #voices panel wins.
+  var VKEY = "barmodel.voice";
+  var NOVELTY = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|deranged|hysterical|princess|vicki|victoria|bruce|agnes)\b/i;
+  var GOOD = /^(serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|daniel|arthur|oliver|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma)\b|google uk english female|google us english/i;
+  var FEMALE = /female|woman|girl|serena|kate|martha|stephanie|catherine|karen|moira|tessa|samantha|ava|allison|susan|zoe|nicky|fiona|libby|sonia|maisie|hollie|abbi|bella|luna|natasha|clara|jenny|aria|michelle|emma|hazel|zira/i;
+  function vlang(v){ return String(v.lang||"").toLowerCase().replace("_","-"); }
+  function score(v){
+    var n = String(v.name||""), l = vlang(v), s = 0;
+    if(!/^en(-|$)/.test(l) || NOVELTY.test(n)) return -1;
+    if(/premium/i.test(n)) s += 40; else if(/enhanced/i.test(n)) s += 30;
+    if(/natural|neural/i.test(n)) s += 35; else if(/^google/i.test(n)) s += 25;
+    if(/compact|espeak|festival|pico/i.test(n)) s -= 20;
+    if(l.indexOf("en-sg")===0) s += 10; else if(l.indexOf("en-gb")===0) s += 9; else if(/^en-(au|ie|nz)/.test(l)) s += 6; else if(l.indexOf("en-us")===0) s += 5; else if(/^en-(in|za)/.test(l)) s += 3;
+    if(GOOD.test(n)) s += 6;
+    if(FEMALE.test(n) && !/\bmale\b/i.test(n.replace(/female/ig,""))) s += 4; // match the recorded tutor voice (luna)
+    if(v.localService) s += 1; // works offline; ties only
+    return s;
+  }
+  function englishVoices(){
+    var vs = []; try{ vs = ss.getVoices() || []; }catch(e){}
+    return vs.filter(function(v){ return score(v) >= 0; }).sort(function(a,b){ return score(b)-score(a); });
+  }
+  function pick(){
+    if(!supported) return null;
+    var en = englishVoices(); if(!en.length) return null;
+    var want = null; try{ want = localStorage.getItem(VKEY); }catch(e){}
+    if(want){ for(var i=0;i<en.length;i++){ if(en[i].voiceURI===want || en[i].name===want) return en[i]; } }
+    return en[0];
+  }
+  function refresh(){ voice = pick(); }
+  if(supported){
+    refresh();
+    try{ if(ss.addEventListener) ss.addEventListener("voiceschanged", refresh); else ss.onvoiceschanged = refresh; }catch(e){ ss.onvoiceschanged = refresh; }
+  }
+  function clean(t){ return String(t).replace(/<[^>]+>/g,"").replace(/&amp;/g,"and").replace(/\s*[—–]\s*/g,", ").replace(/\s*\u2212\s*/g," minus ").replace(/…/g,".").replace(/[\uD800-\uDFFF]/g,"").replace(/[\u2190-\u27BF\u2B00-\u2BFF\uFE0F\u200D]/g,"").replace(/\s+/g," ").trim(); }
+  // units read out by the device voice (the line itself, and its clip key, stay as written)
+  function spoken(t){ return String(t).replace(/(\d+) m\u2113/g,function(m,n){ return n+(n==="1"?" millilitre":" millilitres"); }).replace(/(\d+) \u2113/g,function(m,n){ return n+(n==="1"?" litre":" litres"); })
+    .replace(/m\u2113/g,"millilitres").replace(/\u2113/g,"litres").replace(/(\d+) kg\b/g,function(m,n){ return n+(n==="1"?" kilogram":" kilograms"); }).replace(/(\d+) g\b/g,function(m,n){ return n+(n==="1"?" gram":" grams"); }).replace(/\bkg\b/g,"kilograms"); }
+  function sentences(t){ var m = t.match(/[^.!?]+[.!?]*/g) || [t]; return m.map(function(x){return x.trim();}).filter(Boolean); }
+  function utter(text){
+    var u = new SpeechSynthesisUtterance(spoken(text));
+    if(!voice) refresh();
+    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    return u;
+  }
+  // Recorded tutor clips (Grok voice luna), looked up by the exact cleaned line. A line with no clip, or a clip
+  // that fails to load or play, is read by the device voice instead. One <audio> element is reused:
+  // a play() inside the first tap unlocks it on iPad Safari.
+  // CLIPS_WHEN (optional, set by a page): recorded clips are used only while it returns true
+  function clipFor(l){ if(typeof CLIPS_WHEN==="function" && !CLIPS_WHEN()) return null; return (typeof CLIPS==="object" && CLIPS && Object.prototype.hasOwnProperty.call(CLIPS,l)) ? CLIPS[l] : null; }
+  function el(){ if(!aud){ try{ aud = new Audio(); aud.preload = "auto"; }catch(e){ aud = null; } } return aud; }
+  function unlockAudio(){ // inside a tap: play any clip muted, then stop, so later clips may play
+    if(audOk) return; var a = el(), any = null; if(!a) return;
+    for(var k in CLIPS){ if(Object.prototype.hasOwnProperty.call(CLIPS,k)){ any = CLIPS[k]; break; } }
+    if(!any) return;
+    var seq = ++clipSeq;
+    try{ a.muted = true; a.removeAttribute("data-line"); a.src = any; var p = a.play(); audOk = true;
+      var done = function(){ if(seq!==clipSeq) return; try{ a.pause(); }catch(e){} a.muted = false; };
+      if(p && p.then) p.then(done, function(){ a.muted = false; audOk = false; }); else done();
+    }catch(e){ a.muted = false; }
+  }
+  function primeSpeech(){ if(!supported || primed) return; primed = true; try{ var u = new SpeechSynthesisUtterance(" "); u.volume = 0; ss.speak(u); }catch(e){} }
+  function speakParts(parts, my, done){
+    if(!supported || !parts.length){ if(done) done(); return; }
+    var fired = false, fin = function(){ if(fired) return; fired = true; clearTimeout(tm); if(my===token && done) done(); };
+    parts.forEach(function(p, k){ var u = utter(p); if(k===parts.length-1 && done){ u.onend = fin; u.onerror = fin; } try{ ss.speak(u); }catch(e){} });
+    // safety net if the browser never fires onend: move on after a generous estimate
+    var tm = done ? setTimeout(fin, 2500 + parts.join(" ").length*95) : null;
+  }
+  function play(lines, immediate){
+    var my = ++token, items = lines.map(function(l){ return {l:l, f:clipFor(l)}; }), i = 0;
+    function next(){
+      if(my!==token || i>=items.length) return;
+      var it = items[i++];
+      var rest = items.slice(i).some(function(x){ return !!x.f; });
+      if(it.f){
+        var a = el(); if(!a){ fallback(it); return; }
+        var fired = false, go = function(ok){ if(fired) return; fired = true; if(my!==token) return; if(ok){ log.push({text:it.l, src:"clip", file:it.f}); next(); } else fallback(it); };
+        a.onended = function(){ go(true); }; a.onerror = function(){ go(false); };
+        try{ clipSeq++; a.muted = false; a.setAttribute("data-line", it.l); a.src = it.f; var p = a.play(); if(p && p.catch) p.catch(function(){ go(false); }); }catch(e){ go(false); }
+      } else {
+        log.push({text:it.l, src:"tts"});
+        // device-voice lines: queue them straight away unless a recorded clip must wait for them to finish
+        speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next();
+      }
+    }
+    function fallback(it){ log.push({text:it.l, src:"tts", failed:it.f}); var rest = items.slice(i).some(function(x){ return !!x.f; }); speakParts(sentences(it.l), my, rest ? next : null); if(!rest) next(); }
+    var busy = false; try{ if(supported){ busy = ss.speaking || ss.pending; ss.cancel(); } }catch(e){}
+    if(aud){ try{ aud.pause(); }catch(e){} }
+    // iOS sometimes drops a speak() issued in the same tick as cancel(); a short gap avoids that.
+    if(immediate || !busy) next(); else setTimeout(next, 60);
+  }
+  function say(){
+    var lines = Array.prototype.slice.call(arguments).filter(Boolean).map(clean).filter(Boolean);
+    if(!lines.length) return;
+    last = lines;
+    if(muted || !started) return;
+    play(lines, false);
+  }
+  return {
+    // a device with no speech engine still counts as having a voice when this page has recorded clips
+    supported: supported || (!!window.Audio && Object.keys(CLIPS||{}).length>0), say: say,
+    again: function(){ if(!muted && started && last.length) play(last,false); },
+    unlock: function(lines){ // must be called inside a tap handler (iPad Safari rule)
+      started = true; lines = (lines||[]).map(clean).filter(Boolean); if(lines.length) last = lines;
+      if(muted) return;
+      if(!(lines.length && clipFor(lines[0]))) unlockAudio();
+      if(lines.length && clipFor(lines[0])) primeSpeech();
+      if(lines.length) play(lines, true);
+    },
+    // prime(): inside a tap, so later lines (after a recorded clip ends) may speak or play on iPad
+    prime: function(){ started = true; if(muted) return; primeSpeech(); unlockAudio(); },
+    stop: function(){ token++; if(supported){ try{ ss.cancel(); }catch(e){} } if(aud){ try{ aud.pause(); }catch(e){} } },
+    setMuted: function(m){ muted = !!m; try{ localStorage.setItem(MUTE_KEY, muted?"1":"0"); }catch(e){} if(muted) this.stop(); },
+    get muted(){ return muted; }, get started(){ return started; },
+    get lastLine(){ return last.join(" "); },
+    voiceName: function(){ if(!voice) refresh(); return voice ? voice.name : null; },
+    clean: clean, clipFor: clipFor, get clips(){ return CLIPS; }, get clipLog(){ return log; }, get clipCount(){ var n=0; for(var k in CLIPS) n++; return n; }
+  };
+})();
+function tell(){ Voice.say.apply(null, arguments); }
+/* ===== shared engine: problems, checks, state ===== */
+var ROUND_SIZE=5;
+var KEY=G.key+".practice.v1", LKEY=G.key+".lesson.v1", MODE_KEY=G.key+".mode";
+function finish(p){ G.finish(p); return p; }
+function NUMS(t,p){ return G.numsIn ? G.numsIn(t,p) : numsIn(t); }
+function ansText(p){ return G.answerText ? G.answerText(p) : String(p.answer); }
+// every line the child sees before the answer must not give the answer away
+function revealOK(p){
+  var a=p.answer, story=NUMS(G.story(p)+" "+G.question(p),p);
+  if(!G.answerText && story.indexOf(a)>=0) return true;
+  var texts=G.hints(p).concat(G.wrongCandidates(p).filter(function(v){return v!==a;}).map(function(v){return G.wrongMsg(p,v);}));
+  G.build(p).forEach(function(s){ texts.push(s.ask); (s.choices||[]).forEach(function(c){ if(c[2]) texts.push(c[2]); }); if(s.low) texts.push(s.low,s.high); });
+  var g=G.guess(p,0), g2=G.guess(p,1); texts.push(g.q,g2.q);
+  var at=G.answerText?ansText(p):null; if(at && /^\d+$/.test(at)) at=null; // numbers are checked above; only times etc. by text
+  return texts.every(function(t){ return NUMS(t,p).indexOf(a)<0 && !(at && String(t).indexOf(at)>=0); });
+}
+function verify(p){
+  try{
+    if(!p || !G.verify(p)) return false;
+    if(!isWhole(p.answer) || p.answer<=0) return false;
+    if(!planOK(p)) return false;
+    if(!revealOK(p)) return false;
+    var hs=G.hints(p); if(hs.length!==3 || hs[2].indexOf("___")<0) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function generate(i, small, used){
+  for(var t=0;t<800;t++){
+    var p=G.make(i%ROUND_SIZE, !!small, pickNames(used||[],3)); p.small=!!small; finish(p);
+    if(verify(p)) return p;
+  }
+  throw new Error("could not generate problem");
+}
+function namesOf(p){ return (p.names||[]).slice(); }
+function makeRound(small, fromIndex, existing){
+  var list=[], used=[];
+  for(var i=0;i<ROUND_SIZE;i++){
+    if(existing && i<fromIndex){ list.push(existing[i]); used=used.concat(namesOf(existing[i])); continue; }
+    var p=generate(i,small,used); used=used.concat(namesOf(p)); list.push(p);
+  }
+  return list;
+}
+var BANK=G.BANK.map(function(s,i){ var p=G.fromSpec(s); p.id="L0"+(i+1); p.lesson=true; return finish(p); });
+
+/*WORK-START*/
+/* ---------- "Write the working": exam-style working, one line at a time ---------- */
+var WS = {
+  intro:"Now let's write the working, like in your exam. First draw the model on your paper. Then we build the working one line at a time. Every line comes from a part of the model.",
+  introShort:"Now let's write the working, one line at a time.",
+  offer:"Do you want to write the working on your own first? Tap I can do it. Or tap Teach me, and we'll build it line by line.",
+  memory:"This time, write it all from memory. On your paper, draw "+G.drawWhat+". Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  fast:"On your paper, draw "+G.drawWhat+", then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+  compare:"Here is the model working. Check your paper line by line. Tap a line to see where it comes from on the model. Tick each box when it is on your paper.",
+  write:"Now write it on your paper. Copy each line, then tick each box when it is on your paper.",
+  ticked:"All ticked. Every line is on your paper."
+};
+function wSay(t){ return String(t).replace(/ R /g," remainder ").replace(/ \u2212 /g," take away ").replace(/ \+ /g," plus ").replace(/ \u00d7 /g," times ").replace(/ \u00f7 /g," divided by ").replace(/ = /g," is "); }
+function workingPlan(p){
+  var lines=[], salt=(p.answer||0)+(p.salt||0);
+  var api={
+    line:function(o){
+      var okv=evalExpr(o.ok), ch=[{t:o.ok,ok:true}], seen={}; seen[o.ok]=1;
+      o.wrong.forEach(function(w){ if(!w || ch.length>=3 || seen[w[0]]) return; var v=evalExpr(w[0]); if(v===okv || v===null) return; seen[w[0]]=1; ch.push({t:w[0],nudge:w[1]}); });
+      var rr=(salt+lines.length)%ch.length; ch=ch.slice(rr).concat(ch.slice(0,rr));
+      var res = o.res!=null ? o.res : okv, rem=null;
+      if(o.rem){ var pr=o.ok.split(" "); rem={a:+pr[0], b:+pr[2], q:Math.floor(+pr[0]/+pr[2]), r:(+pr[0])%(+pr[2])}; res=rem.q+" R "+rem.r; }
+      var L={key:"l"+(lines.length+1), eq:o.ok+" = "+res, stmt:o.stmt, ask:o.ask, why:o.why, choices:ch, hl:o.hl, tag:o.tag};
+      if(o.check){ L.key="check"; L.check=true; }
+      if(rem) L.rem=rem;
+      if(o.conv) L.conv=true; // a change of unit after the last sum (1140 mℓ = 1 ℓ 140 mℓ)
+      L.say = "Yes! "+wSay(L.eq)+". "+L.stmt+" Why this line? "+L.why;
+      L.whySay = (o.check?"The check line. ":"Line "+(lines.length+1)+". ")+wSay(L.eq)+". Why this line? "+L.why;
+      lines.push(L);
+    },
+    answer:function(o){
+      var ach=[{t:o.right,ok:true}].concat(o.wrong.map(function(w){ return {t:w[0],nudge:w[1]}; }));
+      var ar=(salt+lines.length)%ach.length; ach=ach.slice(ar).concat(ach.slice(0,ar));
+      var AL={key:"ans", answer:true, stmt:o.right, choices:ach, hl:o.hl||["question"], tag:o.tag||"the question",
+        ask:o.ask||"The answer sentence. Read the question again. Which sentence answers it?", why:o.why};
+      AL.say="Yes! "+o.right+" Why this line? "+AL.why; AL.whySay="The answer sentence. "+o.right+" Why this line? "+AL.why;
+      lines.push(AL);
+    }
+  };
+  var meta=G.plan(p, api) || {};
+  return {lines:lines, unit:meta.unit,
+    checklist:[G.checkDraw,"Each number sentence, worked out, with a short statement","An answer sentence with the unit ("+(meta.unitLabel||meta.unit)+")","I checked my answer"]};
+}
+// every calculation line is right, every line has 3 different choices, and no wrong choice gives the same number
+function planOK(p){
+  var plan=workingPlan(p);
+  if(!plan.lines.length || !plan.lines[plan.lines.length-1].check) return false;
+  return plan.lines.every(function(L){
+    if(L.choices.length!==3 || L.choices.filter(function(c){return c.ok;}).length!==1) return false;
+    var ts={}; L.choices.forEach(function(c){ ts[c.t]=1; }); if(Object.keys(ts).length!==3) return false;
+    if(L.answer) return G.answerText ? L.stmt.indexOf(ansText(p))>=0 : NUMS(L.stmt,p).indexOf(p.answer)>=0;
+    if(L.rem){ var m=/^(\d+) \u00f7 (\d+) = (\d+) R (\d+)$/.exec(L.eq); if(!m) return false; var A=+m[1], B=+m[2], Q=+m[3], Rr=+m[4];
+      if(Q*B+Rr!==A || Rr<=0 || Rr>=B || Q<=0 || numsIn(L.stmt).indexOf(Q)<0) return false;
+      return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==A/B; }); }
+    var parts=L.eq.split(" = "), v=evalExpr(parts[0]); if(v!==evalExpr(parts[1]) || !isWhole(v) || v<=0) return false;
+    if(L.stmt.indexOf(parts[1])<0) return false;
+    return L.choices.every(function(c){ return c.ok || evalExpr(c.t)!==v; });
+  });
+}
+/*WORK-END*/
+
+/* ---------- state ---------- */
+var MODE="lesson"; try{ if(localStorage.getItem(MODE_KEY)==="practice") MODE="practice"; }catch(e){}
+function isLesson(){ return MODE==="lesson"; }
+var S;
+function lessonProblems(){ return JSON.parse(JSON.stringify(BANK)); }
+function freshLesson(){ return {lesson:true, round:1, idx:0, small:true, totalStars:0, problems:lessonProblems(), results:[], everPlayed:false, lifeCount:0}; }
+function fresh(){ return {lesson:false, round:1, idx:0, small:false, totalStars:0, problems:makeRound(false), results:[], everPlayed:false, lifeCount:0}; }
+function keyFor(s){ return s.lesson ? LKEY : KEY; }
+function save(){ try{ localStorage.setItem(keyFor(S), JSON.stringify(S)); }catch(e){} }
+function loadLesson(){ try{ var s=JSON.parse(localStorage.getItem(LKEY)||"null"); if(s && s.lesson && s.round>=1 && s.idx>=0 && s.idx<=ROUND_SIZE){ s.problems=lessonProblems(); s.results=s.results||[]; return s; } }catch(e){} return freshLesson(); }
+function loadPractice(){ try{ var s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s && !s.lesson && s.problems && s.problems.length===ROUND_SIZE && s.problems.every(verify)) return s; }catch(e){} return fresh(); }
+S = isLesson() ? loadLesson() : loadPractice();
+var P, cur;
+function startProblem(quiet){
+  if(S.idx>=ROUND_SIZE){ renderSummary(); return; }
+  P=S.problems[S.idx];
+  cur={phase:"predict", guess:G.guess(P,S.idx), prediction:null, b:0, count:0, bfb:null, typed:"", hints:0, tries:0, solved:false, hl:[], work:null, plan:null, fb:null, fresh:-1};
+  renderAll();
+  if(!quiet) tell(introLines());
+}
+function introLines(){ return [G.story(P), G.question(P), "Before we draw, make a guess. "+cur.guess.q].join(" "); }
+function guessNote(){
+  if(!cur.prediction) return "";
+  return cur.guess.note(cur.prediction, cur.prediction===cur.guess.right);
+}
+
+/* ---------- DOM ---------- */
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function renderHeader(){
+  $("stars").textContent="★ "+S.totalStars;
+  $("smallToggle").setAttribute("aria-pressed", S.small?"true":"false");
+  $("smallToggle").style.display = isLesson() ? "none" : "";
+  var h=""; for(var i=0;i<ROUND_SIZE;i++){ var cls=i<S.idx?"done":(i===S.idx?"cur":""); h+='<span class="'+cls+'">'+(i<S.idx?"★":(i+1))+'</span>'; }
+  $("progress").innerHTML=h;
+}
+var PHASES=[["predict","1 Guess"],["build","2 Draw"],["answer","3 Answer"],["working","4 Working"]];
+function renderStory(){
+  $("story").textContent=G.story(P); $("question").textContent=G.question(P);
+  var order=PHASES.map(function(x){return x[0];}), ci=(cur.phase==="life"?order.length:order.indexOf(cur.phase));
+  $("steps").innerHTML=PHASES.map(function(n,i){return '<span class="'+(i===ci?"on":(i<ci?"past":""))+'">'+n[1]+'</span>';}).join("");
+}
+function hlOn(k){ return !!(cur && cur.hl && cur.hl.indexOf(k)>=0); }
+/* generic bar model: G.model(P, view) -> {maxV, rows:[{name, cls, segs:[{v, at?, cls, label, hl, fresh}], unders:[{from,to,label,hl}], tail:{label,hl}}], braces:[{from,to,label,hl}]} */
+function view(){ return {b:cur.b, count:cur.count, solved:cur.solved, phase:cur.phase, building:cur.phase==="build", step:cur.b, fresh:cur.fresh}; }
+function renderBars(){
+  if(G.render){ var bx=$("model"); bx.innerHTML=G.render(P, view(), {hlOn:hlOn, esc:esc, W:bx.clientWidth||560}); $("question").classList.toggle("hl", hlOn("question")); return; }
+  var M=G.model(P, view()), box=$("model"), W=box.clientWidth||560, nameW=120;
+  var hasBrace=(M.braces||[]).length>0, tailRoom=M.rows.some(function(r){return r.tail;})?62:0;
+  var trackW=W-nameW-10, sc=(trackW-(hasBrace?100:12)-tailRoom)/M.maxV, x=function(v){return Math.round(v*sc);};
+  var h="";
+  M.rows.forEach(function(r,ri){
+    var t="", pos=0, under=(r.unders||[]).length>0;
+    (r.segs||[]).forEach(function(s){
+      var l=(s.at!=null?s.at:pos), w=s.v; pos=l+w;
+      t+='<div class="seg '+(s.cls||"main")+(s.hl&&hlOn(s.hl)?' hl':'')+(s.fresh?' fresh':'')+'"'+(s.id?' id="'+s.id+'"':'')+' style="left:'+x(l)+'px;width:'+Math.max(4,x(w)-3)+'px"><span class="inlab">'+(s.label!=null?esc(s.label):"")+'</span></div>';
+    });
+    if(!(r.segs||[]).length && r.empty) t+='<div class="emptyrow">'+esc(r.empty)+'</div>';
+    (r.unders||[]).forEach(function(u){ var on=u.hl&&hlOn(u.hl);
+      t+='<div class="ubrace'+(on?' hl':'')+'" style="left:'+x(u.from)+'px;width:'+Math.max(8,x(u.to-u.from)-3)+'px"></div><div class="ublab'+(on?' hl':'')+'" style="left:'+(x(u.from)+x(u.to-u.from)/2)+'px">'+esc(u.label)+'</div>'; });
+    if(r.tail) t+='<div class="tail'+(r.tail.hl&&hlOn(r.tail.hl)?' hl':'')+'" style="left:'+(x(pos)+6)+'px">'+esc(r.tail.label)+'</div>';
+    h+='<div class="row '+(r.cls||"A")+'" id="mrow'+ri+'"><div class="rowname">'+esc(r.name)+'</div><div class="track'+(under?' withunder':'')+'" id="mtrack'+ri+'">'+t+'</div></div>';
+  });
+  (M.braces||[]).forEach(function(b,bi){ h+='<div class="brace'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="brace'+bi+'"></div><div class="bracelab'+(b.hl&&hlOn(b.hl)?' hl':'')+'" id="bracelab'+bi+'">'+b.label+'</div>'; });
+  box.innerHTML=h;
+  (M.braces||[]).forEach(function(b,bi){
+    var r0=$("mrow"+b.from), r1=$("mrow"+b.to), t0=$("mtrack"+b.from), br=$("brace"+bi), lab=$("bracelab"+bi);
+    var left=t0.offsetLeft+x(M.maxV)+tailRoom+8, top=r0.offsetTop+4, bot=r1.offsetTop+56;
+    br.style.left=left+"px"; br.style.top=top+"px"; br.style.height=(bot-top)+"px";
+    lab.style.left=(left+24)+"px"; lab.style.top=((top+bot)/2-22)+"px";
+  });
+  $("question").classList.toggle("hl", hlOn("question"));
+}
+function setCaption(t){ $("caption").innerHTML=t; }
+/* the check step sits under the working panel (its own slot), so the working keeps its place and Home never covers it */
+function renderBarBtns(){ var el=$("csslot")||$("barbtns"); el.innerHTML=(cur && cur.phase==="working" && cur.ck) ? ckHTML() : ""; bindCk(); }
+/* ---------- "Check your answer" (29 Oct 2026): an optional inverse sum after the answer, against calculation errors.
+   She works the check line's sum on paper and types what she gets; right = 1 reward star once per problem.
+   Never a gate: the working goes on beside it, and "Not now" hides it. ---------- */
+var CK_SAY={intro:"Want a star? Check your answer by working backwards. Work out this sum on your paper, then type what you get.",
+  no:"Not yet. Work it again on your paper, one step at a time, then type what you get.", type:"Type the number you get on the small number pad.", later:"That's fine. You can check it later."};
+function ckLine(){ var ls=cur.plan.lines; for(var i=ls.length-1;i>=0;i--) if(ls[i].check) return ls[i]; return null; }
+function ckStart(){ var L=ckLine(); if(!L) return null; var ok=L.choices.filter(function(c){ return c.ok; })[0], rhs=L.eq.split(" = ")[1];
+  return {state:"open", typed:"", fb:null, tries:0, expr:ok.t, rhs:rhs, money:/^\$/.test(rhs), target:evalExpr(rhs), stmt:L.stmt}; }
+function ckVal(t,c){ if(c.money){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); return m ? (+m[1])*100+(m[2]?+m[2]:0) : null; } return /^\d+$/.test(t) ? parseInt(t,10) : null; }
+function ckHTML(){ var c=cur.ck;
+  if(c.state==="closed") return '<div class="csstep small" id="csStep"><button class="ghost" id="csOpen">✅ Check my answer (⭐)</button></div>';
+  if(c.state==="done") return '<div class="csstep done" id="csStep"><b>✅ Checked:</b> '+esc(c.expr)+' = '+esc(c.rhs)+' ⭐</div>';
+  var keys=[1,2,3,4,5,6,7,8,9,0].map(function(k){ return '<button data-cs="'+k+'">'+k+'</button>'; }).join("")+(c.money?'<button data-cs=".">.</button>':'')+'<button data-cs="del" aria-label="delete">⌫</button>';
+  return '<div class="csstep" id="csStep"><div class="csh">✅ Check your answer <span class="muted">(if you like, ⭐ 1 star)</span></div>'+
+    '<p>Work backwards on your paper: <b class="csexpr" id="csExpr">'+esc(c.expr)+' = ?</b></p>'+
+    '<div class="csrow"><span class="ansbox" id="csBox">'+(c.money&&c.typed?'$':'')+(esc(c.typed)||'&nbsp;')+'</span><button class="big green" id="csGo">Check it ✓</button><button class="ghost" id="csLater">Not now</button></div>'+
+    '<div class="cspad">'+keys+'</div><div class="feedback'+(c.fb?' '+c.fb.cls:'')+'" id="csFb">'+(c.fb?esc(c.fb.msg):'')+'</div></div>'; }
+function ckKey(){ var c=cur.ck; return "check:"+((MathHistory.key && MathHistory.key()) || ((S.lesson?"L":"P")+S.round+":"+S.idx+":"+P.answer)); }
+function bindCk(){ var c=cur && cur.ck, box=$("csslot")||$("barbtns"); if(!c || !box) return;
+  box.querySelectorAll("[data-cs]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-cs");
+    if(k==="del") c.typed=c.typed.slice(0,-1); else if(k==="."){ if(c.typed.indexOf(".")<0 && c.typed.length<6) c.typed=(c.typed||"0")+"."; } else if(c.typed.length<7) c.typed=(c.typed==="0"?"":c.typed)+k;
+    $("csBox").innerHTML=(c.money&&c.typed?'$':'')+(esc(c.typed)||'&nbsp;'); }; });
+  if($("csGo")) $("csGo").onclick=function(){ var v=ckVal(c.typed,c);
+    if(v===null){ c.fb={cls:"try",msg:CK_SAY.type}; renderBarBtns(); tell(CK_SAY.type); return; }
+    if(v===c.target){ c.state="done"; c.fb=null; renderBarBtns(); if(S.results[S.idx]) S.results[S.idx].checked=true;
+      try{ window.dispatchEvent(new CustomEvent("mathgames:checkdone",{detail:{key:ckKey()}})); }catch(e){}
+      tell("Yes! "+wSay(c.expr)+" is "+c.rhs+". "+c.stmt+" Your answer checks out."); return; }
+    c.tries++; c.typed=""; c.fb={cls:"try",msg:CK_SAY.no}; renderBarBtns(); tell(CK_SAY.no); };
+  if($("csLater")) $("csLater").onclick=function(){ c.state="closed"; renderBarBtns(); tell(CK_SAY.later); };
+  if($("csOpen")) $("csOpen").onclick=function(){ c.state="open"; renderBarBtns(); tell(CK_SAY.intro); };
+}
+
+/* ---------- panels ---------- */
+function renderPanel(){
+  var el=$("panel"), h="";
+  if(cur.phase==="predict"){
+    h+='<h2>1. Make a guess</h2><p>'+esc(cur.guess.q)+' There is no wrong guess!</p>';
+    h+='<div class="choices">'+cur.guess.choices.map(function(c){return '<button class="choice" data-pred="'+esc(c[0])+'">'+esc(c[1])+'</button>';}).join("")+'</div>';
+  } else if(cur.phase==="build"){
+    var steps=G.build(P), s=steps[cur.b];
+    h+='<h2>2. Draw the model ✏️</h2>'+(cur.b===0&&cur.prediction?'<p class="muted">'+esc(guessNote())+'</p>':'');
+    h+='<p class="wask" id="bask">'+esc(s.ask)+'</p>';
+    if(s.type==="count"){
+      h+='<div class="cntrow"><button class="ghost" id="cMinus" aria-label="take one away">− 1</button><span class="ansbox" id="cnt">'+cur.count+'</span><button class="ghost" id="cPlus" aria-label="add one">+ 1 '+esc(s.unitName||"unit")+'</button></div>';
+      h+='<div class="rowbtns"><button class="big green" id="cDone">That\'s right ✓</button></div>';
+    } else {
+      h+='<div class="choices wchoices sent">'+s.choices.map(function(c,i){ return '<button class="choice'+(cur.bfb&&cur.bfb.i===i?' no':'')+'" data-bc="'+i+'">'+esc(c[1])+'</button>'; }).join('')+'</div>';
+    }
+    h+='<div class="feedback'+(cur.bfb?' try':'')+'" id="bfb">'+(cur.bfb?esc(cur.bfb.msg):'')+'</div>';
+    h+='<p class="muted">Step '+(cur.b+1)+' of '+steps.length+'</p>';
+  } else if(cur.phase==="answer"){
+    var al=G.answerLine(P);
+    h+='<h2>3. Your answer</h2>';
+    h+='<div class="ansline"><span>'+esc(al[0])+'</span><span class="ansbox" id="ansbox">'+(esc(typedShow())||"&nbsp;")+'</span><span>'+esc(al[1])+'</span></div>';
+    h+='<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(function(k){return '<button data-k="'+k+'">'+k+'</button>';}).join("")+(dotPad()?'<button data-k="." aria-label="'+(padSep()?esc(padSep()):'point')+'"'+(padSep()?' class="sepkey"':'')+'>'+(padSep()?esc(padSep()):'.')+'</button><button data-k="0">0</button><button data-k="del" aria-label="delete">⌫</button><button data-k="clr" class="padwide">C</button>':'<button data-k="del" aria-label="delete">⌫</button><button data-k="0">0</button><button data-k="clr">C</button>')+'</div>';
+    h+='<div class="feedback'+(cur.fb?' '+cur.fb.cls:'')+'" id="feedback">'+(cur.fb?esc(cur.fb.msg):'')+'</div>';
+    h+=hintHTML();
+    h+='<div class="rowbtns"><button class="big green" id="checkBtn">Check ✓</button>'+(cur.hints<3?'<button class="ghost" id="hintBtn">Hint '+(cur.hints+1)+' of 3</button>':'')+'</div>';
+  } else if(cur.phase==="working"){
+    h+=renderWorking();
+  } else if(cur.phase==="life"){
+    h+=lifeHTML(cur.life)+'<div class="rowbtns" style="justify-content:center"><button class="big green" id="lifeBtn">Next problem ➡️</button></div>';
+  }
+  el.innerHTML=h; bindPanel();
+}
+function dotPad(){ return !!(G.decimalPad && G.decimalPad(P)); }
+function padSep(){ return G.padSep ? G.padSep(P) : null; }
+function typedShow(){ return G.fmtTyped ? G.fmtTyped(cur.typed, P) : cur.typed; }
+function hintList(p){ return G.hints(p||P); }
+function hintHTML(){ var h="", hs=hintList(); for(var i=0;i<cur.hints;i++) h+='<div class="hint">💡 '+esc(hs[i])+'</div>'; return h; }
+function feedback(cls,msg){ cur.fb={cls:cls,msg:msg}; var f=$("feedback"); f.className="feedback "+cls; f.innerHTML=esc(msg); }
+/* feedback rule (25 Oct 2026): a wrong step says "Not yet" plus a pointer to the next thing to check */
+function notYet(m){ return /^Not yet\b/.test(m) ? m : "Not yet. "+m; }
+function notYetSay(m){ return ["Not yet.", String(m).replace(/^Not yet\.\s*/,"")]; }
+function check(){
+  if(cur.typed===""){ feedback("try","Type your answer on the number pad."); tell("Type your answer on the number pad."); return; }
+  var v=G.parseTyped ? G.parseTyped(cur.typed,P) : parseInt(cur.typed,10);
+  if(v===null){ var fm=G.formatMsg(P,cur.typed); feedback("try",fm); tell(fm); return; }
+  if(v===P.answer){
+    cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:cur.prediction===cur.guess.right, tries:cur.tries+1, hints:cur.hints};
+    startWorking(); renderAll(); tell(G.praise(P), workingEntryLines().join(" ")); return;
+  }
+  cur.tries++; MathHistory.miss("answer"); var msg=G.wrongMsg(P,v); msg=notYet(msg); feedback("try",msg); tell.apply(null, notYetSay(msg));
+}
+/* ---------- life cards ---------- */
+function lifeCard(i){ return G.LIFE[((i%G.LIFE.length)+G.LIFE.length)%G.LIFE.length]; }
+function lifeHTML(L){ return '<div class="life" id="lifeCard"><div class="lemoji">'+L.emoji+'</div><h3>Where do we use this in real life?</h3><p class="center" style="font-weight:700;margin:0">'+esc(L.title)+'</p><p>'+esc(L.text)+'</p><p class="rule">'+esc(L.rule)+'</p></div>'; }
+
+/* ---------- working step UI (same pattern as Games 1 and 3) ---------- */
+var FAST_FROM=3;
+function isMemoryProblem(){ return S.idx===2; } // problem 3 of 5: write it all from memory first
+function startWorking(){
+  cur.plan=workingPlan(P);
+  var memory=isMemoryProblem(), offer=!memory && S.idx>=FAST_FROM;
+  if(memory||offer) MathHistory.paperOffer();
+  cur.work={mode:memory?"memory":(offer?null:"guided"), stage:memory?"paper":(offer?"choose":"ask"), k:0, fb:null, wrong:0, ticks:cur.plan.checklist.map(function(){return false;}), open:-1, after:null};
+  cur.hl = cur.work.stage==="ask" ? cur.plan.lines[0].hl : [];
+  cur.phase="working"; cur.ck=ckStart();
+}
+function workingEntryLines(){ var w=cur.work; if(w.stage==="paper") return [WS.memory]; if(w.stage==="choose") return [WS.offer]; return [S.idx<2?WS.intro:WS.introShort, cur.plan.lines[0].ask]; }
+function wLabel(L,i){ return L.answer?'Ans':(L.check?'Check':String(i+1)); }
+function sheetHTML(upto,on,next,tap){
+  var ls=cur.plan.lines, h='<div class="sheet" id="sheet">', tg=tap?'button':'div';
+  for(var i=0;i<upto;i++){ var L=ls[i];
+    h+='<'+tg+' class="wline'+(on===i?' on':'')+(L.check?' wcheck':'')+'" data-wl="'+i+'" id="wline'+i+'"><span class="wnum">'+wLabel(L,i)+'</span><span class="wbody">'+
+      (L.answer?'<span class="wans">'+esc(L.stmt)+'</span>':'<span class="weq">'+esc(L.eq)+(L.check?' ✓':'')+'</span><span class="wst">'+esc(L.stmt)+'</span>')+'</span></'+tg+'>'; }
+  if(next!=null){ var X=ls[next]; h+='<div class="wline next" id="wlineNext"><span class="wnum">'+wLabel(X,next)+'</span><span class="wbody">'+(X.answer?'Answer sentence?':(X.check?'Check?':'Number sentence?'))+'</span></div>'; }
+  return h+'</div>';
+}
+function whyHTML(L){ return '<div class="why" id="whyBox"><div class="whyh">🤔 Why this line?</div>'+esc(L.why)+(L.check?'':'<div class="from">Comes from: <b>'+esc(L.tag)+'</b> (glowing on the model)</div>')+'</div>'; }
+function renderWorking(){
+  var w=cur.work, ls=cur.plan.lines, h='<h2>4. Write the working ✏️</h2>';
+  if(w.stage==="choose"){
+    h+='<p>Write the working on your own first, or build it with me line by line?</p><div class="rowbtns"><button class="big green" id="fastBtn">I can do it ✏️</button><button class="ghost" id="teachBtn">Teach me line by line</button></div>';
+  } else if(w.stage==="paper"){
+    h+='<p class="prompt">'+(w.mode==="memory"?'From memory ✏️':'Your turn ✏️')+'</p><p>'+(w.mode==="memory"?'Draw '+esc(G.drawWhat)+'. Then write:':'On your paper, write:')+'</p>';
+    h+='<ul class="wlist"><li>each number sentence with a short statement</li><li>the answer sentence with the unit</li><li>a check: put the answer back and see if it works</li></ul><p class="muted">The model working stays hidden until you tap the button.</p><div class="rowbtns"><button class="big green" id="wroteBtn">I\'ve written it ✓</button></div>';
+  } else if(w.stage==="ask"||w.stage==="why"){
+    var shown=w.stage==="why"?w.k+1:w.k;
+    if(w.stage==="ask" && w.k===0 && S.idx<2) h+='<p class="muted wintro">Each line: a number sentence, then a short statement. The last lines are the answer sentence and the check.</p>';
+    h+=sheetHTML(shown, w.stage==="why"?w.k:null, w.stage==="ask"?w.k:null, false);
+    if(w.stage==="ask"){ var L=ls[w.k];
+      h+='<p class="wask" id="wask">'+esc(L.ask)+'</p><div class="choices wchoices'+(L.answer?' sent':'')+'">'+L.choices.map(function(c,i){ return '<button class="choice'+(w.fb&&w.fb.i===i?' no':'')+'" data-wc="'+i+'">'+esc(c.t)+'</button>'; }).join('')+'</div>';
+      h+='<div class="feedback'+(w.fb?' try':'')+'" id="wfb">'+(w.fb?esc(w.fb.msg):'')+'</div>';
+    } else { h+=whyHTML(ls[w.k]); h+='<div class="rowbtns">'+(w.k<ls.length-1?'<button class="big" id="nextLineBtn">Next line ➡️</button>':'<button class="big green" id="toPaperBtn">Now write it on paper ✏️</button>')+'</div>'; }
+  } else if(w.stage==="check"){
+    h+='<p class="wintro">'+(w.after==="compare"?'<b>Compare</b> with your paper.':'<b>Now write it on your paper.</b>')+' Tap a line to see why.</p>'+sheetHTML(ls.length,w.open,null,true);
+    if(w.open>=0) h+=whyHTML(ls[w.open]);
+    h+='<div class="checklist" id="checklist">'+cur.plan.checklist.map(function(t,i){ return '<button class="tick" data-tick="'+i+'" aria-pressed="'+(w.ticks[i]?'true':'false')+'"><span class="box">'+(w.ticks[i]?'✅':'⬜')+'</span><span>'+esc(t)+'</span></button>'; }).join('')+'</div>';
+    var all=w.ticks.every(Boolean); h+='<div class="rowbtns"><button class="big green" id="workDoneBtn"'+(all?'':' disabled')+'>'+(all?'Done ✓':'Tick all '+w.ticks.length+' first')+'</button></div>';
+  }
+  return h;
+}
+function finalCaption(){ return G.caption(P, view()); }
+function workCaption(){
+  var w=cur.work; if(!w) return finalCaption();
+  var i=(w.stage==="ask"||w.stage==="why")?w.k:(w.stage==="check"?w.open:-1);
+  if(i<0) return finalCaption()+(w.stage==="paper"&&w.mode==="memory"?" Draw it on your paper.":"");
+  var L=cur.plan.lines[i];
+  return (L.answer?"The answer sentence":(L.check?"The check line":"Line "+(i+1)))+" comes from <b>"+esc(L.tag)+"</b>. Look for the glow ✨";
+}
+function workRefresh(){ setCaption(workCaption()); renderBars(); renderPanel(); }
+function bindWorking(el){
+  var w=cur.work; if(!w) return; var ls=cur.plan.lines;
+  el.querySelectorAll("[data-wc]").forEach(function(b){ b.onclick=function(){ var L=ls[w.k], c=L.choices[+b.getAttribute("data-wc")];
+    if(c.ok){ w.stage="why"; w.fb=null; workRefresh(); tell(L.say); }
+    else { w.wrong++; MathHistory.miss("working"); w.fb={i:+b.getAttribute("data-wc"), msg:c.nudge}; cur.hl=L.hl; workRefresh(); tell(c.nudge); } }; });
+  if($("nextLineBtn")) $("nextLineBtn").onclick=function(){ w.k++; w.stage="ask"; w.fb=null; cur.hl=ls[w.k].hl; workRefresh(); tell(ls[w.k].ask); };
+  if($("toPaperBtn")) $("toPaperBtn").onclick=function(){ w.stage="check"; w.after="write"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.write); };
+  if($("teachBtn")) $("teachBtn").onclick=function(){ w.mode="guided"; w.stage="ask"; w.k=0; cur.hl=ls[0].hl; workRefresh(); tell(WS.introShort, ls[0].ask); };
+  if($("fastBtn")) $("fastBtn").onclick=function(){ w.mode="fast"; w.stage="paper"; cur.hl=[]; workRefresh(); tell(WS.fast); };
+  if($("wroteBtn")) $("wroteBtn").onclick=function(){ w.stage="check"; w.after="compare"; w.open=-1; cur.hl=[]; workRefresh(); tell(WS.compare); };
+  el.querySelectorAll("button[data-wl]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-wl"); w.open=i; cur.hl=ls[i].hl; workRefresh(); tell(ls[i].whySay); }; });
+  el.querySelectorAll("[data-tick]").forEach(function(b){ b.onclick=function(){ var i=+b.getAttribute("data-tick"); w.ticks[i]=!w.ticks[i]; renderPanel(); if(w.ticks.every(Boolean)) tell(WS.ticked); }; });
+  if($("workDoneBtn")) $("workDoneBtn").onclick=function(){ if(!w.ticks.every(Boolean)) return;
+    if(S.results[S.idx]) S.results[S.idx].working={mode:w.mode, wrongChoices:w.wrong};
+    if(w.mode==="memory"||w.mode==="fast") MathHistory.paper();
+    cur.hl=[]; afterWorking(); }; /* the Explain step was removed (Jeremy, 24 Oct 2026): go straight to the real-life card or the next problem */
+}
+/* ---------- build step: she draws the model ---------- */
+function buildDone(s){
+  cur.bfb=null; cur.fresh=cur.b; cur.b++; cur.count=0; var steps=G.build(P);
+  if(cur.b>=steps.length){ cur.phase="answer"; cur.hl=[]; renderAll(); tell(s.done, G.answerAsk(P)); }
+  else { renderAll(); tell(s.done, steps[cur.b].ask); }
+}
+function bindPanel(){
+  var el=$("panel");
+  el.querySelectorAll("[data-pred]").forEach(function(b){ b.onclick=function(){ cur.prediction=b.getAttribute("data-pred"); cur.phase="build"; cur.b=0; cur.count=0; renderAll();
+    tell(guessNote(), "Now let's draw the model.", G.build(P)[0].ask); }; });
+  el.querySelectorAll("[data-bc]").forEach(function(b){ b.onclick=function(){ var s=G.build(P)[cur.b], c=s.choices[+b.getAttribute("data-bc")];
+    if(c[0]===s.right) buildDone(s); else { MathHistory.miss("model"); cur.bfb={i:+b.getAttribute("data-bc"), msg:c[2]}; renderPanel(); tell(c[2]); } }; });
+  if($("cPlus")) $("cPlus").onclick=function(){ if(cur.count<12){ cur.count++; cur.fresh=-2; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cMinus")) $("cMinus").onclick=function(){ if(cur.count>0){ cur.count--; cur.bfb=null; renderBars(); $("cnt").textContent=cur.count; } };
+  if($("cDone")) $("cDone").onclick=function(){ var s=G.build(P)[cur.b];
+    if(cur.count===s.target) buildDone(s); else { MathHistory.miss("model"); var m=cur.count<s.target?s.low:s.high; cur.bfb={i:-1,msg:m}; renderPanel(); tell(m); } };
+  el.querySelectorAll("[data-k]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-k");
+    var lim=dotPad()?7:5;
+    if(k==="del") cur.typed=cur.typed.slice(0,-1); else if(k==="clr") cur.typed="";
+    else if(k==="."){ if(cur.typed.indexOf(".")<0 && cur.typed.length<lim) cur.typed=(cur.typed===""?"0":cur.typed)+"."; }
+    else if(cur.typed.length<lim) cur.typed=(cur.typed==="0"?"":cur.typed)+k;
+    $("ansbox").innerHTML=esc(typedShow())||"&nbsp;"; }; });
+  if($("hintBtn")) $("hintBtn").onclick=function(){ if(cur.hints<3) MathHistory.hint(); cur.hints=Math.min(3,cur.hints+1); if(cur.hints>=2) cur.hl=G.hintHL(P); renderBars(); renderPanel(); tell("Here's a hint. "+hintList()[cur.hints-1].replace(/___/g,"blank")); };
+  if($("checkBtn")) $("checkBtn").onclick=check;
+  bindWorking(el);
+  if($("lifeBtn")) $("lifeBtn").onclick=completeProblem;
+}
+var LIFE_AFTER=[1,3]; // after problems 2 and 4
+function afterWorking(){
+  if(LIFE_AFTER.indexOf(S.idx)>=0){ cur.life=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save(); cur.phase="life"; renderAll(); tell("Where do we use this in real life? "+cur.life.text+" "+cur.life.rule); }
+  else completeProblem();
+}
+function completeProblem(){ var r=S.results[S.idx]; S.totalStars++; S.idx++; S.everPlayed=true; save(); MathHistory.item(!!(r && r.tries===1 && !r.hints), S.idx>=ROUND_SIZE); startProblem(); }
+function renderSummary(){
+  renderHeader(); var res=S.results.filter(Boolean), pr=res.filter(function(r){return r.predictionRight;}).length;
+  $("story").textContent="Round "+S.round+" finished! You got all "+ROUND_SIZE+" stars this round."; $("question").textContent=""; $("steps").innerHTML="";
+  setCaption("Your guesses were right "+pr+" out of "+res.length+" times. "+G.summaryRule);
+  $("model").innerHTML=""; $("barbtns").innerHTML=""; if($("csslot")) $("csslot").innerHTML="";
+  var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
+  var btn = S.lesson ? '<button class="big" id="newRound">Play these 5 again</button><button class="ghost" id="toPractice">Try 5 new ones in Practice 🎲</button>'
+                     : '<button class="big" id="moreBtn">5 more ➡️</button>';
+  $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
+  tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); MathHistory.restart(); };
+  if($("newRound")) $("newRound").onclick=again;
+  if($("moreBtn")) $("moreBtn").onclick=again;
+  if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
+}
+function renderAll(){
+  renderHeader(); renderStory();
+  setCaption(cur.phase==="working"?workCaption():finalCaption());
+  renderBars(); renderBarBtns(); renderPanel();
+}
+/* ---------- controls ---------- */
+$("smallToggle").onclick=function(){
+  if(isLesson()) return;
+  S.small=!S.small; if(S.idx>=ROUND_SIZE){ save(); renderHeader(); return; }
+  S.problems=makeRound(S.small,S.idx,S.problems); save(); startProblem(true);
+  tell(S.small?"Small numbers are on.":"Big numbers are back on.", introLines());
+};
+$("resetBtn").onclick=function(){ if(!confirm("Start again from the beginning? Stars will go back to 0.")) return; Voice.stop(); S=isLesson()?freshLesson():fresh(); save(); startProblem(); MathHistory.restart(); };
+function renderVoiceCtl(){
+  var mb=$("muteBtn"), ab=$("againBtn"); mb.style.display=ab.style.display=Voice.supported?"":"none"; if(!Voice.supported) return;
+  mb.textContent=Voice.muted?"🔇 Voice off":"🔊 Voice on"; mb.setAttribute("aria-pressed",Voice.muted?"true":"false"); mb.classList.toggle("off",Voice.muted); ab.disabled=Voice.muted;
+}
+$("muteBtn").onclick=function(){ Voice.setMuted(!Voice.muted); renderVoiceCtl(); if(!Voice.muted){ if(!Voice.started) Voice.unlock([]); Voice.again(); } };
+$("againBtn").onclick=function(){ Voice.again(); };
+function renderModeCtl(){
+  var b=$("modeBtn"); b.querySelectorAll("[data-m]").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-m")===MODE); });
+  b.setAttribute("aria-pressed", isLesson()?"false":"true");
+  $("startNote").textContent = isLesson() ? "Lesson mode: 5 problems, from easy to exam level, read by this device's voice. Your progress is saved." : "Practice mode: 5 new random problems at a time, read by this device's voice.";
+  $("startTutor").textContent = Voice.supported ? "Start with my tutor 🔊" : "Start ▶";
+  $("startQuiet").style.display = Voice.supported ? "" : "none";
+}
+$("modeBtn").onclick=function(){
+  Voice.stop(); save();
+  MODE=isLesson()?"practice":"lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){}
+  S=isLesson()?loadLesson():loadPractice(); save(); renderModeCtl(); startProblem(true);
+  if(S.idx<ROUND_SIZE){ if(!Voice.started) Voice.unlock([introLines()]); else tell(introLines()); }
+  MathHistory.restart();
+};
+$("startTutor").onclick=function(){
+  if(Voice.muted){ Voice.setMuted(false); renderVoiceCtl(); }
+  $("startScreen").style.display="none";
+  var first=(S.idx>=ROUND_SIZE)?["Hello! Welcome back."]:[(S.everPlayed||S.idx>0||S.round>1)?"Hello! Welcome back.":"Hello! I'm your maths tutor, and I'll help you, step by step.", introLines()];
+  Voice.unlock(first); // speaking inside this tap unlocks speech on iPad Safari
+  MathHistory.restart();
+};
+$("startQuiet").onclick=function(){ Voice.setMuted(true); renderVoiceCtl(); $("startScreen").style.display="none"; Voice.unlock([]); MathHistory.restart(); };
+renderModeCtl(); renderVoiceCtl();
+MathHistory.attach(function(){ return {mode:MODE, remaining:ROUND_SIZE-S.idx, open:$("startScreen").style.display==="none"}; });
+/* host for "Test yourself" (MathCheckup): the tutor voice, and opening the Lesson at the step a test answer needs */
+if(typeof CHECKUP_CLIPS==="object" && CHECKUP_CLIPS){ for(var ckk in CHECKUP_CLIPS){ if(Object.prototype.hasOwnProperty.call(CHECKUP_CLIPS,ckk) && !Object.prototype.hasOwnProperty.call(CLIPS,ckk)) CLIPS[ckk]=CHECKUP_CLIPS[ckk]; } }
+window.MathHost={
+  say:function(){ tell.apply(null, arguments); },
+  stop:function(){ Voice.stop(); },
+  prime:function(){ Voice.prime(); },
+  // t = {idx: Lesson problem 0-4, phase: "build" (with b = drawing step) | "answer" | "working"}
+  openLesson:function(t){
+    Voice.stop(); save();
+    if(!isLesson()){ MODE="lesson"; try{ localStorage.setItem(MODE_KEY,MODE); }catch(e){} }
+    S=loadLesson(); var i=Math.max(0,Math.min(ROUND_SIZE-1,(t&&t.idx)|0)); S.idx=i; S.results=(S.results||[]).slice(0,i); save();
+    renderModeCtl(); $("startScreen").style.display="none";
+    startProblem(true);
+    var steps=G.build(P), ph=t&&t.phase;
+    if(ph==="build"||ph==="answer"||ph==="working") cur.prediction=cur.guess.right;
+    if(ph==="build"){ cur.phase="build"; cur.b=Math.max(0,Math.min(steps.length-1,t.b|0)); renderAll(); tell(G.story(P), G.question(P), steps[cur.b].ask); }
+    else if(ph==="answer"){ cur.phase="answer"; cur.b=steps.length; renderAll(); tell(G.story(P), G.question(P), G.answerAsk(P)); }
+    else if(ph==="working"){ cur.b=steps.length; cur.solved=true; S.results[S.idx]={prediction:cur.prediction, predictionRight:true, tries:0, hints:0, review:true};
+      startWorking(); cur.work.mode="guided"; cur.work.stage="ask"; cur.hl=cur.plan.lines[0].hl; renderAll(); tell(G.story(P), G.question(P), WS.introShort, cur.plan.lines[0].ask); }
+    else tell(introLines());
+    MathHistory.restart();
+  }
+};
+window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
+
+/* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
+function lessonScript(){
+  var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
+  var keepP=P, keepCur=cur;
+  BANK.forEach(function(p,i){
+    P=p; var g=G.guess(p,i); cur={guess:g, prediction:null};
+    add(introLines()); g.choices.forEach(function(c){ add(g.note(c[0], c[0]===g.right)); });
+    add("Now let's draw the model."); G.build(p).forEach(function(s){ add(s.ask); add(s.done); (s.choices||[]).forEach(function(c){ add(c[2]); }); add(s.low); add(s.high); });
+    add(G.answerAsk(p));
+    G.hints(p).forEach(function(h){ add("Here's a hint. "+h.replace(/___/g,"blank")); });
+    G.wrongCandidates(p).forEach(function(v){ if(v!==p.answer) notYetSay(notYet(G.wrongMsg(p,v))).forEach(add); });
+    add(G.praise(p));
+    workingPlan(p).lines.forEach(function(L){ add(L.ask); add(L.say); add(L.whySay); L.choices.forEach(function(c){ add(c.nudge); }); });
+  });
+  for(var k in WS) add(WS[k]);
+  for(var k2 in CK_SAY) add(CK_SAY[k2]);
+  G.LIFE.forEach(function(L){ add("Where do we use this in real life? "+L.text+" "+L.rule); });
+  ["Hello! I'm your maths tutor, and I'll help you, step by step.","Hello! Welcome back.","Not yet.","Type your answer on the number pad.","You finished the round and got all 5 stars!"].forEach(add);
+  P=keepP; cur=keepCur;
+  return Object.keys(out);
+}
+/* test hook (no personal data; used by automated checks) */
+window.__game={answerText:ansText, ckSay:CK_SAY, checkStep:function(){ return cur && cur.ck; }, typeFor:function(p,v){ v=(v==null?p.answer:v); return G.typeFor ? G.typeFor(p,v) : String(v); }, numsOf:function(t,p){ return NUMS(t,p); }, generate:generate, verify:verify, makeRound:makeRound, BANK:BANK, workingPlan:workingPlan, evalExpr:evalExpr, hintList:hintList, wrongMsg:function(p,v){return G.wrongMsg(p,v);},
+  wrongCandidates:function(p){return G.wrongCandidates(p);}, build:function(p){return G.build(p);}, guess:function(p,i){return G.guess(p,i);}, testWrong:function(p){return G.testWrong(p);},
+  storyText:function(p){return G.story(p);}, questionText:function(p){return G.question(p);}, answerSentence:function(p){return G.answerSentence(p);}, kinds:G.kinds, lessonScript:lessonScript, LIFE:G.LIFE, ROUND_SIZE:ROUND_SIZE, tag:G.tag,
+  get state(){return S;}, get problem(){return P;}, get ui(){return cur;}, setSpeed:function(){}, voice:Voice, get mode(){return MODE;}};
+save();
+startProblem();
+})();
+</script>
+</body>
+</html>
