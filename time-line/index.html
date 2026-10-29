@@ -407,6 +407,7 @@ html.ckopen, html.ckopen body{overflow:hidden}
 .ckdsmall{font-size:15px;color:#777;margin:10px 0 16px}
 #ckNote{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:65;background:#fff7d6;color:#5a3d00;border-radius:999px;padding:8px 18px;font:600 17px system-ui,-apple-system,sans-serif;box-shadow:0 3px 10px #0002;pointer-events:none}
 .ckhead .ckpts{font-size:14px;font-weight:600;color:#7a6a3a;background:#fbf6e6;padding:3px 10px}
+#ckOverlay .ckpad .sepkey{font-weight:800;color:#4b3fd6}
 </style>
 <script>
 var CHECKUP_GAME = "time-line", CHECKUP_TITLE = "Time Jumps";
@@ -435,7 +436,9 @@ var CK = (function(){
   function clock(m){ m=((m%1440)+1440)%1440; var h=Math.floor(m/60), mm=m%60, ap=h>=12?"pm":"am", h12=h%12===0?12:h%12; return h12+":"+(mm<10?"0":"")+mm+" "+ap; }
   function hm(m){ var h=Math.floor(m/60), mm=m%60; return (h?h+" h":"")+(h&&mm?" ":"")+(mm?mm+" min":""); }
   // the answer as it is written on the answer line
-  function ansText(p){ return p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
+  // grams or millilitres -> "1 kg 66 g" / "1 \u2113 775 m\u2113" (two-unit answers, P3 exam style)
+  function two(v,big,small){ var L=Math.floor(v/1000), r=v%1000; return (L?L+" "+big:"")+(L&&r?" ":"")+(r||!L?r+" "+small:""); }
+  function ansText(p){ return p.type==="two" ? two(p.answer,p.big,p.small) : p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
   // a problem may be used when its question text does not show the answer and it has a wrong value we can diagnose
   function usable(p, q){
     if(!p || !(p.answer>0) || Math.floor(p.answer)!==p.answer) return false;
@@ -450,7 +453,7 @@ var CK = (function(){
     for(var t=0;t<400;t++){ var p=q.make(R(first && t===0)); if(usable(p, q) && !(avoid && p.text===avoid)) return p; }
     return q.make(R(true));
   }
-  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,usable:usable,gen:gen};
+  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,two:two,usable:usable,gen:gen};
 })();
 CHECKUP_BANK["time-line"]={
  lessons:{
@@ -617,17 +620,24 @@ function history(final){
 /* ---------- answers ---------- */
 function q(){ return QS[run.slot]; }
 function units(){ return q().units||null; }
-function needsUnit(){ return !!units() || run.p.type==="time"; }
+function needsUnit(){ if(run.p.type==="two") return false; return !!units() || run.p.type==="time"; }
 function unitChoices(){ return run.p.type==="time" ? ["am","pm"] : (units()||[]); }
 function showTyped(){
   var t=run.typed, p=run.p; if(t==="") return "";
   if(p.type==="time"){ return t.length>2 ? t.slice(0,t.length-2)+":"+t.slice(-2) : t; }
+  if(p.type==="two" && t.indexOf(".")>=0){ var a=t.split("."); return a[0]+" "+p.big+(a[1]!==""?" "+a[1]+" "+p.small:""); }
   return t;
 }
 // returns {v:value} or {msg:format help}
 function parse(){
   var t=run.typed, p=run.p;
   if(t==="") return {msg:SAY.type};
+  if(p.type==="two"){ var w=/^(\d+)\.(\d{1,3})$/.exec(t);
+    if(/^\d+$/.test(t) && +t===p.answer) return {v:-1, a:-1, b:-1, bs:"", whole:true}; // the right amount, all in the small unit: marked, with a pointer
+    if(/^\d+$/.test(t)) return {msg:"The question asks for "+p.big+" and "+p.small+". Type the "+p.big+", tap the "+p.big+" key, then type the "+p.small+". 1000 "+p.small+" make 1 "+p.big+"."};
+    if(/\.$/.test(t)) return {msg:"Now type the "+p.small+" after the "+p.big+"."};
+    if(!w) return {msg:"After the "+p.big+", there are at most 3 digits for the "+p.small+". 1000 "+p.small+" make 1 "+p.big+"."};
+    return {v:(+w[1])*1000+(+w[2]), a:+w[1], b:+w[2], bs:w[2]}; }
   if(p.type==="money"){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); if(!m) return {msg:SAY.money}; return {v:(+m[1])*100+(m[2]?+m[2]:0)}; }
   if(p.type==="time"){ if(!/^\d{3,4}$/.test(t)) return {msg:SAY.time}; var h=+t.slice(0,t.length-2), mm=+t.slice(-2); if(h<1||h>12||mm>59) return {msg:SAY.time};
     if(!run.unit) return {msg:SAY.unit}; var hh=h%12+(run.unit==="pm"?12:0); return {v:hh*60+mm, raw:(h%12)*60+mm}; }
@@ -652,14 +662,18 @@ function check(){
   run.wrongs++; if(window.MathHistory && MathHistory.miss) {}
   var d=null;
   if(numberRight && !unitRight){ d = p.type==="time" ? (Q.diag.ampm||null) : (Q.unitMsg||null); }
+  // two units (kg and g, \u2113 and m\u2113): the right digits split the wrong way -> point to the unit-change line
+  if(!d && p.type==="two" && r.whole && Q.diag.whole) d=Q.diag.whole;
+  if(!d && p.type==="two" && Q.diag.split){ var A=Math.floor(p.answer/1000), Rr=p.answer%1000;
+    if(r.a*100+r.b===p.answer || r.a*10+r.b===p.answer || (String(r.a)+r.bs)===String(p.answer) || (r.a===Rr && r.b===A) || (r.a===A && r.b*10===Rr) || (r.a===A && r.b===Rr*10 && r.b<1000)) d=Q.diag.split; }
   if(!d){ var v=(p.type==="time")?r.v:r.v; for(var i=0;i<p.wrongs.length;i++){ var w=p.wrongs[i]; if(w[0]===v || (p.type==="time" && w[0]%720===r.raw && !Q.diag.ampm)){ d=Q.diag[w[1]]; break; } } }
   if(!d) d=[SAY.generic, Q.go];
   run.diag={msg:d[0], go:d[1]}; run.phase="wrong"; run.sol=false; run.fb=null; save(); history(false); draw();
   say(SAY.notYet, d[0]);
 }
-function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" ? " "+run.p.unit : ""); }
+function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" && run.p.type!=="two" ? " "+run.p.unit : ""); }
 // specific, true praise: name what was right (the step or the answer, never the child)
-function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"?" "+p.unit:"")+" answers the question."; }
+function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"&&p.type!=="two"?" "+p.unit:"")+" answers the question."; }
 
 /* ---------- screens ---------- */
 function ov(){ var o=$("ckOverlay"); if(!o){ o=document.createElement("div"); o.id="ckOverlay"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Test yourself"); document.body.appendChild(o); } return o; }
@@ -692,9 +706,9 @@ function ansLine(active){
   return h;
 }
 function pad(){
-  var dot=run.p.type==="money";
+  var dot=run.p.type==="money", sep=run.p.type==="two";
   return '<div class="ckpad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button type="button" data-ck="'+k+'">'+k+'</button>'; }).join("")+
-    (dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
+    (sep?'<button type="button" data-ck="." class="sepkey" aria-label="'+esc(run.p.big)+'">'+esc(run.p.big)+'</button>':dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
 }
 function solution(){
   var p=run.p, h='<div class="cksol" id="ckSol"><h3>Worked solution</h3><table class="cklines"><thead><tr><th></th><th>Working</th><th>Why this line?</th></tr></thead><tbody>';
@@ -751,7 +765,7 @@ function bind(){
   if($("ckRead")) $("ckRead").onclick=readAloud;
   if($("ckStart")) $("ckStart").onclick=function(){ run.phase="q"; save(); draw(); readQ(); };
   if($("ckLater")) $("ckLater").onclick=close;
-  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=run.p.type==="money"?7:(run.p.type==="time"?4:5);
+  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=(run.p.type==="money"||run.p.type==="two")?7:(run.p.type==="time"?4:5);
     if(k==="del") run.typed=run.typed.slice(0,-1); else if(k==="clr") run.typed="";
     else if(k==="."){ if(run.typed.indexOf(".")<0 && run.typed.length<lim) run.typed=(run.typed===""?"0":run.typed)+"."; }
     else if(run.typed.length<lim) run.typed=(run.typed==="0"?"":run.typed)+k;

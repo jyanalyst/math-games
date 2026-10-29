@@ -407,11 +407,12 @@ html.ckopen, html.ckopen body{overflow:hidden}
 .ckdsmall{font-size:15px;color:#777;margin:10px 0 16px}
 #ckNote{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:65;background:#fff7d6;color:#5a3d00;border-radius:999px;padding:8px 18px;font:600 17px system-ui,-apple-system,sans-serif;box-shadow:0 3px 10px #0002;pointer-events:none}
 .ckhead .ckpts{font-size:14px;font-weight:600;color:#7a6a3a;background:#fbf6e6;padding:3px 10px}
+#ckOverlay .ckpad .sepkey{font-weight:800;color:#4b3fd6}
 </style>
 <script>
 var CHECKUP_GAME = "mass-volume", CHECKUP_TITLE = "Mass and Volume";
 var CHECKUP_MASTERY = {"transfer": "You can now solve moving-between-groups problems: when some move from one group to the other, both bars change.", "move-until": "You can now solve move-until problems: how many to give so two people have the same, or one has twice as many.", "times-as-many": "You can now solve times-as-many problems: find 1 unit first, then the bigger group or the total.", "packed-left": "You can now solve packed-with-some-left problems: equal groups, plus the ones left over.", "total-difference": "You can now solve total-and-difference problems: take away the difference first, then share by 2.", "boxes-needed": "You can now solve boxes-needed problems: you can tell when the ones left over need one more box.", "more-or-fewer": "You can now solve more, fewer and altogether problems: find the missing bar, then put both bars together.", "time-line": "You can now solve time problems: jump to the o'clock time to find a start time, an end time or how long.", "money-steps": "You can now solve money problems with steps: find the money spent first, then the change.", "area-perimeter": "You can now solve area and perimeter problems for rectangles and squares.", "mass-volume": "You can now solve capacity and mass problems: change ℓ into mℓ (or kg into g), and check your answer by working backwards."};
-var CHECKUP_CLIPS = {"All three right on the first try earns this game's badge.": "../audio-shared/997edc6e60d9.mp3", "All three were right on the first try. This badge is yours.": "../audio-shared/9d1e757e9150.mp3", "Box Q is the LIGHTER one: divide to find it, do not multiply.": "audio/f4612c057f5d.mp3", "Change the litres into mℓ first: 1 ℓ = 1000 mℓ.": "audio/48df188366b3.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Count the days again: Monday to Friday is 5 days.": "audio/93a3a215099b.mp3", "Did you add all three boxes? Count the lightest one too.": "audio/7f603f0c0c91.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is one box. The question asks for the total of all three.": "audio/6e660fc7cb5e.mp3", "That is the water poured in. The question asks how much MORE fills the jug.": "audio/139e01e2415a.mp3", "That is what was used from Monday to Friday. The question asks how much was LEFT.": "audio/0df651a402bc.mp3", "Two amounts were poured in. Add both before you take away.": "audio/81705867eaa3.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You can now solve capacity and mass problems: change ℓ into mℓ (or kg into g), and check your answer by working backwards.": "audio/aef43d353d5b.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3", "Your number is right. Check the unit: the question asks for g.": "audio/f6b8836b1015.mp3", "Your number is right. Check the unit: the question asks for mℓ.": "audio/5e021352ce02.mp3", "Your number is right. Check the unit: the working is in mℓ.": "audio/a116567b51fa.mp3"};
+var CHECKUP_CLIPS = {"All three right on the first try earns this game's badge.": "../audio-shared/997edc6e60d9.mp3", "All three were right on the first try. This badge is yours.": "../audio-shared/9d1e757e9150.mp3", "Box Q is the LIGHTER one: divide to find it, do not multiply.": "audio/f4612c057f5d.mp3", "Change the litres into mℓ first: 1 ℓ = 1000 mℓ.": "audio/48df188366b3.mp3", "Check how you changed the units: 1 kg = 1000 g. Take the whole kilograms out of the grams, and the grams left over stay as g.": "audio/dcf175b0d13b.mp3", "Check how you changed the units: 1 ℓ = 1000 mℓ. Take the whole litres out of the mℓ, and the mℓ left over stay as mℓ.": "audio/deb42c81a32b.mp3", "Choose the unit too.": "../audio-shared/2c5b1befb69d.mp3", "Count the days again: Monday to Friday is 5 days.": "audio/93a3a215099b.mp3", "Did you add all three boxes? Count the lightest one too.": "audio/7f603f0c0c91.mp3", "Go back to the lesson to see this step again. Then come back to your test.": "../audio-shared/2b973057ccc7.mp3", "Here is a new one like it, with new numbers.": "../audio-shared/06530ec980d1.mp3", "Here is the worked solution. Read why each line is there.": "../audio-shared/7ec55cf66047.mp3", "Not yet.": "../audio-shared/c524cdf0f667.mp3", "Read the question again, then check your working one line at a time. What does the question ask for?": "../audio-shared/008df8b34563.mp3", "Test yourself. Three questions, like in your exam.": "../audio-shared/c4eea525d592.mp3", "That is one box. The question asks for the total of all three.": "audio/6e660fc7cb5e.mp3", "That is the water poured in. The question asks how much MORE fills the jug.": "audio/139e01e2415a.mp3", "That is what was used from Monday to Friday. The question asks how much was LEFT.": "audio/0df651a402bc.mp3", "Two amounts were poured in. Add both before you take away.": "audio/81705867eaa3.mp3", "Type the time with the minutes last, like 4 1 5 for 4:15. Then choose am or pm.": "../audio-shared/32193681189a.mp3", "Type your answer on the number pad.": "../audio-shared/098891a2f4db.mp3", "Welcome back to your test.": "../audio-shared/4d6cfcf2d3f4.mp3", "Write the cents with two digits, like this: 4 dollars 50 cents is 4.50.": "../audio-shared/d735adae606b.mp3", "Write your working and draw the model on your paper. Then type your answer.": "../audio-shared/74073b394aec.mp3", "Yes, that's right this time. Check your paper against the worked solution.": "../audio-shared/a9b462d018b6.mp3", "Yes, that's right. Now check your paper against the worked solution.": "../audio-shared/473b02236e8c.mp3", "You can now solve capacity and mass problems: change ℓ into mℓ (or kg into g), and check your answer by working backwards.": "audio/aef43d353d5b.mp3", "You finished the check-up. Every question is done.": "../audio-shared/8aafe56fd0e0.mp3", "Your grams are right, but the question asks for kg and g. Change the grams into kg and g: 1000 g = 1 kg.": "audio/986af5bfeb07.mp3", "Your mℓ are right, but the question asks for ℓ and mℓ. Change the mℓ into ℓ and mℓ: 1000 mℓ = 1 ℓ.": "audio/ed2e6787b170.mp3", "Your number is right. Check the unit: the working is in mℓ.": "audio/a116567b51fa.mp3"};
 /* Check-up ("Test yourself") question-bank helpers. Shared by every game's bank file.
    Original stories and numbers only (modelled on the TYPE of free P3 sample-paper questions; no exam text). */
 var CHECKUP_BANK = CHECKUP_BANK || {};
@@ -435,7 +436,9 @@ var CK = (function(){
   function clock(m){ m=((m%1440)+1440)%1440; var h=Math.floor(m/60), mm=m%60, ap=h>=12?"pm":"am", h12=h%12===0?12:h%12; return h12+":"+(mm<10?"0":"")+mm+" "+ap; }
   function hm(m){ var h=Math.floor(m/60), mm=m%60; return (h?h+" h":"")+(h&&mm?" ":"")+(mm?mm+" min":""); }
   // the answer as it is written on the answer line
-  function ansText(p){ return p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
+  // grams or millilitres -> "1 kg 66 g" / "1 \u2113 775 m\u2113" (two-unit answers, P3 exam style)
+  function two(v,big,small){ var L=Math.floor(v/1000), r=v%1000; return (L?L+" "+big:"")+(L&&r?" ":"")+(r||!L?r+" "+small:""); }
+  function ansText(p){ return p.type==="two" ? two(p.answer,p.big,p.small) : p.type==="money" ? money(p.answer, /\$\d+\.\d\d/.test(p.ans)) : (p.type==="time" ? clock(p.answer) : String(p.answer)); }
   // a problem may be used when its question text does not show the answer and it has a wrong value we can diagnose
   function usable(p, q){
     if(!p || !(p.answer>0) || Math.floor(p.answer)!==p.answer) return false;
@@ -450,7 +453,7 @@ var CK = (function(){
     for(var t=0;t<400;t++){ var p=q.make(R(first && t===0)); if(usable(p, q) && !(avoid && p.text===avoid)) return p; }
     return q.make(R(true));
   }
-  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,usable:usable,gen:gen};
+  return {MI:MI,TI:TI,DI:DI,R:R,pl:pl,money:money,clock:clock,hm:hm,ansText:ansText,two:two,usable:usable,gen:gen};
 })();
 CHECKUP_BANK["mass-volume"]={
  lessons:{
@@ -460,7 +463,9 @@ CHECKUP_BANK["mass-volume"]={
   days:{idx:1, phase:"build", b:1, label:"Lesson problem 2, step 2 (Draw): one equal part for each day"},
   box:{idx:2, phase:"working", label:"Lesson problem 3, step 4 (Working): one thing first, then the empty box"},
   units:{idx:3, phase:"build", b:2, label:"Lesson problem 4, step 2 (Draw): times as heavy, in units"},
-  chain:{idx:3, phase:"working", label:"Lesson problem 4, step 4 (Working): 1 unit first, then each bag, then the total"}
+  chain:{idx:3, phase:"working", label:"Lesson problem 4, step 4 (Working): 1 unit first, then each bag, then the total"},
+  split:{idx:1, phase:"working", label:"Lesson problem 2, step 4 (Working): the last line changes m\u2113 into \u2113 and m\u2113"},
+  ksplit:{idx:3, phase:"working", label:"Lesson problem 4, step 4 (Working): the last line changes g into kg and g"}
  },
  qs:[
  {id:"mv-1", kind:"short", marks:2, go:"fill",
@@ -481,31 +486,34 @@ CHECKUP_BANK["mass-volume"]={
  {id:"mv-2", kind:"work", marks:4, go:"conv",
   diag:{used:["That is what was used from Monday to Friday. The question asks how much was LEFT.","days"],
         days:["Count the days again: Monday to Friday is 5 days.","days"],
-        litre:["Change the litres into m\u2113 first: 1 \u2113 = 1000 m\u2113.","conv"]},
-  unitMsg:["Your number is right. Check the unit: the question asks for m\u2113.","conv"],
-  units:["m\u2113","\u2113"],
-  make:function(R){ var n=R.name("Siti"), T=R.n(2,4,3), V=R.n(105,395,245,5), u=5*V, Tm=T*1000, m=Tm-u;
-   if(m<100) return {answer:0};
-   return {text:n+" had a bottle of "+T+" \u2113 of milk. "+n+" used "+V+" m\u2113 of milk each day from Monday to Friday. How much milk was left? Give your answer in m\u2113.",
-    type:"int", answer:m, unit:"m\u2113",
+        litre:["Change the litres into m\u2113 first: 1 \u2113 = 1000 m\u2113.","conv"],
+        whole:["Your m\u2113 are right, but the question asks for \u2113 and m\u2113. Change the m\u2113 into \u2113 and m\u2113: 1000 m\u2113 = 1 \u2113.","split"],
+        split:["Check how you changed the units: 1 \u2113 = 1000 m\u2113. Take the whole litres out of the m\u2113, and the m\u2113 left over stay as m\u2113.","split"]},
+  make:function(R){ var n=R.name("Siti"), T=R.n(2,4,3), V=R.n(105,395,245,5), u=5*V, Tm=T*1000, m=Tm-u, L=Math.floor(m/1000), r=m%1000;
+   if(m<1000 || r<10 || r===100) return {answer:0};
+   return {text:n+" had a bottle of "+T+" \u2113 of milk. "+n+" used "+V+" m\u2113 of milk each day from Monday to Friday. How much milk was left? Give your answer in \u2113 and m\u2113.",
+    type:"two", big:"\u2113", small:"m\u2113", answer:m, unit:"",
     lines:[["5 "+CK.TI+" "+V+" = "+u, n+" used "+u+" m\u2113 from Monday to Friday.", "Monday to Friday is 5 days. The same amount each day: multiply."],
      [T+" "+CK.TI+" 1000 = "+Tm, T+" \u2113 = "+Tm+" m\u2113.", "1 \u2113 = 1000 m\u2113. Change the litres into m\u2113 so both amounts are in the same unit."],
-     [Tm+" "+CK.MI+" "+u+" = "+m, m+" m\u2113 of milk was left.", "Take away the milk used from all the milk."]],
-    ans:m+" m\u2113 of milk was left.", check:[m+" + "+u+" = "+Tm, "The milk left and the milk used make all "+T+" \u2113."],
+     [Tm+" "+CK.MI+" "+u+" = "+m, m+" m\u2113 of milk was left.", "Take away the milk used from all the milk."],
+     [m+" "+CK.MI+" "+(L*1000)+" = "+r, m+" m\u2113 = "+(L*1000)+" m\u2113 + "+r+" m\u2113 = "+CK.two(m,"\u2113","m\u2113")+".", "The question asks for \u2113 and m\u2113. 1000 m\u2113 = 1 \u2113, so take the whole litres out; the m\u2113 left over stay as m\u2113."]],
+    ans:CK.two(m,"\u2113","m\u2113")+" of milk was left.", check:[m+" + "+u+" = "+Tm, "The milk left and the milk used make all "+T+" \u2113."],
     wrongs:[[u,"used"],[Tm-4*V,"days"],[Tm-6*V,"days"],[T*100>u?T*100-u:0,"litre"]]}; }},
  {id:"mv-3", kind:"work", marks:4, go:"chain",
   diag:{two:["Did you add all three boxes? Count the lightest one too.","chain"],
         times:["Box Q is the LIGHTER one: divide to find it, do not multiply.","units"],
-        one:["That is one box. The question asks for the total of all three.","chain"]},
-  unitMsg:["Your number is right. Check the unit: the question asks for g.","chain"],
-  units:["g","kg"],
-  make:function(R){ var b=R.n(2,4,4), a=R.n(2,Math.floor(12/b),2), c=R.n(35,240,82), B=b*c, A=a*B, t=A+B+c;
-   return {text:"Box P is "+(a===2?"twice":a+" times")+" as heavy as Box R. Box R is "+(b===2?"twice":b+" times")+" as heavy as Box Q. Box R has a mass of "+B+" g. What is the total mass of the three boxes? Give your answer in g.",
-    type:"int", answer:t, unit:"g",
+        one:["That is one box. The question asks for the total of all three.","chain"],
+        whole:["Your grams are right, but the question asks for kg and g. Change the grams into kg and g: 1000 g = 1 kg.","ksplit"],
+        split:["Check how you changed the units: 1 kg = 1000 g. Take the whole kilograms out of the grams, and the grams left over stay as g.","ksplit"]},
+  make:function(R){ var b=R.n(2,4,4), a=R.n(2,Math.floor(12/b),2), c=R.n(35,240,82), B=b*c, A=a*B, t=A+B+c, L=Math.floor(t/1000), r=t%1000;
+   if(t<1000 || r<10 || r===100) return {answer:0};
+   return {text:"Box P is "+(a===2?"twice":a+" times")+" as heavy as Box R. Box R is "+(b===2?"twice":b+" times")+" as heavy as Box Q. Box R has a mass of "+B+" g. What is the total mass of the three boxes? Give your answer in kg and g.",
+    type:"two", big:"kg", small:"g", answer:t, unit:"",
     lines:[[B+" "+CK.DI+" "+b+" = "+c, "Box Q has a mass of "+c+" g.", "Box R is "+b+" units and Box Q is 1 unit: divide."],
      [a+" "+CK.TI+" "+B+" = "+A, "Box P has a mass of "+A+" g.", "Box P is "+a+" groups of Box R: multiply."],
-     [A+" + "+B+" + "+c+" = "+t, "The three boxes have a mass of "+t+" g.", "Total means all three together: add."]],
-    ans:"The total mass of the three boxes is "+t+" g.", check:[t+" "+CK.MI+" "+A+" "+CK.MI+" "+c+" = "+B, "Take away Box P and Box Q, and Box R is left."],
+     [A+" + "+B+" + "+c+" = "+t, "The three boxes have a mass of "+t+" g.", "Total means all three together: add."],
+     [t+" "+CK.MI+" "+(L*1000)+" = "+r, t+" g = "+(L*1000)+" g + "+r+" g = "+CK.two(t,"kg","g")+".", "The question asks for kg and g. 1000 g = 1 kg, so take the whole kilograms out; the grams left over stay as g."]],
+    ans:"The total mass of the three boxes is "+CK.two(t,"kg","g")+".", check:[t+" "+CK.MI+" "+A+" "+CK.MI+" "+c+" = "+B, "Take away Box P and Box Q, and Box R is left."],
     wrongs:[[A+B,"two"],[A+B+B*b,"times"],[A,"one"]]}; }}
  ]};
 /* ===== Check-up ("Test yourself"): 3 exam-style questions after the Lesson. Kept ONLY in this browser's localStorage. =====
@@ -622,17 +630,24 @@ function history(final){
 /* ---------- answers ---------- */
 function q(){ return QS[run.slot]; }
 function units(){ return q().units||null; }
-function needsUnit(){ return !!units() || run.p.type==="time"; }
+function needsUnit(){ if(run.p.type==="two") return false; return !!units() || run.p.type==="time"; }
 function unitChoices(){ return run.p.type==="time" ? ["am","pm"] : (units()||[]); }
 function showTyped(){
   var t=run.typed, p=run.p; if(t==="") return "";
   if(p.type==="time"){ return t.length>2 ? t.slice(0,t.length-2)+":"+t.slice(-2) : t; }
+  if(p.type==="two" && t.indexOf(".")>=0){ var a=t.split("."); return a[0]+" "+p.big+(a[1]!==""?" "+a[1]+" "+p.small:""); }
   return t;
 }
 // returns {v:value} or {msg:format help}
 function parse(){
   var t=run.typed, p=run.p;
   if(t==="") return {msg:SAY.type};
+  if(p.type==="two"){ var w=/^(\d+)\.(\d{1,3})$/.exec(t);
+    if(/^\d+$/.test(t) && +t===p.answer) return {v:-1, a:-1, b:-1, bs:"", whole:true}; // the right amount, all in the small unit: marked, with a pointer
+    if(/^\d+$/.test(t)) return {msg:"The question asks for "+p.big+" and "+p.small+". Type the "+p.big+", tap the "+p.big+" key, then type the "+p.small+". 1000 "+p.small+" make 1 "+p.big+"."};
+    if(/\.$/.test(t)) return {msg:"Now type the "+p.small+" after the "+p.big+"."};
+    if(!w) return {msg:"After the "+p.big+", there are at most 3 digits for the "+p.small+". 1000 "+p.small+" make 1 "+p.big+"."};
+    return {v:(+w[1])*1000+(+w[2]), a:+w[1], b:+w[2], bs:w[2]}; }
   if(p.type==="money"){ var m=/^(\d+)(?:\.(\d\d))?$/.exec(t); if(!m) return {msg:SAY.money}; return {v:(+m[1])*100+(m[2]?+m[2]:0)}; }
   if(p.type==="time"){ if(!/^\d{3,4}$/.test(t)) return {msg:SAY.time}; var h=+t.slice(0,t.length-2), mm=+t.slice(-2); if(h<1||h>12||mm>59) return {msg:SAY.time};
     if(!run.unit) return {msg:SAY.unit}; var hh=h%12+(run.unit==="pm"?12:0); return {v:hh*60+mm, raw:(h%12)*60+mm}; }
@@ -657,14 +672,18 @@ function check(){
   run.wrongs++; if(window.MathHistory && MathHistory.miss) {}
   var d=null;
   if(numberRight && !unitRight){ d = p.type==="time" ? (Q.diag.ampm||null) : (Q.unitMsg||null); }
+  // two units (kg and g, \u2113 and m\u2113): the right digits split the wrong way -> point to the unit-change line
+  if(!d && p.type==="two" && r.whole && Q.diag.whole) d=Q.diag.whole;
+  if(!d && p.type==="two" && Q.diag.split){ var A=Math.floor(p.answer/1000), Rr=p.answer%1000;
+    if(r.a*100+r.b===p.answer || r.a*10+r.b===p.answer || (String(r.a)+r.bs)===String(p.answer) || (r.a===Rr && r.b===A) || (r.a===A && r.b*10===Rr) || (r.a===A && r.b===Rr*10 && r.b<1000)) d=Q.diag.split; }
   if(!d){ var v=(p.type==="time")?r.v:r.v; for(var i=0;i<p.wrongs.length;i++){ var w=p.wrongs[i]; if(w[0]===v || (p.type==="time" && w[0]%720===r.raw && !Q.diag.ampm)){ d=Q.diag[w[1]]; break; } } }
   if(!d) d=[SAY.generic, Q.go];
   run.diag={msg:d[0], go:d[1]}; run.phase="wrong"; run.sol=false; run.fb=null; save(); history(false); draw();
   say(SAY.notYet, d[0]);
 }
-function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" ? " "+run.p.unit : ""); }
+function ansShown(){ return CK.ansText(run.p)+(run.p.unit && run.p.type!=="time" && run.p.type!=="money" && run.p.type!=="two" ? " "+run.p.unit : ""); }
 // specific, true praise: name what was right (the step or the answer, never the child)
-function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"?" "+p.unit:"")+" answers the question."; }
+function praiseLine(){ var p=run.p; return "Yes! "+CK.ansText(p)+(p.unit&&p.type!=="time"&&p.type!=="money"&&p.type!=="two"?" "+p.unit:"")+" answers the question."; }
 
 /* ---------- screens ---------- */
 function ov(){ var o=$("ckOverlay"); if(!o){ o=document.createElement("div"); o.id="ckOverlay"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Test yourself"); document.body.appendChild(o); } return o; }
@@ -697,9 +716,9 @@ function ansLine(active){
   return h;
 }
 function pad(){
-  var dot=run.p.type==="money";
+  var dot=run.p.type==="money", sep=run.p.type==="two";
   return '<div class="ckpad">'+[1,2,3,4,5,6,7,8,9].map(function(k){ return '<button type="button" data-ck="'+k+'">'+k+'</button>'; }).join("")+
-    (dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
+    (sep?'<button type="button" data-ck="." class="sepkey" aria-label="'+esc(run.p.big)+'">'+esc(run.p.big)+'</button>':dot?'<button type="button" data-ck="." aria-label="point">.</button>':'<button type="button" data-ck="clr">C</button>')+'<button type="button" data-ck="0">0</button><button type="button" data-ck="del" aria-label="delete">⌫</button></div>';
 }
 function solution(){
   var p=run.p, h='<div class="cksol" id="ckSol"><h3>Worked solution</h3><table class="cklines"><thead><tr><th></th><th>Working</th><th>Why this line?</th></tr></thead><tbody>';
@@ -756,7 +775,7 @@ function bind(){
   if($("ckRead")) $("ckRead").onclick=readAloud;
   if($("ckStart")) $("ckStart").onclick=function(){ run.phase="q"; save(); draw(); readQ(); };
   if($("ckLater")) $("ckLater").onclick=close;
-  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=run.p.type==="money"?7:(run.p.type==="time"?4:5);
+  o.querySelectorAll("[data-ck]").forEach(function(b){ b.onclick=function(){ var k=b.getAttribute("data-ck"), lim=(run.p.type==="money"||run.p.type==="two")?7:(run.p.type==="time"?4:5);
     if(k==="del") run.typed=run.typed.slice(0,-1); else if(k==="clr") run.typed="";
     else if(k==="."){ if(run.typed.indexOf(".")<0 && run.typed.length<lim) run.typed=(run.typed===""?"0":run.typed)+"."; }
     else if(run.typed.length<lim) run.typed=(run.typed==="0"?"":run.typed)+k;

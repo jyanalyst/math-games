@@ -409,13 +409,13 @@ function tell(){ Voice.say.apply(null, arguments); }
    12 facts a session, no clock and no speed score. A missed fact comes back later in the same session until it is right.
    A wrong answer gets a nearby-fact nudge first (7 x 8 = 7 x 7 + 7), never the answer; after a second miss the fact is
    shown, said once, and it comes back later. Facts that are still shaky are listed, and come first next session.
-   Stars follow the reward rules of the games (2 for right on the first try, 1 when right on a later try, +3 for finishing),
+   Stars: 1 for a fact right on the first try, 0 when right on a later try, +3 for finishing (at most 15 a session),
    no daily cap. Each session is one entry in the practice history (mode practice). Everything stays in this browser. */
 (function(){
 "use strict";
 var TABLES=[6,7,8], MULTS=[2,3,4,5,6,7,8,9,10], N=12;
 var FKEY="mathgames.tables.v1", RKEY="mathgames.rewards.v1", PKEY="mathgames.player";
-var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3;
+var STAR_FIRST=1, STAR_RETRY=0, STAR_FINISH=3; // Jeremy 29 Oct: 1 per fact right first time, 0 later, +3 finishing (at most 15 a session)
 var MI="\u2212", TI="\u00d7";
 var SAY={hello:"Let's practise the 6, 7 and 8 times tables. 12 facts. Take your time, there is no clock.",
   back:"This one will come back later, so you can try it again.",
@@ -487,7 +487,7 @@ function check(){ var f=cur(); if(!f || D.shown) return;
   if(v===ans){ var firstTry=D.tries===0 && !D.missed[f.k], unaided=D.tries===0, st=firstTry?STAR_FIRST:STAR_RETRY;
     record(f.k, true); settle(f.k, firstTry); addStars(st); D.stars+=st; if(firstTry) D.first++;
     var praise = firstTry ? "Yes! "+txt(f)+" = "+ans+"." : (unaided ? "Yes! "+txt(f)+" = "+ans+". You remembered it this time." : "Yes! "+txt(f)+" = "+ans+". You built it from the nearby fact.");
-    D.typed=""; D.fb={cls:"ok", msg:praise+" "+"⭐".repeat(st)};
+    D.typed=""; D.fb={cls:"ok", msg:praise+(st?" "+"⭐".repeat(st):"")};
     if(unaided){ D.done[f.k]=true; D.n++; D.queue.shift(); D.tries=0; MathHistory.item(firstTry, !D.queue.length); if(!D.queue.length) return finish(praise); }
     else { D.tries=0; requeue(f.k); D.fb.msg+=" It comes back once more later."; praise+=" "+SAY.back; }
     draw(); tell(praise, spokenFact(cur())); return; }

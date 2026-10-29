@@ -208,6 +208,7 @@ html.ckopen, html.ckopen body{overflow:hidden}
 .ckdsmall{font-size:15px;color:#777;margin:10px 0 16px}
 #ckNote{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:65;background:#fff7d6;color:#5a3d00;border-radius:999px;padding:8px 18px;font:600 17px system-ui,-apple-system,sans-serif;box-shadow:0 3px 10px #0002;pointer-events:none}
 .ckhead .ckpts{font-size:14px;font-weight:600;color:#7a6a3a;background:#fbf6e6;padding:3px 10px}
+#ckOverlay .ckpad .sepkey{font-weight:800;color:#4b3fd6}
 </style>
 <script>
 /* Home page: 'My reward points' (what she can do now, from each game's "Test yourself" badge, with the stars shown small as
@@ -254,7 +255,7 @@ html.ckopen, html.ckopen body{overflow:hidden}
     sec.appendChild(ul);
     // the stars: small and secondary, as information, not a price
     var st=el("p","⭐ "+num(P.stars)+" stars collected"); st.id="rStars"; st.style.cssText="font-size:15px;color:#777;margin:6px 0"; sec.appendChild(st);
-    sec.appendChild(el("p","Finish a Lesson in any game, then tap 📝 Test for 3 exam-style questions. Stars come for right answers (⭐⭐ first try, ⭐ on a new try), for writing your working on paper (⭐), and for finishing (+3 ⭐). Hints never cost stars.","rhelp"));
+    sec.appendChild(el("p","Finish a Lesson in any game, then tap 📝 Test for 3 exam-style questions. Stars come for right answers (⭐⭐ first try, ⭐ on a new try), for writing your working on paper (⭐), and for finishing (+3 ⭐). Checking an answer by working backwards gives ⭐ once a problem. Times Tables 6, 7, 8: ⭐ for each fact right on the first try, +3 ⭐ for finishing. Hints never cost stars.","rhelp"));
     var tests=(P.tests||[]).slice(-5).reverse();
     if(tests.length){ sec.appendChild(el("h3","Latest tests")); var tl=el("ul"); tl.id="rTests";
       tests.forEach(function(t){ tl.appendChild(el("li",day(t.at)+" · "+(TITLES[t.game]||t.game)+" · right first try "+num(t.first)+" of "+num(t.total)+(t.badge?" · 🏅":"")+" · ⭐ "+num(t.stars))); }); sec.appendChild(tl); }
