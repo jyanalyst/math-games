@@ -455,9 +455,10 @@ function nudge(f, n){ var t=f.t, m=f.m;
   return "Not yet. Turn it round: "+m+" "+TI+" "+t+" is the same. Count on in "+m+"s from "+m+" "+TI+" "+(t-1)+" = "+(m*(t-1))+".";
 }
 function pl(n,s){ return n===1?s:s+"s"; }
-function strategy(f){ var t=f.t, m=f.m; // after the fact is shown: how to rebuild it next time
+function strategy(f){ var t=f.t, m=f.m; // after the fact is shown, and on the end screen: how to rebuild it next time (the same strategy as the first hint)
   if(m===2) return "Double "+t+".";
   if(m===10) return "Put a 0 after the "+t+".";
+  if(m===5) return "Half of "+t+" "+TI+" 10.";   // the same strategy as the hint in the drill
   if(m===9) return t+" "+TI+" 10 "+MI+" "+t+".";
   if(m>=6 && m<=7) return t+" "+TI+" 5 and "+(m-5)+" more "+pl(m-5,"group")+" of "+t+".";
   return t+" "+TI+" "+(m-1)+" and one more "+t+".";
