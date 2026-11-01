@@ -314,6 +314,11 @@ html.ckopen, html.ckopen body{overflow:hidden}
 .mtopic .mticon{font-size:36px}.mtopic .mtname{font-size:20px;font-weight:800;color:#4b3fd6}.mtopic .mtmeta{font-size:15px;color:#666}
 .mtopic.soon{background:#f1f0f4;box-shadow:none;cursor:default}.mtopic.soon .mtname{color:#999}.mtopic.soon .mticon{filter:grayscale(1);opacity:.5}
 a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
+/* pictures (1 Nov 2026): one per topic + the home banner, from art/ on this site; decorative, no text in them */
+.mbanner{display:block;width:100%;max-width:760px;height:auto;margin:0 auto 14px;border-radius:20px;box-shadow:0 3px 10px #0001;background:#fdf6ec}
+.mtopic .mtimg{width:96px;height:96px;border-radius:18px;background:#fdf6ec}
+.mtopic.soon .mtimg{filter:grayscale(1);opacity:.5}
+#mL3Title{display:flex;align-items:center;justify-content:center;gap:10px}#mL3Title .mtimg3{width:56px;height:56px;border-radius:14px;background:#fdf6ec}
 .mvh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 #whoChange{display:inline-block;padding:10px 6px;min-height:44px;box-sizing:border-box}
 </style>
@@ -325,7 +330,7 @@ a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
    Every level has Back and breadcrumbs; the browser Back button works too (the level is in the address hash). */
 (function(){
   "use strict";
-  var TOPICS={"P3": [{"id": "add-subtract", "icon": "➕", "name": "Whole numbers: adding and taking away", "about": "Word problems with bar models: moving, total and difference, more and fewer", "games": ["transfer", "total-difference", "more-or-fewer"]}, {"id": "multiply-divide", "icon": "✖️", "name": "Multiplication and division", "about": "Times as many, equal groups, left-overs and boxes, and the 6, 7 and 8 times tables", "games": ["times-as-many", "move-until", "packed-left", "boxes-needed", "times-tables"]}, {"id": "fractions", "icon": "🍕", "name": "Fractions", "about": "", "games": []}, {"id": "money", "icon": "💵", "name": "Money", "about": "Money spent, change, money left and saving up", "games": ["money-steps"]}, {"id": "length-mass-volume", "icon": "📏", "name": "Length, mass and volume", "about": "Capacity and mass: ℓ and mℓ, kg and g, changing units", "games": ["mass-volume"]}, {"id": "time", "icon": "⏰", "name": "Time", "about": "End time, start time and how long", "games": ["time-line"]}, {"id": "area-perimeter", "icon": "🟦", "name": "Area and perimeter", "about": "Rectangles and squares", "games": ["area-perimeter"]}, {"id": "angles", "icon": "📐", "name": "Angles", "about": "", "games": []}, {"id": "lines", "icon": "🛤️", "name": "Perpendicular and parallel lines", "about": "", "games": []}, {"id": "bar-graphs", "icon": "📊", "name": "Bar graphs", "about": "", "games": []}]}, TITLES={"transfer": "Moving Between Groups", "move-until": "Move Until…", "times-as-many": "Times as Many", "packed-left": "Packed with Some Left", "total-difference": "Total and Difference", "boxes-needed": "Boxes Needed?", "more-or-fewer": "More, Fewer, Altogether", "time-line": "Time Jumps", "money-steps": "Money Steps", "area-perimeter": "Inside and Around", "mass-volume": "Mass and Volume", "times-tables": "Times Tables 6, 7, 8"};
+  var TOPICS={"P3": [{"id": "add-subtract", "icon": "➕", "name": "Whole numbers: adding and taking away", "about": "Word problems with bar models: moving, total and difference, more and fewer", "games": ["transfer", "total-difference", "more-or-fewer"], "img": "art/topics/add-subtract.webp"}, {"id": "multiply-divide", "icon": "✖️", "name": "Multiplication and division", "about": "Times as many, equal groups, left-overs and boxes, and the 6, 7 and 8 times tables", "games": ["times-as-many", "move-until", "packed-left", "boxes-needed", "times-tables"], "img": "art/topics/multiply-divide.webp"}, {"id": "fractions", "icon": "🍕", "name": "Fractions", "about": "", "games": [], "img": "art/topics/fractions.webp"}, {"id": "money", "icon": "💵", "name": "Money", "about": "Money spent, change, money left and saving up", "games": ["money-steps"], "img": "art/topics/money.webp"}, {"id": "length-mass-volume", "icon": "📏", "name": "Length, mass and volume", "about": "Capacity and mass: ℓ and mℓ, kg and g, changing units", "games": ["mass-volume"], "img": "art/topics/length-mass-volume.webp"}, {"id": "time", "icon": "⏰", "name": "Time", "about": "End time, start time and how long", "games": ["time-line"], "img": "art/topics/time.webp"}, {"id": "area-perimeter", "icon": "🟦", "name": "Area and perimeter", "about": "Rectangles and squares", "games": ["area-perimeter"], "img": "art/topics/area-perimeter.webp"}, {"id": "angles", "icon": "📐", "name": "Angles", "about": "", "games": [], "img": "art/topics/angles.webp"}, {"id": "lines", "icon": "🛤️", "name": "Perpendicular and parallel lines", "about": "", "games": [], "img": "art/topics/lines.webp"}, {"id": "bar-graphs", "icon": "📊", "name": "Bar graphs", "about": "", "games": [], "img": "art/topics/bar-graphs.webp"}]}, TITLES={"transfer": "Moving Between Groups", "move-until": "Move Until…", "times-as-many": "Times as Many", "packed-left": "Packed with Some Left", "total-difference": "Total and Difference", "boxes-needed": "Boxes Needed?", "more-or-fewer": "More, Fewer, Altogether", "time-line": "Time Jumps", "money-steps": "Money Steps", "area-perimeter": "Inside and Around", "mass-volume": "Mass and Volume", "times-tables": "Times Tables 6, 7, 8"};
   var LEVELS=[["P1","Primary 1"],["P2","Primary 2"],["P3","Primary 3"],["P4","Primary 4"],["P5","Primary 5"],["P6","Primary 6"]];
   var LKEY="mathgames.level", PKEY="mathgames.player", RKEY="mathgames.rewards.v1", HKEY="mathgames.history.v1";
   var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -349,6 +354,8 @@ a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
   if(h1 && h1.parentNode){ h1.parentNode.insertBefore(nav, h1.nextSibling); } else document.body.insertBefore(nav, document.body.firstChild);
   nav.parentNode.insertBefore(L3, nav.nextSibling); nav.parentNode.insertBefore(L2, nav.nextSibling); nav.parentNode.insertBefore(L1, nav.nextSibling);
   // Level 1: player card (the existing name box) + level picker + the way in + rewards + history + grown-ups panel
+  // the home banner (a picture only: no text, decorative)
+  var ban=pic("art/home-banner.webp","mbanner",1200,509); ban.id="mBanner"; L1.appendChild(ban);
   var whoBox=$("who"); if(whoBox) L1.appendChild(whoBox);
   var lv=el("div",null,"mlevelpick"); lv.id="mLevelPick"; L1.appendChild(lv);
   var go=el("button",null,"mgo"); go.type="button"; go.id="mStart"; L1.appendChild(go);
@@ -357,6 +364,9 @@ a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
   var pool=el("div"); pool.id="mPool"; pool.hidden=true; document.body.appendChild(pool);
   var cards={}; Array.prototype.forEach.call(document.querySelectorAll("a.card"), function(a){ var slug=(a.getAttribute("href")||"").replace(/\/$/,""); cards[slug]=a; pool.appendChild(a); });
 
+  // a decorative picture from this site (art/); if it cannot load, it is simply hidden (the topic name is the label)
+  function pic(src, cls, w, h){ var i=document.createElement("img"); i.src=src; i.alt=""; i.className=cls; i.width=w; i.height=h; i.decoding="async"; i.setAttribute("aria-hidden","true");
+    i.onerror=function(){ i.hidden=true; }; return i; }
   function back(label, hash){ var b=el("button","⬅ "+label,"mback"); b.type="button"; b.onclick=function(){ location.hash=hash; }; return b; }
   function crumbs(parts){ nav.innerHTML=""; parts.forEach(function(p,i){ if(i) nav.appendChild(el("span"," › ","msep"));
       if(p[1] && i<parts.length-1){ var a=el("a",p[0]); a.href=p[1]; nav.appendChild(a); } else { var s=el("span",p[0],"mhere"); s.setAttribute("aria-current","page"); nav.appendChild(s); } }); }
@@ -384,7 +394,7 @@ a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
     (TOPICS[L]||[]).forEach(function(t){
       var n=t.games.length, b=el(n?"button":"div",null,"mtopic"+(n?"":" soon")); b.setAttribute("data-topic",t.id);
       if(n){ b.type="button"; b.onclick=function(){ location.hash="#topic-"+t.id; }; } else b.setAttribute("aria-disabled","true");
-      b.appendChild(el("span",t.icon,"mticon")); b.appendChild(el("span",t.name,"mtname"));
+      if(t.img) b.appendChild(pic(t.img,"mtimg",96,96)); else b.appendChild(el("span",t.icon,"mticon")); b.appendChild(el("span",t.name,"mtname"));
       if(n){ var bc=badgeCount(t,P); b.appendChild(el("span",n+(n===1?" game":" games")+(bc?" · 🏅 "+bc+" of "+n:""),"mtmeta")); }
       else b.appendChild(el("span","Coming soon","mtmeta"));
       grid.appendChild(b); });
@@ -402,7 +412,7 @@ a.card .mstat{font-size:15px;color:#4b3fd6;margin-top:8px}
     Array.prototype.forEach.call(L3.querySelectorAll("a.card"), function(a){ pool.appendChild(a); });
     L3.innerHTML=""; if(!t){ location.replace("#syllabus"); return false; }
     L3.appendChild(back(levelName(L)+" syllabus","#syllabus"));
-    var h=el("h2",t.icon+" "+t.name); h.id="mL3Title"; L3.appendChild(h);
+    var h=el("h2",t.img?null:t.icon+" "+t.name); h.id="mL3Title"; if(t.img){ h.appendChild(pic(t.img,"mtimg3",56,56)); h.appendChild(document.createTextNode(t.name)); } L3.appendChild(h);
     if(t.about) L3.appendChild(el("p",t.about,"mhelp"));
     t.games.forEach(function(slug){ var a=cards[slug]; if(!a) return; var s=a.querySelector(".mstat"); if(!s){ s=el("span",null,"mstat"); a.appendChild(s); } s.textContent=stats(slug); L3.appendChild(a); });
     return t;
