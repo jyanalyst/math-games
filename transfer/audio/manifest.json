@@ -6,10 +6,10 @@
   "language": "en",
   "text_normalization": true
  },
- "format": "mp3 mono 24kHz 48kbps",
+ "format": "mp3 mono 24kHz 64kbps",
  "generated": "2026-10-24",
  "count": 252,
- "total_bytes": 19830360,
+ "total_bytes": 19885072,
  "total_seconds": 2479,
  "clips": [
   {
@@ -212,8 +212,8 @@
    "id": "b01-intro",
    "file": "b01-intro.mp3",
    "text": "There are one hundred and twenty-nine more students in the school hall than in the canteen. Then three hundred and twenty-nine students walk from the hall to the canteen. So, which place has more students, and how many more? Hmm... before anything moves, who do you think will have more?",
-   "duration": 17.568,
-   "bytes": 105600
+   "duration": 17.57,
+   "bytes": 140780
   },
   {
    "id": "b01-atLine",
@@ -233,8 +233,8 @@
    "id": "b01-hint2",
    "file": "b01-hint2.mp3",
    "text": "Here's a hint. The hall used up its one hundred and twenty-nine extra, and then two hundred more left. So the hall is two hundred below the line.",
-   "duration": 9.744,
-   "bytes": 58656
+   "duration": 9.74,
+   "bytes": 78188
   },
   {
    "id": "b01-hint3",
@@ -1777,8 +1777,969 @@
    "bytes": 56492
   }
  ],
- "device_voice_working": {
-  "note": "Write-the-working step: NOT recorded. Read by the device voice (Web Speech) in Lesson and Practice mode. Estimate assumes Eleven v4 at about 0.5 credits per 100 characters, numbers spelled out.",
+ "working_clips": {
+  "note": "Grok voice luna (24 Oct 2026): clips for the Lesson working-step lines, looked up by exact cleaned text in the page (CLIPS); a line with no clip uses the device voice. Shared clips live in /audio-shared/.",
+  "generated": "2026-10-24",
+  "count": 190,
+  "clips": [
+   {
+    "file": "9cbd159adb6e.mp3",
+    "text": "Line 1. Tray A's extra 91 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?",
+    "bytes": 91968
+   },
+   {
+    "file": "7be9655ef231.mp3",
+    "text": "Yes! 164 take away 91 is 73. After Tray A's extra 91, another 73 ang ku kueh moved. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.",
+    "bytes": 231360
+   },
+   {
+    "file": "a486ee1c6f47.mp3",
+    "text": "Line 1. 164 take away 91 is 73. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.",
+    "bytes": 197376
+   },
+   {
+    "file": "99df7d24f84c.mp3",
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer.",
+    "bytes": 64556
+   },
+   {
+    "file": "3cf3c608f8c9.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one.",
+    "bytes": 67052
+   },
+   {
+    "file": "6357abef88af.mp3",
+    "text": "Line 2. Tray A is 73 below the dotted line, and Tray B is 164 above it. Which number sentence finds the difference between them now?",
+    "bytes": 89280
+   },
+   {
+    "file": "8af066e1e2bf.mp3",
+    "text": "Yes! 73 plus 164 is 237. The difference now is 237 ang ku kueh. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 160320
+   },
+   {
+    "file": "d309f30e118f.mp3",
+    "text": "Line 2. 73 plus 164 is 237. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 131904
+   },
+   {
+    "file": "3d54c59aae9c.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 107564
+   },
+   {
+    "file": "eb53e0e3d55c.mp3",
+    "text": "Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 72236
+   },
+   {
+    "file": "666228e0c694.mp3",
+    "text": "Yes! Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
+    "bytes": 180288
+   },
+   {
+    "file": "c9cf9c51bf45.mp3",
+    "text": "The answer sentence. Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
+    "bytes": 185856
+   },
+   {
+    "file": "471a47941b6e.mp3",
+    "text": "Not yet. Look at the bars again. Whose end sticks out further?",
+    "bytes": 38060
+   },
+   {
+    "file": "e9f41137258d.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 86444
+   },
+   {
+    "file": "ee4fc33b10b7.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 164 ang ku kueh back changes the gap by 164 twice, once for each side. Which number sentence should give 91, the gap in the story?",
+    "bytes": 134784
+   },
+   {
+    "file": "6901b3cb8d38.mp3",
+    "text": "Yes! 164 plus 164 take away 237 is 91. Moving the 164 back gives a gap of 91, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 217152
+   },
+   {
+    "file": "b0e6a50af80a.mp3",
+    "text": "The check line. 164 plus 164 take away 237 is 91. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 166080
+   },
+   {
+    "file": "8006020a2b67.mp3",
+    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.",
+    "bytes": 83564
+   },
+   {
+    "file": "0777033eddee.mp3",
+    "text": "Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 72236
+   },
+   {
+    "file": "98672c0e4bfc.mp3",
+    "text": "Line 1. All 62 marbles come out of Jar A's extra piece. Which number sentence finds how big Jar A's extra piece is now?",
+    "bytes": 77760
+   },
+   {
+    "file": "5506e118d97f.mp3",
+    "text": "Yes! 156 take away 62 is 94. Jar A's extra is now 94 marbles. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.",
+    "bytes": 146112
+   },
+   {
+    "file": "02ed30117d04.mp3",
+    "text": "Line 1. 156 take away 62 is 94. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.",
+    "bytes": 129024
+   },
+   {
+    "file": "84564a035565.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one.",
+    "bytes": 63596
+   },
+   {
+    "file": "46cc1a79d08a.mp3",
+    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer.",
+    "bytes": 66476
+   },
+   {
+    "file": "3466a0409274.mp3",
+    "text": "Line 2. Jar A is 94 above the dotted line, and Jar B is 62 above it. Which number sentence finds the difference between them now?",
+    "bytes": 77760
+   },
+   {
+    "file": "fca787d0ead1.mp3",
+    "text": "Yes! 94 take away 62 is 32. The difference now is 32 marbles. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.",
+    "bytes": 148992
+   },
+   {
+    "file": "38a6d7c77bb2.mp3",
+    "text": "Line 2. 94 take away 62 is 32. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.",
+    "bytes": 129024
+   },
+   {
+    "file": "d686573578e8.mp3",
+    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?",
+    "bytes": 84332
+   },
+   {
+    "file": "8b5cf6a44ef3.mp3",
+    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces above the line now.",
+    "bytes": 56492
+   },
+   {
+    "file": "5ba856cb47ae.mp3",
+    "text": "Yes! Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.",
+    "bytes": 166080
+   },
+   {
+    "file": "8ad12bf2782c.mp3",
+    "text": "The answer sentence. Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.",
+    "bytes": 185856
+   },
+   {
+    "file": "679319133231.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 87212
+   },
+   {
+    "file": "511eef98a131.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 62 marbles back changes the gap by 62 twice, once for each side. Which number sentence should give 156, the gap in the story?",
+    "bytes": 123264
+   },
+   {
+    "file": "80b098526b81.mp3",
+    "text": "Yes! 32 plus 62 plus 62 is 156. Moving the 62 back gives a gap of 156, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 200064
+   },
+   {
+    "file": "2223f24cc809.mp3",
+    "text": "The check line. 32 plus 62 plus 62 is 156. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 157440
+   },
+   {
+    "file": "582581274fed.mp3",
+    "text": "Not yet. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 66476
+   },
+   {
+    "file": "d40bec4eef39.mp3",
+    "text": "Line 1. All 141 fish come out of Tank A's extra piece. Which number sentence finds how big Tank A's extra piece is now?",
+    "bytes": 86400
+   },
+   {
+    "file": "9adfaa965fe3.mp3",
+    "text": "Yes! 282 take away 141 is 141. Tank A's extra is now 141 fish. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.",
+    "bytes": 160320
+   },
+   {
+    "file": "ff237a161899.mp3",
+    "text": "Line 1. 282 take away 141 is 141. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.",
+    "bytes": 137472
+   },
+   {
+    "file": "6e51c454a432.mp3",
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer.",
+    "bytes": 60716
+   },
+   {
+    "file": "0abf930dc90f.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one.",
+    "bytes": 63596
+   },
+   {
+    "file": "1af66416a855.mp3",
+    "text": "Line 2. Tank A is 141 above the dotted line, and Tank B is 141 above it. Which number sentence finds the difference between them now?",
+    "bytes": 97728
+   },
+   {
+    "file": "73b7d21682fc.mp3",
+    "text": "Yes! 141 take away 141 is 0. The difference now is 0 fish. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.",
+    "bytes": 143232
+   },
+   {
+    "file": "458c917d2d6c.mp3",
+    "text": "Line 2. 141 take away 141 is 0. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.",
+    "bytes": 129024
+   },
+   {
+    "file": "146a1610133a.mp3",
+    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces above the line now.",
+    "bytes": 58988
+   },
+   {
+    "file": "58d2ba3263a8.mp3",
+    "text": "Yes! Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
+    "bytes": 160320
+   },
+   {
+    "file": "d3b7f9eb7db1.mp3",
+    "text": "The answer sentence. Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
+    "bytes": 174528
+   },
+   {
+    "file": "4cb9fe8f5bba.mp3",
+    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?",
+    "bytes": 44588
+   },
+   {
+    "file": "8a3b84489529.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?",
+    "bytes": 92012
+   },
+   {
+    "file": "14e023f8e758.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 141 fish back changes the gap by 141 twice, once for each side. Which number sentence should give 282, the gap in the story?",
+    "bytes": 140352
+   },
+   {
+    "file": "1201a91236cd.mp3",
+    "text": "Yes! 0 plus 141 plus 141 is 282. Moving the 141 back gives a gap of 282, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 202944
+   },
+   {
+    "file": "6389194811ce.mp3",
+    "text": "The check line. 0 plus 141 plus 141 is 282. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 160320
+   },
+   {
+    "file": "28b70cc6adec.mp3",
+    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller.",
+    "bytes": 46508
+   },
+   {
+    "file": "ca9f257e2a3b.mp3",
+    "text": "Line 1. The hall's extra 129 students walked over first. Which number sentence finds how many more students moved after that?",
+    "bytes": 77760
+   },
+   {
+    "file": "c8e406542897.mp3",
+    "text": "Yes! 329 take away 129 is 200. After the hall's extra 129, another 200 students moved. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.",
+    "bytes": 225792
+   },
+   {
+    "file": "3099e30532f4.mp3",
+    "text": "Line 1. 329 take away 129 is 200. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.",
+    "bytes": 194496
+   },
+   {
+    "file": "80682fcda81f.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.",
+    "bytes": 66476
+   },
+   {
+    "file": "f04d5f1d35a6.mp3",
+    "text": "Not yet. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.",
+    "bytes": 55532
+   },
+   {
+    "file": "e79a8b331f60.mp3",
+    "text": "Line 2. The hall is 200 below the dotted line, and the canteen is 329 above it. Which number sentence finds the difference between them now?",
+    "bytes": 86400
+   },
+   {
+    "file": "777e3f5a6766.mp3",
+    "text": "Yes! 200 plus 329 is 529. The difference now is 529 students. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 151872
+   },
+   {
+    "file": "a0473f6edcfb.mp3",
+    "text": "Line 2. 200 plus 329 is 529. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 140352
+   },
+   {
+    "file": "9b401ad3b719.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 109100
+   },
+   {
+    "file": "0b50fc4b3305.mp3",
+    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 75116
+   },
+   {
+    "file": "d9e333a715de.mp3",
+    "text": "Yes! The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.",
+    "bytes": 174528
+   },
+   {
+    "file": "32749d6415f3.mp3",
+    "text": "The answer sentence. The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.",
+    "bytes": 188736
+   },
+   {
+    "file": "4594f499638b.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
+   },
+   {
+    "file": "9a0800f473ed.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 329 students back changes the gap by 329 twice, once for each side. Which number sentence should give 129, the gap in the story?",
+    "bytes": 137472
+   },
+   {
+    "file": "c327a52c8f16.mp3",
+    "text": "Yes! 329 plus 329 take away 529 is 129. Moving the 329 back gives a gap of 129, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 222912
+   },
+   {
+    "file": "0638ad20a9c2.mp3",
+    "text": "The check line. 329 plus 329 take away 529 is 129. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 185856
+   },
+   {
+    "file": "f027f00428d4.mp3",
+    "text": "Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 66476
+   },
+   {
+    "file": "6bac32864bd8.mp3",
+    "text": "Line 1. Mei Ling's extra 244 stickers walked over first. Which number sentence finds how many more stickers moved after that?",
+    "bytes": 80640
+   },
+   {
+    "file": "09a3b3859e82.mp3",
+    "text": "Yes! 527 take away 244 is 283. After Mei Ling's extra 244, another 283 stickers moved. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.",
+    "bytes": 240000
+   },
+   {
+    "file": "5569f5c404db.mp3",
+    "text": "Line 1. 527 take away 244 is 283. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.",
+    "bytes": 200064
+   },
+   {
+    "file": "126744a6f8d6.mp3",
+    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer.",
+    "bytes": 61676
+   },
+   {
+    "file": "40a26a817225.mp3",
+    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one.",
+    "bytes": 63596
+   },
+   {
+    "file": "66d3c35a09db.mp3",
+    "text": "Line 2. Mei Ling is 283 below the dotted line, and Aisha is 527 above it. Which number sentence finds the difference between them now?",
+    "bytes": 97728
+   },
+   {
+    "file": "4373f32f38e6.mp3",
+    "text": "Yes! 283 plus 527 is 810. The difference now is 810 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 154560
+   },
+   {
+    "file": "f6e4476257f9.mp3",
+    "text": "Line 2. 283 plus 527 is 810. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
+    "bytes": 137472
+   },
+   {
+    "file": "cfc92cf4e3ef.mp3",
+    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?",
+    "bytes": 109100
+   },
+   {
+    "file": "0e16fead6351.mp3",
+    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
+    "bytes": 75116
+   },
+   {
+    "file": "a27470379b51.mp3",
+    "text": "Yes! Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
+    "bytes": 163200
+   },
+   {
+    "file": "81f3531bec00.mp3",
+    "text": "The answer sentence. Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
+    "bytes": 174528
+   },
+   {
+    "file": "1f6c997be0f4.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
+   },
+   {
+    "file": "73867fd785f2.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 527 stickers back changes the gap by 527 twice, once for each side. Which number sentence should give 244, the gap in the story?",
+    "bytes": 137472
+   },
+   {
+    "file": "d317a3cf49fa.mp3",
+    "text": "Yes! 527 plus 527 take away 810 is 244. Moving the 527 back gives a gap of 244, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 217152
+   },
+   {
+    "file": "13640494aaf6.mp3",
+    "text": "The check line. 527 plus 527 take away 810 is 244. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 171648
+   },
+   {
+    "file": "83dc2e7a6a07.mp3",
+    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 66476
+   },
+   {
+    "file": "c9c298fe458a.mp3",
+    "text": "Line 1. Bus 1 had 11 passengers, and 3 moved out. Which number sentence finds how many Bus 1 has now?",
+    "bytes": 72192
+   },
+   {
+    "file": "d6b1d3ed7bd9.mp3",
+    "text": "Yes! 11 take away 3 is 8. Bus 1 has 8 passengers now. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.",
+    "bytes": 146112
+   },
+   {
+    "file": "8f36f1471333.mp3",
+    "text": "Line 1. 11 take away 3 is 8. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.",
+    "bytes": 137472
+   },
+   {
+    "file": "31b16ae3a23a.mp3",
+    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer.",
+    "bytes": 58028
+   },
+   {
+    "file": "b6b1953362df.mp3",
+    "text": "Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?",
+    "bytes": 52268
+   },
+   {
+    "file": "465695d26de0.mp3",
+    "text": "Line 2. Bus 2 had 4 passengers, and gets the 3 that moved. Which number sentence finds how many Bus 2 has now?",
+    "bytes": 77760
+   },
+   {
+    "file": "679069b6a5b5.mp3",
+    "text": "Yes! 4 plus 3 is 7. Bus 2 has 7 passengers now. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.",
+    "bytes": 100608
+   },
+   {
+    "file": "b2ec03621972.mp3",
+    "text": "Line 2. 4 plus 3 is 7. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.",
+    "bytes": 83520
+   },
+   {
+    "file": "5f30af018a98.mp3",
+    "text": "Not yet. That starts from Bus 1's number. Look at Bus 2's bar.",
+    "bytes": 46508
+   },
+   {
+    "file": "06226d1a6f45.mp3",
+    "text": "Not yet. Look at Bus 2's bar. It grows when the passengers arrive.",
+    "bytes": 43820
+   },
+   {
+    "file": "5e1cdfc8ee3c.mp3",
+    "text": "Line 3. Bus 1 has 8 now, and Bus 2 has 7. Which number sentence finds the difference?",
+    "bytes": 69312
+   },
+   {
+    "file": "a3af9b40b781.mp3",
+    "text": "Yes! 8 take away 7 is 1. The difference is 1 passenger. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 117696
+   },
+   {
+    "file": "36aa224bc715.mp3",
+    "text": "Line 3. 8 take away 7 is 1. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 111936
+   },
+   {
+    "file": "497a78044950.mp3",
+    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars.",
+    "bytes": 60716
+   },
+   {
+    "file": "94316b23c77f.mp3",
+    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now.",
+    "bytes": 46508
+   },
+   {
+    "file": "1ae4ee598b6f.mp3",
+    "text": "Yes! Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.",
+    "bytes": 163200
+   },
+   {
+    "file": "fdc607707277.mp3",
+    "text": "The answer sentence. Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.",
+    "bytes": 180288
+   },
+   {
+    "file": "7505651efbf8.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 83564
+   },
+   {
+    "file": "db53ac3fad76.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 3 passengers back changes the gap by 3 twice, once for each side. Which number sentence should give 7? That was the gap at the start: Bus 1 had 7 more.",
+    "bytes": 146112
+   },
+   {
+    "file": "7aa6a3b84c86.mp3",
+    "text": "Yes! 1 plus 3 plus 3 is 7. Moving the 3 back gives a gap of 7, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 168768
+   },
+   {
+    "file": "a40c8e8d6f04.mp3",
+    "text": "The check line. 1 plus 3 plus 3 is 7. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 131904
+   },
+   {
+    "file": "8fe995613d75.mp3",
+    "text": "Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 63596
+   },
+   {
+    "file": "6952b1526166.mp3",
+    "text": "Line 1. Tank A had 8 fish, and 5 moved out. Which number sentence finds how many Tank A has now?",
+    "bytes": 69312
+   },
+   {
+    "file": "76dd06dcff8e.mp3",
+    "text": "Yes! 8 take away 5 is 3. Tank A has 3 fish now. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.",
+    "bytes": 140352
+   },
+   {
+    "file": "1dfaa5b58932.mp3",
+    "text": "Line 1. 8 take away 5 is 3. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.",
+    "bytes": 129024
+   },
+   {
+    "file": "6cd53fafc02f.mp3",
+    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer.",
+    "bytes": 58028
+   },
+   {
+    "file": "53cb60938124.mp3",
+    "text": "Not yet. That takes away Tank B's number. Look at Tank A's bar. How many leave it?",
+    "bytes": 58988
+   },
+   {
+    "file": "4035e7810785.mp3",
+    "text": "Line 2. Tank B had 4 fish, and gets the 5 that moved. Which number sentence finds how many Tank B has now?",
+    "bytes": 77760
+   },
+   {
+    "file": "745b7cebb030.mp3",
+    "text": "Yes! 4 plus 5 is 9. Tank B has 9 fish now. Why this line? Tank B gets the fish that move, so it has more. More means add.",
+    "bytes": 97728
+   },
+   {
+    "file": "4b6ded9ec7bd.mp3",
+    "text": "Line 2. 4 plus 5 is 9. Why this line? Tank B gets the fish that move, so it has more. More means add.",
+    "bytes": 77760
+   },
+   {
+    "file": "fd286ad7910e.mp3",
+    "text": "Not yet. That starts from Tank A's number. Look at Tank B's bar.",
+    "bytes": 42476
+   },
+   {
+    "file": "8c02709c9816.mp3",
+    "text": "Not yet. Look at Tank B's bar. How many arrive?",
+    "bytes": 35180
+   },
+   {
+    "file": "b76e2eaa2819.mp3",
+    "text": "Line 3. Tank A has 3 now, and Tank B has 9. Which number sentence finds the difference?",
+    "bytes": 66432
+   },
+   {
+    "file": "c70d1ce981ad.mp3",
+    "text": "Yes! 9 take away 3 is 6. The difference is 6 fish. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 120576
+   },
+   {
+    "file": "640bcded02d9.mp3",
+    "text": "Line 3. 9 take away 3 is 6. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 103488
+   },
+   {
+    "file": "68462f3748bb.mp3",
+    "text": "Yes! Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
+    "bytes": 160320
+   },
+   {
+    "file": "8331814f8b39.mp3",
+    "text": "The answer sentence. Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
+    "bytes": 174528
+   },
+   {
+    "file": "7278ebb84864.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 77804
+   },
+   {
+    "file": "9f5b4134fed3.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 fish back changes the gap by 5 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Tank A had 4 more.",
+    "bytes": 137472
+   },
+   {
+    "file": "f8a5aa1b8dde.mp3",
+    "text": "Yes! 5 plus 5 take away 6 is 4. Moving the 5 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 177408
+   },
+   {
+    "file": "6fa760cc2518.mp3",
+    "text": "The check line. 5 plus 5 take away 6 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 134784
+   },
+   {
+    "file": "446d3a2f2e03.mp3",
+    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 75116
+   },
+   {
+    "file": "8d54184af564.mp3",
+    "text": "Line 1. Tray A had 6 ang ku kueh, and 1 moved out. Which number sentence finds how many Tray A has now?",
+    "bytes": 75072
+   },
+   {
+    "file": "3ffec2b1ecda.mp3",
+    "text": "Yes! 6 take away 1 is 5. Tray A has 5 ang ku kueh now. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.",
+    "bytes": 157440
+   },
+   {
+    "file": "f6c1cb91b03d.mp3",
+    "text": "Line 1. 6 take away 1 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.",
+    "bytes": 137472
+   },
+   {
+    "file": "a58cd01bcbe2.mp3",
+    "text": "Not yet. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer.",
+    "bytes": 60716
+   },
+   {
+    "file": "71f0393a555d.mp3",
+    "text": "Not yet. That takes away Tray B's number. Look at Tray A's bar. How many leave it?",
+    "bytes": 52268
+   },
+   {
+    "file": "b4df1c682a1d.mp3",
+    "text": "Line 2. Tray B had 4 ang ku kueh, and gets the 1 that moved. Which number sentence finds how many Tray B has now?",
+    "bytes": 80640
+   },
+   {
+    "file": "9c99516b4610.mp3",
+    "text": "Yes! 4 plus 1 is 5. Tray B has 5 ang ku kueh now. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.",
+    "bytes": 100608
+   },
+   {
+    "file": "35d8524e0fdf.mp3",
+    "text": "Line 2. 4 plus 1 is 5. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.",
+    "bytes": 97728
+   },
+   {
+    "file": "da6174dac0f7.mp3",
+    "text": "Not yet. Look at Tray B's bar. It grows when the ang ku kueh arrive.",
+    "bytes": 46508
+   },
+   {
+    "file": "83ec6c5f3d70.mp3",
+    "text": "Not yet. That starts from Tray A's number. Look at Tray B's bar.",
+    "bytes": 43820
+   },
+   {
+    "file": "92447527b7ec.mp3",
+    "text": "Line 3. Tray A has 5 now, and Tray B has 5. Which number sentence finds the difference?",
+    "bytes": 69312
+   },
+   {
+    "file": "a692784ad83c.mp3",
+    "text": "Yes! 5 take away 5 is 0. The difference is 0 ang ku kueh. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.",
+    "bytes": 117696
+   },
+   {
+    "file": "891cc3db04a9.mp3",
+    "text": "Line 3. 5 take away 5 is 0. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.",
+    "bytes": 103488
+   },
+   {
+    "file": "6190bee30c72.mp3",
+    "text": "Yes! Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
+    "bytes": 174528
+   },
+   {
+    "file": "66dc8a505453.mp3",
+    "text": "The answer sentence. Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
+    "bytes": 177408
+   },
+   {
+    "file": "9847d7875969.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?",
+    "bytes": 92012
+   },
+   {
+    "file": "7fbf0e84de24.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 1 ang ku kueh back changes the gap by 1 twice, once for each side. Which number sentence should give 2? That was the gap at the start: Tray A had 2 more.",
+    "bytes": 137472
+   },
+   {
+    "file": "b90715daf225.mp3",
+    "text": "Yes! 0 plus 1 plus 1 is 2. Moving the 1 back gives a gap of 2, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 163200
+   },
+   {
+    "file": "879c6f9ea722.mp3",
+    "text": "The check line. 0 plus 1 plus 1 is 2. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 131904
+   },
+   {
+    "file": "a413b2c34ede.mp3",
+    "text": "Line 1. Mei Ling had 15 stickers, and 2 moved out. Which number sentence finds how many Mei Ling has now?",
+    "bytes": 75072
+   },
+   {
+    "file": "f86554ba2f75.mp3",
+    "text": "Yes! 15 take away 2 is 13. Mei Ling has 13 stickers now. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.",
+    "bytes": 154560
+   },
+   {
+    "file": "e74fa831888b.mp3",
+    "text": "Line 1. 15 take away 2 is 13. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.",
+    "bytes": 137472
+   },
+   {
+    "file": "71e008c3821d.mp3",
+    "text": "Not yet. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer.",
+    "bytes": 49388
+   },
+   {
+    "file": "b8a98b8248e0.mp3",
+    "text": "Not yet. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?",
+    "bytes": 53036
+   },
+   {
+    "file": "a361c0e94ab4.mp3",
+    "text": "Line 2. Aisha had 7 stickers, and gets the 2 that moved. Which number sentence finds how many Aisha has now?",
+    "bytes": 72192
+   },
+   {
+    "file": "da50734260eb.mp3",
+    "text": "Yes! 7 plus 2 is 9. Aisha has 9 stickers now. Why this line? Aisha gets the stickers that move, so it has more. More means add.",
+    "bytes": 94848
+   },
+   {
+    "file": "f9aff162485d.mp3",
+    "text": "Line 2. 7 plus 2 is 9. Why this line? Aisha gets the stickers that move, so it has more. More means add.",
+    "bytes": 80640
+   },
+   {
+    "file": "030e7eaa193a.mp3",
+    "text": "Not yet. That starts from Mei Ling's number. Look at Aisha's bar.",
+    "bytes": 41900
+   },
+   {
+    "file": "8a65610b93b9.mp3",
+    "text": "Not yet. Look at Aisha's bar. It grows when the stickers arrive.",
+    "bytes": 41900
+   },
+   {
+    "file": "895d48290473.mp3",
+    "text": "Line 3. Mei Ling has 13 now, and Aisha has 9. Which number sentence finds the difference?",
+    "bytes": 66432
+   },
+   {
+    "file": "897220ba0fd9.mp3",
+    "text": "Yes! 13 take away 9 is 4. The difference is 4 stickers. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 123264
+   },
+   {
+    "file": "7f1873ee1dab.mp3",
+    "text": "Line 3. 13 take away 9 is 4. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 123264
+   },
+   {
+    "file": "e2f2533f8f3b.mp3",
+    "text": "Yes! Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
+    "bytes": 154560
+   },
+   {
+    "file": "9bb8d8ae5948.mp3",
+    "text": "The answer sentence. Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
+    "bytes": 166080
+   },
+   {
+    "file": "68c94676d2a6.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 2 stickers back changes the gap by 2 twice, once for each side. Which number sentence should give 8? That was the gap at the start: Mei Ling had 8 more.",
+    "bytes": 137472
+   },
+   {
+    "file": "e6c0f6c71623.mp3",
+    "text": "Yes! 4 plus 2 plus 2 is 8. Moving the 2 back gives a gap of 8, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 163200
+   },
+   {
+    "file": "f4e2d146d866.mp3",
+    "text": "The check line. 4 plus 2 plus 2 is 8. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 134784
+   },
+   {
+    "file": "411c15920746.mp3",
+    "text": "Not yet. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller.",
+    "bytes": 61676
+   },
+   {
+    "file": "8fb3df840ec4.mp3",
+    "text": "Line 1. The top shelf had 12 books, and 7 moved out. Which number sentence finds how many the top shelf has now?",
+    "bytes": 69312
+   },
+   {
+    "file": "84761c210f1b.mp3",
+    "text": "Yes! 12 take away 7 is 5. The top shelf has 5 books now. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.",
+    "bytes": 151872
+   },
+   {
+    "file": "51866d968ade.mp3",
+    "text": "Line 1. 12 take away 7 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.",
+    "bytes": 137472
+   },
+   {
+    "file": "67063e405d47.mp3",
+    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer.",
+    "bytes": 60716
+   },
+   {
+    "file": "e02e416c60f4.mp3",
+    "text": "Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?",
+    "bytes": 60332
+   },
+   {
+    "file": "302561248bc3.mp3",
+    "text": "Line 2. The bottom shelf had 9 books, and gets the 7 that moved. Which number sentence finds how many the bottom shelf has now?",
+    "bytes": 80640
+   },
+   {
+    "file": "cf3e940a1343.mp3",
+    "text": "Yes! 9 plus 7 is 16. The bottom shelf has 16 books now. Why this line? The bottom shelf gets the books that move, so it has more. More means add.",
+    "bytes": 94848
+   },
+   {
+    "file": "0ba8bf92876d.mp3",
+    "text": "Line 2. 9 plus 7 is 16. Why this line? The bottom shelf gets the books that move, so it has more. More means add.",
+    "bytes": 94848
+   },
+   {
+    "file": "1ca037467864.mp3",
+    "text": "Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar.",
+    "bytes": 48236
+   },
+   {
+    "file": "f7c36fbe2ada.mp3",
+    "text": "Not yet. Look at the bottom shelf's bar. It grows when the books arrive.",
+    "bytes": 43820
+   },
+   {
+    "file": "4e89082ed16f.mp3",
+    "text": "Line 3. The top shelf has 5 now, and the bottom shelf has 16. Which number sentence finds the difference?",
+    "bytes": 66432
+   },
+   {
+    "file": "a47fafde5445.mp3",
+    "text": "Yes! 16 take away 5 is 11. The difference is 11 books. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 134784
+   },
+   {
+    "file": "8688dc62db9e.mp3",
+    "text": "Line 3. 16 take away 5 is 11. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
+    "bytes": 114816
+   },
+   {
+    "file": "3c45dbda2b23.mp3",
+    "text": "Yes! The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.",
+    "bytes": 168768
+   },
+   {
+    "file": "3b356e30a7ed.mp3",
+    "text": "The answer sentence. The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.",
+    "bytes": 177408
+   },
+   {
+    "file": "cb2c11632151.mp3",
+    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.",
+    "bytes": 80684
+   },
+   {
+    "file": "f2602bdf7efc.mp3",
+    "text": "Check line. Put your answer back into the story and undo the move. Moving the 7 books back changes the gap by 7 twice, once for each side. Which number sentence should give 3? That was the gap at the start: the top shelf had 3 more.",
+    "bytes": 134784
+   },
+   {
+    "file": "19f9aa8edb35.mp3",
+    "text": "Yes! 7 plus 7 take away 11 is 3. Moving the 7 back gives a gap of 3, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 174528
+   },
+   {
+    "file": "e818cbf4819b.mp3",
+    "text": "The check line. 7 plus 7 take away 11 is 3. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
+    "bytes": 134784
+   },
+   {
+    "file": "9a9ea41e89ab.mp3",
+    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
+    "bytes": 78572
+   },
+   {
+    "file": "4c730990233a.mp3",
+    "text": "Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.",
+    "bytes": 134784
+   },
+   {
+    "file": "c9e1dd2cb8cc.mp3",
+    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
+    "bytes": 120576
+   },
+   {
+    "file": "d94dd8ee2617.mp3",
+    "text": "On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
+    "bytes": 78188
+   }
+  ]
+ },
+ "feedback_defaults": {
+  "note": "25 Oct 2026: the feedback rules (wrong step = 'Not yet' + pointer; specific step praise, never the child; guide not friend). Changed clips were cut from the existing luna audio at the sentence pause, with a new luna 'Not yet.' in front where needed; a few regenerated.",
+  "changed": 90
+ },
+ "recorded_working": {
+  "note": "Legacy working-text inventory, now played by same-origin luna recordings. No system voice or fallback.",
   "generated": "2026-10-24",
   "count": 659,
   "chars": 108337,
@@ -4422,966 +5383,5 @@
     "text": "You finished the round and got all 5 stars! Well done!"
    }
   ]
- },
- "working_clips": {
-  "note": "Grok voice luna (24 Oct 2026): clips for the Lesson working-step lines, looked up by exact cleaned text in the page (CLIPS); a line with no clip uses the device voice. Shared clips live in /audio-shared/.",
-  "generated": "2026-10-24",
-  "count": 190,
-  "clips": [
-   {
-    "file": "9cbd159adb6e.mp3",
-    "text": "Line 1. Tray A's extra 91 ang ku kueh walked over first. Which number sentence finds how many more ang ku kueh moved after that?",
-    "bytes": 91968
-   },
-   {
-    "file": "7be9655ef231.mp3",
-    "text": "Yes! 164 take away 91 is 73. After Tray A's extra 91, another 73 ang ku kueh moved. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.",
-    "bytes": 231360
-   },
-   {
-    "file": "a486ee1c6f47.mp3",
-    "text": "Line 1. 164 take away 91 is 73. Why this line? The first 91 ang ku kueh to walk over only use up Tray A's extra piece, so Tray A is back at the dotted line. Taking them away from the 164 tells us how many are still to come, and those take Tray A below the line.",
-    "bytes": 197376
-   },
-   {
-    "file": "99df7d24f84c.mp3",
-    "text": "Not yet. Look at Tray A's bar. The ang ku kueh walk out of Tray A, so it gets shorter, not longer.",
-    "bytes": 64556
-   },
-   {
-    "file": "3cf3c608f8c9.mp3",
-    "text": "Not yet. Look at the bars. Which is longer, the orange move or Tray A's extra piece? Start with the longer one.",
-    "bytes": 67052
-   },
-   {
-    "file": "6357abef88af.mp3",
-    "text": "Line 2. Tray A is 73 below the dotted line, and Tray B is 164 above it. Which number sentence finds the difference between them now?",
-    "bytes": 89280
-   },
-   {
-    "file": "8af066e1e2bf.mp3",
-    "text": "Yes! 73 plus 164 is 237. The difference now is 237 ang ku kueh. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 160320
-   },
-   {
-    "file": "d309f30e118f.mp3",
-    "text": "Line 2. 73 plus 164 is 237. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 131904
-   },
-   {
-    "file": "3d54c59aae9c.mp3",
-    "text": "Not yet. Look at the bars. The difference goes from the end of Tray A, below the line, right up to the end of Tray B, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 107564
-   },
-   {
-    "file": "eb53e0e3d55c.mp3",
-    "text": "Not yet. That uses Tray A's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 72236
-   },
-   {
-    "file": "666228e0c694.mp3",
-    "text": "Yes! Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
-    "bytes": 180288
-   },
-   {
-    "file": "c9cf9c51bf45.mp3",
-    "text": "The answer sentence. Tray B has 237 more ang ku kueh than Tray A. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
-    "bytes": 185856
-   },
-   {
-    "file": "471a47941b6e.mp3",
-    "text": "Not yet. Look at the bars again. Whose end sticks out further?",
-    "bytes": 38060
-   },
-   {
-    "file": "e9f41137258d.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which tray has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 86444
-   },
-   {
-    "file": "ee4fc33b10b7.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 164 ang ku kueh back changes the gap by 164 twice, once for each side. Which number sentence should give 91, the gap in the story?",
-    "bytes": 134784
-   },
-   {
-    "file": "6901b3cb8d38.mp3",
-    "text": "Yes! 164 plus 164 take away 237 is 91. Moving the 164 back gives a gap of 91, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 217152
-   },
-   {
-    "file": "b0e6a50af80a.mp3",
-    "text": "The check line. 164 plus 164 take away 237 is 91. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 166080
-   },
-   {
-    "file": "8006020a2b67.mp3",
-    "text": "Not yet. Look at the orange pieces on the bars. Undoing the move changes the gap twice, because one side gets them back and the other side loses them.",
-    "bytes": 83564
-   },
-   {
-    "file": "0777033eddee.mp3",
-    "text": "Not yet. Look at the bars. Tray B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 72236
-   },
-   {
-    "file": "98672c0e4bfc.mp3",
-    "text": "Line 1. All 62 marbles come out of Jar A's extra piece. Which number sentence finds how big Jar A's extra piece is now?",
-    "bytes": 77760
-   },
-   {
-    "file": "5506e118d97f.mp3",
-    "text": "Yes! 156 take away 62 is 94. Jar A's extra is now 94 marbles. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.",
-    "bytes": 146112
-   },
-   {
-    "file": "02ed30117d04.mp3",
-    "text": "Line 1. 156 take away 62 is 94. Why this line? The marbles that move all come out of Jar A's extra piece, so the extra piece gets shorter. Shorter means take away.",
-    "bytes": 129024
-   },
-   {
-    "file": "84564a035565.mp3",
-    "text": "Not yet. Look at the bars. Which is longer, Jar A's extra piece or the move? Start with the longer one.",
-    "bytes": 63596
-   },
-   {
-    "file": "46cc1a79d08a.mp3",
-    "text": "Not yet. Look at Jar A's bar. The marbles leave Jar A, so the extra piece gets shorter, not longer.",
-    "bytes": 66476
-   },
-   {
-    "file": "3466a0409274.mp3",
-    "text": "Line 2. Jar A is 94 above the dotted line, and Jar B is 62 above it. Which number sentence finds the difference between them now?",
-    "bytes": 77760
-   },
-   {
-    "file": "fca787d0ead1.mp3",
-    "text": "Yes! 94 take away 62 is 32. The difference now is 32 marbles. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.",
-    "bytes": 148992
-   },
-   {
-    "file": "38a6d7c77bb2.mp3",
-    "text": "Line 2. 94 take away 62 is 32. Why this line? Both ends are above the dotted line now, so they start from the same place. The difference is the longer piece take away the shorter piece.",
-    "bytes": 129024
-   },
-   {
-    "file": "d686573578e8.mp3",
-    "text": "Not yet. Look at the bars. Both pieces are above the line, side by side, not end to end. Which one sticks out further, and by how much?",
-    "bytes": 84332
-   },
-   {
-    "file": "8b5cf6a44ef3.mp3",
-    "text": "Not yet. That uses Jar A's extra from the start. Use the two pieces above the line now.",
-    "bytes": 56492
-   },
-   {
-    "file": "5ba856cb47ae.mp3",
-    "text": "Yes! Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.",
-    "bytes": 166080
-   },
-   {
-    "file": "8ad12bf2782c.mp3",
-    "text": "The answer sentence. Jar A has 32 more marbles than Jar B. Why this line? The question asks two things: which jar has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, marbles. Then the marker knows exactly what your number means.",
-    "bytes": 185856
-   },
-   {
-    "file": "679319133231.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which jar has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 87212
-   },
-   {
-    "file": "511eef98a131.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 62 marbles back changes the gap by 62 twice, once for each side. Which number sentence should give 156, the gap in the story?",
-    "bytes": 123264
-   },
-   {
-    "file": "80b098526b81.mp3",
-    "text": "Yes! 32 plus 62 plus 62 is 156. Moving the 62 back gives a gap of 156, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 200064
-   },
-   {
-    "file": "2223f24cc809.mp3",
-    "text": "The check line. 32 plus 62 plus 62 is 156. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 157440
-   },
-   {
-    "file": "582581274fed.mp3",
-    "text": "Not yet. Look at the bars. Jar A is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 66476
-   },
-   {
-    "file": "d40bec4eef39.mp3",
-    "text": "Line 1. All 141 fish come out of Tank A's extra piece. Which number sentence finds how big Tank A's extra piece is now?",
-    "bytes": 86400
-   },
-   {
-    "file": "9adfaa965fe3.mp3",
-    "text": "Yes! 282 take away 141 is 141. Tank A's extra is now 141 fish. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.",
-    "bytes": 160320
-   },
-   {
-    "file": "ff237a161899.mp3",
-    "text": "Line 1. 282 take away 141 is 141. Why this line? The fish that move all come out of Tank A's extra piece, so the extra piece gets shorter. Shorter means take away.",
-    "bytes": 137472
-   },
-   {
-    "file": "6e51c454a432.mp3",
-    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so the extra piece gets shorter, not longer.",
-    "bytes": 60716
-   },
-   {
-    "file": "0abf930dc90f.mp3",
-    "text": "Not yet. Look at the bars. Which is longer, Tank A's extra piece or the move? Start with the longer one.",
-    "bytes": 63596
-   },
-   {
-    "file": "1af66416a855.mp3",
-    "text": "Line 2. Tank A is 141 above the dotted line, and Tank B is 141 above it. Which number sentence finds the difference between them now?",
-    "bytes": 97728
-   },
-   {
-    "file": "73b7d21682fc.mp3",
-    "text": "Yes! 141 take away 141 is 0. The difference now is 0 fish. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.",
-    "bytes": 143232
-   },
-   {
-    "file": "458c917d2d6c.mp3",
-    "text": "Line 2. 141 take away 141 is 0. Why this line? Both pieces stick out the same amount above the dotted line. The same take away the same leaves nothing, so there is no difference.",
-    "bytes": 129024
-   },
-   {
-    "file": "146a1610133a.mp3",
-    "text": "Not yet. That uses Tank A's extra from the start. Use the two pieces above the line now.",
-    "bytes": 58988
-   },
-   {
-    "file": "58d2ba3263a8.mp3",
-    "text": "Yes! Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
-    "bytes": 160320
-   },
-   {
-    "file": "d3b7f9eb7db1.mp3",
-    "text": "The answer sentence. Tank A and Tank B have the same number of fish. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
-    "bytes": 174528
-   },
-   {
-    "file": "4cb9fe8f5bba.mp3",
-    "text": "Not yet. Look at the bars again. Does one end stick out further than the other?",
-    "bytes": 44588
-   },
-   {
-    "file": "8a3b84489529.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tank has more. What do you say when nobody has more?",
-    "bytes": 92012
-   },
-   {
-    "file": "14e023f8e758.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 141 fish back changes the gap by 141 twice, once for each side. Which number sentence should give 282, the gap in the story?",
-    "bytes": 140352
-   },
-   {
-    "file": "1201a91236cd.mp3",
-    "text": "Yes! 0 plus 141 plus 141 is 282. Moving the 141 back gives a gap of 282, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 202944
-   },
-   {
-    "file": "6389194811ce.mp3",
-    "text": "The check line. 0 plus 141 plus 141 is 282. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 160320
-   },
-   {
-    "file": "28b70cc6adec.mp3",
-    "text": "Not yet. Look at the bars. Moving them back makes the gap bigger, not smaller.",
-    "bytes": 46508
-   },
-   {
-    "file": "ca9f257e2a3b.mp3",
-    "text": "Line 1. The hall's extra 129 students walked over first. Which number sentence finds how many more students moved after that?",
-    "bytes": 77760
-   },
-   {
-    "file": "c8e406542897.mp3",
-    "text": "Yes! 329 take away 129 is 200. After the hall's extra 129, another 200 students moved. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.",
-    "bytes": 225792
-   },
-   {
-    "file": "3099e30532f4.mp3",
-    "text": "Line 1. 329 take away 129 is 200. Why this line? The first 129 students to walk over only use up the hall's extra piece, so the hall is back at the dotted line. Taking them away from the 329 tells us how many are still to come, and those take the hall below the line.",
-    "bytes": 194496
-   },
-   {
-    "file": "80682fcda81f.mp3",
-    "text": "Not yet. Look at the bars. Which is longer, the orange move or the hall's extra piece? Start with the longer one.",
-    "bytes": 66476
-   },
-   {
-    "file": "f04d5f1d35a6.mp3",
-    "text": "Not yet. Look at the hall's bar. The students walk out of the hall, so it gets shorter, not longer.",
-    "bytes": 55532
-   },
-   {
-    "file": "e79a8b331f60.mp3",
-    "text": "Line 2. The hall is 200 below the dotted line, and the canteen is 329 above it. Which number sentence finds the difference between them now?",
-    "bytes": 86400
-   },
-   {
-    "file": "777e3f5a6766.mp3",
-    "text": "Yes! 200 plus 329 is 529. The difference now is 529 students. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 151872
-   },
-   {
-    "file": "a0473f6edcfb.mp3",
-    "text": "Line 2. 200 plus 329 is 529. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 140352
-   },
-   {
-    "file": "9b401ad3b719.mp3",
-    "text": "Not yet. Look at the bars. The difference goes from the end of the hall, below the line, right up to the end of the canteen, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 109100
-   },
-   {
-    "file": "0b50fc4b3305.mp3",
-    "text": "Not yet. That uses the hall's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 75116
-   },
-   {
-    "file": "d9e333a715de.mp3",
-    "text": "Yes! The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.",
-    "bytes": 174528
-   },
-   {
-    "file": "32749d6415f3.mp3",
-    "text": "The answer sentence. The canteen has 529 more students than the hall. Why this line? The question asks two things: which place has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, students. Then the marker knows exactly what your number means.",
-    "bytes": 188736
-   },
-   {
-    "file": "4594f499638b.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which place has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83564
-   },
-   {
-    "file": "9a0800f473ed.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 329 students back changes the gap by 329 twice, once for each side. Which number sentence should give 129, the gap in the story?",
-    "bytes": 137472
-   },
-   {
-    "file": "c327a52c8f16.mp3",
-    "text": "Yes! 329 plus 329 take away 529 is 129. Moving the 329 back gives a gap of 129, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 222912
-   },
-   {
-    "file": "0638ad20a9c2.mp3",
-    "text": "The check line. 329 plus 329 take away 529 is 129. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 185856
-   },
-   {
-    "file": "f027f00428d4.mp3",
-    "text": "Not yet. Look at the bars. The canteen is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 66476
-   },
-   {
-    "file": "6bac32864bd8.mp3",
-    "text": "Line 1. Mei Ling's extra 244 stickers walked over first. Which number sentence finds how many more stickers moved after that?",
-    "bytes": 80640
-   },
-   {
-    "file": "09a3b3859e82.mp3",
-    "text": "Yes! 527 take away 244 is 283. After Mei Ling's extra 244, another 283 stickers moved. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.",
-    "bytes": 240000
-   },
-   {
-    "file": "5569f5c404db.mp3",
-    "text": "Line 1. 527 take away 244 is 283. Why this line? The first 244 stickers to walk over only use up Mei Ling's extra piece, so Mei Ling is back at the dotted line. Taking them away from the 527 tells us how many are still to come, and those take Mei Ling below the line.",
-    "bytes": 200064
-   },
-   {
-    "file": "126744a6f8d6.mp3",
-    "text": "Not yet. Look at Mei Ling's bar. The stickers walk out of Mei Ling, so it gets shorter, not longer.",
-    "bytes": 61676
-   },
-   {
-    "file": "40a26a817225.mp3",
-    "text": "Not yet. Look at the bars. Which is longer, the orange move or Mei Ling's extra piece? Start with the longer one.",
-    "bytes": 63596
-   },
-   {
-    "file": "66d3c35a09db.mp3",
-    "text": "Line 2. Mei Ling is 283 below the dotted line, and Aisha is 527 above it. Which number sentence finds the difference between them now?",
-    "bytes": 97728
-   },
-   {
-    "file": "4373f32f38e6.mp3",
-    "text": "Yes! 283 plus 527 is 810. The difference now is 810 stickers. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 154560
-   },
-   {
-    "file": "f6e4476257f9.mp3",
-    "text": "Line 2. 283 plus 527 is 810. Why this line? The red part below the dotted line and the orange part above it sit end to end. Together they make the whole difference, so we add them.",
-    "bytes": 137472
-   },
-   {
-    "file": "cfc92cf4e3ef.mp3",
-    "text": "Not yet. Look at the bars. The difference goes from the end of Mei Ling, below the line, right up to the end of Aisha, above the line. Is that one piece, or two pieces joined end to end?",
-    "bytes": 109100
-   },
-   {
-    "file": "0e16fead6351.mp3",
-    "text": "Not yet. That uses Mei Ling's extra from the start. Use the two pieces on the bars now, the part below the line and the part above it.",
-    "bytes": 75116
-   },
-   {
-    "file": "a27470379b51.mp3",
-    "text": "Yes! Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
-    "bytes": 163200
-   },
-   {
-    "file": "81f3531bec00.mp3",
-    "text": "The answer sentence. Aisha has 810 more stickers than Mei Ling. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
-    "bytes": 174528
-   },
-   {
-    "file": "1f6c997be0f4.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say who has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83564
-   },
-   {
-    "file": "73867fd785f2.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 527 stickers back changes the gap by 527 twice, once for each side. Which number sentence should give 244, the gap in the story?",
-    "bytes": 137472
-   },
-   {
-    "file": "d317a3cf49fa.mp3",
-    "text": "Yes! 527 plus 527 take away 810 is 244. Moving the 527 back gives a gap of 244, just like in the story. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 217152
-   },
-   {
-    "file": "13640494aaf6.mp3",
-    "text": "The check line. 527 plus 527 take away 810 is 244. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 171648
-   },
-   {
-    "file": "83dc2e7a6a07.mp3",
-    "text": "Not yet. Look at the bars. Aisha is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 66476
-   },
-   {
-    "file": "c9c298fe458a.mp3",
-    "text": "Line 1. Bus 1 had 11 passengers, and 3 moved out. Which number sentence finds how many Bus 1 has now?",
-    "bytes": 72192
-   },
-   {
-    "file": "d6b1d3ed7bd9.mp3",
-    "text": "Yes! 11 take away 3 is 8. Bus 1 has 8 passengers now. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.",
-    "bytes": 146112
-   },
-   {
-    "file": "8f36f1471333.mp3",
-    "text": "Line 1. 11 take away 3 is 8. Why this line? We know how many each one had at the start, so we can find each new number first. Bus 1 loses the passengers that move, so it has fewer. Fewer means take away.",
-    "bytes": 137472
-   },
-   {
-    "file": "31b16ae3a23a.mp3",
-    "text": "Not yet. Look at Bus 1's bar. The passengers leave Bus 1, so it gets shorter, not longer.",
-    "bytes": 58028
-   },
-   {
-    "file": "b6b1953362df.mp3",
-    "text": "Not yet. That takes away Bus 2's number. Look at Bus 1's bar. How many leave it?",
-    "bytes": 52268
-   },
-   {
-    "file": "465695d26de0.mp3",
-    "text": "Line 2. Bus 2 had 4 passengers, and gets the 3 that moved. Which number sentence finds how many Bus 2 has now?",
-    "bytes": 77760
-   },
-   {
-    "file": "679069b6a5b5.mp3",
-    "text": "Yes! 4 plus 3 is 7. Bus 2 has 7 passengers now. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.",
-    "bytes": 100608
-   },
-   {
-    "file": "b2ec03621972.mp3",
-    "text": "Line 2. 4 plus 3 is 7. Why this line? Bus 2 gets the passengers that move, so it has more. More means add.",
-    "bytes": 83520
-   },
-   {
-    "file": "5f30af018a98.mp3",
-    "text": "Not yet. That starts from Bus 1's number. Look at Bus 2's bar.",
-    "bytes": 46508
-   },
-   {
-    "file": "06226d1a6f45.mp3",
-    "text": "Not yet. Look at Bus 2's bar. It grows when the passengers arrive.",
-    "bytes": 43820
-   },
-   {
-    "file": "5e1cdfc8ee3c.mp3",
-    "text": "Line 3. Bus 1 has 8 now, and Bus 2 has 7. Which number sentence finds the difference?",
-    "bytes": 69312
-   },
-   {
-    "file": "a3af9b40b781.mp3",
-    "text": "Yes! 8 take away 7 is 1. The difference is 1 passenger. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 117696
-   },
-   {
-    "file": "36aa224bc715.mp3",
-    "text": "Line 3. 8 take away 7 is 1. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 111936
-   },
-   {
-    "file": "497a78044950.mp3",
-    "text": "Not yet. Adding finds how many they have together. The question asks how many more, so compare the two bars.",
-    "bytes": 60716
-   },
-   {
-    "file": "94316b23c77f.mp3",
-    "text": "Not yet. That takes away the number that moved. Compare the two bars as they are now.",
-    "bytes": 46508
-   },
-   {
-    "file": "1ae4ee598b6f.mp3",
-    "text": "Yes! Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.",
-    "bytes": 163200
-   },
-   {
-    "file": "fdc607707277.mp3",
-    "text": "The answer sentence. Bus 1 has 1 more passenger than Bus 2. Why this line? The question asks two things: which bus has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, passengers. Then the marker knows exactly what your number means.",
-    "bytes": 180288
-   },
-   {
-    "file": "7505651efbf8.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which bus has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 83564
-   },
-   {
-    "file": "db53ac3fad76.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 3 passengers back changes the gap by 3 twice, once for each side. Which number sentence should give 7? That was the gap at the start: Bus 1 had 7 more.",
-    "bytes": 146112
-   },
-   {
-    "file": "7aa6a3b84c86.mp3",
-    "text": "Yes! 1 plus 3 plus 3 is 7. Moving the 3 back gives a gap of 7, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 168768
-   },
-   {
-    "file": "a40c8e8d6f04.mp3",
-    "text": "The check line. 1 plus 3 plus 3 is 7. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 131904
-   },
-   {
-    "file": "8fe995613d75.mp3",
-    "text": "Not yet. Look at the bars. Bus 1 is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 63596
-   },
-   {
-    "file": "6952b1526166.mp3",
-    "text": "Line 1. Tank A had 8 fish, and 5 moved out. Which number sentence finds how many Tank A has now?",
-    "bytes": 69312
-   },
-   {
-    "file": "76dd06dcff8e.mp3",
-    "text": "Yes! 8 take away 5 is 3. Tank A has 3 fish now. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.",
-    "bytes": 140352
-   },
-   {
-    "file": "1dfaa5b58932.mp3",
-    "text": "Line 1. 8 take away 5 is 3. Why this line? We know how many each one had at the start, so we can find each new number first. Tank A loses the fish that move, so it has fewer. Fewer means take away.",
-    "bytes": 129024
-   },
-   {
-    "file": "6cd53fafc02f.mp3",
-    "text": "Not yet. Look at Tank A's bar. The fish leave Tank A, so it gets shorter, not longer.",
-    "bytes": 58028
-   },
-   {
-    "file": "53cb60938124.mp3",
-    "text": "Not yet. That takes away Tank B's number. Look at Tank A's bar. How many leave it?",
-    "bytes": 58988
-   },
-   {
-    "file": "4035e7810785.mp3",
-    "text": "Line 2. Tank B had 4 fish, and gets the 5 that moved. Which number sentence finds how many Tank B has now?",
-    "bytes": 77760
-   },
-   {
-    "file": "745b7cebb030.mp3",
-    "text": "Yes! 4 plus 5 is 9. Tank B has 9 fish now. Why this line? Tank B gets the fish that move, so it has more. More means add.",
-    "bytes": 97728
-   },
-   {
-    "file": "4b6ded9ec7bd.mp3",
-    "text": "Line 2. 4 plus 5 is 9. Why this line? Tank B gets the fish that move, so it has more. More means add.",
-    "bytes": 77760
-   },
-   {
-    "file": "fd286ad7910e.mp3",
-    "text": "Not yet. That starts from Tank A's number. Look at Tank B's bar.",
-    "bytes": 42476
-   },
-   {
-    "file": "8c02709c9816.mp3",
-    "text": "Not yet. Look at Tank B's bar. How many arrive?",
-    "bytes": 35180
-   },
-   {
-    "file": "b76e2eaa2819.mp3",
-    "text": "Line 3. Tank A has 3 now, and Tank B has 9. Which number sentence finds the difference?",
-    "bytes": 66432
-   },
-   {
-    "file": "c70d1ce981ad.mp3",
-    "text": "Yes! 9 take away 3 is 6. The difference is 6 fish. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 120576
-   },
-   {
-    "file": "640bcded02d9.mp3",
-    "text": "Line 3. 9 take away 3 is 6. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 103488
-   },
-   {
-    "file": "68462f3748bb.mp3",
-    "text": "Yes! Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
-    "bytes": 160320
-   },
-   {
-    "file": "8331814f8b39.mp3",
-    "text": "The answer sentence. Tank B has 6 more fish than Tank A. Why this line? The question asks two things: which tank has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, fish. Then the marker knows exactly what your number means.",
-    "bytes": 174528
-   },
-   {
-    "file": "7278ebb84864.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which tank has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 77804
-   },
-   {
-    "file": "9f5b4134fed3.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 5 fish back changes the gap by 5 twice, once for each side. Which number sentence should give 4? That was the gap at the start: Tank A had 4 more.",
-    "bytes": 137472
-   },
-   {
-    "file": "f8a5aa1b8dde.mp3",
-    "text": "Yes! 5 plus 5 take away 6 is 4. Moving the 5 back gives a gap of 4, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 177408
-   },
-   {
-    "file": "6fa760cc2518.mp3",
-    "text": "The check line. 5 plus 5 take away 6 is 4. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 134784
-   },
-   {
-    "file": "446d3a2f2e03.mp3",
-    "text": "Not yet. Look at the bars. Tank B is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 75116
-   },
-   {
-    "file": "8d54184af564.mp3",
-    "text": "Line 1. Tray A had 6 ang ku kueh, and 1 moved out. Which number sentence finds how many Tray A has now?",
-    "bytes": 75072
-   },
-   {
-    "file": "3ffec2b1ecda.mp3",
-    "text": "Yes! 6 take away 1 is 5. Tray A has 5 ang ku kueh now. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.",
-    "bytes": 157440
-   },
-   {
-    "file": "f6c1cb91b03d.mp3",
-    "text": "Line 1. 6 take away 1 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. Tray A loses the ang ku kueh that move, so it has fewer. Fewer means take away.",
-    "bytes": 137472
-   },
-   {
-    "file": "a58cd01bcbe2.mp3",
-    "text": "Not yet. Look at Tray A's bar. The ang ku kueh leave Tray A, so it gets shorter, not longer.",
-    "bytes": 60716
-   },
-   {
-    "file": "71f0393a555d.mp3",
-    "text": "Not yet. That takes away Tray B's number. Look at Tray A's bar. How many leave it?",
-    "bytes": 52268
-   },
-   {
-    "file": "b4df1c682a1d.mp3",
-    "text": "Line 2. Tray B had 4 ang ku kueh, and gets the 1 that moved. Which number sentence finds how many Tray B has now?",
-    "bytes": 80640
-   },
-   {
-    "file": "9c99516b4610.mp3",
-    "text": "Yes! 4 plus 1 is 5. Tray B has 5 ang ku kueh now. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.",
-    "bytes": 100608
-   },
-   {
-    "file": "35d8524e0fdf.mp3",
-    "text": "Line 2. 4 plus 1 is 5. Why this line? Tray B gets the ang ku kueh that move, so it has more. More means add.",
-    "bytes": 97728
-   },
-   {
-    "file": "da6174dac0f7.mp3",
-    "text": "Not yet. Look at Tray B's bar. It grows when the ang ku kueh arrive.",
-    "bytes": 46508
-   },
-   {
-    "file": "83ec6c5f3d70.mp3",
-    "text": "Not yet. That starts from Tray A's number. Look at Tray B's bar.",
-    "bytes": 43820
-   },
-   {
-    "file": "92447527b7ec.mp3",
-    "text": "Line 3. Tray A has 5 now, and Tray B has 5. Which number sentence finds the difference?",
-    "bytes": 69312
-   },
-   {
-    "file": "a692784ad83c.mp3",
-    "text": "Yes! 5 take away 5 is 0. The difference is 0 ang ku kueh. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.",
-    "bytes": 117696
-   },
-   {
-    "file": "891cc3db04a9.mp3",
-    "text": "Line 3. 5 take away 5 is 0. Why this line? Both bars are the same length now. The same take away the same leaves nothing, so there is no difference.",
-    "bytes": 103488
-   },
-   {
-    "file": "6190bee30c72.mp3",
-    "text": "Yes! Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
-    "bytes": 174528
-   },
-   {
-    "file": "66dc8a505453.mp3",
-    "text": "The answer sentence. Tray A and Tray B have the same number of ang ku kueh. Why this line? The question asks two things: which tray has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, ang ku kueh. Then the marker knows exactly what your number means.",
-    "bytes": 177408
-   },
-   {
-    "file": "9847d7875969.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't answer the question. Read it again. It asks which tray has more. What do you say when nobody has more?",
-    "bytes": 92012
-   },
-   {
-    "file": "7fbf0e84de24.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 1 ang ku kueh back changes the gap by 1 twice, once for each side. Which number sentence should give 2? That was the gap at the start: Tray A had 2 more.",
-    "bytes": 137472
-   },
-   {
-    "file": "b90715daf225.mp3",
-    "text": "Yes! 0 plus 1 plus 1 is 2. Moving the 1 back gives a gap of 2, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 163200
-   },
-   {
-    "file": "879c6f9ea722.mp3",
-    "text": "The check line. 0 plus 1 plus 1 is 2. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 131904
-   },
-   {
-    "file": "a413b2c34ede.mp3",
-    "text": "Line 1. Mei Ling had 15 stickers, and 2 moved out. Which number sentence finds how many Mei Ling has now?",
-    "bytes": 75072
-   },
-   {
-    "file": "f86554ba2f75.mp3",
-    "text": "Yes! 15 take away 2 is 13. Mei Ling has 13 stickers now. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.",
-    "bytes": 154560
-   },
-   {
-    "file": "e74fa831888b.mp3",
-    "text": "Line 1. 15 take away 2 is 13. Why this line? We know how many each one had at the start, so we can find each new number first. Mei Ling loses the stickers that move, so it has fewer. Fewer means take away.",
-    "bytes": 137472
-   },
-   {
-    "file": "71e008c3821d.mp3",
-    "text": "Not yet. Look at Mei Ling's bar. The stickers leave Mei Ling, so it gets shorter, not longer.",
-    "bytes": 49388
-   },
-   {
-    "file": "b8a98b8248e0.mp3",
-    "text": "Not yet. That takes away Aisha's number. Look at Mei Ling's bar. How many leave it?",
-    "bytes": 53036
-   },
-   {
-    "file": "a361c0e94ab4.mp3",
-    "text": "Line 2. Aisha had 7 stickers, and gets the 2 that moved. Which number sentence finds how many Aisha has now?",
-    "bytes": 72192
-   },
-   {
-    "file": "da50734260eb.mp3",
-    "text": "Yes! 7 plus 2 is 9. Aisha has 9 stickers now. Why this line? Aisha gets the stickers that move, so it has more. More means add.",
-    "bytes": 94848
-   },
-   {
-    "file": "f9aff162485d.mp3",
-    "text": "Line 2. 7 plus 2 is 9. Why this line? Aisha gets the stickers that move, so it has more. More means add.",
-    "bytes": 80640
-   },
-   {
-    "file": "030e7eaa193a.mp3",
-    "text": "Not yet. That starts from Mei Ling's number. Look at Aisha's bar.",
-    "bytes": 41900
-   },
-   {
-    "file": "8a65610b93b9.mp3",
-    "text": "Not yet. Look at Aisha's bar. It grows when the stickers arrive.",
-    "bytes": 41900
-   },
-   {
-    "file": "895d48290473.mp3",
-    "text": "Line 3. Mei Ling has 13 now, and Aisha has 9. Which number sentence finds the difference?",
-    "bytes": 66432
-   },
-   {
-    "file": "897220ba0fd9.mp3",
-    "text": "Yes! 13 take away 9 is 4. The difference is 4 stickers. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 123264
-   },
-   {
-    "file": "7f1873ee1dab.mp3",
-    "text": "Line 3. 13 take away 9 is 4. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 123264
-   },
-   {
-    "file": "e2f2533f8f3b.mp3",
-    "text": "Yes! Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
-    "bytes": 154560
-   },
-   {
-    "file": "9bb8d8ae5948.mp3",
-    "text": "The answer sentence. Mei Ling has 4 more stickers than Aisha. Why this line? The question asks two things: who has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, stickers. Then the marker knows exactly what your number means.",
-    "bytes": 166080
-   },
-   {
-    "file": "68c94676d2a6.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 2 stickers back changes the gap by 2 twice, once for each side. Which number sentence should give 8? That was the gap at the start: Mei Ling had 8 more.",
-    "bytes": 137472
-   },
-   {
-    "file": "e6c0f6c71623.mp3",
-    "text": "Yes! 4 plus 2 plus 2 is 8. Moving the 2 back gives a gap of 8, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 163200
-   },
-   {
-    "file": "f4e2d146d866.mp3",
-    "text": "The check line. 4 plus 2 plus 2 is 8. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 134784
-   },
-   {
-    "file": "411c15920746.mp3",
-    "text": "Not yet. Look at the bars. Mei Ling is ahead now. Moving them back makes that lead bigger, not smaller.",
-    "bytes": 61676
-   },
-   {
-    "file": "8fb3df840ec4.mp3",
-    "text": "Line 1. The top shelf had 12 books, and 7 moved out. Which number sentence finds how many the top shelf has now?",
-    "bytes": 69312
-   },
-   {
-    "file": "84761c210f1b.mp3",
-    "text": "Yes! 12 take away 7 is 5. The top shelf has 5 books now. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.",
-    "bytes": 151872
-   },
-   {
-    "file": "51866d968ade.mp3",
-    "text": "Line 1. 12 take away 7 is 5. Why this line? We know how many each one had at the start, so we can find each new number first. The top shelf loses the books that move, so it has fewer. Fewer means take away.",
-    "bytes": 137472
-   },
-   {
-    "file": "67063e405d47.mp3",
-    "text": "Not yet. Look at the top shelf's bar. The books leave the top shelf, so it gets shorter, not longer.",
-    "bytes": 60716
-   },
-   {
-    "file": "e02e416c60f4.mp3",
-    "text": "Not yet. That takes away the bottom shelf's number. Look at the top shelf's bar. How many leave it?",
-    "bytes": 60332
-   },
-   {
-    "file": "302561248bc3.mp3",
-    "text": "Line 2. The bottom shelf had 9 books, and gets the 7 that moved. Which number sentence finds how many the bottom shelf has now?",
-    "bytes": 80640
-   },
-   {
-    "file": "cf3e940a1343.mp3",
-    "text": "Yes! 9 plus 7 is 16. The bottom shelf has 16 books now. Why this line? The bottom shelf gets the books that move, so it has more. More means add.",
-    "bytes": 94848
-   },
-   {
-    "file": "0ba8bf92876d.mp3",
-    "text": "Line 2. 9 plus 7 is 16. Why this line? The bottom shelf gets the books that move, so it has more. More means add.",
-    "bytes": 94848
-   },
-   {
-    "file": "1ca037467864.mp3",
-    "text": "Not yet. That starts from the top shelf's number. Look at the bottom shelf's bar.",
-    "bytes": 48236
-   },
-   {
-    "file": "f7c36fbe2ada.mp3",
-    "text": "Not yet. Look at the bottom shelf's bar. It grows when the books arrive.",
-    "bytes": 43820
-   },
-   {
-    "file": "4e89082ed16f.mp3",
-    "text": "Line 3. The top shelf has 5 now, and the bottom shelf has 16. Which number sentence finds the difference?",
-    "bytes": 66432
-   },
-   {
-    "file": "a47fafde5445.mp3",
-    "text": "Yes! 16 take away 5 is 11. The difference is 11 books. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 134784
-   },
-   {
-    "file": "8688dc62db9e.mp3",
-    "text": "Line 3. 16 take away 5 is 11. Why this line? To find how many more, line the two bars up and compare them. The longer one take away the shorter one leaves the difference.",
-    "bytes": 114816
-   },
-   {
-    "file": "3c45dbda2b23.mp3",
-    "text": "Yes! The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.",
-    "bytes": 168768
-   },
-   {
-    "file": "3b356e30a7ed.mp3",
-    "text": "The answer sentence. The bottom shelf has 11 more books than the top shelf. Why this line? The question asks two things: which shelf has more, and how many more. The answer sentence says both, uses words from the question, and has the unit, books. Then the marker knows exactly what your number means.",
-    "bytes": 177408
-   },
-   {
-    "file": "cb2c11632151.mp3",
-    "text": "Not yet. That number is right, but on its own it doesn't say which shelf has more, or more of what. Read the question again. It asks two things.",
-    "bytes": 80684
-   },
-   {
-    "file": "f2602bdf7efc.mp3",
-    "text": "Check line. Put your answer back into the story and undo the move. Moving the 7 books back changes the gap by 7 twice, once for each side. Which number sentence should give 3? That was the gap at the start: the top shelf had 3 more.",
-    "bytes": 134784
-   },
-   {
-    "file": "19f9aa8edb35.mp3",
-    "text": "Yes! 7 plus 7 take away 11 is 3. Moving the 7 back gives a gap of 3, just like at the start. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 174528
-   },
-   {
-    "file": "e818cbf4819b.mp3",
-    "text": "The check line. 7 plus 7 take away 11 is 3. Why this line? Checking catches mistakes. Undo the move with your answer, and you should get the story's number again. If not, look again. Markers like to see that your answer makes sense.",
-    "bytes": 134784
-   },
-   {
-    "file": "9a9ea41e89ab.mp3",
-    "text": "Not yet. Look at the bars. The bottom shelf is ahead now. Moving them back takes away from that lead, so the gap gets smaller.",
-    "bytes": 78572
-   },
-   {
-    "file": "4c730990233a.mp3",
-    "text": "Now let's write the working, like in your exam. We build it one line at a time, and every line comes from a part of the bars. Each line has a number sentence and a short statement that says what the number means, so the marker can follow your thinking.",
-    "bytes": 134784
-   },
-   {
-    "file": "c9e1dd2cb8cc.mp3",
-    "text": "This time, write it all from memory. On your paper, draw the two bars with the dotted line. Then write each number sentence with a short statement, the answer sentence, and a check. Tap I've written it when you're done.",
-    "bytes": 120576
-   },
-   {
-    "file": "d94dd8ee2617.mp3",
-    "text": "On your paper, write each number sentence with a short statement, then the answer sentence, then a check. Tap I've written it when you're done.",
-    "bytes": 78188
-   }
-  ]
- },
- "feedback_defaults": {
-  "note": "25 Oct 2026: the feedback rules (wrong step = 'Not yet' + pointer; specific step praise, never the child; guide not friend). Changed clips were cut from the existing luna audio at the sentence pause, with a new luna 'Not yet.' in front where needed; a few regenerated.",
-  "changed": 90
  }
 }
