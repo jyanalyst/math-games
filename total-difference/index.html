@@ -1471,7 +1471,7 @@ var TITLE=(typeof CHECKUP_TITLE==="string")?CHECKUP_TITLE:document.title;
 var RKEY="mathgames.rewards.v1", UKEY="mathgames.checkup.unlocked.v1", RUNKEY="mathgames.checkup.luna.run."+SLUG, PKEY="mathgames.player", HKEY="mathgames.history.v1";
 var STAR_FIRST=2, STAR_RETRY=1, STAR_FINISH=3, STAR_PAPER=1;
 var MASTERY=(typeof CHECKUP_MASTERY==="object" && CHECKUP_MASTERY)?CHECKUP_MASTERY:{}, CAN=MASTERY[SLUG]||("You can now solve "+TITLE+" problems.");
-// fixed lines (recorded with the tutor voice); lines with numbers or names are read by the device voice
+// Every speakable fixed-bank line uses recorded Luna; player names are display-only.
 var SAY={
   intro:"Test yourself. Three questions, like in your exam.",
   paper:"Write your working and draw the model on your paper. Then type your answer.",
@@ -2087,11 +2087,17 @@ function generate(i,small,used){
   var p=list[Math.floor(Math.random()*list.length)]; return JSON.parse(JSON.stringify(p));
 }
 function namesOf(p){ return (p.names||[]).slice(); }
-function makeRound(small, fromIndex, existing){
+function makeRound(small, fromIndex, existing, previous){
   var list=[], used=[];
   for(var i=0;i<ROUND_SIZE;i++){
     if(existing && i<fromIndex){ list.push(existing[i]); used=used.concat(namesOf(existing[i])); continue; }
     var p=generate(i,small,used); used=used.concat(namesOf(p)); list.push(p);
+  }
+  // A finite bank must still make “5 more” different, even with unlucky/random-stubbed draws.
+  if(previous && JSON.stringify(list)===JSON.stringify(previous)){
+    var other=G.PRACTICE_BANK.filter(function(p,j){return p.small===!!small && j%5===0 && JSON.stringify(p)!==JSON.stringify(list[0]);})[0];
+    if(!other) throw new Error("No alternative fixed Practice round");
+    list[0]=JSON.parse(JSON.stringify(other));
   }
   return list;
 }
@@ -2436,7 +2442,7 @@ function renderSummary(){
                      : '<button class="big" id="moreBtn">5 more ➡️</button>';
   $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+btn+'</div>';
   tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
-  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small); save(); startProblem(); MathHistory.restart(); };
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems():makeRound(S.small,0,null,S.problems); save(); startProblem(); MathHistory.restart(); };
   if($("newRound")) $("newRound").onclick=again;
   if($("moreBtn")) $("moreBtn").onclick=again;
   if($("toPractice")) $("toPractice").onclick=function(){ $("modeBtn").onclick(); };
@@ -2509,7 +2515,7 @@ window.MathHost={
 };
 window.addEventListener("resize",function(){ if(P && S.idx<ROUND_SIZE) renderBars(); });
 
-/* every line the device voice could say in Lesson mode (for the recording-cost estimate) */
+/* Complete Lesson inventory for recorded-Luna clip coverage. */
 function lessonScript(problems){
   var out={}, add=function(t){ if(t) out[String(t).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim()]=1; };
   var keepP=P, keepCur=cur;
