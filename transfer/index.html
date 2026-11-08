@@ -1948,14 +1948,14 @@ function finish(raw, small, ctxId){
   return p;
 }
 var PRACTICE_BANK=[{"kind": "more", "D": 172, "M": 368, "bStart": 453, "aStart": 625, "small": false, "ctx": "hall", "aEnd": 257, "bEnd": 821, "answer": {"who": "B", "amount": 564}}, {"kind": "more", "D": 220, "M": 454, "bStart": 620, "aStart": 840, "small": false, "ctx": "marbles", "aEnd": 386, "bEnd": 1074, "answer": {"who": "B", "amount": 688}}, {"kind": "equal", "D": 248, "M": 124, "bStart": 102, "aStart": 350, "small": false, "ctx": "kueh", "aEnd": 226, "bEnd": 226, "answer": {"who": "same", "amount": 0}}, {"kind": "stay", "D": 240, "M": 45, "bStart": 108, "aStart": 348, "small": false, "ctx": "books", "aEnd": 303, "bEnd": 153, "answer": {"who": "A", "amount": 150}}, {"kind": "more", "D": 152, "M": 431, "bStart": 474, "aStart": 626, "small": false, "ctx": "stickers", "aEnd": 195, "bEnd": 905, "answer": {"who": "B", "amount": 710}}, {"kind": "more", "D": 218, "M": 422, "bStart": 430, "aStart": 648, "small": false, "ctx": "hall", "aEnd": 226, "bEnd": 852, "answer": {"who": "B", "amount": 626}}, {"kind": "more", "D": 291, "M": 445, "bStart": 538, "aStart": 829, "small": false, "ctx": "marbles", "aEnd": 384, "bEnd": 983, "answer": {"who": "B", "amount": 599}}, {"kind": "stay", "D": 347, "M": 119, "bStart": 302, "aStart": 649, "small": false, "ctx": "bus", "aEnd": 530, "bEnd": 421, "answer": {"who": "A", "amount": 109}}, {"kind": "more", "D": 231, "M": 356, "bStart": 515, "aStart": 746, "small": false, "ctx": "kueh", "aEnd": 390, "bEnd": 871, "answer": {"who": "B", "amount": 481}}, {"kind": "equal", "D": 322, "M": 161, "bStart": 398, "aStart": 720, "small": false, "ctx": "fish", "aEnd": 559, "bEnd": 559, "answer": {"who": "same", "amount": 0}}, {"kind": "more", "D": 2, "M": 6, "bStart": 7, "aStart": 9, "small": true, "ctx": "hall", "aEnd": 3, "bEnd": 13, "answer": {"who": "B", "amount": 10}}, {"kind": "more", "D": 1, "M": 2, "bStart": 2, "aStart": 3, "small": true, "ctx": "fish", "aEnd": 1, "bEnd": 4, "answer": {"who": "B", "amount": 3}}, {"kind": "stay", "D": 8, "M": 3, "bStart": 6, "aStart": 14, "small": true, "ctx": "marbles", "aEnd": 11, "bEnd": 9, "answer": {"who": "A", "amount": 2}}, {"kind": "more", "D": 3, "M": 4, "bStart": 8, "aStart": 11, "small": true, "ctx": "kueh", "aEnd": 7, "bEnd": 12, "answer": {"who": "B", "amount": 5}}, {"kind": "equal", "D": 8, "M": 4, "bStart": 5, "aStart": 13, "small": true, "ctx": "bus", "aEnd": 9, "bEnd": 9, "answer": {"who": "same", "amount": 0}}, {"kind": "more", "D": 3, "M": 5, "bStart": 5, "aStart": 8, "small": true, "ctx": "fish", "aEnd": 3, "bEnd": 10, "answer": {"who": "B", "amount": 7}}, {"kind": "more", "D": 1, "M": 5, "bStart": 5, "aStart": 6, "small": true, "ctx": "marbles", "aEnd": 1, "bEnd": 10, "answer": {"who": "B", "amount": 9}}, {"kind": "stay", "D": 5, "M": 1, "bStart": 6, "aStart": 11, "small": true, "ctx": "bus", "aEnd": 10, "bEnd": 7, "answer": {"who": "A", "amount": 3}}, {"kind": "more", "D": 1, "M": 5, "bStart": 5, "aStart": 6, "small": true, "ctx": "books", "aEnd": 1, "bEnd": 10, "answer": {"who": "B", "amount": 9}}, {"kind": "equal", "D": 6, "M": 3, "bStart": 4, "aStart": 10, "small": true, "ctx": "kueh", "aEnd": 7, "bEnd": 7, "answer": {"who": "same", "amount": 0}}];
-function generate(kind,small,ctxId,used){var a=PRACTICE_BANK.filter(function(p){return p.kind===kind && p.small===!!small;});
+function generate(kind,small,ctxId,used,picked){var a=PRACTICE_BANK.filter(function(p){return p.kind===kind && p.small===!!small && !(picked||[]).some(function(q){return JSON.stringify(q)===JSON.stringify(p);});});
  if(!a.length)throw new Error("Missing fixed Practice kind "+kind); return JSON.parse(JSON.stringify(a[Math.floor(Math.random()*a.length)]));}
 function canonical(){
   var p=finish({kind:"more",D:129,M:329,bStart:400,aStart:529},false,"hall");
   if(!verify(p)) throw new Error("canonical failed");
   return p;
 }
-function makeRound(small, includeCanonical, fromIndex, existing){
+function makeRound(small, includeCanonical, fromIndex, existing, previous){
   var kinds=["more","more","more","stay","equal"];
   // keep the first problem an easy-to-picture "more" case
   var rest=shuffle(kinds.slice(1)); kinds=["more"].concat(rest);
@@ -1965,7 +1965,13 @@ function makeRound(small, includeCanonical, fromIndex, existing){
     if(existing && i<fromIndex){list.push(existing[i]);continue;}
     if(i===0 && includeCanonical && !small){list.push(canonical());continue;}
     var cid = (i===0 && !small)?"hall":ctxs[i%ctxs.length];
-    list.push(generate(kinds[i],small,cid));
+    list.push(generate(kinds[i],small,cid,null,list));
+  }
+  // Fixed banks never duplicate a problem within a round or repeat an identical retry round.
+  if(previous && JSON.stringify(list)===JSON.stringify(previous)){
+    var other=PRACTICE_BANK.filter(function(p){return p.small===!!small && p.kind===list[0].kind && !list.some(function(q){return JSON.stringify(p)===JSON.stringify(q);});})[0];
+    if(!other) throw new Error("No alternative fixed Practice round");
+    list[0]=JSON.parse(JSON.stringify(other));
   }
   return list;
 }
@@ -2677,7 +2683,7 @@ function renderSummary(){
   if(isLesson()){ tell(["life-"+L.c.id], []); wsayAfterClips(["You finished the round and got all "+ROUND_SIZE+" stars! Well done!"]); }
   else wsay(["You finished the round and got all "+ROUND_SIZE+" stars! Your first guesses were right "+pr+" out of "+res.length+" times.", "Where do we use this in real life? "+L.text+" "+L.rule]);
   var again=function(){
-    S.round++; S.idx=0; S.results=[]; S.problems = S.lesson ? lessonProblems(S.small,S.round) : makeRound(S.small,false); save();
+    S.round++; S.idx=0; S.results=[]; S.problems = S.lesson ? lessonProblems(S.small,S.round) : makeRound(S.small,false,0,null,S.problems); save();
     $("dotline").style.display=""; startProblem(); MathHistory.restart();
   };
   if($("newRound")) $("newRound").onclick=again; if($("moreBtn")) $("moreBtn").onclick=again;

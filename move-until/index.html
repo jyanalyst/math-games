@@ -1895,15 +1895,21 @@ function makeRaw(kind, small){
 }
 function pickNames(used){ var pool=NAMES.filter(function(x){return used.indexOf(x)<0;}); if(pool.length<2) pool=NAMES.slice(); shuffle(pool); return [pool[0],pool[1]]; }
 var PRACTICE_BANK=[{"kind": "equal", "small": false, "Gb": 578, "Rb": 156, "ctx": "stickers", "gn": "Irfan", "rn": "Ethan", "T": 734, "E": 367, "M": 211, "Ga": 367, "Ra": 367, "answer": 211}, {"kind": "equal", "small": false, "Gb": 580, "Rb": 284, "ctx": "beads", "gn": "Marcus", "rn": "Arjun", "T": 864, "E": 432, "M": 148, "Ga": 432, "Ra": 432, "answer": 148}, {"kind": "twice", "small": false, "Gb": 381, "Rb": 66, "ctx": "shelves", "gn": "Amir", "rn": "Chloe", "T": 447, "u": 149, "M": 232, "Ga": 149, "Ra": 298, "answer": 232}, {"kind": "twice", "small": false, "Gb": 608, "Rb": 154, "ctx": "jars", "gn": "Nadia", "rn": "Kai", "T": 762, "u": 254, "M": 354, "Ga": 254, "Ra": 508, "answer": 354}, {"kind": "twice", "small": false, "Gb": 1046, "Rb": 28, "ctx": "stamps", "gn": "Aisha", "rn": "Mei", "T": 1074, "u": 358, "M": 688, "Ga": 358, "Ra": 716, "answer": 688}, {"kind": "equal", "small": false, "Gb": 540, "Rb": 48, "ctx": "cards", "gn": "Hakim", "rn": "Nadia", "T": 588, "E": 294, "M": 246, "Ga": 294, "Ra": 294, "answer": 246}, {"kind": "equal", "small": false, "Gb": 774, "Rb": 350, "ctx": "stamps", "gn": "Amir", "rn": "Divya", "T": 1124, "E": 562, "M": 212, "Ga": 562, "Ra": 562, "answer": 212}, {"kind": "twice", "small": false, "Gb": 115, "Rb": 197, "ctx": "jars", "gn": "Priya", "rn": "Ethan", "T": 312, "u": 104, "M": 11, "Ga": 104, "Ra": 208, "answer": 11}, {"kind": "twice", "small": false, "Gb": 157, "Rb": 11, "ctx": "tanks", "gn": "Sofia", "rn": "Li Ting", "T": 168, "u": 56, "M": 101, "Ga": 56, "Ra": 112, "answer": 101}, {"kind": "twice", "small": false, "Gb": 431, "Rb": 307, "ctx": "marbles", "gn": "Wei Jie", "rn": "Zara", "T": 738, "u": 246, "M": 185, "Ga": 246, "Ra": 492, "answer": 185}, {"kind": "equal", "small": true, "Gb": 10, "Rb": 4, "ctx": "jars", "gn": "Yan Ting", "rn": "Ravi", "T": 14, "E": 7, "M": 3, "Ga": 7, "Ra": 7, "answer": 3}, {"kind": "equal", "small": true, "Gb": 5, "Rb": 1, "ctx": "beads", "gn": "Kai", "rn": "Farid", "T": 6, "E": 3, "M": 2, "Ga": 3, "Ra": 3, "answer": 2}, {"kind": "twice", "small": true, "Gb": 7, "Rb": 5, "ctx": "marbles", "gn": "Ben", "rn": "Sofia", "T": 12, "u": 4, "M": 3, "Ga": 4, "Ra": 8, "answer": 3}, {"kind": "twice", "small": true, "Gb": 7, "Rb": 2, "ctx": "stamps", "gn": "Irfan", "rn": "Priya", "T": 9, "u": 3, "M": 4, "Ga": 3, "Ra": 6, "answer": 4}, {"kind": "twice", "small": true, "Gb": 11, "Rb": 7, "ctx": "stickers", "gn": "Wei Jie", "rn": "Daniel", "T": 18, "u": 6, "M": 5, "Ga": 6, "Ra": 12, "answer": 5}, {"kind": "equal", "small": true, "Gb": 7, "Rb": 1, "ctx": "shelves", "gn": "Farid", "rn": "Hakim", "T": 8, "E": 4, "M": 3, "Ga": 4, "Ra": 4, "answer": 3}, {"kind": "equal", "small": true, "Gb": 13, "Rb": 7, "ctx": "jars", "gn": "Sofia", "rn": "Amir", "T": 20, "E": 10, "M": 3, "Ga": 10, "Ra": 10, "answer": 3}, {"kind": "twice", "small": true, "Gb": 10, "Rb": 5, "ctx": "stamps", "gn": "Nadia", "rn": "Chloe", "T": 15, "u": 5, "M": 5, "Ga": 5, "Ra": 10, "answer": 5}, {"kind": "twice", "small": true, "Gb": 5, "Rb": 4, "ctx": "tanks", "gn": "Ethan", "rn": "Kai", "T": 9, "u": 3, "M": 2, "Ga": 3, "Ra": 6, "answer": 2}, {"kind": "twice", "small": true, "Gb": 12, "Rb": 6, "ctx": "beads", "gn": "Yan Ting", "rn": "Divya", "T": 18, "u": 6, "M": 6, "Ga": 6, "Ra": 12, "answer": 6}];
-function generate(kind,small,ctxId,used){var a=PRACTICE_BANK.filter(function(p){return p.kind===kind && p.small===!!small;});
+function generate(kind,small,ctxId,used,picked){var a=PRACTICE_BANK.filter(function(p){return p.kind===kind && p.small===!!small && !(picked||[]).some(function(q){return JSON.stringify(q)===JSON.stringify(p);});});
  if(!a.length)throw new Error("Missing fixed Practice kind "+kind); return JSON.parse(JSON.stringify(a[Math.floor(Math.random()*a.length)]));}
-function makeRound(small, fromIndex, existing){
+function makeRound(small, fromIndex, existing, previous){
   // ramp: equal first, then twice as many
   var kinds=["equal","equal","twice","twice","twice"];
   var ctxs=shuffle(CONTEXTS.map(function(c){return c.id;})), list=[], used=[];
   for(var i=0;i<ROUND_SIZE;i++){
     if(existing && i<fromIndex){ list.push(existing[i]); used.push(existing[i].gn, existing[i].rn); continue; }
-    var p=generate(kinds[i],small,ctxs[i%ctxs.length],used); used.push(p.gn,p.rn); list.push(p);
+    var p=generate(kinds[i],small,ctxs[i%ctxs.length],used,list); used.push(p.gn,p.rn); list.push(p);
+  }
+  // Fixed banks never duplicate a problem within a round or repeat an identical retry round.
+  if(previous && JSON.stringify(list)===JSON.stringify(previous)){
+    var other=PRACTICE_BANK.filter(function(p){return p.small===!!small && p.kind===list[0].kind && !list.some(function(q){return JSON.stringify(p)===JSON.stringify(q);});})[0];
+    if(!other) throw new Error("No alternative fixed Practice round");
+    list[0]=JSON.parse(JSON.stringify(other));
   }
   return list;
 }
@@ -2406,7 +2412,7 @@ function renderSummary(){
   var L=lifeCard(S.lifeCount||0); S.lifeCount=(S.lifeCount||0)+1; save();
   $("panel").innerHTML='<div class="bigstar">🌟</div><p class="prompt">Well done!</p><p class="center">Total stars: <b>'+S.totalStars+'</b></p>'+lifeHTML(L)+'<div class="rowbtns" style="justify-content:center">'+(S.lesson?'<button class="big" id="newRound">Play these 5 again</button>':'<button class="big" id="moreBtn">5 more ➡️</button>')+'</div>';
   tell("You finished the round and got all "+ROUND_SIZE+" stars!", "Where do we use this in real life? "+L.text+" "+L.rule);
-  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems(S.round):makeRound(S.small); save(); startProblem(); MathHistory.restart(); };
+  var again=function(){ S.round++; S.idx=0; S.results=[]; S.problems=S.lesson?lessonProblems(S.round):makeRound(S.small,0,null,S.problems); save(); startProblem(); MathHistory.restart(); };
   if($("newRound")) $("newRound").onclick=again; if($("moreBtn")) $("moreBtn").onclick=again;
 }
 function renderAll(){
